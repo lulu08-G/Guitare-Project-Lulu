@@ -111,6 +111,7 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
 .sv-artist-input{font-size:13px;color:var(--cream3);margin-top:3px;background:none;border:none;outline:none;width:100%;padding:2px 4px;border-radius:6px;transition:background .15s}
 .sv-artist-input:hover,.sv-artist-input:focus{background:var(--card2)}
 .sv-artist-input::placeholder{color:var(--cream4)}
+.sv-title-input[readonly],.sv-artist-input[readonly]{background:none!important;cursor:default}
 .sv-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
 .badge{padding:5px 13px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(200,120,58,.14);color:var(--gold2)}
 .badge.sage{background:rgba(106,144,112,.11);color:var(--sage)}
@@ -192,20 +193,15 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
 .mode-pill.big{padding:10px 18px;font-size:13px;flex:1;justify-content:center}
 .mode-pill:hover{border-color:var(--gold2);color:var(--cream)}
 .mode-pill.on{background:var(--gold);color:#0d0a07;border-color:var(--gold)}
-.arp-panel{background:rgba(200,120,58,.06);border:1px solid rgba(200,120,58,.25);border-radius:var(--rs);padding:14px;margin-top:4px}
-.arp-tl-foot{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
-.arp-keys{display:flex;gap:8px;flex-wrap:wrap}
-.arp-key{flex:1;min-width:54px;background:var(--card2);border:2px solid var(--border);border-radius:var(--rs);padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s;cursor:pointer}
-.arp-key:hover:not(.muted){border-color:var(--gold);background:rgba(200,120,58,.1);transform:translateY(-2px)}
-.arp-key.muted{opacity:.32;cursor:not-allowed}
-.arp-key.picked{border-color:var(--gold)}
-.ak-name{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--cream)}
-.ak-fret{font-size:10px;color:var(--cream4);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.ak-order{margin-top:2px;background:var(--gold);color:#0d0a07;font-size:11px;font-weight:800;border-radius:10px;padding:1px 8px;min-width:16px;text-align:center}
-.arp-seq{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
-.arp-chip{display:inline-flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--border);border-radius:50px;padding:5px 6px 5px 12px;font-size:12px;font-weight:600;color:var(--cream2)}
-.arp-chip button{background:none;color:var(--terra);font-size:12px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.arp-chip button:hover{background:rgba(184,88,64,.15)}
+.tab-grid{overflow-x:auto;padding-bottom:4px}
+.tab-row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.tab-string-lbl{width:16px;flex-shrink:0;font-size:11px;color:var(--cream3);font-weight:700;text-align:right}
+.tab-cells{display:flex;gap:3px}
+.tab-cell{width:26px;height:26px;border-radius:5px;background:var(--card2);border:1px solid var(--border);color:var(--cream4);font-size:11px;font-weight:600;transition:all .12s;flex-shrink:0}
+.tab-cell:hover{border-color:var(--gold2)}
+.tab-cell.on{background:var(--gold);color:#0d0a07;font-weight:800;border-color:var(--gold)}
+.tab-step-rm{width:26px;height:16px;font-size:10px;background:none;color:var(--cream4);border-radius:4px;flex-shrink:0}
+.tab-step-rm:hover{color:var(--terra);background:var(--card2)}
 
 /* ── METRONOME ── */
 .metro-visual{display:flex;justify-content:center;margin-bottom:2px}
@@ -440,18 +436,23 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
       </div>
     </div>
 
-    <div class="fg" style="margin-bottom:18px">
-      <div class="cswatches" id="color-row"></div>
+    <div class="mode-switch" id="sheet-mode-switch"></div>
+
+    <div id="sv-creator-body">
+      <div class="fg" style="margin-bottom:18px">
+        <div class="cswatches" id="color-row"></div>
+      </div>
+
+      <div id="opt-host"></div>
+      <div class="opt-blocks" id="opt-adders" style="margin-bottom:18px"></div>
+
+      <div id="parts-ed"></div>
+      <button class="add-part-btn" onclick="addPart()">
+        <svg class="ico" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Ajouter une partie
+      </button>
     </div>
-
-    <div id="opt-host"></div>
-    <div class="opt-blocks" id="opt-adders" style="margin-bottom:18px"></div>
-
-    <div id="parts-ed"></div>
-    <button class="add-part-btn" onclick="addPart()">
-      <svg class="ico" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Ajouter une partie
-    </button>
+    <div id="sv-visual-body" style="display:none"></div>
     <div style="height:40px"></div>
   </div>
 </div>
@@ -695,10 +696,29 @@ const COLORS = [['gold','#c8783a'],['sage','#6a9070'],['terra','#b85840'],['mauv
 const newChord = (n) => {
   const lib = findChord(n);
   return lib
-    ? {id:uid(), name:lib.n, frets:lib.f.slice(), fingers:(lib.g||[0,0,0,0,0,0]).slice(), base:1, arp:[]}
-    : {id:uid(), name:n||'', frets:[-1,-1,-1,-1,-1,-1], fingers:[0,0,0,0,0,0], base:1, arp:[]};
+    ? {id:uid(), name:lib.n, frets:lib.f.slice(), fingers:(lib.g||[0,0,0,0,0,0]).slice(), base:1}
+    : {id:uid(), name:n||'', frets:[-1,-1,-1,-1,-1,-1], fingers:[0,0,0,0,0,0], base:1};
 };
-const newPart = (name) => ({id:uid(), name:name||'Partie', collapsed:false, chords:[], rhythm:null, tabText:'', note:''});
+const newPart = (name) => ({id:uid(), name:name||'Partie', collapsed:false, chords:[], rhythm:null, tab:null, tabText:'', note:''});
+/* Migrate the previous per-chord "arpeggio" data (picking order tied to one
+   fixed chord shape) into a real tablature: one continuous grid of frets per
+   string per part, independent of any named chord. */
+function migratePartArpToTab(part) {
+  const arpChords = (part.chords||[]).filter(c => c.arp && c.arp.length);
+  if (!arpChords.length) return;
+  const steps = [];
+  arpChords.forEach(c => {
+    c.arp.forEach(pickset => {
+      const step = [-1,-1,-1,-1,-1,-1];
+      pickset.forEach(si => { step[si] = c.frets[si] >= 0 ? c.frets[si] : 0; });
+      steps.push(step);
+    });
+    delete c.arp;
+  });
+  if (!steps.length) return;
+  if (part.tab && part.tab.steps) part.tab.steps = part.tab.steps.concat(steps);
+  else part.tab = {steps};
+}
 const blankSheet = () => ({
   id:uid(), title:'', artist:'', color:'gold',
   capo:0, tuning:'Standard', bpm:0, difficulty:'',
@@ -823,18 +843,15 @@ function barreFret(frets, fing) {
   return null;
 }
 
-/* ═══════ SVG: ARPEGGIO / TAB STAFF (concatenated across a part's chords) ═══════ */
-function tabStaffSVG(chords, light) {
-  const segs = (chords||[]).filter(c => c.arp && c.arp.length && c.arp.some(st => st.length));
-  if (!segs.length) return '';
+/* ═══════ TABLATURE — a plain 6-string x N-step grid, independent of any
+   named chord. Chords are the OTHER way around: derived FROM the tab. ═══════ */
+function tabGridSVG(tab, light) {
+  if (!tab || !tab.steps || !tab.steps.length) return '';
   const disp = [5,4,3,2,1,0], lbl = ['e','B','G','D','A','E'];
-  const ml = 20, cw = 30, mt = 22, lg = 14;
-  const total = segs.reduce((a,c) => a + c.arp.length, 0);
-  const W = ml + total*cw + 10, H = mt + lg*5 + 12;
+  const ml = 20, cw = 26, mt = 14, lg = 14;
+  const W = ml + tab.steps.length*cw + 10, H = mt + lg*5 + 10;
   const lineC = light ? '#ddd' : '#362818';
   const labC  = light ? '#999' : '#7d6c58';
-  const divC  = light ? '#888' : '#7a6a55';
-  const nameC = light ? '#111' : '#f4e8d1';
   const dotT  = light ? '#fff' : '#0d0a07';
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   disp.forEach((si, li) => {
@@ -842,28 +859,48 @@ function tabStaffSVG(chords, light) {
     s += `<text x="2" y="${y+3}" font-size="8" fill="${labC}" font-family="DM Sans" font-weight="600">${lbl[li]}</text>`;
     s += `<line x1="${ml}" y1="${y}" x2="${W-5}" y2="${y}" stroke="${lineC}" stroke-width="1" stroke-dasharray="2,2"/>`;
   });
-  let off = 0;
-  segs.forEach((c, ci) => {
-    const x0 = ml + off*cw;
-    s += `<text x="${x0 + c.arp.length*cw/2}" y="12" text-anchor="middle" font-size="10" font-weight="700" fill="${nameC}" font-family="Playfair Display,serif">${esc(c.name)}</text>`;
-    if (ci > 0) s += `<line x1="${x0}" y1="${mt-8}" x2="${x0}" y2="${mt+lg*5+6}" stroke="${divC}" stroke-width="1.6"/>`;
-    for (let t = 1; t < c.arp.length; t++) {
-      const x = x0 + t*cw;
-      s += `<line x1="${x}" y1="${mt-5}" x2="${x}" y2="${mt+lg*5+5}" stroke="${lineC}" stroke-width="1" stroke-dasharray="1,3"/>`;
-    }
-    c.arp.forEach((step, ti) => {
-      const cx = x0 + ti*cw + cw/2;
-      step.forEach(si => {
-        const li = disp.indexOf(si); if (li < 0) return;
-        const y = mt + li*lg;
-        const fr = c.frets[si];
-        s += `<circle cx="${cx}" cy="${y}" r="7" fill="#c8783a"/>`;
-        s += `<text x="${cx}" y="${y+3}" text-anchor="middle" font-size="8.5" fill="${dotT}" font-weight="700" font-family="DM Sans">${fr <= 0 ? 0 : fr}</text>`;
-      });
+  tab.steps.forEach((step, ti) => {
+    const cx = ml + ti*cw + cw/2;
+    if (ti > 0) s += `<line x1="${ml+ti*cw}" y1="${mt-6}" x2="${ml+ti*cw}" y2="${mt+lg*5+6}" stroke="${lineC}" stroke-width="1" stroke-dasharray="1,3"/>`;
+    [0,1,2,3,4,5].forEach(si => {
+      const fr = step[si]; if (fr < 0) return;
+      const y = mt + disp.indexOf(si)*lg;
+      s += `<circle cx="${cx}" cy="${y}" r="7" fill="#c8783a"/>`;
+      s += `<text x="${cx}" y="${y+3}" text-anchor="middle" font-size="8.5" fill="${dotT}" font-weight="700" font-family="DM Sans">${fr}</text>`;
     });
-    off += c.arp.length;
   });
   return s + '</svg>';
+}
+/* A "chord moment" is any step where 2+ strings sound together. We don't ask
+   the player to name it — we read it straight off the tab and, when the
+   shape happens to match a known chord, borrow its name. Consecutive
+   repeats of the same shape only render once. */
+function tabChordMoments(tab) {
+  if (!tab || !tab.steps) return [];
+  const moments = []; let lastKey = null;
+  tab.steps.forEach(step => {
+    if (step.filter(f => f >= 0).length < 2) { lastKey = null; return; }
+    const key = step.join(',');
+    if (key === lastKey) return;
+    lastKey = key;
+    moments.push(step.slice());
+  });
+  return moments;
+}
+function guessChordName(frets) {
+  const playedIdx = [0,1,2,3,4,5].filter(i => frets[i] >= 0);
+  let m = LIB.find(c => c.f.every((f,i) => f === frets[i]));
+  if (m) return m.n;
+  m = LIB.find(c => playedIdx.every(i => c.f[i] === frets[i]));
+  return m ? m.n : null;
+}
+function tabChordsHTML(tab, size) {
+  const moments = tabChordMoments(tab);
+  if (!moments.length) return `<span style="font-size:11px;color:var(--cream4)">Aucun accord repere pour l instant — joue au moins 2 cordes ensemble sur un des temps.</span>`;
+  return moments.map(frets => {
+    const name = guessChordName(frets) || 'Position';
+    return `<div class="chord-cell"><div class="cn" style="font-size:13px">${esc(name)}</div>${chordSVG({frets, fingers:[0,0,0,0,0,0], base:1}, {size: size||.75})}</div>`;
+  }).join('');
 }
 
 /* ═══════ SVG: RHYTHM CURVE ═══════
@@ -958,12 +995,14 @@ function playRhythm(strokes, bpm, chord, capo, onStep) {
   step();
   playTimer = setInterval(step, iv*1000);
 }
-function playArp(chord, capo) {
+function playTab(tab, capo) {
+  if (!tab || !tab.steps || !tab.steps.length) return;
   const ac = audio(); if (ac.state === 'suspended') ac.resume();
   let t = ac.currentTime + 0.05;
-  (chord.arp||[]).forEach(step => {
-    step.forEach((si,k) => pluck(fretFreq(si, chord.frets[si], capo), t + k*0.02, 1.2, .13));
-    t += 0.28;
+  tab.steps.forEach(step => {
+    const idx = [0,1,2,3,4,5].filter(si => step[si] >= 0);
+    idx.forEach((si,k) => pluck(fretFreq(si, step[si], capo), t + k*0.02, 1.1, .13));
+    t += 0.26;
   });
 }
 
@@ -1489,11 +1528,14 @@ async function delSheet(id) {
 function openSheetById(id) {
   const s = sheets.find(x => x.id === id); if (!s) return;
   current = clone(s);
+  current.parts.forEach(migratePartArpToTab);
+  sheetMode = 'visual';
   go('sheet');
   renderSheetView();
 }
 function newSheet() {
   current = blankSheet();
+  sheetMode = 'creator';
   go('sheet');
   renderSheetView();
   requestAnimationFrame(() => $('sv-title-input')?.focus());
@@ -1557,6 +1599,96 @@ function renderSheetView() {
   renderBadges();
   renderOptBlocks();
   renderParts();
+  renderSheetModeSwitch();
+  applySheetMode();
+}
+
+/* ═══════ CREATOR vs VISUAL — one is the full editing surface (inputs, drag
+   handles, + adders); the other is a clean, static read view for practicing.
+   Opening a saved sheet lands in Visual; creating a new one lands in Creator. ═══════ */
+let sheetMode = 'creator';
+function renderSheetModeSwitch() {
+  const el = $('sheet-mode-switch'); if (!el) return;
+  el.innerHTML = `
+    <button type="button" class="mode-card ${sheetMode==='visual'?'on':''}" onclick="setSheetMode('visual')">
+      <svg class="mc-ico" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      <div class="mc-t">Vue</div>
+      <div class="mc-d">Fiche epuree, pour lire et jouer</div>
+    </button>
+    <button type="button" class="mode-card ${sheetMode==='creator'?'on':''}" onclick="setSheetMode('creator')">
+      <svg class="mc-ico" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4z"/></svg>
+      <div class="mc-t">Creation</div>
+      <div class="mc-d">Titre, parties, accords, tablature, rythme...</div>
+    </button>`;
+}
+function setSheetMode(mode) {
+  sheetMode = mode;
+  renderSheetModeSwitch();
+  applySheetMode();
+  if (mode === 'visual') renderVisualBody();
+}
+function applySheetMode() {
+  const isCreator = sheetMode === 'creator';
+  $('sv-creator-body').style.display = isCreator ? '' : 'none';
+  $('sv-visual-body').style.display = isCreator ? 'none' : '';
+  const t = $('sv-title-input'), a = $('sv-artist-input');
+  if (isCreator) { t.removeAttribute('readonly'); a.removeAttribute('readonly'); }
+  else { t.setAttribute('readonly',''); a.setAttribute('readonly',''); }
+  if (!isCreator) renderVisualBody();
+}
+function renderVisualBody() {
+  const s = current, host = $('sv-visual-body');
+  const DOTS = ['#c8783a','#6a9070','#b85840','#8a7aaa','#c8b49a'];
+  let h = `<div class="parts-view">`;
+  h += (s.parts||[]).map((p,i) => {
+    let body = '';
+    if (p.chords.length) body += `<div class="pv-lbl">Accords</div><div class="chords-row">${p.chords.map(c=>`<div class="chord-cell"><div class="cn">${esc(c.name)}</div>${chordSVG(c)}</div>`).join('')}</div>`;
+    if (p.tab && p.tab.steps && p.tab.steps.length) {
+      body += `<div class="pv-lbl">Tablature</div><div class="scroll-x">${tabGridSVG(p.tab,false)}</div>`;
+      const moments = tabChordMoments(p.tab);
+      if (moments.length) body += `<div class="pv-lbl">Accords reperes</div><div class="chords-row">${tabChordsHTML(p.tab)}</div>`;
+    }
+    if (p.rhythm && p.rhythm.strokes.length) body += `<div class="pv-lbl">Rythme</div><div class="scroll-x">${rhythmSVG(p.rhythm,false)}</div>`;
+    if (typeof p.lyrics === 'string' && p.lyrics.trim()) body += `<div class="pv-lbl">Paroles</div><div class="pv-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>`;
+    if (p.note) body += `<div class="pv-note">${esc(p.note)}</div>`;
+    if (!body) body = `<div style="font-size:12px;color:var(--cream4)">Partie vide</div>`;
+    return `<div class="pv-block"><div class="pv-hdr"><div class="pv-dot" style="background:${DOTS[i%5]}"></div><div class="pv-name">${esc(p.name)}</div></div><div class="pv-body">${body}</div></div>`;
+  }).join('');
+  if (s.memo || (s.links&&s.links.length) || (s.media&&s.media.length) || s.tabImage) {
+    h += `<div class="pv-block"><div class="pv-hdr"><div class="pv-dot" style="background:var(--gold3)"></div><div class="pv-name">Memo</div></div><div class="pv-body">`;
+    if (s.memo) h += `<div class="pv-note" style="margin-top:0">${esc(s.memo)}</div>`;
+    if (s.links && s.links.length) {
+      h += `<div class="pv-lbl">Liens</div>`;
+      s.links.forEach(l => {
+        const yid = ytId(l.url);
+        h += yid
+          ? `<div class="yt-embed" style="margin-bottom:10px"><iframe src="https://www.youtube.com/embed/${yid}" title="${esc(l.title||'Video')}" allowfullscreen loading="lazy"></iframe></div>`
+          : `<a class="link-card" href="${esc(l.url)}" target="_blank" rel="noopener"><span class="lc-t">${esc(l.title||l.url)}</span></a>`;
+      });
+    }
+    if (s.media && s.media.length) h += `<div class="pv-lbl">Enregistrements</div><div class="media-list" id="visual-media"></div>`;
+    if (s.tabImage) h += `<div class="pv-lbl">Image de tab</div><div id="visual-tabimg"></div>`;
+    h += `</div></div>`;
+  }
+  h += `</div>`;
+  host.innerHTML = h;
+  if (s.media && s.media.length) hydrateVisualMedia(s);
+  if (s.tabImage) hydrateVisualTabImage(s);
+}
+async function hydrateVisualMedia(s) {
+  const mh = document.querySelector('#visual-media'); if (!mh) return;
+  mh.innerHTML = '';
+  for (const m of s.media) {
+    const url = await mediaURL(m.mediaId);
+    const el = document.createElement('div'); el.className = 'media-item';
+    el.innerHTML = `<span class="mi-name">${esc(m.name)}</span>${url ? (m.kind==='video'?`<video src="${url}" controls></video>`:`<audio src="${url}" controls></audio>`) : ''}`;
+    mh.appendChild(el);
+  }
+}
+async function hydrateVisualTabImage(s) {
+  const el = document.querySelector('#visual-tabimg'); if (!el) return;
+  const url = await mediaURL(s.tabImage);
+  if (url) el.innerHTML = `<img src="${url}" style="width:100%;border-radius:8px;border:1px solid var(--border)">`;
 }
 
 /* ── optional metadata blocks: progressive disclosure, "+" adders ── */
@@ -1749,6 +1881,65 @@ function rmPart(i) {
 function togglePart(i) { current.parts[i].collapsed = !current.parts[i].collapsed; renderParts(); scheduleAutosave(); }
 function rmChord(pi, ci) { current.parts[pi].chords.splice(ci, 1); renderParts(); scheduleAutosave(); }
 
+/* ═══════ TABLATURE EDITOR — build the tab directly, string by string,
+   step by step. No chord to pick first. Chords shown "sur le visu" are
+   detected FROM this grid afterwards (tabChordsHTML), never the other
+   way around. ═══════ */
+function addPartTab(pi) { current.parts[pi].tab = {steps:[[-1,-1,-1,-1,-1,-1]]}; renderParts(); scheduleAutosave(); }
+function rmPartTab(pi) { current.parts[pi].tab = null; renderParts(); scheduleAutosave(); }
+function tabBlockHTML(pi, p) {
+  return `<div class="rh-wrap">
+    <div class="tab-grid" id="tab-grid-${pi}">${tabGridRowsHTML(pi, p.tab)}</div>
+    <div class="rh-tools">
+      <button class="add-btn" onclick="tabAddStep(${pi})">+ Temps</button>
+      <button class="btn btn-ghost btn-xs" onclick="playPartTab(${pi})">
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Ecouter</button>
+      <span class="rh-hint">Clique une case : elle cycle x (rien) puis 0, 1, 2... jusqu a 5. Une meme case sur plusieurs cordes = jouees ensemble.</span>
+    </div>
+    <div class="part-sub-t" style="margin:14px 0 6px">Accords reperes</div>
+    <div id="tab-chords-${pi}" class="chords-row">${tabChordsHTML(p.tab)}</div>
+  </div>`;
+}
+function tabGridRowsHTML(pi, tab) {
+  const disp = [5,4,3,2,1,0];
+  const rows = disp.map(si => `
+    <div class="tab-row">
+      <span class="tab-string-lbl">${STRINGS[si]}</span>
+      <div class="tab-cells">${tab.steps.map((step,ti) => `<button type="button" class="tab-cell ${step[si]>=0?'on':''}" onclick="tabCellClick(${pi},${si},${ti})">${step[si]>=0?step[si]:'·'}</button>`).join('')}</div>
+    </div>`).join('');
+  const rmRow = `<div class="tab-row">
+      <span class="tab-string-lbl"></span>
+      <div class="tab-cells">${tab.steps.map((_,ti) => `<button type="button" class="tab-step-rm" onclick="tabRemoveStep(${pi},${ti})" title="Retirer ce temps">&times;</button>`).join('')}</div>
+    </div>`;
+  return rows + rmRow;
+}
+function refreshTabUI(pi) {
+  const p = current.parts[pi];
+  $('tab-grid-' + pi).innerHTML = tabGridRowsHTML(pi, p.tab);
+  $('tab-chords-' + pi).innerHTML = tabChordsHTML(p.tab);
+}
+function tabCellClick(pi, si, ti) {
+  const step = current.parts[pi].tab.steps[ti];
+  step[si] = step[si] >= 5 ? -1 : step[si] + 1;
+  refreshTabUI(pi);
+  scheduleAutosave();
+}
+function tabAddStep(pi) {
+  const tab = current.parts[pi].tab;
+  if (tab.steps.length >= 32) return;
+  tab.steps.push([-1,-1,-1,-1,-1,-1]);
+  refreshTabUI(pi);
+  scheduleAutosave();
+}
+function tabRemoveStep(pi, ti) {
+  const tab = current.parts[pi].tab;
+  if (tab.steps.length <= 1) return;
+  tab.steps.splice(ti, 1);
+  refreshTabUI(pi);
+  scheduleAutosave();
+}
+function playPartTab(pi) { playTab(current.parts[pi].tab, current.capo); }
+
 function renderParts() {
   const host = $('parts-ed');
   host.innerHTML = current.parts.map((p, i) => {
@@ -1775,13 +1966,15 @@ function renderParts() {
           ${p.chords.map((c, ci) => `<div class="chord-chip" onclick="openChordEditor(${i},${ci})" title="Modifier">
             <span class="x" onclick="event.stopPropagation();rmChord(${i},${ci})">&times;</span>
             <span class="cn">${esc(c.name || '?')}</span>${chordSVG(c, {size:.72})}
-            ${c.arp && c.arp.length ? `<span style="font-size:9px;font-weight:700;color:#0d0a07;background:var(--gold2);padding:1px 7px;border-radius:8px">ARPEGE</span>` : ''}
           </div>`).join('')}
           <button class="add-btn" style="min-width:74px" onclick="openChordEditor(${i},-1)">+ Accord</button>
         </div>
 
-        ${p.chords.length ? `<div class="part-sub"><span class="part-sub-t">Tablature (apercu)</span></div>
-          <div class="scroll-x">${tabStaffSVG(p.chords, false) || '<span style="font-size:11px;color:var(--cream4)">Ouvre un accord et passe le en mode Arpege pour dessiner la tab.</span>'}</div>` : ''}
+        <div class="part-sub"><span class="part-sub-t">Tablature</span>
+          ${p.tab ? `<button class="btn btn-ghost btn-xs" onclick="rmPartTab(${i})">retirer</button>`
+                  : `<button class="add-btn" onclick="addPartTab(${i})">+ Tablature</button>`}
+        </div>
+        ${p.tab ? tabBlockHTML(i, p) : ''}
 
         <div class="part-sub"><span class="part-sub-t">Rythme</span>
           ${p.rhythm ? `<button class="btn btn-ghost btn-xs" onclick="current.parts[${i}].rhythm=null;renderParts();scheduleAutosave()">retirer</button>`
@@ -1964,13 +2157,13 @@ function lyricsPreviewHTML(text) {
 
 /* ═══════ INTERACTIVE CHORD EDITOR (modal) ═══════
    Fretting: click the grid. Arpeggio: instead of an abstract string×step
-   checkbox matrix, you click the strings directly on this same diagram, in
-   the order you pluck them — the numbered badge shows the pick order right
-   where your fingers actually go, no separate widget to cross-reference. */
-let ceState = null; // {pi, ci, chord, arpMode, arpGroup}
+   checkbox matrix or a chord-tied arpeggio, the chord editor now only ever
+   builds a named chord for strumming. Fingerpicking lives in the part's own
+   Tablature block below, decoupled from any chord. */
+let ceState = null; // {pi, ci, chord}
 function openChordEditor(pi, ci) {
   const chord = ci >= 0 ? clone(current.parts[pi].chords[ci]) : newChord('');
-  ceState = {pi, ci, chord, arpMode: !!(chord.arp && chord.arp.length), arpGroup: false};
+  ceState = {pi, ci, chord};
   $('m-chord').classList.remove('hide');
   renderCE();
 }
@@ -1998,37 +2191,6 @@ function renderCE() {
       Clic sur une case = doigt · clic au-dessus du sillet = O / X · re-clic = enlever
     </div>
 
-    <div class="mode-toggle" style="margin:18px 0 4px">
-      <button type="button" class="mode-pill big ${!ceState.arpMode?'on':''}" onclick="ceSetMode(false)">
-        <svg class="ico" viewBox="0 0 24 24"><path d="M8 6l10 6-10 6V6z" fill="currentColor" stroke="none"/></svg> Grattage
-      </button>
-      <button type="button" class="mode-pill big ${ceState.arpMode?'on':''}" onclick="ceSetMode(true)">
-        <svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5" fill="currentColor" stroke="none"/><circle cx="18" cy="16" r="2.5" fill="currentColor" stroke="none"/><path d="M8.5 17V5l11-2v13"/></svg> Arpege (picking)
-      </button>
-    </div>
-    ${ceState.arpMode ? `
-    <div class="arp-panel">
-      <p style="font-size:11px;color:var(--cream4);margin-bottom:10px">Clique les cordes ci-dessous, dans l ordre ou tu les joues (une grise = etouffee, non jouable).</p>
-      <div class="arp-keys" id="arp-keys">${arpKeysHTML(c)}</div>
-      <div class="ce-row" style="justify-content:flex-start;margin-top:12px">
-        <button type="button" class="mode-pill ${ceState.arpGroup?'on':''}" onclick="ceToggleArpGroup()">
-          ${ceState.arpGroup ? '⎘ Regrouper : ON' : '⎘ Regrouper : OFF'}
-        </button>
-        <button class="lib-hit" onclick="ceArpPreset('asc')">Montant</button>
-        <button class="lib-hit" onclick="ceArpPreset('desc')">Descendant</button>
-        <button class="lib-hit" onclick="ceArpPreset('thumb')">Pouce + reste</button>
-        <button class="lib-hit" onclick="ceArpClear()">Effacer</button>
-      </div>
-      <div class="part-sub-t" style="margin:14px 0 6px">Sequence jouee</div>
-      <div id="ce-arp-badges" class="arp-seq"></div>
-      <div class="part-sub-t" style="margin:14px 0 6px">Apercu tablature</div>
-      <div id="ce-arp-preview" class="scroll-x">${tabStaffSVG([c], false) || '<span style="font-size:11px;color:var(--cream4)">—</span>'}</div>
-      <div class="ce-row" style="margin-top:10px">
-        <button class="btn btn-primary btn-sm" onclick="playArp(ceState.chord, current.capo)">
-          <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Ecouter l arpege</button>
-      </div>
-    </div>` : ''}
-
     <div class="modal-f">
       ${ceState.ci >= 0 ? `<button class="btn btn-danger btn-sm" onclick="rmChord(${ceState.pi},${ceState.ci});closeCE()">Supprimer</button>` : ''}
       <div class="spacer"></div>
@@ -2036,7 +2198,6 @@ function renderCE() {
       <button class="btn btn-primary btn-sm" onclick="saveCE()">Valider</button>
     </div>`;
   renderCEHits(c.name);
-  if (ceState.arpMode) { refreshArpKeys(); renderArpBadges(); }
 }
 function ceName(v) {
   ceState.chord.name = v;
@@ -2052,15 +2213,8 @@ function renderCEHits(v) {
 }
 function ceApplyLib(n, silent) {
   const lib = findChord(n); if (!lib) return;
-  const keepArp = ceState.chord.arp || [];
-  ceState.chord = {...newChord(lib.n), id: ceState.chord.id, arp: keepArp};
+  ceState.chord = {...newChord(lib.n), id: ceState.chord.id};
   if (silent) { refreshCEDiagram(); } else renderCE();
-}
-function ceSetMode(isArp) {
-  ceState.arpMode = isArp;
-  if (isArp && (!ceState.chord.arp || !ceState.chord.arp.length)) ceState.chord.arp = [];
-  if (!isArp) ceState.chord.arp = [];
-  renderCE();
 }
 function chordEditorSVG(c) {
   const W = 190, H = 210, NF = 5, ml = 30, mt = 46, cw = (W - ml - 24)/5, rh = (H - mt - 18)/NF;
@@ -2108,11 +2262,7 @@ function ceClick(e) {
     if (c.frets[si] === abs) { c.frets[si] = 0; c.fingers[si] = 0; }
     else { c.frets[si] = abs; c.fingers[si] = c.fingers[si] || autoFinger(c, si, abs); }
   }
-  if (c.frets[si] === -1 && c.arp && c.arp.length) {
-    c.arp = c.arp.map(step => step.filter(x => x !== si)).filter(step => step.length);
-  }
   refreshCEDiagram();
-  if (ceState.arpMode) refreshArpUI();
 }
 function autoFinger(c, si, abs) {
   const others = c.frets.map((f,i) => ({f,i})).filter(o => o.f > 0 && o.i !== si);
@@ -2127,7 +2277,7 @@ function ceBase(d) {
   c.frets = c.frets.map(f => f > 0 ? Math.max(1, f + shift) : f);
   renderCE();
 }
-function ceClear() { ceState.chord.frets = [-1,-1,-1,-1,-1,-1]; ceState.chord.fingers = [0,0,0,0,0,0]; ceState.chord.arp = []; renderCE(); }
+function ceClear() { ceState.chord.frets = [-1,-1,-1,-1,-1,-1]; ceState.chord.fingers = [0,0,0,0,0,0]; renderCE(); }
 function saveCE() {
   const c = ceState.chord;
   if (!c.name.trim()) c.name = 'Accord';
@@ -2137,61 +2287,6 @@ function saveCE() {
 }
 function refreshCEDiagram() {
   $('ce-grid').innerHTML = chordEditorSVG(ceState.chord);
-}
-
-/* ── arpeggio: dedicated string-key picker (fixes the old tiny/blocked
-   on-diagram picking — each string is now a big obvious button) ── */
-function arpKeysHTML(c) {
-  return STRINGS.map((name, i) => {
-    const muted = c.frets[i] === -1;
-    const fretLbl = muted ? 'etouffee' : (c.frets[i] === 0 ? 'a vide' : 'case ' + c.frets[i]);
-    const nums = (c.arp||[]).map((step,ti) => step.includes(i) ? ti+1 : null).filter(x => x != null);
-    return `<button type="button" class="arp-key ${muted?'muted':''} ${nums.length?'picked':''}" ${muted?'disabled':''}
-        onclick="ceArpPick(${i})" title="${muted?'Corde etouffee':'Ajouter '+name+' a la sequence'}">
-      <span class="ak-name">${name}</span>
-      <span class="ak-fret">${fretLbl}</span>
-      ${nums.length ? `<span class="ak-order">${nums.join(',')}</span>` : ''}
-    </button>`;
-  }).join('');
-}
-function refreshArpKeys() { const el = $('arp-keys'); if (el) el.innerHTML = arpKeysHTML(ceState.chord); }
-function refreshArpUI() {
-  refreshArpKeys();
-  renderArpBadges();
-  const prev = $('ce-arp-preview');
-  if (prev) prev.innerHTML = tabStaffSVG([ceState.chord], false) || '<span style="font-size:11px;color:var(--cream4)">—</span>';
-}
-function ceArpPick(si) {
-  const c = ceState.chord;
-  if (c.frets[si] === -1) return;
-  if (!c.arp) c.arp = [];
-  if (ceState.arpGroup && c.arp.length) c.arp[c.arp.length-1].push(si);
-  else c.arp.push([si]);
-  refreshArpUI();
-}
-function ceToggleArpGroup() { ceState.arpGroup = !ceState.arpGroup; renderCE(); }
-function ceArpPreset(kind) {
-  const c = ceState.chord;
-  const played = [0,1,2,3,4,5].filter(i => c.frets[i] >= 0);
-  if (!played.length) { toast("Frette d'abord des cordes", true); return; }
-  if (kind === 'asc') c.arp = played.slice().map(i => [i]);
-  else if (kind === 'desc') c.arp = played.slice().reverse().map(i => [i]);
-  else if (kind === 'thumb') {
-    const bass = played[0], rest = played.slice(1);
-    c.arp = rest.length ? [[bass], rest] : [[bass]];
-  }
-  refreshArpUI();
-}
-function ceArpClear() { ceState.chord.arp = []; refreshArpUI(); }
-function ceArpRemoveStep(ti) { ceState.chord.arp.splice(ti, 1); refreshArpUI(); }
-function renderArpBadges() {
-  const el = $('ce-arp-badges'); if (!el) return;
-  const c = ceState.chord;
-  if (!c.arp || !c.arp.length) { el.innerHTML = `<span style="font-size:11px;color:var(--cream4)">Aucun temps — clique une corde ci-dessus.</span>`; return; }
-  el.innerHTML = c.arp.map((step,ti) => `<span class="arp-chip">
-      ${ti+1}: ${step.map(si=>STRINGS[si]).join('+')}
-      <button onclick="ceArpRemoveStep(${ti})" title="Retirer ce temps">&times;</button>
-    </span>`).join('');
 }
 
 /* ═══════ CHORD LIBRARY VIEW ═══════ */
@@ -2302,6 +2397,7 @@ function createFromImport() {
   current = blankSheet();
   current.title = t; current.artist = a; current.parts = impParts;
   if (pendingTabImg) { current.tabImage = pendingTabImg; current.blocks.memo = true; pendingTabImg = null; }
+  sheetMode = 'creator';
   go('sheet'); renderSheetView();
   toast('Fiche pre-remplie, ajuste et enregistre');
 }
@@ -2325,6 +2421,7 @@ function startFromImage() {
   current.tabImage = pendingTabImg;
   current.blocks.memo = true;
   pendingTabImg = null;
+  sheetMode = 'creator';
   go('sheet'); renderSheetView();
 }
 
@@ -2424,11 +2521,13 @@ function printSheetHTML(s, compact) {
       </div>
     </div>
     ${(s.parts||[]).map(p => {
-      const staff = tabStaffSVG(p.chords, true);
+      const staff = p.tab ? tabGridSVG(p.tab, true) : '';
+      const tabChords = p.tab ? tabChordMoments(p.tab) : [];
       return `<div class="p-part">
         <div class="p-part-t"><span class="d"></span>${esc(p.name)}${p.note && compact ? `<span class="c">${esc(p.note)}</span>` : ''}</div>
         ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.78:.92, light:true})}</div>`).join('')}</div>` : ''}
         ${staff ? `<div style="margin-bottom:6px">${staff}</div>` : ''}
+        ${tabChords.length && !compact ? `<div class="p-chords">${tabChords.map(f => { const n = guessChordName(f)||'Position'; return `<div class="p-chord"><div class="cn">${esc(n)}</div>${chordSVG({frets:f,fingers:[0,0,0,0,0,0],base:1},{size:.72,light:true})}</div>`; }).join('')}</div>` : ''}
         ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
         ${p.rhythm && p.rhythm.strokes.length ? rhythmSVG(p.rhythm, true) : ''}
         ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? `<div class="p-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
@@ -2553,9 +2652,11 @@ function seedDemoData() {
   p2.rhythm = {strokes:[{dir:'D',force:1},{dir:'D',force:.55},{dir:'U',force:.35},{dir:'D',force:1},{dir:'U',force:.35}]};
   p2.note = 'Plus fort, on ouvre';
   const p3 = newPart('Intro');
-  const em7 = newChord('Em7'); em7.arp = [[0],[3],[2],[3],[1],[3],[2],[3]];
-  const g = newChord('G');     g.arp   = [[0],[3],[2],[3],[1],[3],[2],[3]];
-  p3.chords = [em7, g];
+  p3.chords = [newChord('Em7'), newChord('G')];
+  p3.tab = {steps:[
+    [0,-1,-1,-1,-1,-1],[-1,-1,-1,0,-1,-1],[-1,2,-1,-1,-1,-1],[-1,-1,-1,0,-1,-1],
+    [3,-1,-1,-1,-1,-1],[-1,-1,-1,0,-1,-1],[-1,2,-1,-1,-1,-1],[-1,-1,-1,0,-1,-1]
+  ]};
   p3.note = 'Fingerpicking — pouce sur la basse, doigts sur le reste';
   demo.parts = [p3, p1, p2];
   sheets.push(demo); DB.put('sheets', demo);
@@ -2577,8 +2678,11 @@ function seedDemoData() {
   demo3.difficulty = 'Intermediaire'; demo3.color = 'mauve';
   demo3.blocks = {tempo:true, diff:true};
   const i1 = newPart('Intro');
-  const em7b = newChord('Em7'); em7b.arp = [[0],[3],[2],[3],[1],[3],[2],[3]];
-  i1.chords = [em7b];
+  i1.chords = [newChord('Em7')];
+  i1.tab = {steps:[
+    [0,-1,-1,-1,-1,-1],[-1,-1,-1,0,-1,-1],[-1,2,-1,-1,-1,-1],[-1,-1,-1,0,-1,-1],
+    [-1,-1,-1,-1,3,-1],[-1,-1,-1,0,-1,-1],[-1,2,-1,-1,-1,-1],[-1,-1,-1,0,-1,-1]
+  ]};
   i1.note = 'Intro fingerpicking emblematique';
   const c1 = newPart('Couplet');
   c1.chords = [newChord('C'), newChord('D'), newChord('Am'), newChord('G')];
