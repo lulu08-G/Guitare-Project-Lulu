@@ -192,15 +192,37 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
 .mode-pill.big{padding:10px 18px;font-size:13px;flex:1;justify-content:center}
 .mode-pill:hover{border-color:var(--gold2);color:var(--cream)}
 .mode-pill.on{background:var(--gold);color:#0d0a07;border-color:var(--gold)}
-.arp-panel{background:rgba(200,120,58,.06);border:1px solid rgba(200,120,58,.25);border-radius:var(--rs);padding:12px;margin-top:4px}
+.arp-panel{background:rgba(200,120,58,.06);border:1px solid rgba(200,120,58,.25);border-radius:var(--rs);padding:14px;margin-top:4px}
 .arp-tl-foot{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.arp-keys{display:flex;gap:8px;flex-wrap:wrap}
+.arp-key{flex:1;min-width:54px;background:var(--card2);border:2px solid var(--border);border-radius:var(--rs);padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .15s;cursor:pointer}
+.arp-key:hover:not(.muted){border-color:var(--gold);background:rgba(200,120,58,.1);transform:translateY(-2px)}
+.arp-key.muted{opacity:.32;cursor:not-allowed}
+.arp-key.picked{border-color:var(--gold)}
+.ak-name{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--cream)}
+.ak-fret{font-size:10px;color:var(--cream4);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.ak-order{margin-top:2px;background:var(--gold);color:#0d0a07;font-size:11px;font-weight:800;border-radius:10px;padding:1px 8px;min-width:16px;text-align:center}
+.arp-seq{display:flex;flex-wrap:wrap;gap:6px;min-height:30px}
+.arp-chip{display:inline-flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--border);border-radius:50px;padding:5px 6px 5px 12px;font-size:12px;font-weight:600;color:var(--cream2)}
+.arp-chip button{background:none;color:var(--terra);font-size:12px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.arp-chip button:hover{background:rgba(184,88,64,.15)}
 
 /* ── METRONOME ── */
 .metro-visual{display:flex;justify-content:center;margin-bottom:2px}
 #metro-pendulum-g{transition:transform .08s linear}
 #metro-pendulum-weight{transition:fill .12s}
 #metro-pendulum-weight.accent{fill:var(--terra)}
+.metro-hero{text-align:center;background:linear-gradient(180deg,var(--card2),var(--card))}
+.metro-bpm-display{font-family:var(--serif);font-size:38px;font-weight:800;color:var(--cream);margin-top:10px;letter-spacing:-.5px}
+.metro-bpm-display span{font-size:13px;color:var(--cream4);font-weight:400;font-family:var(--sans);margin-left:4px}
 .metro-lights{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.mode-switch{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.mode-card{flex:1;min-width:180px;background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:16px;text-align:left;transition:all .15s;display:flex;flex-direction:column;gap:3px}
+.mode-card:hover{border-color:var(--gold2)}
+.mode-card.on{border-color:var(--gold);background:rgba(200,120,58,.08)}
+.mode-card .mc-ico{width:22px;height:22px;color:var(--gold2);margin-bottom:6px}
+.mode-card .mc-t{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--cream)}
+.mode-card .mc-d{font-size:11px;color:var(--cream4);line-height:1.4}
 .metro-light{width:13px;height:13px;border-radius:50%;background:var(--card3);border:1px solid var(--border);transition:all .1s}
 .metro-light.on{background:var(--gold2);box-shadow:0 0 10px rgba(232,150,78,.55)}
 .metro-light.accent.on{background:var(--terra);box-shadow:0 0 12px rgba(184,88,64,.6)}
@@ -244,6 +266,8 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
 .lib-grid.big{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
 .lib-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .18s}
 .lib-card:hover{border-color:var(--gold);background:var(--card2);transform:translateY(-2px)}
+.lib-card.active-tune{border-color:var(--tune-color,var(--gold));background:var(--card2);box-shadow:0 0 0 2px var(--tune-color,var(--gold));transform:translateY(-2px)}
+.lib-card.active-tune .cn{color:var(--tune-color,var(--cream))}
 .lib-card .cn{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--cream)}
 .lib-card.big .cn{font-size:22px}
 .lib-play{width:26px;height:26px;border-radius:50%;background:var(--card3);border:1px solid var(--border);color:var(--cream3);display:flex;align-items:center;justify-content:center;transition:all .15s}
@@ -261,6 +285,8 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
 .modal-t{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--cream);margin-bottom:14px}
 .modal-f{display:flex;gap:9px;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--border);margin-top:16px;flex-wrap:wrap}
 .modal-f .spacer{flex:1}
+.print-preview-frame{background:#5a5a5a;border-radius:10px;padding:20px;overflow:auto;max-height:60vh;margin-top:8px;display:flex;justify-content:center}
+.print-preview-frame .pg{box-shadow:0 8px 30px rgba(0,0,0,.5);margin-bottom:20px;flex-shrink:0}
 
 /* ── MEDIA / MEMO / LINKS ── */
 .media-list{display:flex;flex-direction:column;gap:8px}
@@ -387,9 +413,9 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
       <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Selectionner</button>
       <span class="toolbar-count" id="sel-count"></span>
       <div class="spacer"></div>
-      <button class="btn btn-ghost btn-sm" onclick="printSelection()" id="btn-print" style="display:none">Imprimer la selection</button>
-      <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" style="display:none">Export JSON</button>
-      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('json-in').click()">Import JSON</button>
+      <button class="btn btn-ghost btn-sm" onclick="printSelection()" id="btn-print" style="display:none">Imprimer / telecharger la selection</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" style="display:none" title="Sauvegarde technique, pas un PDF">Sauvegarde (JSON)</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('json-in').click()" title="Restaurer une sauvegarde JSON">Restaurer (JSON)</button>
       <input type="file" id="json-in" accept="application/json" style="display:none" onchange="importJSON(this)">
     </div>
     <div class="grid" id="home-grid"></div>
@@ -447,19 +473,20 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
   <div class="wrap-narrow">
     <div class="hero"><div><h1>Le <em>metronome</em></h1><p>Travaille ton timing seul, ou lance le groupe complet et improvise par dessus</p></div></div>
 
-    <div class="fcard" style="text-align:center">
+    <div class="fcard metro-hero">
       <div class="metro-visual">
-        <svg id="metro-pendulum" width="150" height="118" viewBox="0 0 150 118">
-          <line x1="20" y1="112" x2="130" y2="112" stroke="var(--border2)" stroke-width="2"/>
-          <g id="metro-pendulum-g" style="transform-origin:75px 108px">
-            <line x1="75" y1="108" x2="75" y2="24" stroke="var(--gold2)" stroke-width="3"/>
-            <circle id="metro-pendulum-weight" cx="75" cy="24" r="9" fill="var(--gold)"/>
+        <svg id="metro-pendulum" width="190" height="148" viewBox="0 0 190 148">
+          <line x1="25" y1="140" x2="165" y2="140" stroke="var(--border2)" stroke-width="2"/>
+          <g id="metro-pendulum-g" style="transform-origin:95px 134px">
+            <line x1="95" y1="134" x2="95" y2="28" stroke="var(--gold2)" stroke-width="4"/>
+            <circle id="metro-pendulum-weight" cx="95" cy="28" r="12" fill="var(--gold)"/>
           </g>
-          <circle cx="75" cy="108" r="4" fill="var(--cream3)"/>
+          <circle cx="95" cy="134" r="5" fill="var(--cream3)"/>
         </svg>
       </div>
       <div class="metro-lights" id="metro-lights"></div>
-      <div style="margin-top:16px">
+      <div class="metro-bpm-display" id="metro-bpm-display">100 <span>BPM</span></div>
+      <div style="margin-top:14px">
         <button class="btn btn-primary" id="metro-toggle" onclick="toggleMetro()">
           <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Demarrer
         </button>
@@ -478,34 +505,16 @@ button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid va
         </div>
         <div class="fg"><button class="btn btn-ghost btn-sm" onclick="metroTapTempo()">Tap tempo</button></div>
       </div>
+      <div class="fg" style="margin-top:4px;margin-bottom:0;max-width:160px">
+        <label>Mesure</label>
+        <select id="metro-sig" onchange="metroChangeSig(this.value)">
+          <option value="4/4">4/4</option><option value="3/4">3/4</option><option value="2/4">2/4</option><option value="6/8">6/8</option>
+        </select>
+      </div>
     </div>
 
-    <div class="fcard">
-      <div class="fcard-t">Rythme</div>
-      <div class="frow">
-        <div class="fg"><label>Mesure</label>
-          <select id="metro-sig" onchange="metroChangeSig(this.value)">
-            <option value="4/4">4/4</option><option value="3/4">3/4</option><option value="2/4">2/4</option><option value="6/8">6/8</option>
-          </select></div>
-        <div class="fg"><label>Style</label>
-          <select id="metro-preset" onchange="metroSelectPreset(this.value)"></select></div>
-      </div>
-      <p style="font-size:11px;color:var(--cream4);margin-bottom:6px">Clique une case pour modifier le motif — c est ton rythme, pas juste le preset.</p>
-      <div id="metro-grid-host"></div>
-    </div>
-
-    <div class="fcard">
-      <div class="fcard-t">Instruments</div>
-      <div class="mode-toggle" style="margin-bottom:14px">
-        <button type="button" class="mode-pill big" id="metro-mode-simple" onclick="metroSetImpro(false)">Metronome simple</button>
-        <button type="button" class="mode-pill big" id="metro-mode-impro" onclick="metroSetImpro(true)">Mode impro — le groupe joue</button>
-      </div>
-      <div class="opt-blocks" id="metro-layers"></div>
-      <div class="fg" id="metro-bass-row" style="margin-top:14px;margin-bottom:0;display:none">
-        <label>Note de basse (fondamentale, suit la grosse caisse)</label>
-        <select id="metro-bass-note" onchange="metroChangeBassString(this.value)"></select>
-      </div>
-    </div>
+    <div class="mode-switch" id="metro-mode-switch"></div>
+    <div id="metro-band-host"></div>
   </div>
 </div>
 
@@ -1122,8 +1131,9 @@ function flashMetroBeat(beatIdx, accent, beatDurSec) {
   const w = $('metro-pendulum-weight'); if (w) w.classList.toggle('accent', accent);
   document.querySelectorAll('.metro-light').forEach((l,i) => l.classList.toggle('on', i === beatIdx));
 }
-function metroSetBpmFromRange(v) { metroState.bpm = +v; $('metro-bpm-num').value = v; }
-function metroSetBpmFromNum(v) { metroState.bpm = Math.max(30, Math.min(280, +v || 100)); $('metro-bpm-range').value = metroState.bpm; }
+function updateMetroBpmDisplay() { const el = $('metro-bpm-display'); if (el) el.innerHTML = metroState.bpm + ' <span>BPM</span>'; }
+function metroSetBpmFromRange(v) { metroState.bpm = +v; $('metro-bpm-num').value = v; updateMetroBpmDisplay(); }
+function metroSetBpmFromNum(v) { metroState.bpm = Math.max(30, Math.min(280, +v || 100)); $('metro-bpm-range').value = metroState.bpm; updateMetroBpmDisplay(); }
 function metroTapTempo() {
   const now = performance.now();
   metroTapTimes = metroTapTimes.filter(t => now - t < 3000); metroTapTimes.push(now);
@@ -1132,9 +1142,10 @@ function metroTapTempo() {
     const avg = gaps.reduce((a,b) => a+b, 0) / gaps.length;
     metroState.bpm = Math.max(30, Math.min(280, Math.round(60000/avg)));
     $('metro-bpm-range').value = metroState.bpm; $('metro-bpm-num').value = metroState.bpm;
+    updateMetroBpmDisplay();
   }
 }
-function metroChangeSig(sig) { metroState.sig = sig; buildMetroPattern(); renderMetroLights(); renderMetroGrid(); }
+function metroChangeSig(sig) { metroState.sig = sig; buildMetroPattern(); renderMetroLights(); if (metroState.improMode) renderMetroGrid(); }
 function metroSelectPreset(key) { metroState.preset = key; buildMetroPattern(); renderMetroGrid(); }
 function metroToggleCell(i, key) { metroState.pattern[i][key] = !metroState.pattern[i][key]; renderMetroGrid(); }
 function metroToggleLayer(key) { metroState.layers[key] = !metroState.layers[key]; renderMetroLayerButtons(); renderMetroGrid(); }
@@ -1143,7 +1154,8 @@ function metroSetImpro(on) {
   metroState.layers = on
     ? {click:false, kick:true, snare:true, hihat:true, bass:true}
     : {click:true, kick:false, snare:false, hihat:false, bass:false};
-  renderMetroLayerButtons(); renderMetroGrid();
+  renderMetroModeSwitch();
+  renderMetroBandHost();
 }
 function metroChangeBassString(i) { metroState.bassString = +i; }
 function renderMetroLights() {
@@ -1151,6 +1163,7 @@ function renderMetroLights() {
     `<div class="metro-light ${i===0?'accent':''}"></div>`).join('');
 }
 function renderMetroGrid() {
+  const host = $('metro-grid-host'); if (!host) return;
   const total = metroState.pattern.length;
   const rows = [
     {key:'k', label:'Grosse caisse', active: metroState.layers.kick},
@@ -1167,31 +1180,67 @@ function renderMetroGrid() {
     }
     h += `</div></div>`;
   });
-  $('metro-grid-host').innerHTML = h + `</div></div>`;
+  host.innerHTML = h + `</div></div>`;
 }
 function renderMetroPresetSelect() {
-  $('metro-preset').innerHTML = Object.entries(METRO_PRESETS).map(([k,v]) =>
+  const el = $('metro-preset'); if (!el) return;
+  el.innerHTML = Object.entries(METRO_PRESETS).map(([k,v]) =>
     `<option value="${k}" ${metroState.preset===k?'selected':''}>${v.name}</option>`).join('');
 }
 function renderMetroLayerButtons() {
+  const el = $('metro-layers'); if (!el) return;
   const defs = [['click','Clic'],['kick','Grosse caisse'],['snare','Caisse claire'],['hihat','Charleston'],['bass','Basse']];
-  $('metro-layers').innerHTML = defs.map(([k,l]) =>
+  el.innerHTML = defs.map(([k,l]) =>
     `<button type="button" class="layer-btn ${metroState.layers[k]?'on':''}" onclick="metroToggleLayer('${k}')">${l}</button>`).join('');
-  $('metro-mode-simple').classList.toggle('on', !metroState.improMode);
-  $('metro-mode-impro').classList.toggle('on', metroState.improMode);
-  $('metro-bass-row').style.display = metroState.layers.bass ? '' : 'none';
+  const bassRow = $('metro-bass-row'); if (bassRow) bassRow.style.display = metroState.layers.bass ? '' : 'none';
 }
 function renderMetroBassSelect() {
-  $('metro-bass-note').innerHTML = STRINGS.map((n,i) =>
+  const el = $('metro-bass-note'); if (!el) return;
+  el.innerHTML = STRINGS.map((n,i) =>
     `<option value="${i}" ${metroState.bassString===i?'selected':''}>${n} — ${STRING_LABELS_FULL[i]}</option>`).join('');
+}
+function renderMetroModeSwitch() {
+  $('metro-mode-switch').innerHTML = `
+    <button type="button" class="mode-card ${!metroState.improMode?'on':''}" onclick="metroSetImpro(false)">
+      <svg class="mc-ico" viewBox="0 0 24 24"><path d="M12 2l6 18H6z"/><path d="M12 8v9"/></svg>
+      <div class="mc-t">Metronome simple</div>
+      <div class="mc-d">Un clic net, pour travailler ton timing seul</div>
+    </button>
+    <button type="button" class="mode-card ${metroState.improMode?'on':''}" onclick="metroSetImpro(true)">
+      <svg class="mc-ico" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <div class="mc-t">Mode impro</div>
+      <div class="mc-d">Batterie + basse jouent, tu improvises par dessus</div>
+    </button>`;
+}
+function renderMetroBandHost() {
+  const host = $('metro-band-host');
+  if (!metroState.improMode) { host.innerHTML = ''; return; }
+  host.innerHTML = `
+    <div class="fcard" style="border-color:rgba(200,120,58,.3)">
+      <div class="fcard-t">Le groupe</div>
+      <div class="fg"><label>Style</label><select id="metro-preset" onchange="metroSelectPreset(this.value)"></select></div>
+      <p style="font-size:11px;color:var(--cream4);margin-bottom:6px">Clique une case pour modifier le motif — c est ton rythme, pas juste le preset.</p>
+      <div id="metro-grid-host"></div>
+      <div class="opt-blocks" id="metro-layers" style="margin-top:16px"></div>
+      <div class="fg" id="metro-bass-row" style="margin-top:14px;margin-bottom:0;display:none">
+        <label>Note de basse (fondamentale, suit la grosse caisse)</label>
+        <select id="metro-bass-note" onchange="metroChangeBassString(this.value)"></select>
+      </div>
+    </div>`;
+  renderMetroPresetSelect();
+  renderMetroGrid();
+  renderMetroLayerButtons();
+  renderMetroBassSelect();
 }
 function renderMetroAll() {
   if (!metroState.pattern) buildMetroPattern();
-  renderMetroPresetSelect(); renderMetroLights(); renderMetroGrid();
-  renderMetroLayerButtons(); renderMetroBassSelect(); metroRenderToggleBtn();
+  renderMetroLights(); metroRenderToggleBtn();
   $('metro-sig').value = metroState.sig;
   $('metro-bpm-range').value = metroState.bpm;
   $('metro-bpm-num').value = metroState.bpm;
+  updateMetroBpmDisplay();
+  renderMetroModeSwitch();
+  renderMetroBandHost();
 }
 
 /* ═══════ TUNER — mic input, autocorrelation pitch detection ═══════
@@ -1280,31 +1329,58 @@ function closestString(freq) {
   tunerTargets().forEach(t => { const diff = Math.abs(12*Math.log2(freq/t.freq)); if (diff < bestDiff) { bestDiff = diff; best = t; } });
   return best;
 }
+/* Circular gauge: angle 0deg = top (in tune), -90 = left (flat), +90 = right (sharp).
+   Colored zones give an at-a-glance red/amber/green read, like a real clip-on tuner. */
+function polarPt(cx, cy, r, angleDeg) {
+  const rad = (angleDeg - 90) * Math.PI / 180;
+  return { x: cx + r*Math.cos(rad), y: cy + r*Math.sin(rad) };
+}
+function gaugeArc(cx, cy, r, a1, a2) {
+  const p1 = polarPt(cx, cy, r, a1), p2 = polarPt(cx, cy, r, a2);
+  const big = (a2 - a1) <= 180 ? 0 : 1;
+  return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${big} 1 ${p2.x} ${p2.y}`;
+}
+function tunerGaugeSVG(cents, color) {
+  const cx = 140, cy = 128, R = 104;
+  const zones = [[-90,-27,'#b85840'],[-27,-9,'#e8964e'],[-9,9,'#6a9070'],[9,27,'#e8964e'],[27,90,'#b85840']];
+  const needleAngle = Math.max(-90, Math.min(90, cents*1.8));
+  const tip = polarPt(cx, cy, R-14, needleAngle);
+  const zeroA = polarPt(cx, cy, R-20, 0), zeroB = polarPt(cx, cy, R+4, 0);
+  let s = `<svg width="280" height="150" viewBox="0 0 280 150">`;
+  zones.forEach(([a1,a2,c]) => { s += `<path d="${gaugeArc(cx,cy,R,a1,a2)}" fill="none" stroke="${c}" stroke-width="14" opacity=".92"/>`; });
+  s += `<line x1="${zeroA.x}" y1="${zeroA.y}" x2="${zeroB.x}" y2="${zeroB.y}" stroke="var(--cream)" stroke-width="2"/>`;
+  s += `<line x1="${cx}" y1="${cy}" x2="${tip.x}" y2="${tip.y}" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="8" fill="${color}"/>`;
+  s += `</svg>`;
+  return s;
+}
 function renderTunerReading(freq) {
   const disp = $('tuner-display'); if (!disp) return;
-  if (!freq) { disp.innerHTML = `<div style="color:var(--cream4);font-size:13px;padding:20px 0">Joue une corde...</div>`; return; }
+  if (!freq) {
+    disp.innerHTML = `${tunerGaugeSVG(0, 'var(--cream4)')}<div style="color:var(--cream4);font-size:13px;margin-top:4px">Joue une corde...</div>`;
+    document.querySelectorAll('.lib-card[data-str]').forEach(el => { el.classList.remove('active-tune'); el.style.removeProperty('--tune-color'); });
+    return;
+  }
   const str = closestString(freq);
   const note = freqToNote(freq);
   const cents = Math.round(1200*Math.log2(freq/str.freq));
-  const clamped = Math.max(-50, Math.min(50, cents));
   const inTune = Math.abs(cents) <= 5, close = Math.abs(cents) <= 15;
   const color = inTune ? 'var(--sage)' : close ? 'var(--gold2)' : 'var(--terra)';
-  const W = 260, x = 10 + ((clamped+50)/100)*(W-20);
   disp.innerHTML = `
-    <div style="font-family:var(--serif);font-size:46px;font-weight:800;color:${color};line-height:1">${str.name}</div>
-    <div style="font-size:11px;color:var(--cream4);margin:2px 0 14px">${freq.toFixed(1)} Hz (${note.name}) · ${STRING_LABELS_FULL[str.si]}</div>
-    <svg width="${W}" height="40" viewBox="0 0 ${W} 40" style="display:block;margin:0 auto">
-      <line x1="10" y1="20" x2="${W-10}" y2="20" stroke="var(--border2)" stroke-width="2"/>
-      <line x1="${W/2}" y1="7" x2="${W/2}" y2="33" stroke="var(--cream4)" stroke-width="1.5"/>
-      ${[-40,-20,20,40].map(t => { const tx = 10 + ((t+50)/100)*(W-20); return `<line x1="${tx}" y1="15" x2="${tx}" y2="25" stroke="var(--border2)" stroke-width="1"/>`; }).join('')}
-      <circle cx="${x}" cy="20" r="7" fill="${color}"/>
-    </svg>
-    <div style="font-size:12px;color:${color};font-weight:700;margin-top:8px">${inTune ? 'Juste !' : (cents > 0 ? 'Trop haut — detends' : 'Trop bas — tends')} (${cents>0?'+':''}${cents} cents)</div>`;
+    ${tunerGaugeSVG(cents, color)}
+    <div style="font-family:var(--serif);font-size:52px;font-weight:800;color:${color};line-height:1;margin-top:-6px">${str.name}</div>
+    <div style="font-size:11px;color:var(--cream4);margin:4px 0 4px">${freq.toFixed(1)} Hz (${note.name}) · ${STRING_LABELS_FULL[str.si]}</div>
+    <div style="font-size:13px;color:${color};font-weight:700">${inTune ? '✓ Juste !' : (cents > 0 ? 'Trop haut — detends' : 'Trop bas — tends')} (${cents>0?'+':''}${cents} cents)</div>`;
+  document.querySelectorAll('.lib-card[data-str]').forEach(el => {
+    const active = +el.dataset.str === str.si;
+    el.classList.toggle('active-tune', active);
+    if (active) el.style.setProperty('--tune-color', color); else el.style.removeProperty('--tune-color');
+  });
 }
 function renderTunerStrings() {
   const host = $('tuner-strings'); if (!host) return;
   host.innerHTML = tunerTargets().map((t, i) => `
-    <div class="lib-card" style="cursor:pointer" onclick="playRefString(${i})">
+    <div class="lib-card" data-str="${i}" style="cursor:pointer" onclick="playRefString(${i})">
       <div class="cn">${t.name}</div>
       <div style="font-size:9px;color:var(--cream4);text-align:center">${STRING_LABELS_FULL[i]}</div>
       <div class="lib-play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg></div>
@@ -1909,7 +1985,7 @@ function renderCE() {
              oninput="ceName(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();ceApplyLib(this.value)}">
       <div class="lib-hits" id="ce-hits"></div>
     </div>
-    <div class="ce-grid" id="ce-grid">${chordEditorSVG(c, ceState.arpMode)}</div>
+    <div class="ce-grid" id="ce-grid">${chordEditorSVG(c)}</div>
     <div class="ce-row">
       <button class="btn btn-ghost btn-xs" onclick="ceBase(-1)">&#8592; case</button>
       <span style="font-size:12px;color:var(--cream3);font-weight:600">Depart : case ${c.base}</span>
@@ -1932,22 +2008,23 @@ function renderCE() {
     </div>
     ${ceState.arpMode ? `
     <div class="arp-panel">
-      <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Clique les cordes tout en bas du diagramme, dans l ordre ou tu les joues. Les cordes etouffees (x) ne sont pas cliquables.</p>
-      <div class="ce-row" style="margin-bottom:8px">
+      <p style="font-size:11px;color:var(--cream4);margin-bottom:10px">Clique les cordes ci-dessous, dans l ordre ou tu les joues (une grise = etouffee, non jouable).</p>
+      <div class="arp-keys" id="arp-keys">${arpKeysHTML(c)}</div>
+      <div class="ce-row" style="justify-content:flex-start;margin-top:12px">
         <button type="button" class="mode-pill ${ceState.arpGroup?'on':''}" onclick="ceToggleArpGroup()">
-          ${ceState.arpGroup ? 'Regrouper : ON — cordes jouees ensemble' : 'Regrouper : OFF — une corde a la fois'}
+          ${ceState.arpGroup ? '⎘ Regrouper : ON' : '⎘ Regrouper : OFF'}
         </button>
-      </div>
-      <div class="ce-row" style="margin-bottom:8px">
         <button class="lib-hit" onclick="ceArpPreset('asc')">Montant</button>
         <button class="lib-hit" onclick="ceArpPreset('desc')">Descendant</button>
         <button class="lib-hit" onclick="ceArpPreset('thumb')">Pouce + reste</button>
         <button class="lib-hit" onclick="ceArpClear()">Effacer</button>
       </div>
-      <div id="ce-arp-badges" class="arp-tl-foot"></div>
-      <div id="ce-arp-preview" class="scroll-x" style="margin-top:8px">${tabStaffSVG([c], false) || '<span style="font-size:11px;color:var(--cream4)">—</span>'}</div>
-      <div class="ce-row" style="margin-top:8px">
-        <button class="btn btn-ghost btn-xs" onclick="playArp(ceState.chord, current.capo)">
+      <div class="part-sub-t" style="margin:14px 0 6px">Sequence jouee</div>
+      <div id="ce-arp-badges" class="arp-seq"></div>
+      <div class="part-sub-t" style="margin:14px 0 6px">Apercu tablature</div>
+      <div id="ce-arp-preview" class="scroll-x">${tabStaffSVG([c], false) || '<span style="font-size:11px;color:var(--cream4)">—</span>'}</div>
+      <div class="ce-row" style="margin-top:10px">
+        <button class="btn btn-primary btn-sm" onclick="playArp(ceState.chord, current.capo)">
           <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Ecouter l arpege</button>
       </div>
     </div>` : ''}
@@ -1959,7 +2036,7 @@ function renderCE() {
       <button class="btn btn-primary btn-sm" onclick="saveCE()">Valider</button>
     </div>`;
   renderCEHits(c.name);
-  if (ceState.arpMode) renderArpBadges();
+  if (ceState.arpMode) { refreshArpKeys(); renderArpBadges(); }
 }
 function ceName(v) {
   ceState.chord.name = v;
@@ -1985,7 +2062,7 @@ function ceSetMode(isArp) {
   if (!isArp) ceState.chord.arp = [];
   renderCE();
 }
-function chordEditorSVG(c, arpMode) {
+function chordEditorSVG(c) {
   const W = 190, H = 210, NF = 5, ml = 30, mt = 46, cw = (W - ml - 24)/5, rh = (H - mt - 18)/NF;
   let s = `<svg class="ce-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" onclick="ceClick(event)">`;
   s += `<rect width="${W}" height="${H}" fill="transparent"/>`;
@@ -2018,22 +2095,11 @@ function chordEditorSVG(c, arpMode) {
   }
   for (let i = 0; i < 6; i++) {
     const muted = c.frets[i] === -1;
-    const labelY = arpMode ? H - 18 : H - 4;
-    s += `<text x="${ml+i*cw}" y="${labelY}" text-anchor="middle" font-size="9" fill="${muted?'#4a3c2c':'#7d6c58'}" font-family="DM Sans">${STRINGS[i]}</text>`;
-    if (arpMode) {
-      if (!muted) s += `<rect class="pickhit" data-si="${i}" x="${ml+i*cw-cw/2}" y="${mt+NF*rh}" width="${cw}" height="${H-(mt+NF*rh)}" fill="transparent" style="cursor:pointer"/>`;
-      const nums = (c.arp||[]).map((step,ti) => step.includes(i) ? ti+1 : null).filter(x => x != null);
-      if (nums.length) {
-        s += `<circle cx="${ml+i*cw}" cy="${H-6}" r="7" fill="#c8783a"/>`;
-        s += `<text x="${ml+i*cw}" y="${H-3}" text-anchor="middle" font-size="8" font-weight="700" fill="#0d0a07" font-family="DM Sans" style="pointer-events:none">${nums.join(',')}</text>`;
-      }
-    }
+    s += `<text x="${ml+i*cw}" y="${H-4}" text-anchor="middle" font-size="9" fill="${muted?'#4a3c2c':'#7d6c58'}" font-family="DM Sans">${STRINGS[i]}</text>`;
   }
   return s + '</svg>';
 }
 function ceClick(e) {
-  const pick = e.target.closest('.pickhit');
-  if (pick) { ceArpPick(+pick.dataset.si); return; }
   const hit = e.target.closest('.hit'); if (!hit) return;
   const si = +hit.dataset.s, f = +hit.dataset.f, c = ceState.chord;
   if (f === 0) c.frets[si] = c.frets[si] === 0 ? -1 : c.frets[si] === -1 ? 0 : 0; // cycles O → X → O
@@ -2046,7 +2112,7 @@ function ceClick(e) {
     c.arp = c.arp.map(step => step.filter(x => x !== si)).filter(step => step.length);
   }
   refreshCEDiagram();
-  if (ceState.arpMode) renderArpBadges();
+  if (ceState.arpMode) refreshArpUI();
 }
 function autoFinger(c, si, abs) {
   const others = c.frets.map((f,i) => ({f,i})).filter(o => o.f > 0 && o.i !== si);
@@ -2070,19 +2136,38 @@ function saveCE() {
   closeCE(); renderParts(); scheduleAutosave();
 }
 function refreshCEDiagram() {
-  $('ce-grid').innerHTML = chordEditorSVG(ceState.chord, ceState.arpMode);
+  $('ce-grid').innerHTML = chordEditorSVG(ceState.chord);
+}
+
+/* ── arpeggio: dedicated string-key picker (fixes the old tiny/blocked
+   on-diagram picking — each string is now a big obvious button) ── */
+function arpKeysHTML(c) {
+  return STRINGS.map((name, i) => {
+    const muted = c.frets[i] === -1;
+    const fretLbl = muted ? 'etouffee' : (c.frets[i] === 0 ? 'a vide' : 'case ' + c.frets[i]);
+    const nums = (c.arp||[]).map((step,ti) => step.includes(i) ? ti+1 : null).filter(x => x != null);
+    return `<button type="button" class="arp-key ${muted?'muted':''} ${nums.length?'picked':''}" ${muted?'disabled':''}
+        onclick="ceArpPick(${i})" title="${muted?'Corde etouffee':'Ajouter '+name+' a la sequence'}">
+      <span class="ak-name">${name}</span>
+      <span class="ak-fret">${fretLbl}</span>
+      ${nums.length ? `<span class="ak-order">${nums.join(',')}</span>` : ''}
+    </button>`;
+  }).join('');
+}
+function refreshArpKeys() { const el = $('arp-keys'); if (el) el.innerHTML = arpKeysHTML(ceState.chord); }
+function refreshArpUI() {
+  refreshArpKeys();
+  renderArpBadges();
   const prev = $('ce-arp-preview');
   if (prev) prev.innerHTML = tabStaffSVG([ceState.chord], false) || '<span style="font-size:11px;color:var(--cream4)">—</span>';
 }
-
-/* ── arpeggio: direct picking on the diagram (senior redesign) ── */
 function ceArpPick(si) {
   const c = ceState.chord;
   if (c.frets[si] === -1) return;
   if (!c.arp) c.arp = [];
   if (ceState.arpGroup && c.arp.length) c.arp[c.arp.length-1].push(si);
   else c.arp.push([si]);
-  refreshCEDiagram(); renderArpBadges();
+  refreshArpUI();
 }
 function ceToggleArpGroup() { ceState.arpGroup = !ceState.arpGroup; renderCE(); }
 function ceArpPreset(kind) {
@@ -2095,17 +2180,17 @@ function ceArpPreset(kind) {
     const bass = played[0], rest = played.slice(1);
     c.arp = rest.length ? [[bass], rest] : [[bass]];
   }
-  refreshCEDiagram(); renderArpBadges();
+  refreshArpUI();
 }
-function ceArpClear() { ceState.chord.arp = []; refreshCEDiagram(); renderArpBadges(); }
-function ceArpRemoveStep(ti) { ceState.chord.arp.splice(ti, 1); refreshCEDiagram(); renderArpBadges(); }
+function ceArpClear() { ceState.chord.arp = []; refreshArpUI(); }
+function ceArpRemoveStep(ti) { ceState.chord.arp.splice(ti, 1); refreshArpUI(); }
 function renderArpBadges() {
   const el = $('ce-arp-badges'); if (!el) return;
   const c = ceState.chord;
-  if (!c.arp || !c.arp.length) { el.innerHTML = `<span style="font-size:11px;color:var(--cream4)">Aucun temps — clique une corde sous le diagramme.</span>`; return; }
-  el.innerHTML = c.arp.map((step,ti) => `<span class="lib-hit" style="display:inline-flex;align-items:center;gap:4px;margin:2px">
+  if (!c.arp || !c.arp.length) { el.innerHTML = `<span style="font-size:11px;color:var(--cream4)">Aucun temps — clique une corde ci-dessus.</span>`; return; }
+  el.innerHTML = c.arp.map((step,ti) => `<span class="arp-chip">
       ${ti+1}: ${step.map(si=>STRINGS[si]).join('+')}
-      <button onclick="ceArpRemoveStep(${ti})" style="background:none;color:var(--terra);font-size:11px;padding:0 2px">&times;</button>
+      <button onclick="ceArpRemoveStep(${ti})" title="Retirer ce temps">&times;</button>
     </span>`).join('');
 }
 
@@ -2279,14 +2364,29 @@ function renderPrintModal() {
       <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
         <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numeroter les pages</label>
     </div>
-    <div style="background:#5a5a5a;border-radius:10px;padding:14px;overflow:auto;max-height:52vh;margin-top:8px">
-      <div id="pp-preview" style="zoom:.42"></div>
+    <div class="print-preview-frame">
+      <div id="pp-preview"></div>
     </div>
     <div class="modal-f">
       <button class="btn btn-ghost btn-sm" onclick="$('m-print').classList.add('hide')">Fermer</button>
+      <button class="btn btn-ghost btn-sm" onclick="downloadPrintImage()">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Telecharger</button>
       <button class="btn btn-primary btn-sm" onclick="doPrint()">Imprimer / PDF</button>
     </div>`;
   refreshPrintPreview();
+}
+function downloadPrintImage() {
+  const src = $('pp-preview');
+  const w = src.scrollWidth || 800, h = src.scrollHeight || 1000;
+  const data = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><foreignObject width='100%' height='100%'><div xmlns='http://www.w3.org/1999/xhtml'>${src.innerHTML}</div></foreignObject></svg>`;
+  const blob = new Blob([data], {type:'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const one = printIds.size === 1 ? sheets.find(s => printIds.has(s.id)) : null;
+  const a = document.createElement('a');
+  a.href = url; a.download = (one ? one.title.replace(/[^\w-]+/g,'_') : 'cahier-guitare') + '.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Fiche telechargee !');
 }
 function refreshPrintPreview() { $('pp-preview').innerHTML = buildPrintPages(); }
 function buildPrintPages() {
