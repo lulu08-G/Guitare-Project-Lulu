@@ -161,6 +161,8 @@ input[type=text],input[type=number],input[type=url],select,textarea{width:100%;b
 input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,120,58,.1)}
 input::placeholder,textarea::placeholder{color:var(--cream4)}
 select option{background:var(--card)}
+button:focus-visible,.card:focus-visible,.csw:focus-visible{outline:2px solid var(--gold2);outline-offset:2px;border-radius:4px}
+.sv-title-input:focus-visible,.sv-artist-input:focus-visible,.sec-name-input:focus-visible,.sec-comment-input:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(200,120,58,.18)}
 textarea{resize:vertical;min-height:68px;line-height:1.6}
 
 .cswatches{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px}
@@ -242,6 +244,10 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
   .grid{grid-template-columns:1fr;padding:0 16px 40px}
   nav,.home-hero,.search-wrap,.sv-wrap{padding-left:16px;padding-right:16px}
   .sec-name-input{width:100px}
+  .logo-text{font-size:14px;white-space:nowrap}
+  .nav-right .btn-ghost{display:none}
+  .sv-top{flex-direction:column;align-items:stretch}
+  .sv-btns{justify-content:flex-start}
 }
 </style>
 </head>
