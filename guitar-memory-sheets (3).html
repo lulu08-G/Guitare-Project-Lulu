@@ -509,6 +509,66 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .ss-note.now{background:var(--gold);border-color:var(--gold);color:var(--ink)}
 .ss-note.now small{color:var(--ink)}
 
+/* ── OUTILS & TUTOS ── */
+.hero-ill{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hero-ill svg{flex-shrink:0;max-width:100%}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.tool-card{display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:14px;position:relative;overflow:hidden;transition:all .18s}
+.tool-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tc)}
+.tool-card:hover{background:var(--card2);transform:translateY(-2px);box-shadow:0 12px 30px var(--shadow)}
+.tl-top{display:flex;align-items:center;gap:10px}
+.tl-mono{width:40px;height:40px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:800;font-size:15px;color:var(--ink);background:var(--tc,var(--gold))}
+.tl-n{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--cream);line-height:1.2}
+.tl-star{color:var(--gold2);font-size:13px}
+.tl-host{font-size:11px;color:var(--cream3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-ext{margin-left:auto;color:var(--cream4)}
+.tool-card:hover .tl-ext{color:var(--gold2)}
+.tl-d{font-size:12px;line-height:1.6;color:var(--cream2);flex:1}
+.tl-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tl-cat-ico{width:32px;height:32px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink);flex-shrink:0}
+.tt-search .frow{margin-bottom:2px}
+.tt-actions{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 6px}
+.tt-live{background:var(--terra)!important;color:#fff!important;border-color:var(--terra)!important;animation:pulse 1.2s infinite}
+.tt-sub{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream3);margin:14px 0 7px}
+.tt-search .filters{margin-bottom:0}
+.tt-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:4px 18px;border-top:1px solid var(--border);margin-top:14px}
+.tt-keys-btn{background:none;color:var(--cream3);font-size:12px;font-weight:600;margin-top:14px;padding:0;text-decoration:underline;text-underline-offset:3px}
+.tt-keys{margin-top:12px;padding:14px;border-radius:var(--rs);background:var(--bg2);border:1px dashed var(--border2)}
+.tt-empty{text-align:center;padding:30px 20px 60px}
+.tt-empty h3{font-family:var(--serif);font-size:22px;color:var(--cream);margin:12px 0 6px}
+.tt-empty p{font-size:13px;color:var(--cream3);max-width:460px;margin:0 auto;line-height:1.7}
+.tt-song{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:18px 20px;border-radius:var(--r);background:linear-gradient(120deg,rgba(200,120,58,.22),rgba(156,134,174,.14));border:1px solid var(--border2)}
+.tt-song-t{font-family:var(--serif);font-size:clamp(22px,3.5vw,30px);font-weight:800;color:var(--cream);line-height:1.1}
+.tt-song-a{font-size:12px;color:var(--cream3);margin-top:4px}
+.tt-plat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:12px}
+.tt-plat{background:var(--card);border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;display:flex;flex-direction:column}
+.tt-plat-h{display:flex;align-items:center;gap:10px;padding:14px;color:#fff}
+.tt-plat-ico{width:40px;height:40px;border-radius:12px;background:rgba(0,0,0,.22);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tt-plat-n{font-weight:800;font-size:16px;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tt-plat-d{font-size:11px;opacity:.92}
+.tt-plat-links{display:flex;flex-direction:column;gap:6px;padding:12px}
+.tt-link{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;background:var(--bg2);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--cream);transition:all .15s}
+.tt-link:hover{border-color:var(--gold);color:var(--gold2)}
+.tt-link span{color:var(--cream4);display:flex}
+.tt-site-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.tt-site{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--cream3);transition:all .15s}
+.tt-site:hover{border-color:var(--gold);background:var(--card2)}
+.tt-site .tl-mono{--tc:var(--sage)}
+a.filt{display:inline-block}
+.tt-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+@media(max-width:760px){.tt-cols{grid-template-columns:1fr}}
+.tt-check{display:flex;flex-direction:column;gap:6px}
+.tt-check div{font-size:12px;line-height:1.55;color:var(--cream2);padding-left:22px;position:relative}
+.tt-check div::before{content:'✓';position:absolute;left:2px;color:var(--sage);font-weight:800}
+.tt-yt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.tt-yt{background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:8px;display:flex;flex-direction:column}
+.tt-yt.on{border-color:var(--gold)}
+.tt-yt-th{position:relative;border-radius:8px;overflow:hidden;padding:0;background:#000;aspect-ratio:16/9;display:block;width:100%}
+.tt-yt-th img{width:100%;height:100%;object-fit:cover;display:block}
+.tt-yt-th span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;background:rgba(0,0,0,.25);opacity:.85}
+.tt-yt-t{font-size:12px;font-weight:700;color:var(--cream);line-height:1.4;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:1180px){.logo-text{display:none}.nav-right{overflow-x:auto;max-width:calc(100vw - 80px)}.nav-link{padding:7px 10px}}
+
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--sage);color:var(--ink);padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;transform:translateY(90px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:calc(100vw - 48px)}
 .toast.show{transform:translateY(0);opacity:1}
@@ -586,6 +646,8 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
     <button class="nav-link" id="nl-lib" onclick="go('lib')">Accords</button>
     <button class="nav-link" id="nl-cours" onclick="go('cours')">Cours</button>
     <button class="nav-link" id="nl-exo" onclick="go('exo')">Exercices</button>
+    <button class="nav-link" id="nl-tuto" onclick="go('tuto')">Tutos</button>
+    <button class="nav-link" id="nl-tools" onclick="go('tools')">Outils</button>
     <button class="nav-link" id="nl-metro" onclick="go('metro')">Metronome</button>
     <button class="nav-link" id="nl-tuner" onclick="go('tuner')">Accordeur</button>
     <button class="nav-link" id="nl-import" onclick="go('import')">Importer</button>
@@ -841,6 +903,22 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
         <div class="cap-chips" id="cap-chips"></div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ══ TUTOS ══ -->
+<div class="view" id="v-tuto">
+  <div class="wrap">
+    <div class="hero"><div><h1>Trouver un <em>tuto</em></h1><p>Un morceau en tête : les meilleurs tutos de TikTok, Instagram, YouTube et des sites de tabs, en un clic</p></div></div>
+    <div id="tuto-body" style="padding-bottom:60px"></div>
+  </div>
+</div>
+
+<!-- ══ OUTILS ══ -->
+<div class="view" id="v-tools">
+  <div class="wrap">
+    <div class="hero hero-ill"><div><h1>La boîte à <em>outils</em></h1><p>Les sites de guitare les plus utiles et reconnus, rangés par besoin</p></div><div id="tools-hero"></div></div>
+    <div id="tools-body" style="padding-bottom:60px"></div>
   </div>
 </div>
 
@@ -3184,6 +3262,359 @@ function capoSVG(c) {
   return s + '</svg>';
 }
 
+/* ═══════ BOÎTE À OUTILS — les sites qui comptent ═══════
+   Senior note: links only, no logos — every card is drawn from the same
+   monogram + category icon so the page stays light, theme-aware and never
+   pretends to be the brand it points to. */
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+const ICO = {
+  tab:   '<path d="M3 6h18M3 10h18M3 14h18M3 18h18"/><circle cx="8" cy="10" r="1.6" fill="currentColor"/><circle cx="14" cy="14" r="1.6" fill="currentColor"/>',
+  learn: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>',
+  theory:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v5M12 16v5M3 12h5M16 12h5"/>',
+  tool:  '<path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
+  ear:   '<path d="M6 9a6 6 0 1112 0c0 4-4 5-4 9a3 3 0 01-6 0"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-1.5 2-1.5 3.5"/>',
+  people:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14.5 14.2c3 .3 5.5 2.6 5.5 5.8"/>',
+  ext:   '<path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+  mic:   '<path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/>',
+  wave:  '<path d="M2 12h2M6 8v8M10 4v16M14 7v10M18 10v4M22 12h0"/>',
+  save:  '<path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+};
+const icon = (k, sz) => `<svg width="${sz || 18}" height="${sz || 18}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICO[k]}</svg>`;
+const TOOL_CATS = [
+  {k:'tabs',      n:'Tablatures & accords',   d:'La grille ou la tab de n’importe quel morceau', c:'var(--gold)',  i:'tab'},
+  {k:'learn',     n:'Apprendre en ligne',     d:'Des méthodes complètes et reconnues',           c:'var(--sage)',  i:'learn'},
+  {k:'theory',    n:'Théorie & harmonie',     d:'Accords, gammes et progressions expliqués',     c:'var(--mauve)', i:'theory'},
+  {k:'practice',  n:'Outils de pratique',     d:'Ralentir, isoler la guitare, accorder, écrire', c:'var(--terra)', i:'tool'},
+  {k:'ear',       n:'Oreille',                d:'Entraîner l’oreille musicale',                  c:'var(--gold2)', i:'ear'},
+  {k:'community', n:'Communauté & matériel',  d:'Poser ses questions, découvrir le matos',       c:'var(--cream2)',i:'people'},
+];
+const TOOLS = [
+  {c:'tabs', n:'Ultimate Guitar', u:'https://www.ultimate-guitar.com', d:'La plus grande base de tabs et d’accords au monde, notée par la communauté. Le premier réflexe.', p:'Gratuit + Pro', l:'EN', top:true},
+  {c:'tabs', n:'Songsterr', u:'https://www.songsterr.com', d:'Tabs interactives qui défilent avec le vrai son du morceau, piste par piste. Idéal pour les riffs et solos.', p:'Freemium', l:'EN', top:true},
+  {c:'tabs', n:'Boîte à chansons', u:'https://www.boiteachansons.net', d:'Accords de la chanson française et internationale, en français, avec transposition.', p:'Gratuit', l:'FR'},
+  {c:'tabs', n:'Tabs4acoustic', u:'https://www.tabs4acoustic.com', d:'Site français dédié à la guitare acoustique : tabs, accords et cours vidéo.', p:'Gratuit', l:'FR'},
+  {c:'tabs', n:'Chordify', u:'https://chordify.net', d:'Détecte automatiquement les accords de n’importe quelle chanson et les fait défiler en rythme.', p:'Freemium', l:'EN · FR'},
+  {c:'tabs', n:'Cifra Club', u:'https://www.cifraclub.com', d:'Énorme base d’accords avec vidéos de cours, très complète sur la pop internationale.', p:'Gratuit', l:'PT · EN'},
+  {c:'learn', n:'JustinGuitar', u:'https://www.justinguitar.com', d:'LA méthode gratuite la plus recommandée au monde : un cursus complet du débutant à l’intermédiaire.', p:'Gratuit', l:'EN', top:true},
+  {c:'learn', n:'Fender Play', u:'https://www.fender.com/play', d:'Cours vidéo courts et structurés par style (rock, pop, blues, folk…), par la marque Fender.', p:'Payant', l:'EN'},
+  {c:'learn', n:'Guitar Tricks', u:'https://www.guitartricks.com', d:'Des milliers de leçons vidéo organisées en cursus, l’une des plus anciennes plateformes.', p:'Payant', l:'EN'},
+  {c:'learn', n:'Yousician', u:'https://yousician.com', d:'Appli qui écoute ta guitare et te corrige en temps réel, façon jeu vidéo.', p:'Freemium', l:'EN · FR'},
+  {c:'theory', n:'musictheory.net', u:'https://www.musictheory.net/lessons', d:'Leçons de théorie animées, claires et gratuites : notes, intervalles, accords, gammes.', p:'Gratuit', l:'EN · FR', top:true},
+  {c:'theory', n:'Hooktheory (TheoryTab)', u:'https://www.hooktheory.com/theorytab', d:'L’analyse harmonique de milliers de chansons connues : vois quels degrés (I, V, vi, IV…) elles utilisent.', p:'Freemium', l:'EN'},
+  {c:'theory', n:'Oolimo', u:'https://www.oolimo.com/en/guitar-chords', d:'Dictionnaire d’accords et de gammes : toutes les positions sur le manche, analyse d’accord inverse.', p:'Gratuit', l:'EN · DE'},
+  {c:'theory', n:'Teoria', u:'https://www.teoria.com', d:'Tutoriels et exercices de théorie musicale très complets.', p:'Gratuit', l:'EN · FR'},
+  {c:'practice', n:'Moises', u:'https://moises.ai', d:'Sépare la guitare, la voix et la batterie d’un morceau, ralentit sans changer la hauteur. Indispensable pour relever.', p:'Freemium', l:'EN · FR', top:true},
+  {c:'practice', n:'Accordeur en ligne Fender', u:'https://www.fender.com/online-guitar-tuner', d:'Accordeur micro gratuit dans le navigateur, avec des accordages alternatifs.', p:'Gratuit', l:'EN'},
+  {c:'practice', n:'Métronome Google', u:'https://www.google.com/search?q=metronome', d:'Un métronome instantané, directement dans la recherche Google.', p:'Gratuit', l:'Tous'},
+  {c:'practice', n:'MuseScore', u:'https://musescore.com', d:'Des partitions et tablatures partagées par la communauté, et un logiciel d’écriture gratuit.', p:'Freemium', l:'EN · FR'},
+  {c:'practice', n:'Guitar Pro', u:'https://www.guitar-pro.com', d:'Le logiciel de référence pour lire, écrire et jouer des tablatures (fichiers .gp).', p:'Payant', l:'EN · FR'},
+  {c:'practice', n:'Transcribe!', u:'https://www.seventhstring.com/xscribe/overview.html', d:'L’outil des musiciens qui relèvent à l’oreille : boucles, ralentis, analyse des notes.', p:'Payant', l:'EN'},
+  {c:'ear', n:'ToneGym', u:'https://www.tonegym.co', d:'Jeux d’entraînement de l’oreille : intervalles, accords, progressions.', p:'Freemium', l:'EN'},
+  {c:'ear', n:'Exercices musictheory.net', u:'https://www.musictheory.net/exercises', d:'Quiz d’oreille et de lecture personnalisables, gratuits.', p:'Gratuit', l:'EN · FR'},
+  {c:'community', n:'r/Guitar', u:'https://www.reddit.com/r/Guitar/', d:'La plus grande communauté de guitaristes en ligne : conseils, matériel, partages.', p:'Gratuit', l:'EN'},
+  {c:'community', n:'r/guitarlessons', u:'https://www.reddit.com/r/guitarlessons/', d:'Questions de débutants, avis sur les méthodes, entraide pour progresser.', p:'Gratuit', l:'EN'},
+  {c:'community', n:'Audiofanzine', u:'https://fr.audiofanzine.com', d:'Le grand site français du matériel : tests, avis, forums et petites annonces.', p:'Gratuit', l:'FR'},
+  {c:'community', n:'Equipboard', u:'https://equipboard.com', d:'Découvre quelles guitares, amplis et pédales utilisent tes guitaristes préférés.', p:'Gratuit', l:'EN'},
+];
+let toolCat = 'all', toolQ = '';
+function toolsHeroSVG() {
+  return `<svg width="230" height="150" viewBox="0 0 230 150" fill="none" aria-hidden="true">
+    <rect x="18" y="62" width="194" height="76" rx="14" fill="var(--card3)" stroke="var(--gold)" stroke-width="2"/>
+    <rect x="18" y="62" width="194" height="22" rx="10" fill="var(--gold)"/>
+    <path d="M88 62v-12a8 8 0 018-8h38a8 8 0 018 8v12" stroke="var(--gold2)" stroke-width="5" stroke-linecap="round"/>
+    <rect x="104" y="92" width="22" height="14" rx="4" fill="var(--gold2)"/>
+    <g transform="rotate(-24 60 40)"><rect x="54" y="2" width="12" height="64" rx="4" fill="var(--terra)"/><rect x="48" y="-6" width="24" height="14" rx="4" fill="var(--terra)"/>
+      <circle cx="51" cy="-1" r="2.5" fill="var(--cream)"/><circle cx="69" cy="-1" r="2.5" fill="var(--cream)"/></g>
+    <g transform="rotate(18 168 36)"><path d="M160 66 L168 6 L176 66 Z" fill="var(--sage)"/><line x1="168" y1="60" x2="176" y2="18" stroke="var(--cream)" stroke-width="2.5" stroke-linecap="round"/><circle cx="176" cy="18" r="4" fill="var(--cream)"/></g>
+    <circle cx="200" cy="30" r="14" fill="var(--mauve)"/><path d="M196 24v12M196 36a3 3 0 11-3-3" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><path d="M196 24l8-2v10" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="30" cy="34" r="11" fill="var(--gold2)"/><path d="M26 34l3 3 6-6" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+function toolCard(t) {
+  const cat = TOOL_CATS.find(c => c.k === t.c), mono = t.n.replace(/[^A-Za-zÀ-ÿ0-9 ]/g, '').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  const host = t.u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '');
+  return `<a class="tool-card" href="${t.u}" target="_blank" rel="noopener" style="--tc:${cat.c}">
+    <div class="tl-top"><div class="tl-mono">${mono}</div><div style="min-width:0"><div class="tl-n">${esc(t.n)}${t.top ? ' <span class="tl-star" title="Incontournable">★</span>' : ''}</div><div class="tl-host">${host}</div></div><span class="tl-ext">${icon('ext', 15)}</span></div>
+    <div class="tl-d">${t.d}</div>
+    <div class="tl-tags"><span class="tag ${t.p === 'Gratuit' ? 'sage' : t.p === 'Payant' ? '' : 'gold'}">${t.p}</span><span class="tag">${t.l}</span></div></a>`;
+}
+function renderTools() {
+  const q = toolQ.toLowerCase().trim();
+  const list = TOOLS.filter(t => (toolCat === 'all' || t.c === toolCat) && (!q || (t.n + ' ' + t.d).toLowerCase().includes(q)));
+  const cats = TOOL_CATS.filter(c => list.some(t => t.c === c.k));
+  $('tools-body').innerHTML = `
+    <div class="search-bar"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Chercher un site (tabs, accordeur, théorie…)" value="${esc(toolQ)}" oninput="toolQ=this.value;renderTools();this.focus();this.setSelectionRange(this.value.length,this.value.length)"></div>
+    <div class="filters"><button type="button" class="filt ${toolCat==='all'?'on':''}" onclick="toolCat='all';renderTools()">Tout</button>${TOOL_CATS.map(c =>
+      `<button type="button" class="filt ${toolCat===c.k?'on':''}" onclick="toolCat='${c.k}';renderTools()">${c.n}</button>`).join('')}</div>
+    ${cats.length ? cats.map(c => `<div class="axis-sec"><div class="axis-t"><span class="tl-cat-ico" style="background:${c.c}">${icon(c.i, 16)}</span>${c.n}</div><div class="axis-d" style="margin-left:42px">${c.d}</div>
+      <div class="tool-grid">${list.filter(t => t.c === c.k).map(toolCard).join('')}</div></div>`).join('')
+      : '<p class="cours-p">Aucun site ne correspond.</p>'}
+    <div class="exo-note" style="margin-top:6px">★ = incontournable. Les liens s’ouvrent dans un nouvel onglet. Aucun de ces sites n’est affilié à l’appli.</div>`;
+}
+
+/* ═══════ TUTOS — trouver le bon tuto d’un morceau ═══════
+   Senior note: platforms without a public search API (TikTok, Instagram)
+   get precise deep-link searches and hashtag pages; YouTube can optionally
+   return real results inside the app with the user’s own free Data API key.
+   Song input: typing, the user’s own sheets, voice dictation (Web Speech
+   API) or, experimentally, audio recognition through AudD with the user’s
+   token. Keys stay in this browser’s localStorage. */
+let tuto = {title:'', artist:'', lvl:'easy', kind:'chords', lang:'fr', yt:null, ytErr:'', ytLoading:false, play:null, listening:'', show:false};
+const T_KIND = {
+  chords:{n:'Accords & rythme', fr:'accords rythme', en:'chords strumming'},
+  arp:   {n:'Arpège / fingerstyle', fr:'arpège fingerstyle', en:'fingerstyle'},
+  riff:  {n:'Riff / intro', fr:'riff intro', en:'riff intro'},
+  solo:  {n:'Solo', fr:'solo', en:'solo lesson'},
+  full:  {n:'Cours complet', fr:'cours complet', en:'full lesson'},
+};
+const T_LVL = {easy:{n:'Facile / débutant', fr:'facile débutant', en:'easy beginner'}, any:{n:'Tous niveaux', fr:'', en:''}};
+const T_LANG = {fr:'Français', en:'Anglais', both:'Les deux'};
+const enc = s => encodeURIComponent(s.replace(/\s+/g, ' ').trim());
+const tSong = () => `${tuto.title} ${tuto.artist}`.trim();
+const tLangs = () => tuto.lang === 'both' ? ['fr', 'en'] : [tuto.lang];
+const tQuery = lang => [tSong(), lang === 'fr' ? 'tuto guitare' : 'guitar tutorial', T_KIND[tuto.kind][lang], T_LVL[tuto.lvl][lang]].filter(Boolean).join(' ');
+const hashtag = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const G = q => 'https://www.google.com/search?q=' + enc(q);
+const YT = q => 'https://www.youtube.com/results?search_query=' + enc(q);
+const TT = q => 'https://www.tiktok.com/search?q=' + enc(q);
+const IGT = t => 'https://www.instagram.com/explore/tags/' + t + '/';
+function tutoPlatforms() {
+  const song = tSong(), title = tuto.title, langs = tLangs(), flag = l => tuto.lang === 'both' ? (l === 'fr' ? ' · FR' : ' · EN') : '';
+  return [
+    {k:'tiktok', n:'TikTok', d:'Tutos courts filmés au plus près des doigts', bg:'linear-gradient(135deg,#25f4ee,#fe2c55)',
+     ico:'<path d="M14 3v11a4 4 0 11-4-4" /><path d="M14 3c.5 2.6 2.4 4.4 5 4.6"/>',
+     links:[...langs.map(l => ['Tutos' + flag(l), TT(tQuery(l))]), ['#guitartok', TT(song + ' guitartok')], ['Version facile', TT(song + (tuto.lang === 'en' ? ' easy guitar' : ' guitare facile'))]]},
+    {k:'insta', n:'Instagram', d:'Reels de profs et de guitaristes', bg:'linear-gradient(135deg,#f9a03f,#e1306c 55%,#833ab4)',
+     ico:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>',
+     links:[[`#${hashtag(title)}guitar`, IGT(hashtag(title) + 'guitar')], [`#${hashtag(song)}`, IGT(hashtag(song))], ['#guitartutorial', IGT('guitartutorial')], ['Reels via Google', G(`site:instagram.com/reel "${title}" guitar`)]]},
+    {k:'shorts', n:'YouTube Shorts', d:'Le format court de YouTube', bg:'linear-gradient(135deg,#ff4e45,#c4302b)',
+     ico:'<path d="M10 9l5 3-5 3z" fill="currentColor"/><rect x="6" y="2" width="12" height="20" rx="4"/>',
+     links:[...langs.map(l => ['Shorts tuto' + flag(l), YT(tQuery(l) + ' #shorts')]), ['Riff en 1 minute', YT(song + ' guitar riff #shorts')]]},
+    {k:'yt', n:'YouTube', d:'Leçons complètes, versions ralenties, play-along', bg:'linear-gradient(135deg,#e04040,#9b1f1a)',
+     ico:'<rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor"/>',
+     links:[...langs.map(l => ['Tutos' + flag(l), YT(tQuery(l))]), ['Version lente', YT(song + ' guitar lesson slow')], ['Play-along / tab', YT(song + ' guitar tab play along')], ['Cover acoustique', YT(song + ' acoustic cover')]]},
+  ];
+}
+function tutoSites() {
+  const s = tSong(), t = tuto.title;
+  return [
+    ['Ultimate Guitar', 'Tabs et accords notés', `https://www.ultimate-guitar.com/search.php?search_type=title&value=${enc(s)}`],
+    ['Songsterr', 'Tab interactive avec le son', `https://www.songsterr.com/?pattern=${enc(t)}`],
+    ['Chordify', 'Accords détectés automatiquement', `https://chordify.net/search/${enc(s)}`],
+    ['Boîte à chansons', 'Accords en français', G(`site:boiteachansons.net ${s}`)],
+    ['Tabs4acoustic', 'Acoustique, en français', G(`site:tabs4acoustic.com ${s}`)],
+    ['JustinGuitar', 'Leçon de chanson, si elle existe', G(`site:justinguitar.com/songs ${s}`)],
+    ['Hooktheory', 'Analyse des degrés de la grille', G(`site:hooktheory.com/theorytab ${s}`)],
+    ['Cifra Club', 'Accords + vidéo de cours', G(`site:cifraclub.com ${s}`)],
+  ];
+}
+function tutoGoogle() {
+  const s = tSong();
+  return [
+    ['Accords guitare', G(`${s} accords guitare`)],
+    ['Vidéos tuto', `https://www.google.com/search?tbm=vid&q=${enc(s + ' tuto guitare')}`],
+    ['Guitar chords', G(`${s} guitar chords`)],
+    ['Avis Reddit', G(`site:reddit.com ${s} guitar how to play`)],
+  ];
+}
+function tutoSet(title, artist) {
+  tuto.title = (title || '').trim(); tuto.artist = (artist || '').trim(); tuto.yt = null; tuto.ytErr = ''; tuto.play = null;
+  tuto.show = !!tuto.title;
+  if (tuto.title) {
+    const rec = LS.get('gms_tuto_recent', []).filter(r => !(r.t.toLowerCase() === tuto.title.toLowerCase() && r.a.toLowerCase() === tuto.artist.toLowerCase()));
+    rec.unshift({t:tuto.title, a:tuto.artist}); LS.set('gms_tuto_recent', rec.slice(0, 8));
+  }
+  renderTuto();
+  if (tuto.title && LS.get('gms_ytkey', '')) tutoLoadYT();
+}
+function tutoSearch() {
+  const t = $('tt-title').value, a = $('tt-artist').value;
+  if (!t.trim()) { toast('Entre au moins un titre', true); return; }
+  tutoSet(t, a);
+  const r = $('tt-results'); if (r) setTimeout(() => r.scrollIntoView({behavior:'smooth', block:'start'}), 60);
+}
+function tutoOpenFor(title, artist) { tuto.title = title || ''; tuto.artist = artist || ''; go('tuto'); tutoSet(title, artist); }
+function tutoOpt(k, v) { tuto[k] = v; renderTuto(); }
+
+/* dictation */
+function tutoDictate() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Dictée indisponible ici : essaie Chrome ou Edge', true); return; }
+  let r;
+  try { r = new SR(); } catch (e) { toast('Dictée indisponible', true); return; }
+  r.lang = 'fr-FR'; r.interimResults = false; r.maxAlternatives = 1;
+  tuto.listening = 'dict'; renderTuto();
+  r.onresult = e => {
+    const txt = e.results[0][0].transcript.trim();
+    const m = txt.match(/^(.*?)\s+(?:de|du|des|by|par)\s+(.+)$/i);
+    tuto.listening = '';
+    m ? tutoSet(m[1], m[2]) : tutoSet(txt, '');
+    toast(`Compris : « ${txt} »`);
+  };
+  r.onerror = e => { tuto.listening = ''; renderTuto(); toast(e.error === 'not-allowed' ? 'Micro refusé' : 'Je n’ai rien compris, réessaie', true); };
+  r.onend = () => { if (tuto.listening) { tuto.listening = ''; renderTuto(); } };
+  r.start();
+}
+/* audio recognition (experimental, AudD + user token) */
+async function tutoRecognize() {
+  const token = LS.get('gms_audd', '');
+  if (!token) { tuto.showKeys = true; renderTuto(); toast('Ajoute d’abord ta clé AudD (gratuite) ci-dessous', true); return; }
+  if (!window.MediaRecorder) { toast('Enregistrement audio non supporté ici', true); return; }
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({audio:true}); } catch (e) { toast('Micro refusé ou indisponible', true); return; }
+  const chunks = [], mr = new MediaRecorder(stream);
+  mr.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+  tuto.listening = 'audio'; renderTuto();
+  mr.onstop = async () => {
+    stream.getTracks().forEach(t => t.stop());
+    tuto.listening = 'wait'; renderTuto();
+    try {
+      const fd = new FormData();
+      fd.append('api_token', token);
+      fd.append('file', new Blob(chunks, {type: mr.mimeType || 'audio/webm'}), 'extrait.webm');
+      const res = await fetch('https://api.audd.io/', {method:'POST', body:fd});
+      const j = await res.json();
+      tuto.listening = '';
+      if (j.status === 'success' && j.result) { tutoSet(j.result.title, j.result.artist); toast(`Reconnu : ${j.result.title} — ${j.result.artist}`); }
+      else { renderTuto(); toast(j.error ? 'AudD : ' + (j.error.error_message || 'erreur') : 'Morceau non reconnu, réessaie plus près du son', true); }
+    } catch (e) { tuto.listening = ''; renderTuto(); toast('Service de reconnaissance injoignable depuis cette page', true); }
+  };
+  mr.start(); setTimeout(() => { if (mr.state === 'recording') mr.stop(); }, 9000);
+}
+/* YouTube in-app results (optional key) */
+async function tutoLoadYT() {
+  const key = LS.get('gms_ytkey', '');
+  if (!key) { tuto.showKeys = true; renderTuto(); return; }
+  tuto.ytLoading = true; tuto.ytErr = ''; renderTuto();
+  try {
+    const q = tQuery(tLangs()[0]);
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=9&videoEmbeddable=true&relevanceLanguage=${tLangs()[0]}&q=${enc(q)}&key=${enc(key)}`;
+    const j = await (await fetch(url)).json();
+    if (j.error) throw new Error(j.error.message || 'erreur');
+    const unent = x => { const t = document.createElement('textarea'); t.innerHTML = x; return t.value; };
+    tuto.yt = (j.items || []).map(it => ({id: it.id.videoId, t: unent(it.snippet.title), ch: unent(it.snippet.channelTitle), th: (it.snippet.thumbnails.medium || it.snippet.thumbnails.default).url}));
+  } catch (e) { tuto.ytErr = 'Impossible de charger YouTube : ' + (e.message || 'réseau') + '. Vérifie ta clé, ou utilise les liens de recherche.'; tuto.yt = null; }
+  tuto.ytLoading = false; renderTuto();
+}
+function tutoSaveKeys() {
+  LS.set('gms_ytkey', ($('tt-ytkey').value || '').trim());
+  LS.set('gms_audd', ($('tt-audd').value || '').trim());
+  tuto.showKeys = false; toast('Clés enregistrées dans ce navigateur'); renderTuto();
+  if (tuto.title && LS.get('gms_ytkey', '')) tutoLoadYT();
+}
+/* keep a good tutorial in the sheet */
+async function tutoKeep(url, label) {
+  url = (url || '').trim();
+  if (!/^https?:\/\//.test(url)) { toast('Colle un lien complet (https://…)', true); return; }
+  let s = sheets.find(x => x.title.toLowerCase() === tuto.title.toLowerCase() && (!tuto.artist || (x.artist || '').toLowerCase() === tuto.artist.toLowerCase()));
+  const created = !s;
+  if (!s) { s = newSheet_(); s.title = tuto.title; s.artist = tuto.artist || '—'; sheets.push(s); }
+  s.links = s.links || [];
+  if (!s.links.some(l => l.url === url)) s.links.push({id:uid(), url, title: label || (ytId(url) ? 'Tuto vidéo' : url.replace(/^https?:\/\//, '').slice(0, 48))});
+  s.blocks = s.blocks || {}; s.blocks.coffre = true; s.updatedAt = Date.now();
+  await DB.put('sheets', clone(s));
+  toast(created ? `Fiche « ${s.title} » créée avec ce tuto dans le Coffre` : `Tuto ajouté au Coffre de « ${s.title} »`);
+  renderTuto();
+}
+function tutoSheet() { return sheets.find(x => tuto.title && x.title.toLowerCase() === tuto.title.toLowerCase()); }
+
+function renderTuto() {
+  const host = $('tuto-body'); if (!host) return;
+  const recent = LS.get('gms_tuto_recent', []), mine = sheets.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 10);
+  const keys = {yt: LS.get('gms_ytkey', ''), audd: LS.get('gms_audd', '')};
+  const listen = tuto.listening;
+  const chip = (t, a) => `<button type="button" class="filt" onclick="tutoSet(${esc(JSON.stringify(t))},${esc(JSON.stringify(a || ''))})">${esc(t)}${a ? ` <span style="opacity:.6">· ${esc(a)}</span>` : ''}</button>`;
+  let h = `<div class="fcard tt-search">
+    <div class="frow">
+      <div class="fg" style="flex:2"><label>Morceau</label><input type="text" id="tt-title" value="${esc(tuto.title)}" placeholder="Ex : Wonderwall" onkeydown="if(event.key==='Enter')tutoSearch()"></div>
+      <div class="fg" style="flex:1.4"><label>Artiste</label><input type="text" id="tt-artist" value="${esc(tuto.artist)}" placeholder="Ex : Oasis" onkeydown="if(event.key==='Enter')tutoSearch()"></div>
+    </div>
+    <div class="tt-actions">
+      <button type="button" class="btn btn-primary" onclick="tutoSearch()">${icon('search', 15)} Trouver les tutos</button>
+      <button type="button" class="btn btn-ghost ${listen === 'dict' ? 'tt-live' : ''}" onclick="tutoDictate()">${icon('mic', 15)} ${listen === 'dict' ? 'Je t’écoute…' : 'Dicter le titre'}</button>
+      <button type="button" class="btn btn-ghost ${listen === 'audio' || listen === 'wait' ? 'tt-live' : ''}" onclick="tutoRecognize()">${icon('wave', 15)} ${listen === 'audio' ? 'Écoute du morceau (9 s)…' : listen === 'wait' ? 'Recherche…' : 'Reconnaître un morceau qui passe'}</button>
+    </div>
+    ${mine.length ? `<div class="tt-sub">Depuis ton cahier</div><div class="filters">${mine.map(s => chip(s.title, s.artist)).join('')}</div>` : ''}
+    ${recent.length ? `<div class="tt-sub">Recherches récentes</div><div class="filters">${recent.map(r => chip(r.t, r.a)).join('')}</div>` : ''}
+    <div class="tt-opts">
+      <div><div class="tt-sub">Niveau</div><div class="filters">${Object.entries(T_LVL).map(([k, v]) => `<button type="button" class="filt ${tuto.lvl===k?'on':''}" onclick="tutoOpt('lvl','${k}')">${v.n}</button>`).join('')}</div></div>
+      <div><div class="tt-sub">Je veux apprendre</div><div class="filters">${Object.entries(T_KIND).map(([k, v]) => `<button type="button" class="filt ${tuto.kind===k?'on':''}" onclick="tutoOpt('kind','${k}')">${v.n}</button>`).join('')}</div></div>
+      <div><div class="tt-sub">Langue des tutos</div><div class="filters">${Object.entries(T_LANG).map(([k, v]) => `<button type="button" class="filt ${tuto.lang===k?'on':''}" onclick="tutoOpt('lang','${k}')">${v}</button>`).join('')}</div></div>
+    </div>
+    <button type="button" class="tt-keys-btn" onclick="tuto.showKeys=!tuto.showKeys;renderTuto()">Options avancées : vidéos YouTube dans l’appli & reconnaissance audio ${keys.yt ? '· YouTube ✓' : ''}${keys.audd ? ' · Audio ✓' : ''}</button>
+    ${tuto.showKeys ? `<div class="tt-keys">
+      <p class="exo-note" style="margin-top:0">Ces deux options utilisent des services externes avec <b>ta propre clé gratuite</b>. Elle reste uniquement dans ce navigateur. Sans clé, tout le reste fonctionne.</p>
+      <div class="frow">
+        <div class="fg"><label>Clé YouTube Data API v3</label><input type="text" id="tt-ytkey" value="${esc(keys.yt)}" placeholder="AIza…"><div class="exo-note">À créer gratuitement sur <a href="https://console.cloud.google.com/apis/library/youtube.googleapis.com" target="_blank" rel="noopener" style="color:var(--gold2)">Google Cloud Console</a> → activer « YouTube Data API v3 » → Identifiants → Clé API.</div></div>
+        <div class="fg"><label>Jeton AudD (reconnaissance audio)</label><input type="text" id="tt-audd" value="${esc(keys.audd)}" placeholder="jeton AudD"><div class="exo-note">Jeton gratuit pour un usage léger sur <a href="https://audd.io" target="_blank" rel="noopener" style="color:var(--gold2)">audd.io</a>. Sinon, utilise <a href="https://www.shazam.com" target="_blank" rel="noopener" style="color:var(--gold2)">Shazam</a> puis tape le titre.</div></div>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm" onclick="tutoSaveKeys()">Enregistrer</button></div>` : ''}
+  </div>`;
+
+  if (!tuto.show) {
+    h += `<div class="tt-empty">${tutoHeroSVG()}<h3>Un morceau en tête ?</h3><p>Tape-le, dicte-le, ou fais écouter le morceau : l’appli te sort les meilleurs tutos des réseaux, de YouTube et des sites de tabs de confiance.</p></div>`;
+    host.innerHTML = h; return;
+  }
+  const sh = tutoSheet();
+  h += `<div id="tt-results"><div class="tt-song">
+      <div><div class="tt-song-t">${esc(tuto.title)}</div><div class="tt-song-a">${esc(tuto.artist || 'Artiste non précisé')} · ${T_KIND[tuto.kind].n} · ${T_LVL[tuto.lvl].n}</div></div>
+      ${sh ? `<button type="button" class="btn btn-ghost btn-sm" onclick="viewSheet('${sh.id}')">Ouvrir ma fiche</button>` : `<button type="button" class="btn btn-ghost btn-sm" onclick="draft=newSheet_();draft.title=tuto.title;draft.artist=tuto.artist;openEditor('Nouvelle fiche')">+ Créer la fiche</button>`}
+    </div>
+    <div class="exo-sec-t" style="margin-top:22px">Tutos sur les réseaux</div>
+    <div class="tt-plat-grid">${tutoPlatforms().map(p => `<div class="tt-plat">
+      <div class="tt-plat-h" style="background:${p.bg}"><span class="tt-plat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p.ico}</svg></span><div><div class="tt-plat-n">${p.n}</div><div class="tt-plat-d">${p.d}</div></div></div>
+      <div class="tt-plat-links">${p.links.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener" class="tt-link">${esc(l)}<span>${icon('ext', 13)}</span></a>`).join('')}</div></div>`).join('')}</div>
+    <div class="exo-note">TikTok et Instagram n’offrent pas de recherche publique intégrable : chaque bouton ouvre directement la bonne recherche ou le bon hashtag (Instagram peut demander d’être connecté).</div>
+
+    <div class="exo-sec-t" style="margin-top:22px">Vidéos YouTube dans l’appli</div>
+    ${tutoYTHTML(keys.yt)}
+
+    <div class="exo-sec-t" style="margin-top:22px">Tabs & accords · sites de confiance</div>
+    <div class="tt-site-grid">${tutoSites().map(([n, d, u]) => `<a class="tt-site" href="${u}" target="_blank" rel="noopener"><div class="tl-mono" style="width:34px;height:34px;font-size:12px">${n.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div><div style="flex:1;min-width:0"><div class="tl-n" style="font-size:14px">${n}</div><div class="tl-host">${d}</div></div>${icon('ext', 14)}</a>`).join('')}</div>
+
+    <div class="exo-sec-t" style="margin-top:22px">Recherches Google ciblées</div>
+    <div class="filters">${tutoGoogle().map(([l, u]) => `<a class="filt" href="${u}" target="_blank" rel="noopener">${l} ↗</a>`).join('')}</div>
+
+    <div class="tt-cols">
+      <div class="fcard" style="margin:0"><div class="fcard-t">${icon('save', 14)} Garder le bon tuto</div>
+        <p class="exo-note" style="margin-top:0">Tu as trouvé LA bonne vidéo ? Colle son lien : elle est rangée dans le Coffre de la fiche du morceau (créée si besoin). Les vidéos YouTube s’y regardent directement.</p>
+        <div style="display:flex;gap:8px"><input type="url" id="tt-keep" placeholder="https://www.tiktok.com/… ou youtube.com/…" style="flex:1" onkeydown="if(event.key==='Enter')tutoKeep(this.value)">
+        <button type="button" class="btn btn-primary btn-sm" onclick="tutoKeep($('tt-keep').value)">Garder</button></div>
+        ${sh && (sh.links || []).length ? `<div class="exo-note">Déjà dans le Coffre : ${sh.links.length} lien${sh.links.length > 1 ? 's' : ''}.</div>` : ''}</div>
+      <div class="fcard" style="margin:0"><div class="fcard-t">Reconnaître un bon tuto</div>
+        <div class="tt-check">${['Il joue la <b>vraie version</b> au début (tu entends si c’est le bon son).','On voit <b>les deux mains</b> de près.','Il indique <b>accordage et capo</b>.','Il découpe : <b>partie par partie</b>, puis au ralenti.','Commentaires positifs, et la vidéo n’est pas « simplifiée » sans le dire.'].map(t => `<div>${t}</div>`).join('')}</div></div>
+    </div></div>`;
+  host.innerHTML = h;
+}
+function tutoYTHTML(key) {
+  if (!key) return `<div class="exo-vis" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div style="flex:1;min-width:220px;font-size:13px;color:var(--cream2);line-height:1.6">Avec une clé YouTube gratuite, les meilleurs tutos s’affichent <b>ici</b>, avec miniatures, et se regardent sans quitter l’appli.</div>
+    <button type="button" class="btn btn-ghost btn-sm" onclick="tuto.showKeys=true;renderTuto();window.scrollTo({top:0,behavior:'smooth'})">Ajouter ma clé</button></div>`;
+  if (tuto.ytLoading) return '<div class="exo-vis exo-note">Chargement des vidéos…</div>';
+  if (tuto.ytErr) return `<div class="exo-vis exo-note" style="color:var(--terra)">${esc(tuto.ytErr)}</div>`;
+  if (!tuto.yt) return `<button type="button" class="btn btn-ghost btn-sm" onclick="tutoLoadYT()">Charger les vidéos</button>`;
+  if (!tuto.yt.length) return '<div class="exo-vis exo-note">Aucune vidéo trouvée : élargis les filtres (tous niveaux, cours complet).</div>';
+  return `${tuto.play ? `<div class="yt-embed" style="margin-bottom:12px"><iframe src="https://www.youtube.com/embed/${tuto.play}?autoplay=1" title="Tuto" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>` : ''}
+    <div class="tt-yt-grid">${tuto.yt.map(v => `<div class="tt-yt ${tuto.play === v.id ? 'on' : ''}">
+      <button type="button" class="tt-yt-th" onclick="tuto.play='${v.id}';renderTuto()"><img src="${v.th}" alt="" loading="lazy"><span>▶</span></button>
+      <div class="tt-yt-t">${esc(v.t)}</div><div class="tl-host">${esc(v.ch)}</div>
+      <button type="button" class="btn btn-ghost btn-xs" style="margin-top:6px" onclick="tutoKeep('https://www.youtube.com/watch?v=${v.id}', ${esc(JSON.stringify('Tuto · ' + v.ch))})">${icon('save', 12)} Garder</button></div>`).join('')}</div>`;
+}
+function tutoHeroSVG() {
+  return `<svg width="220" height="140" viewBox="0 0 220 140" fill="none" aria-hidden="true">
+    <rect x="12" y="22" width="76" height="100" rx="12" fill="var(--card3)" stroke="var(--border2)"/><path d="M42 58l18 12-18 12z" fill="var(--terra)"/>
+    <rect x="72" y="10" width="76" height="120" rx="14" fill="var(--card2)" stroke="var(--gold)" stroke-width="2"/>
+    <circle cx="110" cy="58" r="20" fill="var(--gold)"/><path d="M104 48l16 10-16 10z" fill="var(--ink)"/>
+    <rect x="86" y="92" width="48" height="6" rx="3" fill="var(--border2)"/><rect x="86" y="104" width="32" height="6" rx="3" fill="var(--border2)"/>
+    <rect x="132" y="22" width="76" height="100" rx="12" fill="var(--card3)" stroke="var(--border2)"/><circle cx="170" cy="62" r="13" stroke="var(--mauve)" stroke-width="3"/><circle cx="182" cy="44" r="2.5" fill="var(--mauve)"/>
+    <circle cx="186" cy="112" r="16" fill="var(--sage)"/><circle cx="183" cy="109" r="6" stroke="var(--ink)" stroke-width="2.4"/><path d="M188 114l5 5" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>`;
+}
+
 /* ═══════ NAV ═══════ */
 function go(v) {
   stopPlay();
@@ -3193,12 +3624,14 @@ function go(v) {
   exoStop();
   document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
   $('v-' + v).classList.add('on');
-  ['home','lib','cours','exo','metro','tuner','import'].forEach(k => { const b = $('nl-' + k); if (b) b.classList.toggle('on', k === v); });
+  ['home','lib','cours','exo','tuto','tools','metro','tuner','import'].forEach(k => { const b = $('nl-' + k); if (b) b.classList.toggle('on', k === v); });
   window.scrollTo(0,0);
   if (v === 'home') renderHome();
   if (v === 'lib') renderLib();
   if (v === 'cours') renderCours();
   if (v === 'exo') exoRender();
+  if (v === 'tuto') renderTuto();
+  if (v === 'tools') { $('tools-hero').innerHTML = toolsHeroSVG(); renderTools(); }
   if (v === 'metro') renderMetroAll();
   if (v === 'tuner') renderTunerStrings();
 }
@@ -3429,7 +3862,8 @@ function resourcesHTML(s) {
   ];
   return `<div class="pv-block"><div class="pv-hdr"><div class="pv-dot" style="background:var(--sage)"></div><div class="pv-name">Trouver des ressources</div></div>
     <div class="pv-body">
-      <p style="font-size:12px;color:var(--cream4);margin-bottom:12px">Recherches pre-remplies a partir du titre et de l artiste. Colle ensuite le bon lien dans le Memo.</p>
+      <p style="font-size:12px;color:var(--cream4);margin-bottom:12px">Recherches pré-remplies à partir du titre et de l’artiste. Pour aller plus loin (TikTok, Instagram, YouTube, sites de confiance) :</p>
+      <button type="button" class="btn btn-primary btn-sm" style="margin-bottom:12px" onclick="tutoOpenFor(cur.title, cur.artist)">Tous les tutos de ce morceau →</button>
       <div class="res-links">${L.map(([t,u]) => `<a class="btn btn-ghost btn-sm" href="${u}" target="_blank" rel="noopener">${t}
         <svg class="ico" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`).join('')}</div>
     </div></div>`;
