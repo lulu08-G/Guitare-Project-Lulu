@@ -641,6 +641,75 @@ a.filt{display:inline-block}
 .p-toc .a{color:#888;font-size:11px}
 .p-ascii{font-family:ui-monospace,Menlo,monospace;font-size:9px;line-height:1.35;white-space:pre;overflow:hidden;color:#333;background:#fafafa;border:1px solid #eee;border-radius:5px;padding:7px;margin-top:6px}
 
+/* ── MODE JEU (fiche plein écran) ── */
+body.playing nav{display:none}
+body.playing .toast{bottom:104px}
+#v-sheet .sv-wrap{max-width:1100px;margin:0 auto;padding:0 18px 140px}
+.sv-head{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:62px;padding:8px 0;background:var(--bg);border-bottom:1px solid var(--border)}
+.sv-back{min-height:44px;min-width:44px;padding:0 14px 0 8px;border-radius:50px;background:var(--card2);border:1px solid var(--border);color:var(--cream);font-weight:700;font-size:14px;display:flex;align-items:center;gap:2px;flex-shrink:0}
+.sv-back svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.sv-ttl{flex:1;min-width:0}
+.sv-ttl h2{font-family:var(--serif);font-size:clamp(19px,3vw,28px);font-weight:800;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15}
+.sv-ttl .sv-artist{margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sv-head .btn-icon{width:44px;height:44px}
+.sv-aa{font-family:var(--serif);font-size:17px;font-weight:800}
+.sv-aa[aria-pressed="true"]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.sv-aa:disabled{opacity:.35}
+.sv-pills{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 4px}
+.sv-pill{min-height:32px;padding:0 14px;border-radius:50px;display:inline-flex;align-items:center;font-family:var(--mono);font-size:13px;font-weight:600;background:var(--card2);border:1px solid var(--border);color:var(--cream)}
+.sv-pill.capo{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+#v-sheet .sv-body{margin-top:10px}
+#v-sheet .sv-tabs{position:sticky;top:62px;z-index:20;background:var(--bg);padding:6px 0;margin-bottom:10px}
+#v-sheet .sv-tab{min-height:44px;padding:0 20px;font-size:14px}
+#v-sheet .parts-view{padding-bottom:20px}
+#v-sheet .parts-view .pv-block{background:none;border:0;border-radius:0;overflow:visible}
+#v-sheet .parts-view .pv-block>.pv-hdr{display:none}
+#v-sheet .parts-view .pv-block .pv-body{padding:0}
+#v-sheet .pv-lbl{color:var(--cream3)}
+#v-sheet .chords-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#v-sheet .chord-cell{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:10px 6px 8px;gap:0;transition:box-shadow .1s,border-color .1s}
+#v-sheet .chord-cell .cn{font-size:32px;font-weight:800;line-height:1.15;color:var(--cream)}
+#v-sheet .chord-cell svg{width:min(100%,128px);height:auto}
+#v-sheet .chord-cell.now{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold)}
+.sv-rh{margin-top:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:6px 10px;overflow:hidden}
+.sv-rh svg{width:100%;height:auto;max-height:104px}
+.sv-reccard{margin-top:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px}
+.sv-reccard b{font-size:13px;color:var(--cream);flex:1;min-width:140px}
+.sv-reccard b small{display:block;font-weight:500;color:var(--cream3);font-size:11px}
+.sv-reccard .btn{min-height:44px}
+#v-sheet .pv-lyr{display:none;margin-top:16px;font-size:20px;line-height:1.7;color:var(--cream);font-style:normal}
+#v-sheet.lyr-on .pv-lyr{display:block}
+.sv-more{margin-top:24px;border-top:1px solid var(--border);padding-top:6px}
+.sv-more>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:700;font-size:13px;color:var(--cream3)}
+.sv-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border2);padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
+.sv-bar-in{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.sv-act{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:56px;height:60px;border-radius:16px;background:var(--card2);border:1px solid var(--border);color:var(--cream);font-size:10px;font-weight:700;flex-shrink:0}
+.sv-act svg{width:24px;height:24px}
+.sv-act.main{background:var(--gold);color:var(--ink);width:64px;height:64px;border-radius:50%;border-color:var(--gold);box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.sv-act.on{background:var(--terra);color:#fff;border-color:var(--terra)}
+.sv-act.rec svg{color:var(--terra)}
+.sv-act.on svg{color:#fff}
+.sv-bpm{flex-shrink:0;gap:2px}
+.sv-bpm button{width:44px;height:44px}
+@media(max-width:480px){.sv-back span{display:none}.sv-back{padding:0 10px}}
+@media(min-width:700px){#v-sheet .chords-row{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}}
+@media(min-width:860px){#v-sheet .sv-tabs{width:200px;top:76px;flex-direction:column;overflow-x:visible}
+  #v-sheet .sv-tab{min-height:56px;font-size:18px;text-align:left}}
+@media(min-width:900px){
+  #v-sheet .chord-cell .cn{font-size:44px}
+  #v-sheet .chord-cell svg{width:min(100%,190px)}
+  .sv-rh svg{max-height:120px}
+}
+/* enregistrement du rythme */
+#m-rec .modal-f{justify-content:space-between}#m-rec .modal-f .spacer{display:none}
+.rc-big{width:100%;min-height:60px;font-size:16px}
+.rc-count{font-family:var(--serif);font-size:96px;font-weight:800;color:var(--gold);text-align:center;line-height:1.1;padding:10px 0}
+.rc-rec{display:flex;align-items:center;justify-content:center;gap:10px;font-size:28px;font-family:var(--mono);padding:24px 0;color:var(--cream)}
+.rc-wave{width:100%;height:110px;display:block;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--border)}
+.rc-trim{margin:12px 0;display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;align-items:center;font-size:12px;color:var(--cream3)}
+.rc-trim input[type=range]{width:100%;height:32px;accent-color:var(--gold)}
+.rc-trim b{font-family:var(--mono);color:var(--cream);min-width:48px;text-align:right}
+
 @media(max-width:640px){
   .frow{flex-direction:column}
   .grid{grid-template-columns:1fr}
@@ -728,29 +797,34 @@ a.filt{display:inline-block}
   </div>
 </div>
 
-<!-- ══ SHEET VIEW ══ -->
+<!-- ══ SHEET VIEW (mode jeu) ══ -->
 <div class="view" id="v-sheet">
-  <div class="wrap-narrow">
-    <div class="sv-top">
-      <div>
-        <h2 id="sv-title"></h2>
-        <div class="sv-artist" id="sv-artist"></div>
-        <div class="sv-badges" id="sv-badges"></div>
-      </div>
+  <div class="sv-wrap">
+    <div class="sv-head">
+      <button type="button" class="sv-back" onclick="svExit()" aria-label="Quitter le mode jeu, retour au cahier"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span>Cahier</span></button>
+      <div class="sv-ttl"><h2 id="sv-title"></h2><div class="sv-artist" id="sv-artist"></div></div>
       <div class="sv-btns">
-        <button class="btn-icon" onclick="go('home')" title="Retour"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-        <button class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
-        <button class="btn-icon" onclick="printOne()" title="Imprimer"><svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></button>
-        <button class="btn btn-ghost btn-sm" id="sv-edit">Modifier</button>
+        <button type="button" class="btn-icon sv-aa" id="sv-lyr" onclick="svToggleLyrics()" aria-pressed="false" title="Afficher les paroles">Aa</button>
+        <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+        <button type="button" class="btn-icon" id="sv-edit" title="Modifier la fiche"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button>
       </div>
     </div>
-    <div class="sv-stats" id="sv-stats"></div>
+    <div class="sv-pills" id="sv-stats"></div>
     <div class="sv-body">
       <div class="sv-tabs" id="sv-tabs"></div>
       <div class="parts-view" id="sv-parts"></div>
     </div>
-    <div id="sv-coffre"></div>
+    <details class="sv-more"><summary>Plus : Coffre, ressources, impression</summary>
+      <div id="sv-coffre"></div>
+      <button type="button" class="btn btn-ghost" style="margin:6px 0 20px" onclick="printOne()">Imprimer cette fiche</button>
+    </details>
   </div>
+  <div class="sv-bar" id="sv-bar"><div class="sv-bar-in">
+    <button type="button" class="sv-act main" id="sv-play" onclick="svPlayCur()" aria-label="Lancer le rythme en cases"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21"/></svg><small>Rythme</small></button>
+    <button type="button" class="sv-act" id="sv-rec" onclick="svRecBtn()" aria-label="Enregistrer mon rythme à la guitare"></button>
+    <button type="button" class="sv-act" id="sv-orig" onclick="svOriginal()" aria-label="Écouter l'original"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg><small>Original</small></button>
+    <div class="rh-bpm sv-bpm"><button type="button" onclick="rhBpmStep(-1)" aria-label="Moins vite">&minus;</button><div><b id="rh-bpm-bar">90</b><span>BPM</span></div><button type="button" onclick="rhBpmStep(1)" aria-label="Plus vite">+</button></div>
+  </div></div>
 </div>
 
 <!-- ══ EDITOR ══ -->
@@ -771,6 +845,13 @@ a.filt{display:inline-block}
           <button type="button" class="btn btn-ghost" onclick="addChordLine()">Ajouter</button>
         </div>
         <div class="qc-sugg" id="qc-sugg"></div>
+      </div>
+      <div class="fg">
+        <label>Version originale <span class="opt-tag">(lien YouTube, Spotify… pour « Écouter l’original »)</span></label>
+        <div class="qc-row">
+          <input type="url" id="f-orig" placeholder="https://…" autocomplete="off" inputmode="url" oninput="draft.original={url:this.value.trim()}">
+          <button type="button" class="btn btn-ghost" onclick="searchOriginal()">Chercher</button>
+        </div>
       </div>
       <div class="frow qc-meta">
         <div class="fg" style="margin-bottom:0"><label>BPM</label><input type="number" inputmode="numeric" min="30" max="300" id="f-bpm" placeholder="Ex : 90" oninput="draft.bpm=+this.value||0"></div>
@@ -990,6 +1071,7 @@ a.filt{display:inline-block}
 <div class="ov hide" id="m-chord"><div class="modal"><div id="m-chord-body"></div></div></div>
 <div class="ov hide" id="m-print"><div class="modal"><div id="m-print-body"></div></div></div>
 <div class="ov hide" id="m-media"><div class="modal"><div id="m-media-body"></div></div></div>
+<div class="ov hide" id="m-rec"><div class="modal"><div id="m-rec-body"></div></div></div>
 <div id="print-root"></div>
 
 <script>
@@ -1444,7 +1526,7 @@ function click(t, hi) {
 }
 let rhP = null; // lecture en cours : {key, ctx, rh, bpm, chord, capo, k, k0, t0, timer, raf, q, onStep, click}
 function stopPlay() {
-  rhStop();
+  rhStop(); recStopPlay();
   document.querySelectorAll('.play-on').forEach(e => e.classList.remove('play-on'));
 }
 /* Moteur de rythme : planificateur à anticipation sur l'horloge Web Audio (même principe que le métronome :
@@ -1470,7 +1552,8 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   rh = rhNorm(rh); if (!rhHas(rh)) return false;
   opt = opt || {};
   const ac = audio(); if (ac.state === 'suspended') ac.resume();
-  const P = rhP = {key: opt.key || '', ctx: ac, rh, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
+  recStopPlay();
+  const P = rhP = {key: opt.key || '', ctx: ac, rh, chords: opt.chords && opt.chords.length ? opt.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
     k: 0, k0: 0, t0: ac.currentTime + 0.08, q: [], onStep, onCell: opt.onCell, timer: null, raf: 0};
   const tick = () => {
     if (rhP !== P) return;
@@ -1478,9 +1561,11 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
     while (rhCellTime(P, P.k) < ac.currentTime + 0.12) {
       const i = P.k % rh.cells.length, t = rhCellTime(P, P.k), inBar = i % per;
       if (inBar % spb === 0) click(t, inBar === 0);
-      rhPlayCell(rh.cells[i], t, P.chord, P.capo);
+      // 1 accord = 1 mesure : la suite d'accords de la partie défile, mesure après mesure
+      const ch = P.chords ? P.chords[Math.floor(P.k/per) % P.chords.length] : P.chord;
+      rhPlayCell(rh.cells[i], t, ch, P.capo);
       if (P.onCell) P.onCell(i, t, P.k);
-      P.q.push({i, t}); P.k++;
+      P.q.push({i, t, k: P.k}); P.k++;
     }
     P.timer = setTimeout(tick, 25);
   };
@@ -1488,7 +1573,7 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
     if (rhP !== P) return;
     let cur = null;
     while (P.q.length && P.q[0].t <= ac.currentTime) cur = P.q.shift();
-    if (cur && P.onStep) P.onStep(cur.i);
+    if (cur && P.onStep) P.onStep(cur.i, cur.k);
     P.raf = requestAnimationFrame(draw);
   };
   tick(); draw();
@@ -3758,6 +3843,209 @@ function tutoHeroSVG() {
   </svg>`;
 }
 
+/* ═══════ RYTHME ENREGISTRÉ — micro → IndexedDB (store media) → boucle sans trou ═══════
+   p.rec = {mediaId, start, end, dur, at} par partie. Le blob complet reste stocké : le rognage (start/end, en secondes)
+   est non destructif. Lecture : décodé en AudioBuffer, AudioBufferSourceNode loop + loopStart/loopEnd (boucle sans coupure). */
+const recBuf = {};   // mediaId -> AudioBuffer décodé
+let recPlay = null;  // {src, part}
+let rc = null;       // session de la fenêtre d'enregistrement
+async function recDecode(blob) { return audio().decodeAudioData(await blob.arrayBuffer()); }
+async function recBuffer(mediaId) {
+  if (recBuf[mediaId]) return recBuf[mediaId];
+  const m = await DB.get('media', mediaId); if (!m) return null;
+  return (recBuf[mediaId] = await recDecode(m.blob));
+}
+function recLoopSrc(buf, start, end) {
+  const ac = audio(), src = ac.createBufferSource();
+  src.buffer = buf; src.loop = true; src.loopStart = start; src.loopEnd = Math.min(end, buf.duration);
+  src.connect(ac.destination); src.start(0, start);
+  return src;
+}
+function recStopPlay() {
+  if (!recPlay) return;
+  const R = recPlay; recPlay = null;
+  try { R.src.stop(); R.src.disconnect(); } catch (e) {}
+  if (cur) svSync();
+}
+async function recPlayToggle(i) {
+  if (recPlay && recPlay.part === i) { recStopPlay(); return; }
+  stopPlay();
+  const p = cur.parts[i]; if (!p || !p.rec) return;
+  const buf = await recBuffer(p.rec.mediaId);
+  if (!buf) { toast('Enregistrement introuvable', true); return; }
+  const ac = audio(); if (ac.state === 'suspended') await ac.resume();
+  recPlay = {src: recLoopSrc(buf, p.rec.start, p.rec.end), part: i};
+  svSync();
+}
+async function rcOpen(i, stage) {
+  rcCleanup(); stopPlay();
+  const p = cur.parts[i];
+  rc = {part: i, stage: 'idle', start: 0, end: 0, isNew: true, count: LS.get('gms_rec_count', true) !== false};
+  $('m-rec').classList.remove('hide');
+  if (stage === 'trim' && p.rec) {
+    const me = rc;
+    rc.stage = 'load'; rcRender();
+    const buf = await recBuffer(p.rec.mediaId);
+    if (rc !== me) return;
+    if (!buf) { toast('Enregistrement introuvable', true); rcClose(); return; }
+    Object.assign(rc, {buf, start: p.rec.start, end: Math.min(p.rec.end, buf.duration), isNew: false, mediaId: p.rec.mediaId, stage: 'trim'});
+    rc.peaks = rcPeaks(buf);
+  }
+  rcRender();
+}
+function rcCleanup() {
+  if (!rc) return;
+  const R = rc; rc = null;
+  clearTimeout(R.tm); clearInterval(R.iv); (R.timers || []).forEach(clearTimeout);
+  if (R.mr) { R.mr.onstop = null; R.mr.ondataavailable = null; try { if (R.mr.state !== 'inactive') R.mr.stop(); } catch (e) {} }
+  if (R.stream) R.stream.getTracks().forEach(t => t.stop());
+  if (R.prev) { try { R.prev.stop(); R.prev.disconnect(); } catch (e) {} }
+}
+function rcClose() { rcCleanup(); $('m-rec').classList.add('hide'); }
+function rcPeaks(buf) {
+  const d = buf.getChannelData(0), n = 400, step = Math.max(1, Math.floor(d.length/n)), out = [];
+  for (let i = 0; i < n; i++) { let m = 0; for (let j = i*step; j < Math.min(d.length, (i+1)*step); j++) m = Math.max(m, Math.abs(d[j])); out.push(m); }
+  const mx = Math.max(...out, .001); return out.map(v => v/mx);
+}
+const fmtS = v => v.toFixed(2).replace('.', ',') + ' s';
+function rcRender() {
+  if (!rc) return;
+  const p = cur.parts[rc.part], bpm = cur.bpm || 90, h = $('m-rec-body');
+  const name = esc(p.name);
+  if (rc.stage === 'load') h.innerHTML = `<div class="modal-t">Rythme enregistré — ${name}</div><p style="color:var(--cream3)">Chargement…</p>`;
+  else if (rc.stage === 'idle') h.innerHTML = `<div class="modal-t">Enregistrer mon rythme — ${name}</div>
+    <p style="font-size:13px;color:var(--cream3);margin-bottom:14px">Joue ton rythme à la guitare sur 1 à 4 mesures. Ensuite tu le rognes, et il tourne en boucle sans coupure dans le mode jeu.</p>
+    <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;color:var(--cream)"><input type="checkbox" id="rc-count" ${rc.count?'checked':''} onchange="rc.count=this.checked;LS.set('gms_rec_count',this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Décompte de 4 temps au métronome (${bpm} BPM)</label>
+    <p style="font-size:11px;color:var(--cream4);margin:6px 0 16px">Le navigateur va demander l’accès au micro. Le clic du décompte n’est pas enregistré.</p>
+    <button type="button" class="btn btn-primary rc-big" onclick="rcStart()">${REC_DOT_SVG.replace('<svg','<svg width="20" height="20" style="color:var(--terra)"')} Démarrer</button>
+    <div class="modal-f"><button type="button" class="btn btn-ghost" onclick="rcClose()">Annuler</button></div>`;
+  else if (rc.stage === 'count') h.innerHTML = `<div class="modal-t">Prépare-toi…</div><div class="rc-count" id="rc-n">4</div>
+    <div class="modal-f"><button type="button" class="btn btn-ghost" onclick="rcClose()">Annuler</button></div>`;
+  else if (rc.stage === 'rec') h.innerHTML = `<div class="modal-t">On enregistre</div>
+    <div class="rc-rec"><span class="rec-dot"></span><span id="rc-t">0,0 s</span></div>
+    <button type="button" class="btn btn-primary rc-big" onclick="rcStop()">${RH_STOP_SVG.replace('<svg','<svg width="20" height="20"')} Arrêter</button>`;
+  else if (rc.stage === 'trim') {
+    const dur = rc.buf.duration;
+    h.innerHTML = `<div class="modal-t">Rogner la boucle — ${name}</div>
+      <canvas class="rc-wave" id="rc-wave"></canvas>
+      <div class="rc-trim">
+        <span>Début</span><input type="range" id="rc-s" min="0" max="${dur}" step="0.01" value="${rc.start}" oninput="rcTrim()" aria-label="Début de la boucle"><b id="rc-sv"></b>
+        <span>Fin</span><input type="range" id="rc-e" min="0" max="${dur}" step="0.01" value="${rc.end}" oninput="rcTrim()" aria-label="Fin de la boucle"><b id="rc-ev"></b>
+      </div>
+      <p style="font-size:12px;color:var(--cream3)" id="rc-info"></p>
+      <button type="button" class="btn btn-ghost rc-big" id="rc-prev" onclick="rcPreview()" style="min-height:48px">${RH_PLAY_SVG.replace('<svg','<svg width="18" height="18"')} Écouter la boucle</button>
+      <div class="modal-f">
+        <button type="button" class="btn btn-ghost" onclick="rcAgain()">Refaire</button><span class="spacer"></span>
+        <button type="button" class="btn btn-ghost" onclick="rcClose()">Annuler</button>
+        <button type="button" class="btn btn-primary" onclick="rcSave()">Enregistrer</button>
+      </div>`;
+    rcTrim(true);
+  }
+}
+async function rcStart() {
+  const me = rc; if (!me) return;
+  if (!window.MediaRecorder || !navigator.mediaDevices) { toast('Enregistrement audio non supporté ici', true); return; }
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}}); }
+  catch (e) { toast('Micro refusé ou indisponible', true); return; }
+  if (rc !== me) { stream.getTracks().forEach(t => t.stop()); return; }
+  me.stream = stream; me.chunks = [];
+  const mr = me.mr = new MediaRecorder(stream);
+  mr.ondataavailable = e => { if (e.data.size) me.chunks.push(e.data); };
+  mr.onstop = () => rcStopped(me);
+  const begin = () => {
+    if (rc !== me) return;
+    mr.start(); me.t0 = performance.now(); me.stage = 'rec'; rcRender();
+    me.iv = setInterval(() => { const e = $('rc-t'); if (e) e.textContent = ((performance.now() - me.t0)/1000).toFixed(1).replace('.', ',') + ' s'; }, 100);
+    me.tm = setTimeout(rcStop, 90000); // garde-fou : 90 s max
+  };
+  if (!me.count) { begin(); return; }
+  me.stage = 'count'; rcRender();
+  const ac = audio(); if (ac.state === 'suspended') await ac.resume();
+  const beat = 60/(cur.bpm || 90), t0 = ac.currentTime + .2;
+  me.timers = [];
+  for (let n = 0; n < 4; n++) {
+    click(t0 + n*beat, n === 0);
+    me.timers.push(setTimeout(() => { const e = $('rc-n'); if (e) e.textContent = 4 - n; }, Math.max(0, (t0 + n*beat - ac.currentTime)*1000)));
+  }
+  me.timers.push(setTimeout(begin, Math.max(0, (t0 + 4*beat - ac.currentTime)*1000)));
+}
+function rcStop() { if (rc && rc.mr && rc.mr.state === 'recording') { clearInterval(rc.iv); clearTimeout(rc.tm); rc.mr.stop(); } }
+async function rcStopped(me) {
+  if (rc !== me) return;
+  me.stream.getTracks().forEach(t => t.stop());
+  try {
+    me.blob = new Blob(me.chunks, {type: me.mr.mimeType || 'audio/webm'});
+    me.buf = await recDecode(me.blob);
+  } catch (e) { toast('Enregistrement illisible, réessaie', true); me.stage = 'idle'; rcRender(); return; }
+  if (rc !== me) return;
+  if (me.buf.duration < .4) { toast('Trop court, réessaie', true); me.stage = 'idle'; rcRender(); return; }
+  me.start = 0; me.end = me.buf.duration; me.isNew = true; me.peaks = rcPeaks(me.buf); me.stage = 'trim';
+  rcRender();
+}
+function rcAgain() { if (!rc) return; rcPreviewStop(); Object.assign(rc, {stage: 'idle', isNew: true, blob: null, buf: null}); rcRender(); }
+function rcPreviewStop() { if (rc && rc.prev) { try { rc.prev.stop(); rc.prev.disconnect(); } catch (e) {} rc.prev = null; } const b = $('rc-prev'); if (b) b.innerHTML = RH_PLAY_SVG.replace('<svg','<svg width="18" height="18"') + ' Écouter la boucle'; }
+function rcPreview() {
+  if (!rc) return;
+  if (rc.prev) { rcPreviewStop(); return; }
+  const ac = audio(); if (ac.state === 'suspended') ac.resume();
+  rc.prev = recLoopSrc(rc.buf, rc.start, rc.end);
+  $('rc-prev').innerHTML = RH_STOP_SVG.replace('<svg','<svg width="18" height="18"') + ' Arrêter l’écoute';
+}
+function rcTrim(init) {
+  if (!rc || !$('rc-s')) return;
+  const s = $('rc-s'), e = $('rc-e'), dur = rc.buf.duration, min = Math.min(.2, dur);
+  let a = +s.value, b = +e.value;
+  if (!init) {
+    if (document.activeElement === s) a = Math.min(a, b - min); else if (document.activeElement === e) b = Math.max(b, a + min);
+  }
+  a = Math.max(0, Math.min(a, dur - min)); b = Math.min(dur, Math.max(b, a + min));
+  s.value = a; e.value = b; rc.start = a; rc.end = b;
+  $('rc-sv').textContent = fmtS(a); $('rc-ev').textContent = fmtS(b);
+  $('rc-info').textContent = `Boucle de ${fmtS(b - a)} sur ${fmtS(dur)} enregistrées.`;
+  if (rc.prev) { rc.prev.loopStart = a; rc.prev.loopEnd = b; }
+  rcDraw();
+}
+function rcDraw() {
+  const cv = $('rc-wave'); if (!cv || !rc.peaks) return;
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W*dpr; cv.height = H*dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr);
+  const css = getComputedStyle(document.documentElement), gold = css.getPropertyValue('--gold').trim() || '#c8783a', mut = css.getPropertyValue('--border2').trim() || '#555';
+  const dur = rc.buf.duration, x0 = rc.start/dur*W, x1 = rc.end/dur*W, n = rc.peaks.length;
+  rc.peaks.forEach((v, i) => {
+    const x = i/n*W, h = Math.max(2, v*(H-8));
+    g.fillStyle = x >= x0 && x <= x1 ? gold : mut;
+    g.fillRect(x, (H-h)/2, Math.max(1, W/n - 1), h);
+  });
+  g.fillStyle = gold; g.fillRect(x0, 0, 2, H); g.fillRect(x1 - 2, 0, 2, H);
+}
+async function rcSave() {
+  if (!rc) return;
+  const R = rc, i = R.part, p = cur.parts[i];
+  let mediaId = R.mediaId;
+  if (R.isNew) {
+    mediaId = uid();
+    await DB.put('media', {id: mediaId, blob: R.blob, type: R.blob.type});
+    recBuf[mediaId] = R.buf;
+    if (p.rec) { await DB.del('media', p.rec.mediaId); delete recBuf[p.rec.mediaId]; }
+  }
+  p.rec = {mediaId, start: +R.start.toFixed(3), end: +R.end.toFixed(3), dur: +R.buf.duration.toFixed(3), at: Date.now()};
+  cur.updatedAt = Date.now();
+  await DB.put('sheets', clone(cur));
+  rcClose(); toast('Rythme enregistré');
+  viewSheet(cur.id, i);
+}
+async function rcDelete(i) {
+  const p = cur.parts[i]; if (!p || !p.rec) return;
+  if (!confirm('Supprimer ta prise audio de cette partie ?')) return;
+  stopPlay();
+  await DB.del('media', p.rec.mediaId); delete recBuf[p.rec.mediaId];
+  delete p.rec; cur.updatedAt = Date.now();
+  await DB.put('sheets', clone(cur));
+  toast('Prise supprimée'); viewSheet(cur.id, i);
+}
+
 /* ═══════ NAV ═══════ */
 function go(v) {
   stopPlay();
@@ -3767,6 +4055,8 @@ function go(v) {
   exoStop();
   document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
   $('v-' + v).classList.add('on');
+  document.body.classList.toggle('playing', v === 'sheet'); // mode jeu : navigation masquée
+  v === 'sheet' ? wakeOn() : wakeOff();
   ['home','lib','cours','exo','tuto','tools','metro','tuner','import'].forEach(k => { const b = $('nl-' + k); if (b) b.classList.toggle('on', k === v); });
   window.scrollTo(0,0);
   if (v === 'home') renderHome();
@@ -3875,56 +4165,137 @@ function renderHome() {
 }
 
 /* ═══════ SHEET VIEW ═══════ */
-async function viewSheet(id) {
+let svPart = 0; // partie affichée en mode jeu
+const hasLyr = p => !!(p && typeof p.lyrics === 'string' && p.lyrics.trim());
+async function viewSheet(id, keepPart) {
   const s = sheets.find(x => x.id === id); if (!s) return;
   cur = s;
+  svPart = keepPart && keepPart < (s.parts||[]).length ? keepPart : 0;
   $('sv-title').textContent = s.title;
-  $('sv-artist').textContent = s.artist || '';
+  $('sv-artist').textContent = s.artist && s.artist !== '—' ? s.artist : '';
   $('sv-edit').onclick = () => editSheet(id);
   svRenderFavBtn();
 
   let stats = '';
-  if (s.capo > 0) stats += `<div class="sv-stat"><div class="v">${s.capo}</div><div class="l">Capo</div></div>`;
-  if (s.bpm) stats += `<div class="sv-stat"><div class="v">${s.bpm}</div><div class="l">BPM</div></div>`;
-  if (s.tuning) stats += `<div class="sv-stat"><div class="v">${esc(s.tuning === 'Standard' ? 'Std' : s.tuning)}</div><div class="l">Accordage</div></div>`;
+  if (s.capo > 0) stats += `<span class="sv-pill capo">Capo ${s.capo}</span>`;
+  if (s.bpm) stats += `<span class="sv-pill">${s.bpm} BPM</span>`;
+  if (s.tuning) stats += `<span class="sv-pill">${esc(s.tuning === 'Standard' ? 'Std' : s.tuning)}</span>`;
+  if (s.difficulty) stats += `<span class="sv-pill">${esc(s.difficulty)}</span>`;
   $('sv-stats').innerHTML = stats;
-  $('sv-badges').innerHTML = s.difficulty ? `<span class="badge mauve">${esc(s.difficulty)}</span>` : '';
 
   const tabsHost = $('sv-tabs'), partsHost = $('sv-parts');
-  const dots = ['var(--gold)','var(--sage)','var(--terra)','var(--mauve)','var(--cream2)'];
   tabsHost.innerHTML = (s.parts||[]).map((p, i) =>
-    `<button type="button" class="sv-tab ${i===0?'on':''}" data-idx="${i}" onclick="svShowPart(${i})">${esc(p.name)}</button>`).join('');
+    `<button type="button" class="sv-tab ${i===svPart?'on':''}" data-idx="${i}" onclick="svShowPart(${i})">${esc(p.name)}</button>`).join('');
   partsHost.innerHTML = (s.parts||[]).map((p, i) => {
     let body = '';
     if (p.chords.length) {
-      body += `<div class="pv-lbl">Accords</div><div class="chords-row">` +
-        p.chords.map(c => `<div class="chord-cell"><div class="cn">${esc(c.name)}</div>${chordSVG(c)}</div>`).join('') + `</div>`;
+      body += `<div class="chords-row">` +
+        p.chords.map(c => `<div class="chord-cell"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size:2.2})}</div>`).join('') + `</div>`;
     }
-    const staff = tabStaffSVG(p.chords, false);
-    if (staff) body += `<div class="pv-lbl">Tablature / arpege</div><div class="scroll-x">${staff}</div>`;
-    if (p.tabText) body += `<div class="pv-lbl">Tab</div><div class="tab-ascii mono">${esc(p.tabText)}</div>`;
-    if (rhHas(p.rhythm)) {
-      body += `<div class="pv-lbl">Rythme</div><div class="scroll-x" id="rh-view-${i}">${rhythmSVG(p.rhythm, false)}</div>${rhPlayerHTML(i)}`;
+    if (rhHas(p.rhythm)) body += `<div class="sv-rh" id="rh-view-${i}">${rhythmSVG(p.rhythm, false)}</div>`;
+    if (p.rec) {
+      const d = p.rec.end - p.rec.start;
+      body += `<div class="sv-reccard"><b>Ma prise à la guitare<small>Boucle de ${d.toFixed(1).replace('.', ',')} s</small></b>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="rcOpen(${i},'trim')">Rogner</button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="rcOpen(${i})">Refaire</button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="rcDelete(${i})">Supprimer</button></div>`;
     }
-    if (typeof p.lyrics === 'string' && p.lyrics.trim()) {
-      body += `<div class="pv-lbl">Paroles</div><div class="pv-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>`;
-    }
+    if (hasLyr(p)) body += `<div class="pv-lyr">${lyricsPreviewHTML(p.lyrics)}</div>`;
     if (p.note) body += `<div class="pv-note">${esc(p.note)}</div>`;
-    if (!body) body = `<div style="font-size:12px;color:var(--cream4)">Partie vide</div>`;
-    return `<div class="pv-block ${i===0?'on':''}" data-idx="${i}">
-      <div class="pv-hdr"><div class="pv-dot" style="background:${dots[i%5]}"></div><div class="pv-name">${esc(p.name)}</div></div>
+    const staff = tabStaffSVG(p.chords, false);
+    if (staff) body += `<div class="pv-lbl">Tablature / arpège</div><div class="scroll-x">${staff}</div>`;
+    if (p.tabText) body += `<div class="pv-lbl">Tab</div><div class="tab-ascii mono">${esc(p.tabText)}</div>`;
+    if (!body) body = `<div style="font-size:13px;color:var(--cream3)">Partie vide — ajoute des accords avec « Modifier ».</div>`;
+    return `<div class="pv-block ${i===svPart?'on':''}" data-idx="${i}" id="pvb-${i}">
+      <div class="pv-hdr"><div class="pv-name">${esc(p.name)}</div></div>
       <div class="pv-body">${body}</div>
     </div>`;
   }).join('');
-
+  $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s) + resourcesHTML(s);
+  svSync();
+  if (!$('v-sheet').classList.contains('on')) go('sheet');
   await hydrateMedia(s, $('sv-coffre'));
-  go('sheet');
 }
 function svShowPart(i) {
+  stopPlay();
+  svPart = i;
   document.querySelectorAll('#sv-tabs .sv-tab').forEach(b => b.classList.toggle('on', +b.dataset.idx === i));
   document.querySelectorAll('#sv-parts .pv-block').forEach(b => b.classList.toggle('on', +b.dataset.idx === i));
+  svSync();
 }
+const REC_DOT_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="7"/></svg>';
+// état des boutons de la barre du bas selon la partie affichée
+function svSync() {
+  if (!cur) return;
+  const p = cur.parts[svPart];
+  const on = rhPlaying('v' + svPart), rp = !!recPlay;
+  const pl = $('sv-play');
+  pl.innerHTML = (on ? RH_STOP_SVG : RH_PLAY_SVG) + `<small>${on ? 'Stop' : 'Rythme'}</small>`;
+  pl.classList.toggle('on', on);
+  pl.style.opacity = rhHas(p && p.rhythm) ? '' : '.5';
+  const rb = $('sv-rec');
+  rb.classList.toggle('on', rp); rb.classList.toggle('rec', !(p && p.rec) && !rp);
+  rb.innerHTML = p && p.rec ? (rp ? RH_STOP_SVG : RH_PLAY_SVG) + `<small>${rp ? 'Stop' : 'Ma prise'}</small>` : REC_DOT_SVG + '<small>Enregistrer</small>';
+  rb.setAttribute('aria-label', p && p.rec ? 'Jouer ma prise en boucle' : 'Enregistrer mon rythme à la guitare');
+  const ly = $('sv-lyr');
+  ly.disabled = !hasLyr(p);
+  ly.setAttribute('aria-pressed', cur.showLyrics ? 'true' : 'false');
+  ly.title = hasLyr(p) ? (cur.showLyrics ? 'Masquer les paroles' : 'Afficher les paroles') : 'Pas de paroles dans cette partie';
+  $('rh-bpm-bar').textContent = cur.bpm || 90;
+}
+async function svToggleLyrics() {
+  if (!cur) return;
+  cur.showLyrics = !cur.showLyrics;
+  $('v-sheet').classList.toggle('lyr-on', cur.showLyrics);
+  svSync();
+  await DB.put('sheets', clone(cur));
+}
+function svPlayCur() {
+  const p = cur && cur.parts[svPart]; if (!p) return;
+  if (!rhHas(p.rhythm)) { toast('Pas de rythme en cases pour cette partie — ajoute-en un avec « Modifier »', true); return; }
+  playPartRhythm(svPart);
+}
+function svRecBtn() {
+  const p = cur && cur.parts[svPart]; if (!p) return;
+  p.rec ? recPlayToggle(svPart) : rcOpen(svPart);
+}
+function svExit() { stopPlay(); go('home'); }
+/* Écouter l'original : lien dédié de la fiche, sinon recherche YouTube du morceau */
+function origURL(u) {
+  u = String(u || '').trim(); if (!u) return '';
+  if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  return /^https?:\/\/[^\s]+\.[^\s]+/i.test(u) ? u : '';
+}
+function svOriginal() {
+  if (!cur) return;
+  const u = origURL(cur.original && cur.original.url);
+  if (u) { window.open(u, '_blank', 'noopener'); return; }
+  const q = encodeURIComponent(`${cur.title} ${cur.artist && cur.artist !== '—' ? cur.artist : ''}`.trim());
+  window.open('https://www.youtube.com/results?search_query=' + q, '_blank', 'noopener');
+  toast('Pas encore de version originale : colle le lien dans « Modifier »');
+}
+function searchOriginal() {
+  const t = ($('f-title').value + ' ' + $('f-artist').value).trim();
+  if (!t) { toast('Écris d’abord le titre', true); $('f-title').focus(); return; }
+  window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(t), '_blank', 'noopener');
+  toast('Colle ici le lien de la bonne version');
+}
+let wl = null; // écran allumé pendant le jeu
+async function wakeOn() { try { if (navigator.wakeLock && !wl) { wl = await navigator.wakeLock.request('screen'); wl.addEventListener('release', () => { wl = null; }); } } catch (e) {} }
+function wakeOff() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
+document.addEventListener('keydown', e => {
+  if (!$('v-sheet').classList.contains('on') || !$('m-rec').classList.contains('hide') || e.ctrlKey || e.metaKey) return;
+  const t = e.target, tag = t && t.tagName;
+  if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
+  const n = (cur && cur.parts.length) || 0;
+  if (e.key === ' ' && tag !== 'BUTTON') { e.preventDefault(); svPlayCur(); }
+  else if (e.key === 'ArrowRight' && svPart < n - 1) svShowPart(svPart + 1);
+  else if (e.key === 'ArrowLeft' && svPart > 0) svShowPart(svPart - 1);
+  else if (e.key === 'l' || e.key === 'L') { if (!$('sv-lyr').disabled) svToggleLyrics(); }
+  else if (e.key === '+') rhBpmStep(1);
+  else if (e.key === '-') rhBpmStep(-1);
+});
 function svRenderFavBtn() {
   const b = $('sv-fav'); if (!b || !cur) return;
   b.classList.toggle('on', !!cur.favorite);
@@ -3944,26 +4315,23 @@ async function toggleFav(id, e) {
   await DB.put('sheets', clone(s));
   renderHome();
 }
-/* Lecteur de rythme de la fiche : gros ▶/■ + tempo −/+ (le BPM est celui de la fiche, enregistré) */
+/* Lecteur de rythme de la fiche : ▶/■ dans la barre du bas, tempo −/+ (le BPM est celui de la fiche, enregistré) */
 const RH_PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21"/></svg>';
 const RH_STOP_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>';
-function rhPlayerHTML(i) {
-  return `<div class="rh-player">
-    <button type="button" class="rh-play" id="rh-btn-${i}" onclick="playPartRhythm(${i})" aria-label="Lire le rythme">${RH_PLAY_SVG}</button>
-    <div class="rh-bpm"><button type="button" onclick="rhBpmStep(-1)" aria-label="Moins vite">&minus;</button><div><b id="rh-bpm-${i}">${cur.bpm || 90}</b><span>BPM</span></div><button type="button" onclick="rhBpmStep(1)" aria-label="Plus vite">+</button></div>
-    <span class="rh-player-t">${esc(cur.bpm ? 'Tempo de la fiche' : 'Tempo par défaut')} · boucle</span>
-  </div>`;
-}
-function rhRenderPlayer(i, step) {
-  const el = $('rh-view-' + i), b = $('rh-btn-' + i), p = cur && cur.parts[i];
+function rhRenderPlayer(i, step, k) {
+  const el = $('rh-view-' + i), p = cur && cur.parts[i];
   if (el && p) el.innerHTML = rhythmSVG(p.rhythm, false, step == null ? {} : {cursor: step});
-  if (b) { const on = rhPlaying('v' + i); b.innerHTML = on ? RH_STOP_SVG : RH_PLAY_SVG; b.classList.toggle('on', on); }
+  // accord en cours (1 accord = 1 mesure)
+  const r = p && rhNorm(p.rhythm), n = p ? p.chords.length : 0;
+  const ci = (step != null && k != null && r && n) ? Math.floor(k / rhPerBar(r.mes, r.res)) % n : -1;
+  document.querySelectorAll(`#pvb-${i} .chord-cell`).forEach((c, j) => c.classList.toggle('now', j === ci));
+  svSync();
 }
 function playPartRhythm(i) {
   const p = cur.parts[i]; if (!p || !p.rhythm) return;
   if (rhPlaying('v' + i)) { rhStop(); return; }
-  rhStart(p.rhythm, cur.bpm || 90, p.chords[0] || null, cur.capo, step => rhRenderPlayer(i, step), {key: 'v' + i});
-  rhRenderPlayer(i);
+  rhStart(p.rhythm, cur.bpm || 90, p.chords[0] || null, cur.capo, (step, k) => rhRenderPlayer(i, step, k), {key: 'v' + i, chords: p.chords});
+  svSync();
 }
 function rhBpmStep(d) {
   if (!cur) return;
@@ -4112,7 +4480,8 @@ function editSheet(id) {
 function dupSheet(id) {
   const s = sheets.find(x => x.id === id); if (!s) return;
   const c = clone(s);
-  c.id = uid(); c.title = s.title + ' (copie)'; c.createdAt = c.updatedAt = Date.now();
+  c.id = uid(); c.title = s.title + ' (copie)'; if (titleTaken(c.title)) c.title = uniqueTitle(c.title);
+  c.parts.forEach(p => { delete p.rec; }); // la prise audio reste attachée à la fiche d’origine c.createdAt = c.updatedAt = Date.now();
   c.parts.forEach(p => { p.id = uid(); p.chords.forEach(ch => ch.id = uid()); });
   sheets.push(c); DB.put('sheets', c).then(() => { renderHome(); toast('Fiche dupliquee'); });
 }
@@ -4121,6 +4490,7 @@ function openEditor(title) {
   $('f-title').value = draft.title;
   $('f-artist').value = draft.artist === '—' ? '' : draft.artist;
   $('f-chords').value = '';
+  $('f-orig').value = (draft.original && draft.original.url) || '';
   $('more-opts').open = false;
   renderQuick();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';
@@ -4445,7 +4815,7 @@ function playEdRhythm(i) {
     const el = $('rh-ed-' + i); if (!el) return;
     const sv = el.querySelector('.scroll-x'); if (sv) sv.innerHTML = rhythmSVG(r, false, step == null ? {} : {cursor: step});
     const b = $('rh-edbtn-' + i); if (b) b.classList.toggle('on', step != null);
-  }, {key: 'e' + i});
+  }, {key: 'e' + i, chords: p.chords});
 }
 
 /* ═══════ LYRICS — optional, linked to chords/rhythm via inline tags ═══════
@@ -4678,12 +5048,28 @@ function ceRmStep(ti) {
 }
 
 /* ═══════ SAVE / DELETE ═══════ */
+const normTitle = t => String(t||'').trim().replace(/\s+/g, ' ').toLowerCase();
+const titleTaken = (t, exceptId) => sheets.some(x => x.id !== exceptId && normTitle(x.title) === normTitle(t));
+function uniqueTitle(t, exceptId) {
+  const base = String(t||'').trim().replace(/\s+/g, ' ').replace(/\s*\(\d+\)$/, '');
+  let n = 2; while (titleTaken(`${base} (${n})`, exceptId)) n++;
+  return `${base} (${n})`;
+}
 async function saveSheet() {
   draft.title = $('f-title').value.trim();
   draft.artist = $('f-artist').value.trim();
   if (!draft.title) { toast('Le titre est requis', true); $('f-title').focus(); return; }
   if (REQUIRE_ARTIST && !draft.artist) { toast('Titre et artiste sont requis', true); $('f-artist').focus(); return; }
   if (!draft.artist) draft.artist = '—';
+  // noms uniques : plusieurs fiches pour un même morceau, mais jamais deux fois le même titre
+  while (titleTaken(draft.title, draft.id)) {
+    const r = prompt(`Une fiche s’appelle déjà « ${draft.title} ».\nDonne un titre différent pour celle-ci :`, uniqueTitle(draft.title, draft.id));
+    if (r == null) { $('f-title').focus(); return; }
+    draft.title = r.trim().replace(/\s+/g, ' ') || uniqueTitle(draft.title, draft.id);
+    $('f-title').value = draft.title;
+  }
+  const ou = origURL(draft.original && draft.original.url);
+  if (ou) draft.original = {url: ou}; else delete draft.original;
   if (($('f-chords').value||'').trim()) addChordLine(); // accords tapés mais pas encore ajoutés
   draft.updatedAt = Date.now();
   const i = sheets.findIndex(s => s.id === draft.id);
@@ -4696,6 +5082,7 @@ async function delSheet(id) {
   if (!confirm('Supprimer cette fiche ?')) return;
   const s = sheets.find(x => x.id === id);
   if (s) for (const m of (s.media||[])) await DB.del('media', m.mediaId);
+  if (s) for (const p of (s.parts||[])) if (p.rec) await DB.del('media', p.rec.mediaId);
   sheets = sheets.filter(x => x.id !== id);
   selIds.delete(id);
   await DB.del('sheets', id);
@@ -4953,7 +5340,7 @@ function printCahierHTML(s) {
 /* ═══════ JSON EXPORT / IMPORT ═══════ */
 function exportSel() {
   const list = sheets.filter(s => selIds.has(s.id)).map(s => {
-    const c = clone(s); delete c.media; delete c.tabImage; return c; // media blobs stay local
+    const c = clone(s); delete c.media; delete c.tabImage; (c.parts||[]).forEach(p => { delete p.rec; }); return c; // media blobs stay local
   });
   const blob = new Blob([JSON.stringify({app:'gms', v:2, sheets:list}, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
@@ -4973,7 +5360,8 @@ function importJSON(inp) {
       let n = 0;
       for (const raw of list) {
         const s = {...newSheet_(), ...raw, id: uid(), updatedAt: Date.now()};
-        s.media = []; s.tabImage = null;
+        s.media = []; s.tabImage = null; (s.parts||[]).forEach(p => { delete p.rec; });
+        if (titleTaken(s.title)) s.title = uniqueTitle(s.title);
         if (!s.parts || !s.parts.length) s.parts = [newPart('Couplet')];
         sheets.push(s); await DB.put('sheets', s); n++;
       }
@@ -5004,7 +5392,7 @@ function importJSON(inp) {
   const el = $(id); if (el) el.addEventListener('click', e => { if (e.target === el) el.classList.add('hide'); });
 });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.ov').forEach(o => o.classList.add('hide'));
+  if (e.key === 'Escape') { rcCleanup(); document.querySelectorAll('.ov').forEach(o => o.classList.add('hide')); }
 });
 
 /* ═══════ BOOT ═══════ */
