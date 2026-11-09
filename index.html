@@ -503,6 +503,35 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .fl-fx{margin-top:4px;padding:12px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--border)}
 .fl-fxn{font-weight:700;margin-bottom:6px}
 .fl-fxpat{display:flex;gap:6px;font-size:22px;font-weight:800}
+.fl-surp{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}.fl-surp span{font-size:12px;color:var(--cream3)}
+.fl-free{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--cream2);line-height:1.5;padding:10px 12px;margin-bottom:10px;border-radius:var(--rs);background:var(--bg2);border:1px dashed var(--border2)}
+.fl-rf{margin-bottom:8px!important}.filt.sm{padding:5px 11px;font-size:11px}
+.fl-tip{margin-top:8px;font-size:13px;line-height:1.5;color:var(--cream2);padding:8px 12px;border-radius:var(--rs);background:var(--card2);border-left:3px solid var(--gold)}
+.rc-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:12px;color:var(--cream3);font-family:var(--mono)}
+.rc-bar{flex:1;height:8px;border-radius:99px;background:var(--card2);border:1px solid var(--border);overflow:hidden}.rc-bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .3s}
+.rc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.rc-card{position:relative;text-align:left;display:flex;flex-direction:column;gap:4px;padding:12px 12px 10px 48px;border-radius:var(--ra);background:var(--card);border:1px solid var(--border);color:var(--cream);min-height:84px}
+.rc-card b{font-size:14px;line-height:1.25}.rc-card small{font-size:11px;color:var(--cream3)}
+.rc-card .rc-n{position:absolute;left:10px;top:12px}
+.rc-ar{font:700 15px var(--mono);color:var(--gold2);letter-spacing:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-card:not(.lock):hover{background:var(--card2);transform:translateY(-2px)}
+.rc-card.now{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 35%,transparent)}
+.rc-card.ok .rc-n{background:var(--sage);color:#fff}.rc-card.lock{opacity:.5;cursor:not-allowed}
+.rc-n{width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none}
+.rc-n.big{width:38px;height:38px;font-size:17px}
+.rc-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}.rc-chord{margin-left:auto}
+.rc-say{font-family:var(--serif);font-size:19px;line-height:1.35;margin:4px 0 14px}
+.rc-cells{display:flex;flex-direction:column;gap:6px}
+.rc-row{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:4px}
+.rc-cell{width:auto;height:84px;font-size:30px}.rc-cell .sg-c{font-size:12px}
+.rc-ladder{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.rc-lt{display:flex;justify-content:space-between;font-size:11px;font-family:var(--mono);color:var(--cream3)}
+.rc-ladder .btn{align-self:flex-start}.rc-ladder .btn.pulse{border-color:var(--gold);color:var(--gold2)}
+.rc-goal{font-size:13px;color:var(--cream2);line-height:1.5;margin-bottom:14px}
+.rc-act .btn{width:100%;justify-content:center}
+@media(min-width:640px){.rc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.rc-act .btn{width:auto}}
+@media(min-width:1000px){.rc-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:520px){.exo-mode{flex-wrap:wrap}.exo-mode .mode-pill.big{flex:1 1 45%;font-size:12px;padding:10px 8px}}
 @media(min-width:640px){.fl-tiles{grid-template-columns:repeat(4,1fr)}.fl-cards{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1000px){.fl-cards{grid-template-columns:repeat(4,1fr)}.fl-name{font-size:72px}.fl-cell{width:44px;height:68px}}
 .tempo-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-top:14px}
@@ -785,6 +814,8 @@ body.rhy-open{overflow:hidden}
 .rhy-card b{font-size:12px;font-weight:700;white-space:nowrap}
 .rhy-card span{font:700 15px var(--mono);color:var(--gold2);white-space:nowrap}
 .rhy-card:active{border-color:var(--gold)}
+.rhy-fil{display:flex;gap:8px;margin-bottom:8px}.rhy-fil select{flex:1;min-width:0;height:36px;border-radius:99px;font-size:12px;padding:0 10px}
+.rhy-tip{font-size:12px;line-height:1.45;color:var(--cream2);min-height:0}.rhy-tip:not(:empty){padding:6px 2px 2px}
 .rhy-prev{display:flex;align-items:center;justify-content:center;gap:2px;margin:6px 0 10px;min-height:40px;padding:4px 6px;border-radius:12px;background:var(--card);border:1px solid var(--border)}
 .rhy-prev i{flex:1;text-align:center;font:700 22px var(--sans);font-style:normal;max-width:34px}
 .rhy-prev i.D{color:var(--gold2)}.rhy-prev i.U{color:var(--sage)}.rhy-prev i.X{color:var(--terra)}.rhy-prev i.n{color:var(--cream4)}
@@ -1587,17 +1618,38 @@ function rhReshape(r, mes, res, bars) {
   r.cells = Array.from({length:n}, (_, i) => old[i] || null);
 }
 const RHYTHMS = [
-  {id:'noires',  n:'Noires (les bases)',  mes:'4/4', res:8,  pat:'D-D-D-D-'},
-  {id:'croches', n:'Croches (balancier)', mes:'4/4', res:8,  pat:'DUDUDUDU'},
-  {id:'feucamp', n:'Feu de camp',         mes:'4/4', res:8,  pat:'D-DU-UDU'},
-  {id:'ballade', n:'Ballade',             mes:'4/4', res:8,  pat:'D-DUD-DU'},
-  {id:'chuck',   n:'Chuck (backbeat)',    mes:'4/4', res:8,  pat:'DUXUDUXU'},
-  {id:'reggae',  n:'Reggae (contretemps)',mes:'4/4', res:8,  pat:'-U-U-U-U'},
-  {id:'rock8',   n:'Rock en croches',     mes:'4/4', res:8,  pat:'DDDDDDDD'},
-  {id:'valse',   n:'Valse',               mes:'3/4', res:8,  pat:'D-d-d-'},
-  {id:'valse2',  n:'Valse chantante',     mes:'3/4', res:8,  pat:'D-dUdU'},
-  {id:'six8',    n:'Six-huit (berceuse)', mes:'6/8', res:8,  pat:'D-UD-U'},
-  {id:'shuffle', n:'Shuffle (blues)',     mes:'4/4', res:12, pat:'D-UD-UD-UD-U'},
+  {id:'noires',  n:'Noires (les bases)',  mes:'4/4', res:8,  pat:'D-D-D-D-', niv:1, bpm:[50,100], amb:['feu','epique','triste'], tip:'Un bas sur chaque temps : compte 1-2-3-4 à voix haute, la base de tout.'},
+  {id:'croches', n:'Croches (balancier)', mes:'4/4', res:8,  pat:'DUDUDUDU', niv:1, bpm:[60,120], amb:['joyeux','feu','energique'], tip:'La main balance sans s\'arrêter : bas sur le temps, haut sur le « et ».'},
+  {id:'feucamp', n:'Feu de camp',         mes:'4/4', res:8,  pat:'D-DU-UDU', niv:1, bpm:[80,115], amb:['feu','joyeux','triste'], tip:'Le rythme classique : le temps 3 est muet, mais la main continue à balancer.'},
+  {id:'ballade', n:'Ballade',             mes:'4/4', res:8,  pat:'D-DUD-DU', niv:1, bpm:[65,95], amb:['melancolique','triste','reveur','romantique'], tip:'Bas appuyé au temps 1, le reste plus léger : laisse respirer l\'accord.'},
+  {id:'chuck',   n:'Chuck (backbeat)',    mes:'4/4', res:8,  pat:'DUXUDUXU', niv:2, bpm:[70,100], amb:['energique','joyeux'], tip:'Sur les temps 2 et 4, étouffe l\'accord (X) : le « tchak » qui fait groover.'},
+  {id:'reggae',  n:'Reggae (contretemps)',mes:'4/4', res:8,  pat:'-U-U-U-U', niv:2, bpm:[70,100], amb:['reveur','joyeux','latino'], tip:'Seuls les hauts sur les « et » sonnent : le temps reste vide.'},
+  {id:'rock8',   n:'Rock en croches',     mes:'4/4', res:8,  pat:'DDDDDDDD', niv:1, bpm:[100,150], amb:['energique','epique','roadtrip'], tip:'Huit bas réguliers, bien carrés : le moteur du rock.'},
+  {id:'valse',   n:'Valse',               mes:'3/4', res:8,  pat:'D-d-d-', niv:1, bpm:[80,120], amb:['melancolique','romantique'], tip:'Compte 1-2-3 : un bas fort, puis deux bas doux.'},
+  {id:'valse2',  n:'Valse chantante',     mes:'3/4', res:8,  pat:'D-dUdU', niv:2, bpm:[80,115], amb:['joyeux','romantique'], tip:'Comme la valse, avec des petits hauts qui la font chanter.'},
+  {id:'six8',    n:'Six-huit (berceuse)', mes:'6/8', res:8,  pat:'D-UD-U', niv:1, bpm:[50,80], amb:['reveur','melancolique','epique'], tip:'Compte 1-2-3 4-5-6 : deux gros temps de trois croches, comme une berceuse.'},
+  {id:'shuffle', n:'Shuffle (blues)',     mes:'4/4', res:12, pat:'D-UD-UD-UD-U', niv:2, bpm:[60,100], amb:['blues'], tip:'Chaque temps a 3 pulsations : tu joues la 1re et la 3e (bas, trou, haut).'},
+  {id:'folk2',     n:'Folk marche',          mes:'4/4', res:8,  pat:'D-D-DUDU',  niv:1, bpm:[80,120],  amb:['feu','joyeux','roadtrip'], tip:'Deux bas bien posés, puis les croches qui s\'enchaînent : le moteur des chansons à chanter.'},
+  {id:'feu2',      n:'Feu de camp plein',    mes:'4/4', res:8,  pat:'D-DUDUDU',  niv:1, bpm:[80,115],  amb:['feu','joyeux','romantique'], tip:'Comme le feu de camp, mais la main ne laisse plus de trou après le temps 2.'},
+  {id:'popsync',   n:'Pop syncopée',         mes:'4/4', res:8,  pat:'D--U-UDU',  niv:2, bpm:[85,120],  amb:['joyeux','roadtrip'], tip:'Les temps 2 et 3 sont muets : la main balance quand même et ne touche que les « et ».'},
+  {id:'douce',     n:'Ballade douce',        mes:'4/4', res:8,  pat:'D-du-udu',  niv:1, bpm:[60,85],   amb:['melancolique','triste','romantique','reveur'], tip:'Un seul bas appuyé, tout le reste caressé : joue avec le bout des doigts ou un médiator souple.'},
+  {id:'rockaere',  n:'Rock aéré',            mes:'4/4', res:8,  pat:'D-D-D-DU',  niv:1, bpm:[100,140], amb:['energique','roadtrip'], tip:'Trois bas carrés, le petit haut final relance la mesure suivante.'},
+  {id:'rockgal',   n:'Rock sautillant',      mes:'4/4', res:8,  pat:'D-DDD-DD',  niv:2, bpm:[110,150], amb:['energique'], tip:'Trois bas d\'affilée, une respiration (case 3&), puis deux bas : ne ferme pas la main, elle continue à balancer.'},
+  {id:'funk16',    n:'Funk 16es',            mes:'4/4', res:16, pat:'D--UX-UD-UDUX-U-', niv:3, bpm:[80,105], amb:['energique'], tip:'La main balance en 16es sans jamais s\'arrêter ; tu ne touches que les cases marquées, X = accord relâché.'},
+  {id:'slow12',    n:'Slow 12/8',            mes:'4/4', res:12, pat:'D--D-UD--D-U', niv:2, bpm:[50,70], amb:['blues','melancolique','romantique'], tip:'Chaque temps = 3 pulsations (1-2-3, 2-2-3...). Compte-les dans ta tête, le bas tombe sur la première.'},
+  {id:'valse3',    n:'Valse accentuée',      mes:'3/4', res:8,  pat:'D-D-DU',    niv:1, bpm:[90,130],  amb:['joyeux','feu','romantique'], tip:'Compte 1-2-3 : bas sur chaque temps, petit haut avant de repartir.'},
+  {id:'valsecr',   n:'Valse en croches',     mes:'3/4', res:8,  pat:'DUDUDU',    niv:1, bpm:[80,110],  amb:['joyeux','feu'], tip:'Balancement continu en 3 temps : 1-et-2-et-3-et.'},
+  {id:'jig',       n:'Jig irlandais',        mes:'6/8', res:8,  pat:'DUDDUD',    niv:2, bpm:[80,110],  amb:['joyeux','feu','energique'], tip:'Deux groupes de trois croches (D U D / D U D) : accent sur la 1re et la 4e.'},
+  {id:'six8b',     n:'Six-huit lent',        mes:'6/8', res:8,  pat:'D--D-U',    niv:1, bpm:[50,75],   amb:['melancolique','romantique','reveur'], tip:'Deux gros temps de trois : un bas sur le 1, un bas sur le 4, et le haut de fin qui porte vers le suivant.'},
+  {id:'shufflechuck', n:'Shuffle chuck',     mes:'4/4', res:12, pat:'D-UX-UD-UX-U', niv:2, bpm:[70,100], amb:['blues','energique'], tip:'Comme le shuffle, mais sur les temps 2 et 4 l\'accord est étouffé : le « tchak » du blues.'},
+  {id:'bossa',     n:'Bossa (adaptée)',      mes:'4/4', res:8,  pat:'D--UD--U',  niv:2, bpm:[90,130],  amb:['latino','romantique','reveur'], tip:'Version strum simplifiée (la vraie bossa se joue aux doigts) : toucher léger, syncopes bien nettes.'},
+  {id:'boomchick', n:'Boom-chick (country)', mes:'4/4', res:8,  pat:'D-d-D-d-',  niv:1, bpm:[90,130],  amb:['feu','joyeux','roadtrip'], tip:'Sur D (boom) tape surtout les cordes graves ; sur d (chick) gratte les aiguës, doux.'},
+  {id:'rumba',     n:'Rumba simplifiée',     mes:'4/4', res:8,  pat:'D-DUXUDU',  niv:2, bpm:[90,120],  amb:['latino','joyeux'], tip:'X = golpe : petit coup sec de la paume ou de l\'accord étouffé qui sonne comme une percussion. Version simplifiée du rythme flamenco.'},
+  {id:'disco',     n:'Disco 16es',           mes:'4/4', res:16, pat:'D-UUD-UUD-UUD-UU', niv:2, bpm:[100,120], amb:['energique','joyeux'], tip:'Quatre fois « bas, trou, haut, haut » : main souple, poignet qui ne s\'arrête jamais.'},
+  {id:'motown',    n:'Motown (tambourin)',   mes:'4/4', res:8,  pat:'DuDuDuDu',  niv:1, bpm:[90,120],  amb:['joyeux','romantique','roadtrip'], tip:'Bas francs, hauts à peine effleurés : l\'effet tambourin qui fait danser.'},
+  {id:'grunge',    n:'Grunge lourd',         mes:'4/4', res:8,  pat:'D--D-DD-',  niv:2, bpm:[90,130],  amb:['energique'], tip:'Lourd, un peu en retard sur le temps : laisse sonner, ne cherche pas à être propre.'},
+  {id:'trous',     n:'Croches à trous',      mes:'4/4', res:8,  pat:'DUD-DUD-',  niv:1, bpm:[60,100],  amb:['feu','joyeux','latino'], tip:'Un trou = la main passe sans toucher les cordes. Elle ne s\'arrête jamais, seul le son manque.'},
+  {id:'doubles',   n:'Doubles croches',      mes:'4/4', res:16, pat:'DUDUDUDUDUDUDUDU', niv:3, bpm:[50,80], amb:['energique'], tip:'Quatre coups par temps : poignet détendu, petits mouvements.'},
 ];
 
 /* ═══════ SVG: RHYTHM CURVE ═══════
@@ -3592,11 +3644,13 @@ function exoRender() {
   if (exoCur && EXO[exoCur]) { body.innerHTML = exoDetailHTML(EXO[exoCur]); return; }
   body.innerHTML = exoStatsHTML() +
     `<div class="mode-toggle exo-mode">
-      <button type="button" class="mode-pill big ${exoMode==='feel'?'on':''}" onclick="feelStop();exoMode='feel';exoRender()">Au feeling</button>
-      <button type="button" class="mode-pill big ${exoMode==='path'?'on':''}" onclick="feelStop();exoMode='path';exoRender()">Parcours guidé</button>
-      <button type="button" class="mode-pill big ${exoMode==='axes'?'on':''}" onclick="feelStop();exoMode='axes';exoRender()">Entraînement ciblé</button></div>` +
-    (exoMode === 'feel' ? feelHTML() : exoMode === 'path' ? pathHTML() : axesHTML());
+      <button type="button" class="mode-pill big ${exoMode==='feel'?'on':''}" onclick="rccStop();feelStop();exoMode='feel';exoRender()">Au feeling</button>
+      <button type="button" class="mode-pill big ${exoMode==='rhy'?'on':''}" onclick="rccStop();feelStop();exoMode='rhy';exoRender()">Apprendre les rythmes</button>
+      <button type="button" class="mode-pill big ${exoMode==='path'?'on':''}" onclick="rccStop();feelStop();exoMode='path';exoRender()">Parcours guidé</button>
+      <button type="button" class="mode-pill big ${exoMode==='axes'?'on':''}" onclick="rccStop();feelStop();exoMode='axes';exoRender()">Entraînement ciblé</button></div>` +
+    (exoMode === 'feel' ? feelHTML() : exoMode === 'rhy' ? rccHTML() : exoMode === 'path' ? pathHTML() : axesHTML());
   if (exoMode === 'feel') feelAfter();
+  if (exoMode === 'rhy') rccAfter();
 }
 
 /* ═══ cours : visuels et liens vers les exercices ═══ */
@@ -3723,6 +3777,9 @@ const AMBIANCES = [
   {id:'reveur',       n:'Rêveur',        d:'Planant, accords colorés'},
   {id:'blues',        n:'Blues',         d:'Le 12 mesures, shuffle'},
   {id:'epique',       n:'Épique',        d:'Grandiose, cinématique'},
+  {id:'romantique',   n:'Romantique',    d:'Slow, tendre, à deux'},
+  {id:'latino',       n:'Latino',        d:'Chaud, dansant, bossa et rumba'},
+  {id:'roadtrip',     n:'Road trip',     d:'Vitres ouvertes, radio à fond'},
 ];
 
 const FEEL_PROGS = [
@@ -3773,6 +3830,73 @@ const FEEL_PROGS = [
  {id:'p2', amb:'epique', n:'Grandeur en ré mineur', ton:'Dm', deg:['i','♭VI','♭VII','i'], ch:['Dm','Bb','C','Dm'], bpm:[75,105], rh:['noires','rock8','six8'], niv:3},
  {id:'p3', amb:'epique', n:'Odyssée', ton:'Am', deg:['i','♭VI','♭VII','i'], ch:['Am','F','G','Am'], bpm:[75,105], rh:['noires','six8','rock8'], niv:2},
  {id:'p4', amb:'epique', n:'Envolée en ré', ton:'D', deg:['vi','IV','I','V'], ch:['Bm','G','D','A'], bpm:[80,110], rh:['croches','noires','six8'], niv:2},
+
+ // ── JOYEUX
+ {id:'j5', amb:'joyeux', n:'Soleil en do', ton:'C', deg:['I','IV','V','IV'], ch:['C','F','G','F'], facile:['C','Fmaj7','G','Fmaj7'], bpm:[85,120], rh:['folk2','motown','croches'], niv:2},
+ {id:'j6', amb:'joyeux', n:'Ré-la-sol', ton:'D', deg:['I','V','IV','I'], ch:['D','A','G','D'], bpm:[95,130], rh:['boomchick','feucamp','trous'], niv:1},
+ {id:'j7', amb:'joyeux', n:'Pop en la', ton:'A', deg:['I','V','vi','IV'], ch:['A','E','F#m','D'], bpm:[90,125], rh:['popsync','feu2','croches'], niv:2},
+ {id:'j8', amb:'joyeux', n:'Ça balance en mi', ton:'E', deg:['I','IV','V7','IV'], ch:['E','A','B7','A'], bpm:[100,140], rh:['rockaere','croches','shufflechuck'], niv:1},
+ {id:'j9', amb:'joyeux', n:'Soul lumineuse', ton:'C', deg:['I','vi','ii','V'], ch:['C','Am','Dm','G'], bpm:[85,115], rh:['motown','trous','croches'], niv:1},
+
+ // ── TRISTE
+ {id:'t5', amb:'triste', n:'Pluie fine', ton:'Am', deg:['i','III','VII','VI'], ch:['Am','C','G','F'], facile:['Am','C','G','Fmaj7'], bpm:[65,90], rh:['douce','six8b','ballade'], niv:2},
+ {id:'t6', amb:'triste', n:'Chute lente', ton:'Am', deg:['i','iv','i','V'], ch:['Am','Dm','Am','E'], bpm:[65,95], rh:['douce','ballade','noires'], niv:1},
+ {id:'t7', amb:'triste', n:'Soupir en mi mineur', ton:'Em', deg:['i','iv','VI','V7'], ch:['Em','Am','C','B7'], bpm:[65,95], rh:['douce','six8b','ballade'], niv:1},
+ {id:'t8', amb:'triste', n:'Ritournelle sombre', ton:'Em', deg:['i','VI','iv','V7'], ch:['Em','C','Am','B7'], bpm:[65,95], rh:['ballade','douce','feucamp'], niv:1},
+
+ // ── MÉLANCOLIQUE
+ {id:'m5', amb:'melancolique', n:'Souvenirs', ton:'C', deg:['I','iii','vi','IV'], ch:['C','Em','Am','F'], facile:['C','Em','Am','Fmaj7'], bpm:[70,100], rh:['douce','ballade','six8'], niv:2},
+ {id:'m6', amb:'melancolique', n:'Fin d\'été', ton:'G', deg:['I','iii','IV','V'], ch:['G','Bm','C','D'], facile:['G','Bm7','C','D'], bpm:[70,100], rh:['douce','feucamp','valse3'], niv:2},
+ {id:'m7', amb:'melancolique', n:'Pluie sur la vitre', ton:'Em', deg:['i','♭VII','♭VI','♭VII'], ch:['Em','D','C','D'], bpm:[70,100], rh:['douce','ballade','six8b'], niv:1},
+ {id:'m8', amb:'melancolique', n:'Fin de soirée', ton:'D', deg:['I','vi','ii','V'], ch:['D','Bm','Em','A'], facile:['D','Bm7','Em','A'], bpm:[70,100], rh:['douce','ballade','slow12'], niv:2},
+
+ // ── ÉNERGIQUE
+ {id:'e5', amb:'energique', n:'Power en ré', ton:'D', deg:['I','IV','V','IV'], ch:['D','G','A','G'], bpm:[110,150], rh:['rock8','rockgal','grunge'], niv:1},
+ {id:'e6', amb:'energique', n:'Cap à l\'ouest', ton:'G', deg:['I','♭VII','IV','I'], ch:['G','F','C','G'], facile:['G','Fmaj7','C','G'], bpm:[100,140], rh:['rock8','rockaere','chuck'], niv:2},
+ {id:'e7', amb:'energique', n:'Poursuite', ton:'Em', deg:['i','♭VII','♭VI','♭III'], ch:['Em','D','C','G'], bpm:[105,145], rh:['grunge','rock8','rockgal'], niv:1},
+ {id:'e8', amb:'energique', n:'Pogo', ton:'A', deg:['I','IV','V','IV'], ch:['A','D','E','D'], bpm:[120,160], rh:['rock8','rockgal','croches'], niv:1},
+ {id:'e9', amb:'energique', n:'Funk dorien', ton:'Am', deg:['i7','IV7','i7','IV7'], ch:['Am7','D7','Am7','D7'], bpm:[85,105], rh:['funk16','shufflechuck','chuck'], niv:2},
+
+ // ── FEU DE CAMP
+ {id:'f5', amb:'feu', n:'Voyage', ton:'G', deg:['I','IV','vi','V'], ch:['G','C','Em','D'], bpm:[85,115], rh:['feu2','boomchick','feucamp'], niv:1},
+ {id:'f6', amb:'feu', n:'Feu rapide', ton:'D', deg:['I','vi','IV','V'], ch:['D','Bm','G','A'], facile:['D','Bm7','G','A'], bpm:[90,125], rh:['feucamp','folk2','feu2'], niv:2},
+ {id:'f7', amb:'feu', n:'Cow-boy', ton:'D', deg:['I','IV','I','V'], ch:['D','G','D','A'], bpm:[90,125], rh:['boomchick','trous','folk2'], niv:1},
+ {id:'f8', amb:'feu', n:'Crooner de plage', ton:'G', deg:['I','vi','ii','V'], ch:['G','Em','Am','D'], bpm:[85,115], rh:['feu2','ballade','motown'], niv:1},
+
+ // ── RÊVEUR
+ {id:'r5', amb:'reveur', n:'Lent berceau', ton:'G', deg:['Imaj7','IVadd9','Imaj7','vi7'], ch:['Gmaj7','Cadd9','Gmaj7','Em7'], bpm:[60,90], rh:['six8','douce','ballade'], niv:1},
+ {id:'r6', amb:'reveur', n:'Eaux calmes', ton:'A', deg:['Isus2','IVmaj7','Isus2','V'], ch:['Asus2','Dmaj7','Asus2','E'], bpm:[65,95], rh:['douce','six8b','ballade'], niv:1},
+ {id:'r7', amb:'reveur', n:'Flottement', ton:'C', deg:['Iadd9','iii7','IVmaj7','Vadd9'], ch:['Cadd9','Em7','Fmaj7','Gadd9'], bpm:[70,100], rh:['douce','bossa','six8'], niv:1},
+ {id:'r8', amb:'reveur', n:'Marée', ton:'G', deg:['vi7','IVmaj7','Iadd9','Vsus4'], ch:['Em7','Cmaj7','Gadd9','Dsus4'], bpm:[65,95], rh:['douce','ballade','six8b'], niv:1},
+
+ // ── BLUES
+ {id:'b5', amb:'blues', n:'Blues rapide en mi (quick change)', ton:'E', deg:['I7','IV7','I7','I7','IV7','IV7','I7','I7','V7','IV7','I7','V7'], ch:['E7','A7','E7','E7','A7','A7','E7','E7','B7','A7','E7','B7'], bpm:[70,110], rh:['shuffle','shufflechuck','rock8'], niv:1},
+ {id:'b6', amb:'blues', n:'Blues en ré', ton:'D', deg:['I7','I7','I7','I7','IV7','IV7','I7','I7','V7','IV7','I7','V7'], ch:['D7','D7','D7','D7','G7','G7','D7','D7','A7','G7','D7','A7'], bpm:[70,110], rh:['shuffle','shufflechuck','slow12'], niv:1},
+ {id:'b7', amb:'blues', n:'Blues lent mineur en mi', ton:'Em', deg:['i7','i7','i7','i7','iv7','iv7','i7','i7','V7','iv7','i7','V7'], ch:['Em7','Em7','Em7','Em7','Am7','Am7','Em7','Em7','B7','Am7','Em7','B7'], bpm:[55,85], rh:['slow12','shuffle','ballade'], niv:1},
+ {id:'b8', amb:'blues', n:'Blues en 8 mesures', ton:'E', deg:['I7','V7','IV7','IV7','I7','V7','I7','V7'], ch:['E7','B7','A7','A7','E7','B7','E7','B7'], bpm:[70,100], rh:['shuffle','rock8','boomchick'], niv:1},
+
+ // ── ÉPIQUE
+ {id:'p5', amb:'epique', n:'Marche en mi mineur (2)', ton:'Em', deg:['i','III','VII','VI'], ch:['Em','G','D','C'], bpm:[80,110], rh:['noires','rock8','six8'], niv:1},
+ {id:'p6', amb:'epique', n:'Armée en marche', ton:'Em', deg:['i','v','♭VI','♭VII'], ch:['Em','Bm','C','D'], facile:['Em','Bm7','C','D'], bpm:[80,110], rh:['noires','rock8','grunge'], niv:2},
+ {id:'p7', amb:'epique', n:'Quête', ton:'Am', deg:['i','iv','V','i'], ch:['Am','Dm','E','Am'], bpm:[70,100], rh:['noires','six8','rock8'], niv:1},
+
+ // ── ROMANTIQUE
+ {id:'ro1', amb:'romantique', n:'Première danse', ton:'C', deg:['I','IV','ii','V'], ch:['C','F','Dm','G'], facile:['C','Fmaj7','Dm','G'], bpm:[70,100], rh:['douce','bossa','ballade'], niv:2},
+ {id:'ro2', amb:'romantique', n:'Tendre en sol', ton:'G', deg:['I','iii','vi','IV'], ch:['G','Bm','Em','C'], facile:['G','Bm7','Em','C'], bpm:[70,100], rh:['ballade','douce','six8'], niv:2},
+ {id:'ro3', amb:'romantique', n:'Nuit étoilée', ton:'D', deg:['Imaj7','vi7','ii7','V'], ch:['Dmaj7','Bm7','Em7','A'], bpm:[65,95], rh:['bossa','douce','six8b'], niv:1},
+ {id:'ro4', amb:'romantique', n:'Le Canon (8 mesures)', ton:'G', deg:['I','V','vi','iii','IV','I','IV','V'], ch:['G','D','Em','Bm','C','G','C','D'], facile:['G','D','Em','Bm7','C','G','C','D'], bpm:[60,90], rh:['douce','ballade','six8b'], niv:2, ex:['Canon de Pachelbel (écrit en ré, ici transposé en sol)']},
+
+ // ── LATINO
+ {id:'la1', amb:'latino', n:'Bossa simple', ton:'C', deg:['Imaj7','ii7','V7','Imaj7'], ch:['Cmaj7','Dm7','G7','Cmaj7'], bpm:[90,125], rh:['bossa','douce','trous'], niv:1},
+ {id:'la2', amb:'latino', n:'Habanera', ton:'Am', deg:['i','V7','i','V7'], ch:['Am','E7','Am','E7'], bpm:[90,120], rh:['rumba','bossa','boomchick'], niv:1},
+ {id:'la3', amb:'latino', n:'Bossa nostalgique', ton:'C', deg:['vi7','ii7','V7','Imaj7'], ch:['Am7','Dm7','G7','Cmaj7'], bpm:[90,125], rh:['bossa','douce','trous'], niv:1},
+ {id:'la4', amb:'latino', n:'Fiesta', ton:'A', deg:['I','IV','V7','I'], ch:['A','D','E7','A'], bpm:[110,140], rh:['rumba','folk2','motown'], niv:1},
+
+ // ── ROAD TRIP
+ {id:'rt1', amb:'roadtrip', n:'Fenêtre ouverte', ton:'D', deg:['I','V','ii','IV'], ch:['D','A','Em','G'], bpm:[90,125], rh:['folk2','popsync','boomchick'], niv:1},
+ {id:'rt2', amb:'roadtrip', n:'Radio', ton:'C', deg:['I','V','IV','V'], ch:['C','G','F','G'], facile:['C','G','Fmaj7','G'], bpm:[85,120], rh:['rockaere','motown','feucamp'], niv:2},
+ {id:'rt3', amb:'roadtrip', n:'Station-service', ton:'E', deg:['I','♭VII','IV','I'], ch:['E','D','A','E'], bpm:[100,135], rh:['rockaere','rock8','grunge'], niv:1},
+ {id:'rt4', amb:'roadtrip', n:'Coucher de soleil', ton:'D', deg:['I','IV','vi','V'], ch:['D','G','Bm','A'], facile:['D','G','Bm7','A'], bpm:[85,115], rh:['feu2','popsync','douce'], niv:2},
 ];
 
 const ARPS = [
@@ -3799,8 +3923,9 @@ const EFFECTS = [
   expl:'Main gauche relâche l\'accord, la main droite frappe quand même : le "chuck" qui donne le groove. Dans une tab : label @x.'},
 ];
 const AMB_LOOK = {joyeux:['☀️','#e0a030'], triste:['🌧️','#5f86b0'], melancolique:['🍂','#b8743a'], energique:['⚡','#c8503a'],
-  feu:['🔥','#d0602a'], reveur:['☁️','#9c86ae'], blues:['🎷','#4f7f9a'], epique:['⛰️','#7c8a5c']};
-const feel = {amb:null, prog:null, easy:{}, kind:'rh', rh:'feucamp', arp:'montee', fx:null, bpm:90, click:true, bar:-1};
+  feu:['🔥','#d0602a'], reveur:['☁️','#9c86ae'], blues:['🎷','#4f7f9a'], epique:['⛰️','#7c8a5c'],
+  romantique:['🌹','#c4607a'], latino:['💃','#d08a2a'], roadtrip:['🚗','#4f8f8a']};
+const feel = {amb:null, prog:null, easy:{}, kind:'rh', rh:'feucamp', arp:'montee', fx:null, bpm:90, click:true, bar:-1, rf:'all'};
 const feelNames = p => (feel.easy[p.id] && p.facile) ? p.facile : p.ch;
 const feelAmbOf = id => AMBIANCES.find(a => a.id === id);
 const feelProg = () => FEEL_PROGS.find(p => p.id === feel.prog);
@@ -3854,6 +3979,17 @@ function feelPickProg(id) {
   feel.bpm = Math.round((p.bpm[0] + p.bpm[1])/2); feelFixBpm();
   exoLog('feel'); exoSave(); exoRender(); window.scrollTo(0, 0);
 }
+/* 🎲 une suite au hasard + un de ses rythmes conseillés, tempo dans la fourchette, et c'est parti */
+function feelSurprise() {
+  feelStop();
+  const pool = FEEL_PROGS.filter(p => p.id !== feel.prog), p = pool[Math.floor(Math.random()*pool.length)];
+  feel.amb = p.amb; feelPickProg(p.id);
+  const ok = p.rh.filter(id => RHYTHMS.some(r => r.id === id));
+  feel.rh = ok[Math.floor(Math.random()*ok.length)]; feel.kind = 'rh'; feel.fx = null;
+  feel.bpm = Math.round((p.bpm[0] + Math.random()*(p.bpm[1] - p.bpm[0]))/5)*5; feelFixBpm();
+  exoRender(); feelPlay();
+}
+function feelRf(v) { feel.rf = v; exoRender(); }
 function feelFixBpm() { const m = feelMeter(); if (m.mes === '6/8' && feel.bpm > 85) feel.bpm = 66; if (m.mes !== '6/8' && feel.bpm < 50) feel.bpm = 70; }
 function feelEasy(id, e) {
   if (e) e.stopPropagation();
@@ -3890,6 +4026,7 @@ function feelCard(p) {
 }
 function feelTiles() {
   return `<div class="fl-lead">Quelle ambiance as-tu envie de jouer ?</div>
+    <div class="fl-surp"><button type="button" class="btn btn-primary" onclick="feelSurprise()">🎲 Surprends-moi</button><span>Une suite et un rythme au hasard, et on joue.</span></div>
     <div class="fl-tiles">${AMBIANCES.map(a => `<button type="button" class="fl-tile" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
       <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>`;
 }
@@ -3904,7 +4041,9 @@ function feelPlayerHTML() {
   const fxs = EFFECTS.map(f => ({f, ok: fxApplies(f, names)}));
   const fx = EFFECTS.find(f => f.id === feel.fx);
   const chip = (on, ok, click, label, rec) => `<button type="button" class="filt ${on ? 'on' : ''} ${ok === false ? 'off' : ''}" ${ok === false ? 'disabled title="Ne s’applique pas à cette suite"' : `onclick="${click}"`}>${label}${rec ? ' <i class="fl-rec">★</i>' : ''}</button>`;
-  const rhs = [...RHYTHMS].sort((x, y) => (p.rh.includes(y.id) ? 1 : 0) - (p.rh.includes(x.id) ? 1 : 0));
+  const rfOk = r => feel.rf === 'all' || r.id === feel.rh || p.rh.includes(r.id) && feel.rf === 'rec' || feel.rf === 'amb' && (r.amb || []).includes(p.amb) || feel.rf === r.niv;
+  const rhs = RHYTHMS.filter(rfOk).sort((x, y) => (p.rh.includes(y.id) ? 1 : 0) - (p.rh.includes(x.id) ? 1 : 0));
+  const rfs = [['all', 'Tous (' + RHYTHMS.length + ')'], ['rec', '★ Conseillés'], ['amb', a.n], [1, '● Facile'], [2, '●● Moyen'], [3, '●●● Costaud']];
   return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; ${esc(a.n)}</button>
     <div class="fl-ambh" style="--amb:${AMB_LOOK[a.id][1]}"><span class="fl-em">${AMB_LOOK[a.id][0]}</span>
       <div><div class="fl-tn">${esc(p.n)}</div><div class="fl-td">${p.deg.slice(0, 4).map(esc).join(' · ')}${p.deg.length > 4 ? ' …' : ''}${p.ex ? ' · comme « ' + esc(p.ex[0]) + ' »' : ''}</div></div>
@@ -3921,7 +4060,10 @@ function feelPlayerHTML() {
       <button type="button" class="filt ${feel.click ? 'on' : ''}" id="fl-click" onclick="feelClick()">${feel.click ? 'Métronome : oui' : 'Métronome : non'}</button></div>
     <div class="fcard fl-ways">
       <div class="fcard-t">Comment la jouer ?</div>
+      <div class="fl-free"><span>Change de rythme quand tu veux, même en pleine lecture : tout est permis, les <b>${RHYTHMS.length} rythmes</b> sont à toi.</span>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="feelSurprise()">🎲 Surprends-moi</button></div>
       <div class="fl-lbl">Rythme (main droite)</div>
+      <div class="filters fl-rf">${rfs.map(([v, l]) => `<button type="button" class="filt sm ${feel.rf === v ? 'on' : ''}" onclick="feelRf(${typeof v === 'number' ? v : `'${v}'`})">${esc(l)}</button>`).join('')}</div>
       <div class="filters">${rhs.map(r => chip(feel.kind === 'rh' && feel.rh === r.id, true, `feelWay('rh','${r.id}')`, esc(r.n), p.rh.includes(r.id))).join('')}</div>
       <div class="fl-lbl">Ou arpège (une note après l’autre)</div>
       <div class="filters">${ARPS.map(r => chip(feel.kind === 'arp' && feel.arp === r.id, true, `feelWay('arp','${r.id}')`, esc(r.n))).join('')}</div>
@@ -3951,9 +4093,17 @@ let FEEL_TAB = [];
 function feelPatHTML() {
   if (feel.kind === 'arp') return '';
   const r = feelRhy(), pat = feelPat(), per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res);
-  const cnt = i => r.mes === '6/8' ? ['1','2','3','4','5','6'][i] : r.res === 12 ? (i % 3 === 0 ? i/3 + 1 : i % 3 === 2 ? 'et' : '') : (i % spb === 0 ? i/spb + 1 : 'et');
+  const cnt = i => rhCnt(r, i);
   return `<div class="fl-cells">${Array.from({length:per}, (_, i) => `<div class="fl-cell ${i % spb === 0 ? 'beat' : ''}" id="fl-c${i}"><div class="sg-ar">${strumGlyph(pat[i] || '-', i)}</div><div class="sg-c">${cnt(i)}</div></div>`).join('')}</div>
-    <div class="exo-note">${esc(r.n)} · ${r.mes}${feel.fx === 'palm' ? ' · coups étouffés à la paume' : ''}</div>`;
+    <div class="exo-note">${esc(r.n)} · ${r.mes}${feel.fx === 'palm' ? ' · coups étouffés à la paume' : ''}${r.bpm ? ` · ${r.bpm[0]}–${r.bpm[1]} BPM` : ''}${r.niv ? ` · ${lvlDots(r.niv)}` : ''}</div>
+    ${r.tip ? `<div class="fl-tip">💡 ${esc(r.tip)}</div>` : ''}`;
+}
+/* comptage sous une case : 1 et 2 et… (6/8 : 1-6 ; triolets : 1 · et ; doubles : 1 e et a) */
+function rhCnt(r, i) {
+  const spb = rhSpb(r.mes, r.res), j = i % spb;
+  if (r.mes === '6/8') return String(i % 6 + 1);
+  if (r.res === 12) return j === 0 ? i/3 + 1 : j === 2 ? 'et' : '';
+  return j === 0 ? i/spb + 1 : spb === 4 ? ['', 'e', 'et', 'a'][j] : 'et';
 }
 function feelBtn() {
   const b = $('fl-playbtn'); if (!b) return;
@@ -4010,6 +4160,122 @@ function feelAfter() {
   if (!feel.prog) return;
   feelBtn(); feelShowBar(0); if (feel.kind === 'rh') $('fl-pat').innerHTML = feelPatHTML();
 }
+
+/* ═══════ APPRENDRE LES RYTHMES — 12 étapes, un seul accord facile, la main droite d'abord ═══════
+   Chaque étape : le rythme en gros (flèches + comptage), lecture en boucle au tempo de départ, montée de +5 BPM
+   vers la cible, bouton « Réussi » (enregistré dans exoProg : done / best / hist) qui débloque l'étape suivante. */
+const RH_COURSE = [
+ {id:'rc1',  rh:'noires',   bpm:[50,80],  consigne:'Un bas sur chaque temps, en comptant 1-2-3-4 à voix haute.', ok:'4 mesures de suite sans trou à 70 bpm.'},
+ {id:'rc2',  rh:'croches',  bpm:[50,80],  consigne:'La main balance sans s\'arrêter : bas sur le temps, haut sur le « et ».', ok:'8 mesures régulières, sans accélérer, à 70 bpm.'},
+ {id:'rc3',  rh:'trous',    bpm:[60,90],  consigne:'Même balancement, mais ne touche pas les cordes sur les cases vides.', ok:'La main ne s\'arrête jamais et les trous restent muets, 8 mesures à 80 bpm.'},
+ {id:'rc4',  rh:'reggae',   bpm:[60,90],  consigne:'Seulement les coups hauts sur les « et » : le bas se fait dans le vide.', ok:'Hauts réguliers et légers pendant 8 mesures à 80 bpm.'},
+ {id:'rc5',  rh:'motown',   bpm:[70,100], consigne:'Bas francs, hauts à peine effleurés : écoute la différence de volume.', ok:'On entend nettement fort/doux pendant 8 mesures à 90 bpm.'},
+ {id:'rc6',  rh:'chuck',    bpm:[70,100], consigne:'Sur les temps 2 et 4, étouffe l\'accord de la main gauche et frappe : « tchak ».', ok:'Le « tchak » est sec et en place, 8 mesures à 85 bpm.'},
+ {id:'rc7',  rh:'feucamp',  bpm:[70,100], consigne:'Le rythme classique : le temps 3 est muet, la main continue à balancer.', ok:'8 mesures à 85 bpm sans regarder la main, en chantant par-dessus.'},
+ {id:'rc8',  rh:'popsync',  bpm:[75,105], consigne:'Les temps 2 et 3 sont muets : tu ne joues que les « et » entre les deux bas.', ok:'4 mesures sur 2 accords différents à 90 bpm.'},
+ {id:'rc9',  rh:'valse',    bpm:[70,110], consigne:'Compte 1-2-3 : un bas fort, puis deux bas doux.', ok:'8 mesures en 3/4 sans glisser vers 4 temps, à 90 bpm.'},
+ {id:'rc10', rh:'six8',     bpm:[50,80],  consigne:'Compte 1-2-3 4-5-6 : deux gros temps de trois croches.', ok:'8 mesures stables à 65 bpm (la noire pointée).'},
+ {id:'rc11', rh:'shuffle',  bpm:[60,90],  consigne:'Chaque temps a 3 pulsations : tu joues la 1re et la 3e (bas, trou, haut).', ok:'Swing régulier pendant 8 mesures à 80 bpm sur un blues en mi.'},
+ {id:'rc12', rh:'doubles',  bpm:[50,80],  consigne:'Quatre coups par temps : poignet souple, petits mouvements.', ok:'8 mesures à 60 bpm sans te crisper, puis 70.'},
+];
+const rcz = {cur:null, bpm:70, click:true, bars:0};
+const rccRh = st => RHYTHMS.find(r => r.id === st.rh);
+const rccUnlocked = i => i === 0 || !!exoProg.done[RH_COURSE[i - 1].id];
+const rccBpmOf = st => Math.max(st.bpm[0], Math.min(st.bpm[1], exoProg.best[st.id] ? exoProg.best[st.id] : st.bpm[0]));
+const rccChord = () => newChord('Em');
+const rccArrows = pat => [...pat].map(ch => ch === '-' ? '·' : ch.toLowerCase() === 'x' ? '✕' : ch.toLowerCase() === 'u' ? '↑' : '↓').join('');
+function rccStop() { if (rhPlaying('rc')) rhStop(); }
+function rccOpen(i) {
+  if (!rccUnlocked(i)) return;
+  rccStop(); rcz.cur = i; rcz.bpm = RH_COURSE[i].bpm[0]; rcz.bars = 0;
+  exoRender(); window.scrollTo(0, 0);
+}
+function rccBack() { rccStop(); rcz.cur = null; exoRender(); window.scrollTo(0, 0); }
+function rccTempo(d) {
+  const st = RH_COURSE[rcz.cur];
+  rcz.bpm = Math.max(30, Math.min(st.bpm[1] + 20, rcz.bpm + d));
+  if (rhPlaying('rc')) rhSetBpm(rcz.bpm);
+  rccSync();
+}
+function rccClick() { rcz.click = !rcz.click; if (rhP && rhP.key === 'rc') rhP.mute = !rcz.click; rccSync(); }
+function rccSync() {
+  const st = RH_COURSE[rcz.cur]; if (!st || !$('rc-bpm')) return;
+  $('rc-bpm').firstChild.nodeValue = rcz.bpm;
+  const b = $('rc-click'); b.classList.toggle('on', rcz.click); b.textContent = rcz.click ? 'Métronome : oui' : 'Métronome : non';
+  const f = Math.max(0, Math.min(1, (rcz.bpm - st.bpm[0])/Math.max(1, st.bpm[1] - st.bpm[0])));
+  $('rc-fill').style.width = Math.round(f*100) + '%';
+  $('rc-up').disabled = rcz.bpm >= st.bpm[1];
+  $('rc-up').classList.toggle('pulse', rcz.bars >= 8 && rcz.bpm < st.bpm[1]);
+  $('rc-bars').textContent = rcz.bars ? rcz.bars + (rcz.bars > 1 ? ' mesures jouées' : ' mesure jouée') : '';
+}
+function rccBtn() {
+  const b = $('rc-playbtn'); if (!b) return;
+  const on = rhPlaying('rc'); b.classList.toggle('on', on);
+  b.innerHTML = on ? '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20"/></svg>';
+}
+function rccPlay() {
+  if (rhPlaying('rc')) { rhStop(); return; }
+  const st = RH_COURSE[rcz.cur], r = rccRh(st); if (!st || !r) return;
+  if (metroPlaying) stopMetro();
+  rcz.bars = 0;
+  const rh = rhFromPat(r.pat, r.mes, r.res, 1), per = rhPerBar(r.mes, r.res);
+  let last = -1;
+  rhStart(rh, rcz.bpm, rccChord(), 0, (i, k) => {
+    if (last >= 0) { const p = $('rc-c' + last); if (p) p.classList.remove('exo-now'); }
+    if (i == null) { last = -1; rccBtn(); return; }
+    last = i % per; const el = $('rc-c' + last); if (el) el.classList.add('exo-now');
+    if (i === 0) { rcz.bars = Math.floor(k/per) + 1; rccSync(); }
+  }, {key:'rc', mute:!rcz.click});
+  rccBtn();
+}
+function rccDone() {
+  const st = RH_COURSE[rcz.cur], id = st.id, was = !!exoProg.done[id];
+  exoProg.done[id] = true; if (rcz.bpm > (exoProg.best[id] || 0)) exoProg.best[id] = rcz.bpm;
+  (exoProg.hist[id] = exoProg.hist[id] || []).push({d: today(), n: rcz.bpm});
+  exoLog(id); exoSave(); rccStop();
+  toast(rcz.cur === RH_COURSE.length - 1 ? 'Parcours terminé, bravo !' : `Étape ${rcz.cur + 1} réussie à ${rcz.bpm} BPM`);
+  rcz.fin = true; exoRender();
+}
+function rccNext() { rcz.fin = false; if (rcz.cur < RH_COURSE.length - 1) rccOpen(rcz.cur + 1); else rccBack(); }
+function rccCells(r) {
+  const per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = per <= 9 ? per : per/2, pat = r.pat;
+  let h = '';
+  for (let a = 0; a < per; a += row) h += `<div class="rc-row" style="--cols:${row}">${Array.from({length:row}, (_, q) => { const i = a + q;
+    return `<div class="fl-cell rc-cell ${i % spb === 0 ? 'beat' : ''}" id="rc-c${i}"><div class="sg-ar">${strumGlyph(pat[i] || '-', i)}</div><div class="sg-c">${rhCnt(r, i)}</div></div>`; }).join('')}</div>`;
+  return h;
+}
+function rccHTML() {
+  if (rcz.cur == null) {
+    const nDone = RH_COURSE.filter(s => exoProg.done[s.id]).length, nxt = RH_COURSE.findIndex(s => !exoProg.done[s.id]);
+    return `<div class="fl-lead">Apprendre les rythmes, un par un</div>
+      <div class="rc-top"><div class="rc-bar"><i style="width:${Math.round(nDone/RH_COURSE.length*100)}%"></i></div><span>${nDone} / ${RH_COURSE.length} étapes</span></div>
+      <div class="exo-note" style="margin:0 0 14px">Un seul accord (Mi mineur), pour ne penser qu’à la main droite. Réussis une étape pour débloquer la suivante.</div>
+      <div class="rc-grid">${RH_COURSE.map((s, i) => { const r = rccRh(s), ok = !!exoProg.done[s.id], lock = !rccUnlocked(i);
+        return `<button type="button" class="rc-card ${ok ? 'ok' : ''} ${lock ? 'lock' : ''} ${i === nxt ? 'now' : ''}" ${lock ? 'disabled' : `onclick="rccOpen(${i})"`}>
+          <span class="rc-n">${ok ? '✓' : lock ? '🔒' : i + 1}</span><b>${esc(r.n)}</b><span class="rc-ar">${rccArrows(r.pat)}</span>
+          <small>${s.bpm[0]} → ${s.bpm[1]} BPM${exoProg.best[s.id] ? ' · record ' + exoProg.best[s.id] : ''}</small></button>`; }).join('')}</div>`;
+  }
+  const i = rcz.cur, st = RH_COURSE[i], r = rccRh(st);
+  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="rccBack()">&#8592; Les 12 étapes</button>
+    <div class="rc-head"><span class="rc-n big">${i + 1}</span><div><div class="fl-tn">${esc(r.n)}</div><div class="fl-td">${r.mes} · ${lvlDots(r.niv)} · sur ${esc(rccChord().name || 'Em')}</div></div>
+      <div class="rc-chord">${chordSVG(rccChord(), {size:.8})}</div></div>
+    <div class="rc-say">${esc(st.consigne)}</div>
+    <div class="rc-cells">${rccCells(r)}</div>
+    ${r.tip ? `<div class="fl-tip">💡 ${esc(r.tip)}</div>` : ''}
+    <div class="fl-trans">
+      <button type="button" class="btn-icon" onclick="rccTempo(-5)" title="−5 BPM">−</button>
+      <div class="tc-v" id="rc-bpm">${rcz.bpm}<small>BPM</small></div>
+      <button type="button" class="btn-icon" onclick="rccTempo(5)" title="+5 BPM">+</button>
+      <button type="button" class="fl-play" id="rc-playbtn" onclick="rccPlay()" aria-label="Jouer en boucle"></button>
+      <button type="button" class="filt" id="rc-click" onclick="rccClick()"></button></div>
+    <div class="rc-ladder"><div class="rc-lt"><span>Départ ${st.bpm[0]}</span><span id="rc-bars"></span><span>Cible ${st.bpm[1]}</span></div>
+      <div class="rc-bar"><i id="rc-fill"></i></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="rc-up" onclick="rccTempo(5)">+5 BPM : un cran plus vite</button></div>
+    <div class="rc-goal"><b>Réussi quand :</b> ${esc(st.ok)}</div>
+    <div class="rc-act">${rcz.fin ? `<button type="button" class="btn btn-primary" onclick="rccNext()">${i === RH_COURSE.length - 1 ? 'Terminer le parcours' : 'Étape suivante →'}</button>`
+      : `<button type="button" class="btn btn-primary" onclick="rccDone()">✓ Réussi</button>`}</div>`;
+}
+function rccAfter() { if (rcz.cur == null) return; rccBtn(); rccSync(); }
 
 /* ═══════ BOÎTE À OUTILS — les sites qui comptent ═══════
    Senior note: links only, no logos — every card is drawn from the same
@@ -5363,7 +5629,7 @@ const rhyNorm = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerC
 function rhyOpen(ctx, i) {
   stopPlay();
   const s = ctx === 'cur' ? cur : draft, p = s && s.parts[i]; if (!p) return;
-  rhy = {ctx, i, q: '', lit: null, r: p.rhythm ? clone(rhNorm(p.rhythm)) : rhFromPat('', '4/4', 8, 1)};
+  rhy = {ctx, i, q: '', lv: '', am: '', lit: null, r: p.rhythm ? clone(rhNorm(p.rhythm)) : rhFromPat('', '4/4', 8, 1)};
   $('m-rhy').classList.remove('hide'); document.body.classList.add('rhy-open');
   rhyRender();
 }
@@ -5393,7 +5659,10 @@ function rhyRender() {
   <div class="rhy-body"><div class="rhy-in">
     <div class="rhy-pres">
       <div class="rhy-lbl"><span>Partir d’un rythme</span><input type="search" id="rhy-q" placeholder="Chercher…" autocomplete="off" oninput="rhy.q=this.value;rhyPre()" aria-label="Chercher un rythme"></div>
+      <div class="rhy-fil"><select id="rhy-lv" onchange="rhy.lv=this.value;rhyPre()" aria-label="Niveau"><option value="">Tous niveaux</option><option value="1">● Facile</option><option value="2">●● Moyen</option><option value="3">●●● Costaud</option></select>
+        <select id="rhy-am" onchange="rhy.am=this.value;rhyPre()" aria-label="Ambiance"><option value="">Toutes ambiances</option>${AMBIANCES.map(a => `<option value="${a.id}">${AMB_LOOK[a.id][0]} ${esc(a.n)}</option>`).join('')}</select></div>
       <div class="rhy-pre" id="rhy-pre"></div>
+      <div class="rhy-tip" id="rhy-tip"></div>
     </div>
     <div class="rhy-main">
       <div class="rhy-prev" id="rhy-prev" aria-label="Aperçu du rythme"></div>
@@ -5432,7 +5701,7 @@ function rhyRender() {
 // vignettes de préréglages : nom + mini-motif en flèches ; la liste défile et se filtre
 function rhyPre() {
   const q = rhyNorm(rhy.q.trim());
-  const list = RHYTHMS.filter(x => !q || rhyNorm(x.n + ' ' + x.mes).includes(q));
+  const list = RHYTHMS.filter(x => (!q || rhyNorm(x.n + ' ' + x.mes).includes(q)) && (!rhy.lv || x.niv == rhy.lv) && (!rhy.am || (x.amb || []).includes(rhy.am)));
   $('rhy-pre').innerHTML = list.map(x => `<button type="button" class="rhy-card" onclick="rhyPreset('${x.id}')"><b>${esc(x.n)}</b><span>${[...x.pat].map(ch => ch === '-' ? '·' : ch.toLowerCase() === 'x' ? '✕' : ch.toLowerCase() === 'u' ? '↑' : '↓').join('')}</span></button>`).join('')
     || '<span style="color:var(--cream2);font-size:13px;padding:8px">Aucun rythme ne correspond.</span>';
 }
@@ -5441,6 +5710,7 @@ function rhyPreset(id) {
   const was = rhPlaying(rhyKey());
   rhy.r = rhFromPat(x.pat, x.mes, x.res, 1);
   rhyGrid(); rhySync(); rhyTest(true);   // écoute tout de suite
+  const t = $('rhy-tip'); if (t) t.textContent = x.tip ? '💡 ' + x.tip : '';
 }
 function rhyGrid() {
   const r = rhy.r, per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = per <= 9 ? per : per/2;
