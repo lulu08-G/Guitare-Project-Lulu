@@ -580,6 +580,12 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .tt-plat-d{font-size:11px;opacity:.92}
 .tt-plat-links{display:flex;flex-direction:column;gap:6px;padding:12px}
 .tt-link{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;background:var(--bg2);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--cream);transition:all .15s}
+.tt-row{display:flex;gap:6px;align-items:stretch}.tt-row .tt-link{flex:1;min-width:0;min-height:44px}
+.tt-pin{flex:0 0 44px;min-height:44px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--bg2);border:1px solid var(--border);color:var(--cream3);cursor:pointer}
+.tt-pin:hover{border-color:var(--gold);color:var(--gold2)}.tt-pin.on{background:var(--sage);border-color:var(--sage);color:var(--ink)}
+.tt-fold{border-top:1px solid var(--border);margin-top:12px;padding-top:10px}.tt-fold>summary{cursor:pointer;font-size:12px;font-weight:700;color:var(--cream3);min-height:32px;display:flex;align-items:center}
+.tt-band{position:sticky;bottom:0;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 14px calc(10px + env(safe-area-inset-bottom));margin-top:18px;background:var(--bg2);border:1px solid var(--gold);border-radius:12px;box-shadow:0 -6px 18px rgba(0,0,0,.25)}
+.tt-band b{font-size:13px;color:var(--cream)}.tt-band small{display:block;font-size:11px;color:var(--cream3)}
 .tt-link:hover{border-color:var(--gold);color:var(--gold2)}
 .tt-link span{color:var(--cream4);display:flex}
 .tt-site-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
@@ -780,10 +786,10 @@ body.playing .toast{bottom:104px}
       <button type="button" class="filt" data-f="capo" onclick="setHomeFilter('capo')">Capo</button>
     </div>
     <div class="toolbar" id="cahier-bar">
-      <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Selectionner</button>
+      <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Sélectionner</button>
       <span class="toolbar-count" id="sel-count"></span>
       <div class="spacer"></div>
-      <button class="btn btn-ghost btn-sm" onclick="openPrintModal()" id="btn-print" style="display:none">Imprimer la selection</button>
+      <button class="btn btn-ghost btn-sm" onclick="openPrintModal()" id="btn-print" style="display:none">Imprimer la sélection</button>
       <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" style="display:none">Export JSON</button>
       <button class="btn btn-ghost btn-sm" onclick="document.getElementById('json-in').click()">Import JSON</button>
       <input type="file" id="json-in" accept="application/json" style="display:none" onchange="importJSON(this)">
@@ -892,7 +898,7 @@ body.playing .toast{bottom:104px}
 <!-- ══ CHORD LIBRARY ══ -->
 <div class="view" id="v-lib">
   <div class="wrap">
-    <div class="hero"><div><h1>Les <em>accords</em></h1><p>Diagrammes, doigtes et ecoute — la base de tout</p></div></div>
+    <div class="hero"><div><h1>Les <em>accords</em></h1><p>Diagrammes, doigtés et écoute — la base de tout</p></div></div>
     <div class="search-bar">
       <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <input type="text" id="lib-q" placeholder="Rechercher un accord (Am, F#m, Cmaj7...)" oninput="renderLib()">
@@ -971,7 +977,7 @@ body.playing .toast{bottom:104px}
 <!-- ══ TUNER ══ -->
 <div class="view" id="v-tuner">
   <div class="wrap-narrow">
-    <div class="hero"><div><h1>L <em>accordeur</em></h1><p>Le micro ecoute, l aiguille te dit si c est trop haut ou trop bas</p></div></div>
+    <div class="hero"><div><h1>L’<em>accordeur</em></h1><p>Le micro écoute, l’aiguille te dit si c’est trop haut ou trop bas</p></div></div>
 
     <div class="fcard" style="text-align:center;padding:32px 20px">
       <button class="btn btn-primary" id="tuner-toggle" onclick="toggleTuner()">
@@ -1017,9 +1023,9 @@ body.playing .toast{bottom:104px}
 
     <div class="fcard">
       <div class="fcard-t">Test<span class="test-badge">Beta</span></div>
-      <p style="font-size:12px;color:var(--cream4);margin-bottom:6px">Capture eclair — le micro ecoute quelques secondes et propose des accords probables. Experimental, pas fiable a 100% : a prendre comme point de depart, pas comme verite.</p>
+      <p style="font-size:12px;color:var(--cream4);margin-bottom:6px">Capture éclair — le micro écoute quelques secondes et propose des accords probables. Experimental, pas fiable à 100 % : a prendre comme point de depart, pas comme verite.</p>
       <div class="cap-wrap">
-        <button class="btn btn-primary btn-sm" id="cap-toggle" onclick="toggleCapture()">Ecouter 5 secondes</button>
+        <button class="btn btn-primary btn-sm" id="cap-toggle" onclick="toggleCapture()">Écouter 5 secondes</button>
         <div class="cap-blob" id="cap-blob" style="display:none">
           <div class="cap-blob-ring"></div>
           <div class="cap-blob-core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg></div>
@@ -1206,6 +1212,7 @@ const newChord = (n) => {
     ? {id:uid(), name:lib.n, frets:lib.f.slice(), fingers:(lib.g||[0,0,0,0,0,0]).slice(), base:1, arp:[]}
     : {id:uid(), name:n||'', frets:[-1,-1,-1,-1,-1,-1], fingers:[0,0,0,0,0,0], base:1, arp:[]};
 };
+const dispDiff = d => ({Debutant:'Débutant', Intermediaire:'Intermédiaire', Avance:'Avancé'})[d] || d || '';
 const newPart = (name) => ({id:uid(), name:name||'Partie', collapsed:false, chords:[], rhythm:null, tabText:'', note:''});
 const newSheet_ = () => ({
   id:uid(), title:'', artist:'', color:'gold', favorite:false,
@@ -2045,7 +2052,7 @@ function stopCapture() {
   capTimer = null;
   if (capStream) capStream.getTracks().forEach(t => t.stop());
   capStream = null; capAnalyser = null;
-  const btn = $('cap-toggle'); if (btn) btn.textContent = 'Ecouter 5 secondes';
+  const btn = $('cap-toggle'); if (btn) btn.textContent = 'Écouter 5 secondes';
   const blob = $('cap-blob'); if (blob) blob.style.display = 'none';
   const timer = $('cap-timer'); if (timer) timer.textContent = '';
 }
@@ -2132,7 +2139,7 @@ function playSeq(id) {
 }
 const seqChips = (id, labels, subs) => `<div class="note-chips">${labels.map((l, k) =>
   `<span class="note-chip" id="${id}-${k}">${esc(l)}${subs ? `<small>${esc(subs[k])}</small>` : ''}</span>`).join('')}</div>`;
-const playBtn = (attr, label) => `<button type="button" class="btn btn-ghost btn-xs" ${attr}><svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> ${label || 'Ecouter'}</button>`;
+const playBtn = (attr, label) => `<button type="button" class="btn btn-ghost btn-xs" ${attr}><svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> ${label || 'Écouter'}</button>`;
 
 /* ── fretboard: every position of a set of pitch classes, colour = role ── */
 function fretboardSVG(pcs, rootPc, opt) {
@@ -2326,7 +2333,7 @@ function lessonKey() {
     P('Elle suit toujours le même schéma d’écarts : <b>Ton – Ton – ½ – Ton – Ton – Ton – ½</b> (en cases : 2-2-1-2-2-2-1). Depuis C, ça donne C D E F G A B : que des notes naturelles, d’où l’absence de dièse en Do majeur.') +
     keyChips(k, 'coursSetKey') +
     scaleSteps(k) +
-    `<div style="margin-bottom:14px">${playBtn('onclick="coursPlayScale()"', 'Ecouter la gamme')}</div>` +
+    `<div style="margin-bottom:14px">${playBtn('onclick="coursPlayScale()"', 'Écouter la gamme')}</div>` +
     H('Les 7 accords de la tonalité') +
     P('En construisant une triade sur chaque note de la gamme (avec uniquement les notes de la gamme), on obtient toujours la même suite : <b>Majeur – mineur – mineur – Majeur – Majeur – mineur – diminué</b>. On les numérote en chiffres romains : majuscule = majeur, minuscule = mineur.') +
     `<div class="table-wrap"><table class="ctable"><tr><th>Degré</th><th>Accord</th><th>Rôle</th><th></th></tr>${chords.map((c, d) =>
@@ -2483,7 +2490,7 @@ function lessonInversions() {
     P('Pour D/F♯, le F♯ grave se joue souvent avec le <b>pouce</b> qui passe par-dessus le manche (case 2 du Mi grave).') +
     H('À quoi ça sert : les lignes de basse') +
     P('Au lieu de sauter d’un accord à l’autre, la basse peut <b>glisser</b> note par note. Écoute cette descente : la basse fait C → B → A → G → F pendant que les accords changent.') +
-    `<div class="prog"><div class="prog-t"><div><div class="prog-n">C – G/B – Am – Am/G – F</div><div class="prog-r">basse : C · B · A · G · F</div></div>${playBtn('onclick="playSeq(\'walk\')"', 'Ecouter')}</div>
+    `<div class="prog"><div class="prog-t"><div><div class="prog-n">C – G/B – Am – Am/G – F</div><div class="prog-r">basse : C · B · A · G · F</div></div>${playBtn('onclick="playSeq(\'walk\')"', 'Écouter')}</div>
       ${seqChips('walk', ['C','G/B','Am','Am/G','F'], ['C','B','A','G','F'])}</div>` +
     P('C’est aussi pour ça qu’on étouffe certaines cordes : dans un C, on évite le Mi grave à vide pour ne pas avoir E (la tierce) à la basse… sauf si on veut justement un C/E.') +
     KEY('X/Y = accord X avec la note Y à la basse · les renversements créent des basses qui marchent au lieu de sauter.');
@@ -3509,6 +3516,8 @@ const ICO = {
   search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
   mic:   '<path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/>',
   wave:  '<path d="M2 12h2M6 8v8M10 4v16M14 7v10M18 10v4M22 12h0"/>',
+  pin:   '<path d="M9 4h6l-1 6 3 3H7l3-3z"/><path d="M12 13v8"/>',
+  check: '<polyline points="4 12 10 18 20 6"/>',
   save:  '<path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
 };
 const icon = (k, sz) => `<svg width="${sz || 18}" height="${sz || 18}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICO[k]}</svg>`;
@@ -3660,8 +3669,16 @@ function tutoSet(title, artist) {
   renderTuto();
   if (tuto.title && LS.get('gms_ytkey', '')) tutoLoadYT();
 }
+/* champ unique : « Titre – Artiste » (tiret, « by » ou « par »), sinon le titre seul */
+function tutoParse(q) {
+  q = (q || '').trim().replace(/\s+/g, ' ');
+  const known = sheets.find(s => normTitle(s.title) === normTitle(q));
+  if (known) return [known.title, known.artist === '—' ? '' : known.artist];
+  const m = q.match(/^(.+?)\s+(?:[-–—\/]|by|par)\s+(.+)$/i);
+  return m ? [m[1], m[2]] : [q, ''];
+}
 function tutoSearch() {
-  const t = $('tt-title').value, a = $('tt-artist').value;
+  const [t, a] = tutoParse($('tt-q').value);
   if (!t.trim()) { toast('Entre au moins un titre', true); return; }
   tutoSet(t, a);
   const r = $('tt-results'); if (r) setTimeout(() => r.scrollIntoView({behavior:'smooth', block:'start'}), 60);
@@ -3736,32 +3753,47 @@ function tutoSaveKeys() {
   if (tuto.title && LS.get('gms_ytkey', '')) tutoLoadYT();
 }
 /* keep a good tutorial in the sheet */
-async function tutoKeep(url, label) {
+async function tutoKeep(url, label, kind) {
   url = (url || '').trim();
   if (!/^https?:\/\//.test(url)) { toast('Colle un lien complet (https://…)', true); return; }
-  let s = sheets.find(x => x.title.toLowerCase() === tuto.title.toLowerCase() && (!tuto.artist || (x.artist || '').toLowerCase() === tuto.artist.toLowerCase()));
+  let s = tutoSheet(); // titres uniques : on épingle dans la fiche existante
   const created = !s;
-  if (!s) { s = newSheet_(); s.title = tuto.title; s.artist = tuto.artist || '—'; sheets.push(s); }
+  if (!s) { s = newSheet_(); s.title = tuto.title; s.artist = tuto.artist || '—'; s.parts = [newPart('Couplet')]; sheets.push(s); }
+  else if (s.artist === '—' && tuto.artist) s.artist = tuto.artist;
   s.links = s.links || [];
-  if (!s.links.some(l => l.url === url)) s.links.push({id:uid(), url, title: label || (ytId(url) ? 'Tuto vidéo' : url.replace(/^https?:\/\//, '').slice(0, 48))});
+  const lab = label || (ytId(url) ? 'Tuto vidéo' : url.replace(/^https?:\/\//, '').slice(0, 48));
+  const ex = s.links.find(l => l.url === url);
+  if (!ex) s.links.push({id:uid(), url, title: lab, kind: kind || 'tuto'});
+  else if (kind === 'original') ex.kind = 'original';
+  if (kind === 'original' && !(s.original && s.original.url)) s.original = {url, label: lab};
   s.blocks = s.blocks || {}; s.blocks.coffre = true; s.updatedAt = Date.now();
   await DB.put('sheets', clone(s));
   toast(created ? `Fiche « ${s.title} » créée avec ce tuto dans le Coffre` : `Tuto ajouté au Coffre de « ${s.title} »`);
   renderTuto();
 }
-function tutoSheet() { return sheets.find(x => tuto.title && x.title.toLowerCase() === tuto.title.toLowerCase()); }
+function tutoSheet() { return sheets.find(x => tuto.title && normTitle(x.title) === normTitle(tuto.title)); }
+const tutoPinned = url => { const s = tutoSheet(); return !!(s && (s.links || []).some(l => l.url === url)); };
+/* épingler un lien de la liste (url encodée en index pour éviter les guillemets) */
+let tutoPinList = [];
+function tutoPin(i) { const [u, l] = tutoPinList[i]; tutoKeep(u, l); }
+/* « Compléter la fiche » : éditeur pré-rempli (fiche existante, ou nouvelle avec titre/artiste) */
+function tutoComplete() {
+  const s = tutoSheet();
+  draft = s ? clone(s) : newSheet_();
+  if (!s) { draft.title = tuto.title; draft.artist = tuto.artist; }
+  if (!draft.original) { const o = (draft.links || []).find(l => l.kind === 'original' && ytId(l.url)); if (o) draft.original = {url:o.url}; }
+  if (!draft.parts || !draft.parts.length) draft.parts = [newPart('Couplet')];
+  openEditor(s ? 'Compléter la fiche' : 'Nouvelle fiche');
+}
 
 function renderTuto() {
   const host = $('tuto-body'); if (!host) return;
   const recent = LS.get('gms_tuto_recent', []), mine = sheets.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 10);
   const keys = {yt: LS.get('gms_ytkey', ''), audd: LS.get('gms_audd', '')};
   const listen = tuto.listening;
-  const chip = (t, a) => `<button type="button" class="filt" onclick="tutoSet(${esc(JSON.stringify(t))},${esc(JSON.stringify(a || ''))})">${esc(t)}${a ? ` <span style="opacity:.6">· ${esc(a)}</span>` : ''}</button>`;
+  const chip = (t, a) => (a === '—' && (a = ''), `<button type="button" class="filt" onclick="tutoSet(${esc(JSON.stringify(t))},${esc(JSON.stringify(a || ''))})">${esc(t)}${a ? ` <span style="opacity:.6">· ${esc(a)}</span>` : ''}</button>`);
   let h = `<div class="fcard tt-search">
-    <div class="frow">
-      <div class="fg" style="flex:2"><label>Morceau</label><input type="text" id="tt-title" value="${esc(tuto.title)}" placeholder="Ex : Wonderwall" onkeydown="if(event.key==='Enter')tutoSearch()"></div>
-      <div class="fg" style="flex:1.4"><label>Artiste</label><input type="text" id="tt-artist" value="${esc(tuto.artist)}" placeholder="Ex : Oasis" onkeydown="if(event.key==='Enter')tutoSearch()"></div>
-    </div>
+    <div class="fg" style="margin-bottom:6px"><label for="tt-q">Quel morceau ?</label><input type="text" id="tt-q" value="${esc(tuto.title + (tuto.artist ? ' – ' + tuto.artist : ''))}" placeholder="Ex : Wonderwall – Oasis" autocomplete="off" onkeydown="if(event.key==='Enter')tutoSearch()"></div>
     <div class="tt-actions">
       <button type="button" class="btn btn-primary" onclick="tutoSearch()">${icon('search', 15)} Trouver les tutos</button>
       <button type="button" class="btn btn-ghost ${listen === 'dict' ? 'tt-live' : ''}" onclick="tutoDictate()">${icon('mic', 15)} ${listen === 'dict' ? 'Je t’écoute…' : 'Dicter le titre'}</button>
@@ -3769,11 +3801,11 @@ function renderTuto() {
     </div>
     ${mine.length ? `<div class="tt-sub">Depuis ton cahier</div><div class="filters">${mine.map(s => chip(s.title, s.artist)).join('')}</div>` : ''}
     ${recent.length ? `<div class="tt-sub">Recherches récentes</div><div class="filters">${recent.map(r => chip(r.t, r.a)).join('')}</div>` : ''}
-    <div class="tt-opts">
+    <details class="tt-fold"><summary>Filtres : niveau, type de tuto, langue</summary><div class="tt-opts">
       <div><div class="tt-sub">Niveau</div><div class="filters">${Object.entries(T_LVL).map(([k, v]) => `<button type="button" class="filt ${tuto.lvl===k?'on':''}" onclick="tutoOpt('lvl','${k}')">${v.n}</button>`).join('')}</div></div>
       <div><div class="tt-sub">Je veux apprendre</div><div class="filters">${Object.entries(T_KIND).map(([k, v]) => `<button type="button" class="filt ${tuto.kind===k?'on':''}" onclick="tutoOpt('kind','${k}')">${v.n}</button>`).join('')}</div></div>
       <div><div class="tt-sub">Langue des tutos</div><div class="filters">${Object.entries(T_LANG).map(([k, v]) => `<button type="button" class="filt ${tuto.lang===k?'on':''}" onclick="tutoOpt('lang','${k}')">${v}</button>`).join('')}</div></div>
-    </div>
+    </div></details>
     <button type="button" class="tt-keys-btn" onclick="tuto.showKeys=!tuto.showKeys;renderTuto()">Options avancées : vidéos YouTube dans l’appli & reconnaissance audio ${keys.yt ? '· YouTube ✓' : ''}${keys.audd ? ' · Audio ✓' : ''}</button>
     ${tuto.showKeys ? `<div class="tt-keys">
       <p class="exo-note" style="margin-top:0">Ces deux options utilisent des services externes avec <b>ta propre clé gratuite</b>. Elle reste uniquement dans ce navigateur. Sans clé, tout le reste fonctionne.</p>
@@ -3788,15 +3820,15 @@ function renderTuto() {
     h += `<div class="tt-empty">${tutoHeroSVG()}<h3>Un morceau en tête ?</h3><p>Tape-le, dicte-le, ou fais écouter le morceau : l’appli te sort les meilleurs tutos des réseaux, de YouTube et des sites de tabs de confiance.</p></div>`;
     host.innerHTML = h; return;
   }
-  const sh = tutoSheet();
+  const sh = tutoSheet(); tutoPinList = [];
   h += `<div id="tt-results"><div class="tt-song">
-      <div><div class="tt-song-t">${esc(tuto.title)}</div><div class="tt-song-a">${esc(tuto.artist || 'Artiste non précisé')} · ${T_KIND[tuto.kind].n} · ${T_LVL[tuto.lvl].n}</div></div>
-      ${sh ? `<button type="button" class="btn btn-ghost btn-sm" onclick="viewSheet('${sh.id}')">Ouvrir ma fiche</button>` : `<button type="button" class="btn btn-ghost btn-sm" onclick="draft=newSheet_();draft.title=tuto.title;draft.artist=tuto.artist;openEditor('Nouvelle fiche')">+ Créer la fiche</button>`}
+      <div><div class="tt-song-t">${esc(tuto.title)}</div><div class="tt-song-a">${esc(tuto.artist || 'Artiste non précisé')} · ${T_KIND[tuto.kind].n} · ${T_LVL[tuto.lvl].n}${sh ? ` · fiche : ${(sh.links || []).length} lien${(sh.links || []).length > 1 ? 's' : ''} gardé${(sh.links || []).length > 1 ? 's' : ''}` : ''}</div></div>
+      ${sh ? `<button type="button" class="btn btn-ghost btn-sm" onclick="viewSheet('${sh.id}')">Ouvrir ma fiche</button>` : `<button type="button" class="btn btn-primary btn-sm" onclick="tutoComplete()">+ Créer la fiche</button>`}
     </div>
     <div class="exo-sec-t" style="margin-top:22px">Tutos sur les réseaux</div>
     <div class="tt-plat-grid">${tutoPlatforms().map(p => `<div class="tt-plat">
       <div class="tt-plat-h" style="background:${p.bg}"><span class="tt-plat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p.ico}</svg></span><div><div class="tt-plat-n">${p.n}</div><div class="tt-plat-d">${p.d}</div></div></div>
-      <div class="tt-plat-links">${p.links.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener" class="tt-link">${esc(l)}<span>${icon('ext', 13)}</span></a>`).join('')}</div></div>`).join('')}</div>
+      <div class="tt-plat-links">${p.links.map(([l, u]) => { const i = tutoPinList.push([u, p.n + ' · ' + l]) - 1, on = tutoPinned(u); return `<div class="tt-row"><a href="${u}" target="_blank" rel="noopener" class="tt-link">${esc(l)}<span>${icon('ext', 13)}</span></a><button type="button" class="tt-pin ${on ? 'on' : ''}" onclick="tutoPin(${i})" aria-label="${on ? 'Déjà dans la fiche' : 'Épingler dans la fiche'}" title="${on ? 'Déjà dans la fiche' : 'Épingler dans la fiche'}">${icon(on ? 'check' : 'pin', 16)}</button></div>`; }).join('')}</div></div>`).join('')}</div>
     <div class="exo-note">TikTok et Instagram n’offrent pas de recherche publique intégrable : chaque bouton ouvre directement la bonne recherche ou le bon hashtag (Instagram peut demander d’être connecté).</div>
 
     <div class="exo-sec-t" style="margin-top:22px">Vidéos YouTube dans l’appli</div>
@@ -3812,11 +3844,14 @@ function renderTuto() {
       <div class="fcard" style="margin:0"><div class="fcard-t">${icon('save', 14)} Garder le bon tuto</div>
         <p class="exo-note" style="margin-top:0">Tu as trouvé LA bonne vidéo ? Colle son lien : elle est rangée dans le Coffre de la fiche du morceau (créée si besoin). Les vidéos YouTube s’y regardent directement.</p>
         <div style="display:flex;gap:8px"><input type="url" id="tt-keep" placeholder="https://www.tiktok.com/… ou youtube.com/…" style="flex:1" onkeydown="if(event.key==='Enter')tutoKeep(this.value)">
-        <button type="button" class="btn btn-primary btn-sm" onclick="tutoKeep($('tt-keep').value)">Garder</button></div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="tutoKeep($('tt-keep').value,'',$('tt-orig').checked?'original':'tuto')">Garder</button></div>
+        <label style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--cream3);margin-top:8px"><input type="checkbox" id="tt-orig"> C’est la version originale (lien YouTube officiel)</label>
         ${sh && (sh.links || []).length ? `<div class="exo-note">Déjà dans le Coffre : ${sh.links.length} lien${sh.links.length > 1 ? 's' : ''}.</div>` : ''}</div>
       <div class="fcard" style="margin:0"><div class="fcard-t">Reconnaître un bon tuto</div>
         <div class="tt-check">${['Il joue la <b>vraie version</b> au début (tu entends si c’est le bon son).','On voit <b>les deux mains</b> de près.','Il indique <b>accordage et capo</b>.','Il découpe : <b>partie par partie</b>, puis au ralenti.','Commentaires positifs, et la vidéo n’est pas « simplifiée » sans le dire.'].map(t => `<div>${t}</div>`).join('')}</div></div>
-    </div></div>`;
+    </div>
+    <div class="tt-band"><div><b>${sh ? `Fiche « ${esc(sh.title)} »` : 'Pas encore de fiche'}</b><small>${sh ? 'Ajoute les accords, le rythme, l’original.' : 'Épingle un lien pour la créer, ou complète-la maintenant.'}</small></div>
+      <button type="button" class="btn btn-primary btn-sm" onclick="tutoComplete()">Compléter la fiche</button></div></div>`;
   host.innerHTML = h;
 }
 function tutoYTHTML(key) {
@@ -3830,7 +3865,8 @@ function tutoYTHTML(key) {
     <div class="tt-yt-grid">${tuto.yt.map(v => `<div class="tt-yt ${tuto.play === v.id ? 'on' : ''}">
       <button type="button" class="tt-yt-th" onclick="tuto.play='${v.id}';renderTuto()"><img src="${v.th}" alt="" loading="lazy"><span>▶</span></button>
       <div class="tt-yt-t">${esc(v.t)}</div><div class="tl-host">${esc(v.ch)}</div>
-      <button type="button" class="btn btn-ghost btn-xs" style="margin-top:6px" onclick="tutoKeep('https://www.youtube.com/watch?v=${v.id}', ${esc(JSON.stringify('Tuto · ' + v.ch))})">${icon('save', 12)} Garder</button></div>`).join('')}</div>`;
+      <button type="button" class="btn btn-ghost btn-xs" style="margin-top:6px" onclick="tutoKeep('https://www.youtube.com/watch?v=${v.id}', ${esc(JSON.stringify('Tuto · ' + v.ch))})">${icon('pin', 12)} Garder</button>
+      <button type="button" class="btn btn-ghost btn-xs" style="margin-top:6px" onclick="tutoKeep('https://www.youtube.com/watch?v=${v.id}', ${esc(JSON.stringify('Original · ' + v.ch))}, 'original')">♫ Original</button></div>`).join('')}</div>`;
 }
 function tutoHeroSVG() {
   return `<svg width="220" height="140" viewBox="0 0 220 140" fill="none" aria-hidden="true">
@@ -4073,7 +4109,7 @@ function go(v) {
 function toggleSelectMode() {
   selMode = !selMode;
   if (!selMode) selIds.clear();
-  $('sel-mode-btn').textContent = selMode ? 'Annuler la selection' : 'Selectionner';
+  $('sel-mode-btn').textContent = selMode ? 'Annuler la sélection' : 'Sélectionner';
   $('sel-mode-btn').classList.toggle('btn-primary', selMode);
   renderHome();
 }
@@ -4085,7 +4121,7 @@ function toggleSel(id, e) {
 function setHomeFilter(k) { homeFilter = k; renderHome(); }
 function renderGreeting() {
   const h = new Date().getHours();
-  const period = h < 5 ? 'Bonsoir' : h < 12 ? 'Bonjour' : h < 18 ? 'Bon apres-midi' : 'Bonsoir';
+  const period = h < 5 ? 'Bonsoir' : h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir';
   const name = localStorage.getItem('gms_name') || '';
   $('greet-line').innerHTML = `${period}${name ? ', ' + esc(name) : ''} <button class="btn-icon" style="width:20px;height:20px;display:inline-flex;vertical-align:middle;margin-left:4px" onclick="renameUser()" title="Se presenter"><svg viewBox="0 0 24 24" style="width:11px;height:11px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 013 3L12 15l-4 1 1-4z"/></svg></button>`;
   $('greet-count').innerHTML = `${sheets.length} fiche${sheets.length>1?'s':''}`;
@@ -4115,7 +4151,7 @@ function renderHome() {
     .filter(s => !q || s.title.toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
     .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : s.capo > 0)
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-  $('sel-count').textContent = selMode ? `${selIds.size} selectionnee${selIds.size>1?'s':''}` : '';
+  $('sel-count').textContent = selMode ? `${selIds.size} sélectionnée${selIds.size>1?'s':''}` : '';
   $('btn-print').style.display = selMode && selIds.size ? '' : 'none';
   $('btn-export').style.display = selMode && selIds.size ? '' : 'none';
   $('grid-lbl').style.display = homeFilter === 'all' ? '' : 'none';
@@ -4127,9 +4163,9 @@ function renderHome() {
         <ellipse cx="32" cy="39" rx="10" ry="11" fill="#3a2010"/>
         <rect x="29" y="8" width="6" height="18" rx="3" fill="#5a3510" stroke="#c8783a"/>
         <circle cx="32" cy="39" r="4" fill="#1a0a00"/></svg>
-      <h3>${sheets.length ? 'Aucun resultat' : 'Le cahier est vide'}</h3>
+      <h3>${sheets.length ? 'Aucun résultat' : 'Le cahier est vide'}</h3>
       <p>${sheets.length ? 'Essaie un autre terme ou un autre filtre.' : 'Cree ta premiere fiche — titre + artiste suffisent.'}</p>
-      ${sheets.length ? '' : '<button class="btn btn-primary" onclick="newSheet()">+ Creer une fiche</button>'}
+      ${sheets.length ? '' : '<button class="btn btn-primary" onclick="newSheet()">+ Créer une fiche</button>'}
     </div>`;
     return;
   }
@@ -4156,7 +4192,7 @@ function renderHome() {
       <div class="tags">
         ${s.capo>0?`<span class="tag gold">Capo ${s.capo}</span>`:''}
         ${s.bpm?`<span class="tag sage">${s.bpm} BPM</span>`:''}
-        ${s.difficulty?`<span class="tag mauve">${esc(s.difficulty)}</span>`:''}
+        ${s.difficulty?`<span class="tag mauve">${esc(dispDiff(s.difficulty))}</span>`:''}
         <span class="tag">${nP} partie${nP>1?'s':''}</span>
         ${nC?`<span class="tag">${nC} accord${nC>1?'s':''}</span>`:''}
       </div>
@@ -4180,7 +4216,7 @@ async function viewSheet(id, keepPart) {
   if (s.capo > 0) stats += `<span class="sv-pill capo">Capo ${s.capo}</span>`;
   if (s.bpm) stats += `<span class="sv-pill">${s.bpm} BPM</span>`;
   if (s.tuning) stats += `<span class="sv-pill">${esc(s.tuning === 'Standard' ? 'Std' : s.tuning)}</span>`;
-  if (s.difficulty) stats += `<span class="sv-pill">${esc(s.difficulty)}</span>`;
+  if (s.difficulty) stats += `<span class="sv-pill">${esc(dispDiff(s.difficulty))}</span>`;
   $('sv-stats').innerHTML = stats;
 
   const tabsHost = $('sv-tabs'), partsHost = $('sv-parts');
@@ -4374,12 +4410,12 @@ function coffreViewHTML(s) {
   h += `</div>`;
 
   h += `<div class="coffre-sec"><div class="coffre-sec-t">Variations de rythme</div>`;
-  h += audios.length ? `<div class="media-list" data-media-host="audio"></div>` : `<div class="coffre-empty">Aucune variation enregistree.</div>`;
+  h += audios.length ? `<div class="media-list" data-media-host="audio"></div>` : `<div class="coffre-empty">Aucune variation enregistrée.</div>`;
   h += `</div>`;
 
   if (s.tabImage) h += `<div class="coffre-sec"><div class="coffre-sec-t">Image de tab</div><div data-tabimg="1"></div></div>`;
 
-  h += `<div class="coffre-sec"><div class="coffre-sec-t">A venir</div><div class="coffre-soon">D autres facons de remplir le Coffre arrivent bientot.</div></div>`;
+  h += `<div class="coffre-sec"><div class="coffre-sec-t">À venir</div><div class="coffre-soon">D’autres façons de remplir le Coffre arrivent bientôt.</div></div>`;
   return h + `</div></div>`;
 }
 function resourcesHTML(s) {
@@ -4483,7 +4519,7 @@ function dupSheet(id) {
   c.id = uid(); c.title = s.title + ' (copie)'; if (titleTaken(c.title)) c.title = uniqueTitle(c.title);
   c.parts.forEach(p => { delete p.rec; }); // la prise audio reste attachée à la fiche d’origine c.createdAt = c.updatedAt = Date.now();
   c.parts.forEach(p => { p.id = uid(); p.chords.forEach(ch => ch.id = uid()); });
-  sheets.push(c); DB.put('sheets', c).then(() => { renderHome(); toast('Fiche dupliquee'); });
+  sheets.push(c); DB.put('sheets', c).then(() => { renderHome(); toast('Fiche dupliquée'); });
 }
 function openEditor(title) {
   $('ed-title').textContent = title;
@@ -4512,9 +4548,9 @@ function renderOptBlocks() {
   let h = '';
   if (draft.blocks.diff) h += `<div class="fcard"><div class="fcard-t">Difficulté <button class="rm" onclick="rmBlock('diff')">retirer</button></div>
     <div class="fg" style="margin-bottom:0"><select onchange="draft.difficulty=this.value">
-      ${['','Debutant','Intermediaire','Avance'].map(d => `<option value="${d}" ${draft.difficulty===d?'selected':''}>${d||'--'}</option>`).join('')}</select></div></div>`;
+      ${['','Débutant','Intermédiaire','Avancé'].map(d => `<option value="${d}" ${dispDiff(draft.difficulty)===d?'selected':''}>${d||'--'}</option>`).join('')}</select></div></div>`;
   if (draft.blocks.coffre) h += `<div class="fcard"><div class="fcard-t">Le Coffre <button class="rm" onclick="rmBlock('coffre')">retirer</button></div>
-    <p style="font-size:12px;color:var(--cream4);margin-bottom:14px">Tout ce qui accompagne le morceau : tes videos, des tutos utiles, des variations de rythme. D autres categories arriveront plus tard.</p>
+    <p style="font-size:12px;color:var(--cream4);margin-bottom:14px">Tout ce qui accompagne le morceau : tes vidéos, des tutos utiles, des variations de rythme. D’autres catégories arriveront plus tard.</p>
     <div class="fg"><label>Notes libres</label><textarea placeholder="Paroles, conseils, ce qui coince..." oninput="draft.memo=this.value">${esc(draft.memo)}</textarea></div>
 
     <div class="part-sub" style="margin-top:18px"><span class="part-sub-t">Tutos utiles (liens — YouTube = embed automatique)</span></div>
@@ -4541,8 +4577,8 @@ function renderOptBlocks() {
       <span id="rec-state" style="font-size:12px;color:var(--cream4)"></span>
     </div>
 
-    <div class="part-sub" style="margin-top:18px"><span class="part-sub-t">A venir</span></div>
-    <div class="coffre-soon">D autres facons de remplir le Coffre arrivent bientot.</div>
+    <div class="part-sub" style="margin-top:18px"><span class="part-sub-t">À venir</span></div>
+    <div class="coffre-soon">D’autres façons de remplir le Coffre arrivent bientôt.</div>
     </div>`;
   $('opt-host').innerHTML = h;
   if (draft.blocks.coffre) { renderLinks(); renderDraftMedia(); }
@@ -4638,7 +4674,7 @@ async function toggleRec() {
       draft.media.push({id:uid(), mediaId, name:`Prise ${n}`, kind:'audio'});
       btn.innerHTML = 'Enregistrer'; btn.classList.remove('btn-primary');
       st.textContent = '';
-      renderDraftMedia(); toast('Prise enregistree');
+      renderDraftMedia(); toast('Prise enregistrée');
     };
     mr.start();
     btn.innerHTML = 'Arreter'; btn.classList.add('btn-primary');
@@ -4666,7 +4702,7 @@ function dupPart(i) {
   c.id = uid(); c.chords.forEach(ch => ch.id = uid());
   c.name = c.name.match(/\d+$/) ? c.name.replace(/\d+$/, m => (+m + 1)) : c.name + ' 2';
   draft.parts.splice(i + 1, 0, c);
-  renderParts(); toast('Partie dupliquee');
+  renderParts(); toast('Partie dupliquée');
 }
 function rmPart(i) {
   if (draft.parts.length <= 1) { toast('Il faut au moins une partie', true); return; }
@@ -4882,7 +4918,7 @@ function renderCE() {
       <button class="btn btn-ghost btn-xs" onclick="ceBase(1)">case &#8594;</button>
       <button class="btn btn-ghost btn-xs" onclick="ceClear()">Effacer</button>
       <button class="btn btn-ghost btn-xs" onclick="playChord(ceState.chord, draft.capo)">
-        <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Ecouter</button>
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Écouter</button>
     </div>
     <div style="font-size:11px;color:var(--cream4);text-align:center;margin-top:6px">
       Clic sur une case = doigt · clic au-dessus du sillet = O / X · re-clic = enlever
@@ -5073,6 +5109,10 @@ async function saveSheet() {
   if (($('f-chords').value||'').trim()) addChordLine(); // accords tapés mais pas encore ajoutés
   draft.updatedAt = Date.now();
   const i = sheets.findIndex(s => s.id === draft.id);
+  if (i >= 0) { // prises audio des parties supprimées : plus d’orphelins dans media
+    const keep = new Set((draft.parts||[]).filter(p => p.rec).map(p => p.rec.mediaId));
+    for (const p of (sheets[i].parts||[])) if (p.rec && !keep.has(p.rec.mediaId)) { await DB.del('media', p.rec.mediaId); delete recBuf[p.rec.mediaId]; }
+  }
   i >= 0 ? sheets[i] = clone(draft) : sheets.push(clone(draft));
   await DB.put('sheets', clone(draft));
   toast('Fiche enregistrée');
@@ -5086,7 +5126,7 @@ async function delSheet(id) {
   sheets = sheets.filter(x => x.id !== id);
   selIds.delete(id);
   await DB.del('sheets', id);
-  go('home'); toast('Fiche supprimee');
+  go('home'); toast('Fiche supprimée');
 }
 
 /* ═══════ CHORD LIBRARY VIEW ═══════ */
@@ -5095,12 +5135,12 @@ function renderLib() {
   const body = $('lib-body');
   const card = (c, big) => `<div class="lib-card ${big?'big':''}">
     <div class="cn">${c.n}</div>${chordSVG(newChord(c.n), {size: big ? 1.28 : 1})}
-    <button class="lib-play" onclick="playChord(newChord('${c.n}'), 0)" title="Ecouter">
+    <button class="lib-play" onclick="playChord(newChord('${c.n}'), 0)" title="Écouter">
       <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg></button>
   </div>`;
   if (q) {
     const hits = LIB.filter(c => c.n.toLowerCase().includes(q));
-    body.innerHTML = `<div class="lib-sec"><div class="lib-sec-t">${hits.length} resultat${hits.length>1?'s':''}</div>
+    body.innerHTML = `<div class="lib-sec"><div class="lib-sec-t">${hits.length} résultat${hits.length>1?'s':''}</div>
       <div class="lib-grid">${hits.map(c => card(c)).join('') || '<p style="color:var(--cream4);font-size:13px">Aucun accord trouve.</p>'}</div></div>`;
     return;
   }
@@ -5189,7 +5229,7 @@ function parseImport() {
       <div class="fg" style="margin-bottom:0"><input type="text" id="imp-title" placeholder="Titre *"></div>
       <div class="fg" style="margin-bottom:0"><input type="text" id="imp-artist" placeholder="Artiste *"></div>
     </div>
-    <button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="createFromImport()">Creer la fiche</button>`;
+    <button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="createFromImport()">Créer la fiche</button>`;
 }
 function createFromImport() {
   const t = $('imp-title').value.trim(), a = $('imp-artist').value.trim();
@@ -5211,7 +5251,7 @@ async function loadTabImg(inp) {
     <div class="split-pane"><img src="${url}"></div>
     <div class="split-pane"><p style="font-size:12px;color:var(--cream3);line-height:1.7">
       L image est gardee comme reference. Ouvre l editeur : elle restera consultable dans la fiche pendant que tu recopies les accords.
-      </p><button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="startFromImage()">Creer une fiche avec cette image</button></div>
+      </p><button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="startFromImage()">Créer une fiche avec cette image</button></div>
   </div>`;
   inp.value = '';
 }
@@ -5299,7 +5339,7 @@ function printSheetHTML(s, compact) {
         ${s.capo>0?`<div class="p-capo">CAPO ${s.capo}</div>`:''}
         ${s.tuning&&s.tuning!=='Standard'?`<div class="p-bpm">${esc(s.tuning)}</div>`:''}
         ${s.bpm?`<div class="p-bpm">&#9833; ${s.bpm} BPM</div>`:''}
-        ${s.difficulty?`<div class="p-bpm">${esc(s.difficulty)}</div>`:''}
+        ${s.difficulty?`<div class="p-bpm">${esc(dispDiff(s.difficulty))}</div>`:''}
       </div>
     </div>
     ${(s.parts||[]).map(p => {
@@ -5412,7 +5452,7 @@ document.addEventListener('keydown', e => {
   if (!sheets.length) {
     const demo = newSheet_();
     demo.title = 'Wonderwall'; demo.artist = 'Oasis'; demo.capo = 2; demo.bpm = 87;
-    demo.difficulty = 'Debutant'; demo.color = 'gold';
+    demo.difficulty = 'Débutant'; demo.color = 'gold';
     demo.blocks = {capo:true, tempo:true, diff:true, coffre:true};
     demo.memo = 'Capo 2 obligatoire. Laisser sonner, ne pas etouffer les cordes.';
     demo.links = [{id:uid(), url:'https://www.youtube.com/watch?v=bx1Bh8ZvH84', title:'Video YouTube'}];
