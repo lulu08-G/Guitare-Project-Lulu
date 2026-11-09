@@ -693,8 +693,8 @@ a.filt{display:inline-block}
 
 /* ── MODE JEU (fiche plein écran) ── */
 body.playing nav{display:none}
-body.playing .toast{bottom:104px}
-#v-sheet .sv-wrap{max-width:1100px;margin:0 auto;padding:0 18px 140px}
+body.playing .toast{bottom:150px}
+#v-sheet .sv-wrap{max-width:1100px;margin:0 auto;padding:0 18px 170px}
 .sv-head{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;min-height:62px;padding:8px 0;background:var(--bg);border-bottom:1px solid var(--border)}
 .sv-back{min-height:44px;min-width:44px;padding:0 14px 0 8px;border-radius:50px;background:var(--card2);border:1px solid var(--border);color:var(--cream);font-weight:700;font-size:14px;display:flex;align-items:center;gap:2px;flex-shrink:0}
 .sv-back svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
@@ -702,9 +702,6 @@ body.playing .toast{bottom:104px}
 .sv-ttl h2{font-family:var(--serif);font-size:clamp(19px,3vw,28px);font-weight:800;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15}
 .sv-ttl .sv-artist{margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sv-head .btn-icon{width:44px;height:44px}
-.sv-aa{font-family:var(--serif);font-size:17px;font-weight:800}
-.sv-aa[aria-pressed="true"]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.sv-aa:disabled{opacity:.35}
 .sv-pills{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0 4px}
 .sv-pill{min-height:32px;padding:0 14px;border-radius:50px;display:inline-flex;align-items:center;font-family:var(--mono);font-size:13px;font-weight:600;background:var(--card2);border:1px solid var(--border);color:var(--cream)}
 .sv-pill.capo{background:var(--gold);color:var(--ink);border-color:var(--gold)}
@@ -731,16 +728,37 @@ body.playing .toast{bottom:104px}
 #v-sheet.lyr-on .pv-lyr{display:block}
 .sv-more{margin-top:24px;border-top:1px solid var(--border);padding-top:6px}
 .sv-more>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:700;font-size:13px;color:var(--cream3)}
-.sv-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border2);padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
-.sv-bar-in{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.sv-act{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:56px;height:60px;border-radius:16px;background:var(--card2);border:1px solid var(--border);color:var(--cream);font-size:10px;font-weight:700;flex-shrink:0}
-.sv-act svg{width:24px;height:24px}
-.sv-act.main{background:var(--gold);color:var(--ink);width:64px;height:64px;border-radius:50%;border-color:var(--gold);box-shadow:0 4px 14px rgba(0,0,0,.3)}
-.sv-act.on{background:var(--terra);color:#fff;border-color:var(--terra)}
-.sv-act.rec svg{color:var(--terra)}
-.sv-act.on svg{color:#fff}
-.sv-bpm{flex-shrink:0;gap:2px}
-.sv-bpm button{width:44px;height:44px}
+.sv-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--border2);padding:8px 10px calc(8px + env(safe-area-inset-bottom));transition:background .2s}
+.sv-bar.rec{background:color-mix(in srgb,var(--terra) 14%,var(--nav-bg))}
+.sv-bar-in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;position:relative}
+body.lefty .sv-play{order:3}body.lefty .sv-sw{order:1}
+.sv-play{width:72px;height:72px;border-radius:50%;background:var(--gold);color:var(--ink);border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 6px 18px var(--shadow);flex-shrink:0}
+.sv-play svg{width:34px;height:34px}
+.sv-play.create{background:var(--card);border:2px solid var(--gold);color:var(--gold2);border-radius:22px;gap:2px;font-size:12px;font-weight:800}
+.sv-play.create svg{width:26px;height:26px}
+.sv-bar.rec .sv-play{background:var(--terra);color:#fff;border:0}
+.sv-mid{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sv-bpm2{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;height:48px;border-radius:99px;background:var(--card);border:1px solid var(--border2)}
+.sv-bpm2 button{height:48px;color:var(--gold2);font-size:24px;font-weight:700;border-radius:99px}
+.sv-bpm2 .val{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;color:var(--cream)}
+.sv-bpm2 .val b{font-family:var(--serif);font-size:22px}
+.sv-bpm2 .val small{font-size:9px;letter-spacing:.12em;color:var(--cream2);font-weight:600;margin-top:1px}
+.sv-sec{display:flex;gap:6px}
+.sv-sec button{flex:1;min-width:0;height:44px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--cream);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.sv-sec svg{width:18px;height:18px;flex-shrink:0}
+.sv-take{color:var(--terra)!important;border-color:var(--terra)!important;background:var(--card)!important}
+.sv-take.has{background:var(--gold)!important;color:var(--ink)!important;border-color:var(--gold)!important}
+.sv-take.on{background:var(--terra)!important;color:#fff!important}
+.sv-sw .sv-sb{width:56px;height:56px;border-radius:16px;background:var(--card);border:1px solid var(--border2);color:var(--cream2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font-size:11px;font-weight:700}
+.sv-sb .aa{font-family:var(--serif);font-size:20px;font-weight:800;line-height:1.1}
+.sv-sb:disabled{opacity:.35}
+.sv-sb[aria-pressed="true"]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.sv-bar:not(.rec) .sv-r,.sv-bar.rec .sv-n{display:none}
+.sv-lvl{height:6px;border-radius:9px;background:var(--card3);overflow:hidden}
+.sv-lvl i{display:block;height:100%;width:0;background:var(--terra);transition:width .08s}
+.sv-rt{font-weight:800;color:var(--terra);font-size:15px;font-variant-numeric:tabular-nums}
+.sv-live{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 16px);pointer-events:none;background:var(--gold);color:var(--ink);font-size:12px;font-weight:800;padding:5px 14px;border-radius:99px;box-shadow:0 4px 14px var(--shadow);white-space:nowrap;display:none}
+.sv-bar.playing .sv-live{display:block}
 @media(max-width:480px){.sv-back span{display:none}.sv-back{padding:0 10px}}
 @media(min-width:700px){#v-sheet .chords-row{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}}
 @media(min-width:860px){#v-sheet .sv-tabs{width:200px;top:76px;flex-direction:column;overflow-x:visible}
@@ -749,6 +767,70 @@ body.playing .toast{bottom:104px}
   #v-sheet .chord-cell .cn{font-size:44px}
   #v-sheet .chord-cell svg{width:min(100%,190px)}
   .sv-rh svg{max-height:120px}
+}
+/* création de rythme (feuille plein écran) */
+.rhy{position:fixed;inset:0;z-index:450;background:var(--bg);display:flex;flex-direction:column}
+.rhy.hide{display:none}
+body.rhy-open{overflow:hidden}
+.rhy-in{max-width:760px;margin:0 auto;width:100%}
+.rhy-head{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);flex:none;min-height:60px}
+.rhy-back{width:48px;height:48px;border-radius:50%;background:var(--card2);border:1px solid var(--border);color:var(--cream);display:grid;place-items:center;flex:none}
+.rhy-back svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.rhy-ttl{flex:1;min-width:0;font-family:var(--serif);font-size:19px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rhy-body{flex:1;overflow-y:auto;padding:12px 16px 16px;-webkit-overflow-scrolling:touch}
+.rhy-lbl{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;color:var(--cream2);margin-bottom:6px}
+.rhy-lbl input{width:140px;height:36px;padding:0 12px;border-radius:99px;font-size:13px}
+.rhy-pre{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scroll-snap-type:x proximity}
+.rhy-card{flex:none;min-width:116px;height:60px;border-radius:14px;background:var(--card);border:1px solid var(--border2);padding:6px 10px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;scroll-snap-align:start;color:var(--cream)}
+.rhy-card b{font-size:12px;font-weight:700;white-space:nowrap}
+.rhy-card span{font:700 15px var(--mono);color:var(--gold2);white-space:nowrap}
+.rhy-card:active{border-color:var(--gold)}
+.rhy-prev{display:flex;align-items:center;justify-content:center;gap:2px;margin:6px 0 10px;min-height:40px;padding:4px 6px;border-radius:12px;background:var(--card);border:1px solid var(--border)}
+.rhy-prev i{flex:1;text-align:center;font:700 22px var(--sans);font-style:normal;max-width:34px}
+.rhy-prev i.D{color:var(--gold2)}.rhy-prev i.U{color:var(--sage)}.rhy-prev i.X{color:var(--terra)}.rhy-prev i.n{color:var(--cream4)}
+.rhy-prev i.a0{font-size:15px;opacity:.7}.rhy-prev i.a2{font-size:26px}
+.rhy-prev em{color:var(--border2);font-style:normal;font-size:20px}
+.rhy-grid{touch-action:none;user-select:none;-webkit-user-select:none}
+.rhy-bar{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:5px;margin-bottom:5px}
+.rhy-bar+.rhy-bar{margin-top:10px}
+.rhy-pad{position:relative;height:92px;border-radius:12px;background:var(--bg2);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;padding:0;color:var(--cream4);transition:transform .08s,background .08s}
+.rhy-pad.beat{background:var(--card2)}
+.rhy-pad i{position:absolute;top:5px;left:0;right:0;text-align:center;font:700 11px var(--mono);font-style:normal;color:var(--cream3);pointer-events:none}
+.rhy-pad.beat i{color:var(--cream);font-size:13px}
+.rhy-pad span{font:700 32px var(--sans);pointer-events:none;margin-top:10px}
+.rhy-pad.on.D{border-color:var(--gold);color:var(--gold2)}.rhy-pad.on.U{border-color:var(--sage);color:var(--sage)}.rhy-pad.on.X{border-color:var(--terra);color:var(--terra)}
+.rhy-pad.a0 span{font-size:22px;opacity:.7}.rhy-pad.a2{border-width:3px}.rhy-pad.a2 span{font-size:38px}
+.rhy-pad.lit{background:var(--gold)!important;border-color:var(--gold)!important;color:var(--ink)!important;transform:translateY(-3px)}
+.rhy-pad.lit i{color:var(--ink)}
+.rhy-test{display:flex;gap:8px;margin-top:14px}
+.rhy-testb{flex:1;min-width:0;height:56px;border-radius:99px;background:var(--card);border:2px solid var(--gold);color:var(--gold2);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px}
+.rhy-testb svg{width:20px;height:20px}
+.rhy-testb small{font-size:11px;font-weight:600;color:var(--cream2)}
+.rhy-testb.on{background:var(--gold);color:var(--ink)}.rhy-testb.on small{color:var(--ink)}
+.rhy-soft{width:68px;height:56px;border-radius:16px;background:var(--card);border:1.5px solid var(--border2);color:var(--cream);font-weight:700;font-size:14px}
+.rhy-soft.sel{background:var(--card3);border-color:var(--gold);color:var(--gold2)}
+.rhy-guit{margin-top:14px;display:flex;align-items:center;gap:12px;padding:12px;border-radius:var(--r);background:var(--card);border:2px solid var(--terra)}
+.rhy-guit b{display:block;font-size:15px}.rhy-guit span{font-size:12px;color:var(--cream2);line-height:1.4;display:block;margin-top:2px}
+.rhy-guit.off{border-color:var(--border2)}.rhy-guit.off .rhy-recb{background:var(--card3);color:var(--cream3)}
+.rhy-recb{width:52px;height:52px;border-radius:50%;background:var(--terra);color:#fff;display:grid;place-items:center;flex:none}
+.rhy-recb svg{width:26px;height:26px}
+.rhy-set{margin-top:14px;border-top:1px solid var(--border);padding-top:4px}
+.rhy-set summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:700;font-size:13px;color:var(--cream2)}
+.rhy-sels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-bottom:6px}
+.rhy-sels label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--cream2)}
+.rhy-sels select{height:44px;background:var(--card2);border:1px solid var(--border);border-radius:var(--rx);color:var(--cream);font-size:13px;padding:0 6px;min-width:0}
+.rhy-foot{flex:none;background:var(--nav-bg);border-top:1px solid var(--border2);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.rhy-pens{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.rhy-pens button{height:68px;border-radius:16px;background:var(--card);border:2px solid var(--border2);color:var(--cream);font:700 30px var(--sans);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.rhy-pens button small{font:700 11px var(--sans);color:var(--cream2)}
+.rhy-pens button.sel{background:var(--gold);border-color:var(--gold);color:var(--ink)}.rhy-pens button.sel small{color:var(--ink)}
+.rhy-act{display:flex;gap:8px;margin-top:10px}
+.rhy-act .btn{min-height:56px;font-size:16px}.rhy-act .btn-primary{flex:1}
+@media(min-width:900px){
+  .rhy-in{max-width:1040px}
+  .rhy-body .rhy-in{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;align-items:start}
+  .rhy-pre{flex-direction:column;overflow-x:visible;overflow-y:auto;max-height:calc(100vh - 300px)}
+  .rhy-card{width:100%}
 }
 /* enregistrement du rythme */
 #m-rec .modal-f{justify-content:space-between}#m-rec .modal-f .spacer{display:none}
@@ -854,7 +936,6 @@ body.playing .toast{bottom:104px}
       <button type="button" class="sv-back" onclick="svExit()" aria-label="Quitter le mode jeu, retour au cahier"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span>Cahier</span></button>
       <div class="sv-ttl"><h2 id="sv-title"></h2><div class="sv-artist" id="sv-artist"></div></div>
       <div class="sv-btns">
-        <button type="button" class="btn-icon sv-aa" id="sv-lyr" onclick="svToggleLyrics()" aria-pressed="false" title="Afficher les paroles">Aa</button>
         <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
         <button type="button" class="btn-icon" id="sv-edit" title="Modifier la fiche"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button>
       </div>
@@ -866,14 +947,30 @@ body.playing .toast{bottom:104px}
     </div>
     <details class="sv-more"><summary>Plus : Coffre, ressources, impression</summary>
       <div id="sv-coffre"></div>
+      <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;color:var(--cream)"><input type="checkbox" id="opt-lefty" onchange="setLefty(this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Mode gaucher : bouton Play à droite</label>
       <button type="button" class="btn btn-ghost" style="margin:6px 0 20px" onclick="printOne()">Imprimer cette fiche</button>
     </details>
   </div>
   <div class="sv-bar" id="sv-bar"><div class="sv-bar-in">
-    <button type="button" class="sv-act main" id="sv-play" onclick="svPlayCur()" aria-label="Lancer le rythme en cases"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21"/></svg><small>Rythme</small></button>
-    <button type="button" class="sv-act" id="sv-rec" onclick="svRecBtn()" aria-label="Enregistrer mon rythme à la guitare"></button>
-    <button type="button" class="sv-act" id="sv-orig" onclick="svOriginal()" aria-label="Écouter l'original"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg><small>Original</small></button>
-    <div class="rh-bpm sv-bpm"><button type="button" onclick="rhBpmStep(-1)" aria-label="Moins vite">&minus;</button><div><b id="rh-bpm-bar">90</b><span>BPM</span></div><button type="button" onclick="rhBpmStep(1)" aria-label="Plus vite">+</button></div>
+    <div class="sv-live" id="sv-live">Rythme en boucle</div>
+    <button type="button" class="sv-play" id="sv-play" onclick="svPlayCur()" aria-label="Lancer le rythme en cases"></button>
+    <div class="sv-mid">
+      <div class="sv-n sv-bpm2">
+        <button type="button" onpointerdown="bpmHold(-1,event)" onclick="if(!event.detail)rhBpmStep(-1)" aria-label="Moins vite">&minus;</button>
+        <button type="button" class="val" onclick="bpmTap()" aria-label="Tempo (touche au rythme pour le trouver)"><b id="rh-bpm-bar">90</b><small>BPM</small></button>
+        <button type="button" onpointerdown="bpmHold(1,event)" onclick="if(!event.detail)rhBpmStep(1)" aria-label="Plus vite">+</button>
+      </div>
+      <div class="sv-n sv-sec">
+        <button type="button" id="sv-orig" onclick="svOriginal()" aria-label="Écouter l'original"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>Original</button>
+        <button type="button" class="sv-take" id="sv-rec" onclick="svRecBtn()" aria-label="Enregistrer ma prise à la guitare"></button>
+      </div>
+      <div class="sv-r"><div class="sv-lvl" id="sv-lvl"><i></i></div></div>
+      <div class="sv-r sv-rt" id="sv-rec-t">Enregistrement 0:00</div>
+    </div>
+    <div class="sv-sw">
+      <button type="button" class="sv-n sv-sb sv-aa" id="sv-lyr" onclick="svToggleLyrics()" aria-pressed="false" title="Afficher les paroles"><span class="aa">Aa</span>Paroles</button>
+      <button type="button" class="sv-r sv-sb" onclick="rcClose()">Annuler</button>
+    </div>
   </div></div>
 </div>
 
@@ -1121,6 +1218,7 @@ body.playing .toast{bottom:104px}
 <div class="ov hide" id="m-chord"><div class="modal"><div id="m-chord-body"></div></div></div>
 <div class="ov hide" id="m-print"><div class="modal"><div id="m-print-body"></div></div></div>
 <div class="ov hide" id="m-media"><div class="modal"><div id="m-media-body"></div></div></div>
+<div class="rhy hide" id="m-rhy" role="dialog" aria-modal="true" aria-label="Création de rythme"></div>
 <div class="ov hide" id="m-rec"><div class="modal"><div id="m-rec-body"></div></div></div>
 <div id="print-root"></div>
 
@@ -4351,9 +4449,10 @@ function rcCleanup() {
   clearTimeout(R.tm); clearInterval(R.iv); (R.timers || []).forEach(clearTimeout);
   if (R.mr) { R.mr.onstop = null; R.mr.ondataavailable = null; try { if (R.mr.state !== 'inactive') R.mr.stop(); } catch (e) {} }
   if (R.stream) R.stream.getTracks().forEach(t => t.stop());
+  if (R.msrc) { try { R.msrc.disconnect(); } catch (e) {} }
   if (R.prev) { try { R.prev.stop(); R.prev.disconnect(); } catch (e) {} }
 }
-function rcClose() { rcCleanup(); $('m-rec').classList.add('hide'); }
+function rcClose() { rcCleanup(); $('m-rec').classList.add('hide'); if (cur) svSync(); }
 function rcPeaks(buf) {
   const d = buf.getChannelData(0), n = 400, step = Math.max(1, Math.floor(d.length/n)), out = [];
   for (let i = 0; i < n; i++) { let m = 0; for (let j = i*step; j < Math.min(d.length, (i+1)*step); j++) m = Math.max(m, Math.abs(d[j])); out.push(m); }
@@ -4364,8 +4463,10 @@ function rcRender() {
   if (!rc) return;
   const p = cur.parts[rc.part], bpm = cur.bpm || 90, h = $('m-rec-body');
   const name = esc(p.name);
+  $('m-rec').classList.toggle('hide', rc.stage === 'rec'); // pendant la prise, tout se passe dans la barre du bas
+  svSync();
   if (rc.stage === 'load') h.innerHTML = `<div class="modal-t">Rythme enregistré — ${name}</div><p style="color:var(--cream3)">Chargement…</p>`;
-  else if (rc.stage === 'idle') h.innerHTML = `<div class="modal-t">Enregistrer mon rythme — ${name}</div>
+  else if (rc.stage === 'idle') h.innerHTML = `<div class="modal-t">Ma prise — ${name}</div>
     <p style="font-size:13px;color:var(--cream3);margin-bottom:14px">Joue ton rythme à la guitare sur 1 à 4 mesures. Ensuite tu le rognes, et il tourne en boucle sans coupure dans le mode jeu.</p>
     <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;color:var(--cream)"><input type="checkbox" id="rc-count" ${rc.count?'checked':''} onchange="rc.count=this.checked;LS.set('gms_rec_count',this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Décompte de 4 temps au métronome (${bpm} BPM)</label>
     <p style="font-size:11px;color:var(--cream4);margin:6px 0 16px">Le navigateur va demander l’accès au micro. Le clic du décompte n’est pas enregistré.</p>
@@ -4389,7 +4490,7 @@ function rcRender() {
       <div class="modal-f">
         <button type="button" class="btn btn-ghost" onclick="rcAgain()">Refaire</button><span class="spacer"></span>
         <button type="button" class="btn btn-ghost" onclick="rcClose()">Annuler</button>
-        <button type="button" class="btn btn-primary" onclick="rcSave()">Enregistrer</button>
+        <button type="button" class="btn btn-primary" onclick="rcSave()">Garder ma prise</button>
       </div>`;
     rcTrim(true);
   }
@@ -4402,13 +4503,26 @@ async function rcStart() {
   catch (e) { toast('Micro refusé ou indisponible', true); return; }
   if (rc !== me) { stream.getTracks().forEach(t => t.stop()); return; }
   me.stream = stream; me.chunks = [];
+  try { // jauge de niveau du micro (pas relié aux haut-parleurs)
+    const ac0 = audio(); if (ac0.state === 'suspended') ac0.resume();
+    me.msrc = ac0.createMediaStreamSource(stream); me.an = ac0.createAnalyser(); me.an.fftSize = 512;
+    me.b8 = new Uint8Array(me.an.fftSize); me.msrc.connect(me.an);
+  } catch (e) { me.an = null; }
   const mr = me.mr = new MediaRecorder(stream);
   mr.ondataavailable = e => { if (e.data.size) me.chunks.push(e.data); };
   mr.onstop = () => rcStopped(me);
   const begin = () => {
     if (rc !== me) return;
     mr.start(); me.t0 = performance.now(); me.stage = 'rec'; rcRender();
-    me.iv = setInterval(() => { const e = $('rc-t'); if (e) e.textContent = ((performance.now() - me.t0)/1000).toFixed(1).replace('.', ',') + ' s'; }, 100);
+    me.iv = setInterval(() => {
+      const sec = Math.floor((performance.now() - me.t0)/1000), e = $('sv-rec-t');
+      if (e) e.textContent = 'Enregistrement ' + Math.floor(sec/60) + ':' + String(sec % 60).padStart(2, '0');
+      if (me.an) {
+        me.an.getByteTimeDomainData(me.b8); let m = 0;
+        for (let k = 0; k < me.b8.length; k++) m = Math.max(m, Math.abs(me.b8[k] - 128));
+        const l = $('sv-lvl'); if (l) l.firstChild.style.width = Math.min(100, m/128*160) + '%';
+      }
+    }, 70);
     me.tm = setTimeout(rcStop, 90000); // garde-fou : 90 s max
   };
   if (!me.count) { begin(); return; }
@@ -4485,7 +4599,7 @@ async function rcSave() {
   p.rec = {mediaId, start: +R.start.toFixed(3), end: +R.end.toFixed(3), dur: +R.buf.duration.toFixed(3), at: Date.now()};
   cur.updatedAt = Date.now();
   await DB.put('sheets', clone(cur));
-  rcClose(); toast('Rythme enregistré');
+  rcClose(); toast('Ta prise est gardée');
   viewSheet(cur.id, i);
 }
 async function rcDelete(i) {
@@ -4644,7 +4758,7 @@ async function viewSheet(id, keepPart) {
       body += `<div class="chords-row">` +
         p.chords.map(c => `<div class="chord-cell"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size:2.2})}</div>`).join('') + `</div>`;
     }
-    if (rhHas(p.rhythm)) body += `<div class="sv-rh" id="rh-view-${i}">${rhythmSVG(p.rhythm, false)}</div>`;
+    if (rhHas(p.rhythm)) body += `<div class="sv-rh" id="rh-view-${i}">${rhythmSVG(p.rhythm, false)}</div><button type="button" class="btn btn-ghost btn-sm" style="min-height:44px;margin-top:6px" onclick="rhyOpen('cur',${i})">Changer le rythme</button>`;
     if (p.rec) {
       const d = p.rec.end - p.rec.start;
       body += `<div class="sv-reccard"><b>Ma prise à la guitare<small>Boucle de ${d.toFixed(1).replace('.', ',')} s</small></b>
@@ -4663,6 +4777,7 @@ async function viewSheet(id, keepPart) {
       <div class="pv-body">${body}</div>
     </div>`;
   }).join('');
+  $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s) + resourcesHTML(s);
   svSync();
@@ -4678,23 +4793,50 @@ function svShowPart(i) {
 }
 const REC_DOT_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="7"/></svg>';
 // état des boutons de la barre du bas selon la partie affichée
+// repos / lecture / enregistrement (toute la barre teintée terracotta, Stop, jauge du micro, Annuler)
 function svSync() {
   if (!cur) return;
   const p = cur.parts[svPart];
-  const on = rhPlaying('v' + svPart), rp = !!recPlay;
+  const on = rhPlaying('v' + svPart), rp = !!recPlay, recing = !!(rc && rc.stage === 'rec'), has = rhHas(p && p.rhythm);
+  const bar = $('sv-bar');
+  bar.classList.toggle('rec', recing); bar.classList.toggle('playing', on && !recing);
   const pl = $('sv-play');
-  pl.innerHTML = (on ? RH_STOP_SVG : RH_PLAY_SVG) + `<small>${on ? 'Stop' : 'Rythme'}</small>`;
-  pl.classList.toggle('on', on);
-  pl.style.opacity = rhHas(p && p.rhythm) ? '' : '.5';
+  pl.classList.toggle('create', !has && !recing);
+  if (recing) { pl.innerHTML = RH_STOP_SVG; pl.setAttribute('aria-label', 'Arrêter l’enregistrement'); }
+  else if (has) { pl.innerHTML = on ? RH_PAUSE_SVG : RH_PLAY_SVG; pl.setAttribute('aria-label', on ? 'Mettre le rythme en pause' : 'Lancer le rythme en boucle'); }
+  else { pl.innerHTML = RH_PLUS_SVG + 'Créer'; pl.setAttribute('aria-label', 'Créer un rythme pour cette partie'); }
+  $('sv-live').textContent = 'Rythme en boucle · ' + (p ? p.name : '');
   const rb = $('sv-rec');
-  rb.classList.toggle('on', rp); rb.classList.toggle('rec', !(p && p.rec) && !rp);
-  rb.innerHTML = p && p.rec ? (rp ? RH_STOP_SVG : RH_PLAY_SVG) + `<small>${rp ? 'Stop' : 'Ma prise'}</small>` : REC_DOT_SVG + '<small>Enregistrer</small>';
-  rb.setAttribute('aria-label', p && p.rec ? 'Jouer ma prise en boucle' : 'Enregistrer mon rythme à la guitare');
+  rb.classList.toggle('has', !!(p && p.rec) && !rp); rb.classList.toggle('on', rp);
+  rb.innerHTML = p && p.rec ? (rp ? RH_STOP_SVG : RH_PLAY_SVG) + (rp ? 'Stop' : 'Ma prise') : REC_DOT_SVG + 'Ma prise';
+  rb.setAttribute('aria-label', p && p.rec ? (rp ? 'Arrêter ma prise' : 'Jouer ma prise en boucle') : 'Enregistrer ma prise à la guitare');
   const ly = $('sv-lyr');
   ly.disabled = !hasLyr(p);
   ly.setAttribute('aria-pressed', cur.showLyrics ? 'true' : 'false');
   ly.title = hasLyr(p) ? (cur.showLyrics ? 'Masquer les paroles' : 'Afficher les paroles') : 'Pas de paroles dans cette partie';
   $('rh-bpm-bar').textContent = cur.bpm || 90;
+}
+if (LS.get('gms_lefty', false)) document.body.classList.add('lefty');
+function setLefty(v) { document.body.classList.toggle('lefty', !!v); LS.set('gms_lefty', !!v); }
+// appui long sur − / + : répétition accélérée
+let bpmHT = null;
+function bpmHold(d, e) {
+  clearBpmHold();
+  rhBpmStep(d);
+  let n = 0;
+  bpmHT = setTimeout(function rep() { rhBpmStep(d * (++n > 12 ? 5 : 1)); bpmHT = setTimeout(rep, n > 12 ? 90 : 110); }, 450);
+}
+function clearBpmHold() { clearTimeout(bpmHT); bpmHT = null; }
+['pointerup', 'pointercancel', 'blur'].forEach(ev => window.addEventListener(ev, clearBpmHold));
+// tap tempo : plusieurs touches sur la valeur du BPM
+let tapT = [];
+function bpmTap() {
+  const now = performance.now();
+  if (tapT.length && now - tapT[tapT.length - 1] > 2000) tapT = [];
+  tapT.push(now); tapT = tapT.slice(-5);
+  if (tapT.length < 2) { toast('Touche en rythme pour trouver le tempo'); return; }
+  const avg = (tapT[tapT.length - 1] - tapT[0]) / (tapT.length - 1);
+  rhBpmStep(Math.max(30, Math.min(240, Math.round(60000 / avg))) - (cur.bpm || 90));
 }
 async function svToggleLyrics() {
   if (!cur) return;
@@ -4704,8 +4846,9 @@ async function svToggleLyrics() {
   await DB.put('sheets', clone(cur));
 }
 function svPlayCur() {
+  if (rc && rc.stage === 'rec') { rcStop(); return; }
   const p = cur && cur.parts[svPart]; if (!p) return;
-  if (!rhHas(p.rhythm)) { toast('Pas de rythme en cases pour cette partie — ajoute-en un avec « Modifier »', true); return; }
+  if (!rhHas(p.rhythm)) { rhyOpen('cur', svPart); return; }
   playPartRhythm(svPart);
 }
 function svRecBtn() {
@@ -4737,7 +4880,7 @@ let wl = null; // écran allumé pendant le jeu
 async function wakeOn() { try { if (navigator.wakeLock && !wl) { wl = await navigator.wakeLock.request('screen'); wl.addEventListener('release', () => { wl = null; }); } } catch (e) {} }
 function wakeOff() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
 document.addEventListener('keydown', e => {
-  if (!$('v-sheet').classList.contains('on') || !$('m-rec').classList.contains('hide') || e.ctrlKey || e.metaKey) return;
+  if (!$('v-sheet').classList.contains('on') || rhy || (rc && rc.stage !== 'rec') || e.ctrlKey || e.metaKey) return;
   const t = e.target, tag = t && t.tagName;
   if (/INPUT|TEXTAREA|SELECT/.test(tag)) return;
   const n = (cur && cur.parts.length) || 0;
@@ -4769,6 +4912,8 @@ async function toggleFav(id, e) {
 }
 /* Lecteur de rythme de la fiche : ▶/■ dans la barre du bas, tempo −/+ (le BPM est celui de la fiche, enregistré) */
 const RH_PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21"/></svg>';
+const RH_PAUSE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>';
+const RH_PLUS_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 const RH_STOP_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>';
 function rhRenderPlayer(i, step, k) {
   const el = $('rh-view-' + i), p = cur && cur.parts[i];
@@ -5161,7 +5306,7 @@ function renderParts() {
 
         <div class="part-sub"><span class="part-sub-t">Rythme</span>
           ${p.rhythm ? `<button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].rhythm=null;renderParts()">retirer</button>`
-                     : `<button class="add-btn" onclick="draft.parts[${i}].rhythm=rhFromPat('','4/4',8,1);renderParts()">+ Rythme</button>`}
+                     : `<button class="add-btn" onclick="rhyOpen('draft',${i})">+ Rythme</button>`}
         </div>
         ${p.rhythm ? rhythmEditorHTML(i, p) : ''}
 
@@ -5205,69 +5350,223 @@ function initDnD(host) {
   };
 }
 
-/* ═══════ RHYTHM EDITOR ═══════ */
+/* ═══════ RHYTHM EDITOR — feuille plein écran #m-rhy ═══════
+   Ouverte depuis le mode jeu (ctx 'cur', bouton « Créer » / « Changer le rythme ») ou depuis l'éditeur du Cahier (ctx 'draft').
+   rhy.r = copie de travail ; rien n'est écrit dans la partie avant « Valider le rythme ».
+   La boucle de test lit rhy.r à chaque pas : modifier une case pendant la lecture est pris au pas suivant. */
 const rhPen = {d:'D', a:1};
-function rhGridHTML(i, r) {
-  const per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = per <= 9 ? per : per/2;
+let rhy = null; // {ctx, i, r, q, lit}
+const rhyPart = () => rhy && (rhy.ctx === 'cur' ? cur : draft).parts[rhy.i];
+const rhyKey = () => 'e' + rhy.i;
+const RHY_G = {D:'↓', U:'↑', X:'✕'};
+const rhyNorm = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+function rhyOpen(ctx, i) {
+  stopPlay();
+  const s = ctx === 'cur' ? cur : draft, p = s && s.parts[i]; if (!p) return;
+  rhy = {ctx, i, q: '', lit: null, r: p.rhythm ? clone(rhNorm(p.rhythm)) : rhFromPat('', '4/4', 8, 1)};
+  $('m-rhy').classList.remove('hide'); document.body.classList.add('rhy-open');
+  rhyRender();
+}
+function rhyClose() {
+  if (!rhy) return;
+  rhStop(); rhy = null;
+  $('m-rhy').classList.add('hide'); document.body.classList.remove('rhy-open');
+  if (cur) svSync();
+}
+function rhyValidate() {
+  if (!rhy) return;
+  const {ctx, i} = rhy, r = rhHas(rhy.r) ? rhy.r : null;
+  rhyClose();
+  if (ctx === 'draft') { draft.parts[i].rhythm = r; renderParts(); return; }
+  cur.parts[i].rhythm = r; cur.updatedAt = Date.now();
+  DB.put('sheets', clone(cur)); viewSheet(cur.id, i);
+  toast(r ? 'Rythme enregistré' : 'Rythme retiré');
+}
+function rhyRender() {
+  const p = rhyPart(), can = rhy.ctx === 'cur';
+  $('m-rhy').innerHTML = `
+  <div class="rhy-head">
+    <button type="button" class="rhy-back" onclick="rhyClose()" aria-label="Fermer sans enregistrer le rythme"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="rhy-ttl">Rythme · ${esc(p.name)}</div>
+    <button type="button" class="btn btn-ghost" style="min-height:44px" onclick="rhyClear()">Vider</button>
+  </div>
+  <div class="rhy-body"><div class="rhy-in">
+    <div class="rhy-pres">
+      <div class="rhy-lbl"><span>Partir d’un rythme</span><input type="search" id="rhy-q" placeholder="Chercher…" autocomplete="off" oninput="rhy.q=this.value;rhyPre()" aria-label="Chercher un rythme"></div>
+      <div class="rhy-pre" id="rhy-pre"></div>
+    </div>
+    <div class="rhy-main">
+      <div class="rhy-prev" id="rhy-prev" aria-label="Aperçu du rythme"></div>
+      <div class="rhy-grid" id="rhy-grid"></div>
+      <div class="rhy-test">
+        <button type="button" class="rhy-testb" id="rhy-testb" onclick="rhyTest()"></button>
+        <button type="button" class="rhy-soft" id="rhy-s0" onclick="rhyForce(0)">Doux</button>
+        <button type="button" class="rhy-soft" id="rhy-s2" onclick="rhyForce(2)">Fort</button>
+      </div>
+      <div class="rhy-guit ${can ? '' : 'off'}">
+        <button type="button" class="rhy-recb" onclick="rhyRecord()" ${can ? '' : 'disabled'} aria-label="Enregistrer ma prise à la guitare">${REC_DOT_SVG}</button>
+        <div><b>Je le joue à la guitare</b><span>${can ? 'Tu grattes, l’app garde ta prise telle quelle et la rejoue en boucle.' : 'Enregistre d’abord la fiche, puis ouvre-la en mode jeu.'}</span></div>
+      </div>
+      <details class="rhy-set"><summary id="rhy-sum"></summary>
+        <div class="rhy-sels">
+          <label>Mesure<select id="rhy-mes" onchange="rhySetOpt('mes',this.value)"><option>4/4</option><option>3/4</option><option>6/8</option></select></label>
+          <label>Subdivision<select id="rhy-res" onchange="rhySetOpt('res',+this.value)"><option value="8">Croches</option><option value="12">Triolets</option><option value="16">Doubles croches</option></select></label>
+          <label>Longueur<select id="rhy-bars" onchange="rhySetOpt('bars',+this.value)"><option value="1">1 mesure</option><option value="2">2 mesures</option></select></label>
+        </div>
+      </details>
+    </div>
+  </div></div>
+  <div class="rhy-foot"><div class="rhy-in">
+    <div class="rhy-pens" role="group" aria-label="Choisir la pièce à poser">
+      <button type="button" data-d="D" onclick="rhyPen('D')">↓<small>Bas</small></button>
+      <button type="button" data-d="U" onclick="rhyPen('U')">↑<small>Haut</small></button>
+      <button type="button" data-d="X" onclick="rhyPen('X')">✕<small>Étouffé</small></button>
+      <button type="button" data-d="" onclick="rhyPen('')">—<small>Silence</small></button>
+    </div>
+    <div class="rhy-act"><button type="button" class="btn btn-ghost" onclick="rhyClose()">Annuler</button><button type="button" class="btn btn-primary" onclick="rhyValidate()">Valider le rythme</button></div>
+  </div></div>`;
+  rhyPre(); rhyGrid(); rhySync(); rhyPenSync();
+  const g = $('rhy-grid');
+  g.onpointerdown = rhyDown; g.onpointermove = rhyMove; g.onpointerup = g.onpointercancel = rhyUp;
+}
+// vignettes de préréglages : nom + mini-motif en flèches ; la liste défile et se filtre
+function rhyPre() {
+  const q = rhyNorm(rhy.q.trim());
+  const list = RHYTHMS.filter(x => !q || rhyNorm(x.n + ' ' + x.mes).includes(q));
+  $('rhy-pre').innerHTML = list.map(x => `<button type="button" class="rhy-card" onclick="rhyPreset('${x.id}')"><b>${esc(x.n)}</b><span>${[...x.pat].map(ch => ch === '-' ? '·' : ch.toLowerCase() === 'x' ? '✕' : ch.toLowerCase() === 'u' ? '↑' : '↓').join('')}</span></button>`).join('')
+    || '<span style="color:var(--cream2);font-size:13px;padding:8px">Aucun rythme ne correspond.</span>';
+}
+function rhyPreset(id) {
+  const x = RHYTHMS.find(z => z.id === id); if (!x) return;
+  const was = rhPlaying(rhyKey());
+  rhy.r = rhFromPat(x.pat, x.mes, x.res, 1);
+  rhyGrid(); rhySync(); rhyTest(true);   // écoute tout de suite
+}
+function rhyGrid() {
+  const r = rhy.r, per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = per <= 9 ? per : per/2;
   let h = '';
   for (let b = 0; b < r.bars; b++) {
-    h += `<div class="rh-bar" style="grid-template-columns:repeat(${row},minmax(0,1fr))">`;
-    for (let j = 0; j < per; j++) {
-      const k = b*per + j, c = r.cells[k];
-      const g = !c ? '·' : c.d === 'X' ? '&#10005;' : c.d === 'D' ? '&#8595;' : '&#8593;';
-      h += `<button type="button" class="rh-cell ${c ? 'on ' + c.d : ''} a${c ? c.a : 1} ${j % spb === 0 ? 'beat' : ''}" onclick="rhPaint(${i},${k})" aria-label="Case ${k+1}">${g}</button>`;
-    }
+    h += `<div class="rhy-bar" style="--cols:${row}">`;
+    for (let j = 0; j < per; j++) h += rhyPadHTML(b*per + j, j, spb);
     h += '</div>';
   }
-  return h;
+  $('rhy-grid').innerHTML = h; rhy.lit = null; rhyPrev();
 }
-function rhEdInner(i, r) { return `<div class="scroll-x">${rhythmSVG(r, false)}</div>${rhGridHTML(i, r)}`; }
-function rhythmEditorHTML(i, p) {
-  const r = rhNorm(p.rhythm);
-  const sel = (id, opts, cur_) => `<select class="rh-sel" onchange="${id}">${opts.map(([v, l]) => `<option value="${v}" ${String(v) === String(cur_) ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
-  const penB = (d, l, cls) => `<button type="button" class="stroke-btn ${cls||''} ${rhPen.d === d ? 'sel' : ''}" onclick="rhPen.d='${d}';renderParts()">${l}</button>`;
-  return `<div class="rh-wrap">
-    <div class="rh-sets">
-      ${sel(`rhSet(${i},'mes',this.value)`, [['4/4','4/4'],['3/4','3/4'],['6/8','6/8']], r.mes)}
-      ${sel(`rhSet(${i},'res',+this.value)`, [[8,'Croches'],[12,'Triolets'],[16,'Doubles croches']], r.res)}
-      ${sel(`rhSet(${i},'bars',+this.value)`, [[1,'1 mesure'],[2,'2 mesures']], r.bars)}
-      ${sel(`rhPreset(${i},this.value)`, [['','Partir d’un rythme…']].concat(RHYTHMS.map(x => [x.id, x.n])), '')}
-    </div>
-    <div class="rh-canvas" id="rh-ed-${i}">${rhEdInner(i, r)}</div>
-    <div class="rh-tools">
-      ${penB('D', '&#8595; Bas', 'd')}${penB('U', '&#8593; Haut', 'u')}${penB('X', '&#10005; Étouffé')}${penB('', 'Silence')}
-      <select class="rh-sel" onchange="rhPen.a=+this.value;renderParts()"><option value="0" ${rhPen.a===0?'selected':''}>Doux</option><option value="1" ${rhPen.a===1?'selected':''}>Normal</option><option value="2" ${rhPen.a===2?'selected':''}>Accent</option></select>
-      <button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].rhythm=rhFromPat('','4/4',8,1);renderParts()">Vider</button>
-      <button class="btn btn-ghost btn-xs" id="rh-edbtn-${i}" onclick="playEdRhythm(${i})">${RH_PLAY_SVG.replace('<svg','<svg class="ico"')} Écouter en boucle</button>
-    </div>
-    <div class="rh-hint">Choisis un coup, puis touche les cases. Silence = la main passe sans toucher ; étouffé = coup sec sans note. Au tempo de la fiche (${draft.bpm || 90} BPM).</div>
-  </div>`;
+function rhyPadHTML(k, j, spb) {
+  const r = rhy.r, c = r.cells[k], per = rhPerBar(r.mes, r.res);
+  spb = spb || rhSpb(r.mes, r.res); j = j == null ? k % per : j;
+  const lab = rhLabel(r.mes, spb, j % spb, Math.floor(j/spb));
+  return `<button type="button" class="rhy-pad ${c ? 'on ' + c.d + ' a' + c.a : ''} ${j % spb === 0 ? 'beat' : ''}" data-k="${k}" aria-label="Case ${k+1}"><i>${lab}</i><span>${c ? RHY_G[c.d] : '·'}</span></button>`;
 }
-function rhPaint(i, k) {
-  const r = rhNorm(draft.parts[i].rhythm), c = r.cells[k];
-  const same = c && c.d === rhPen.d && c.a === rhPen.a;
-  r.cells[k] = (rhPen.d === '' || same) ? null : {d: rhPen.d, a: rhPen.a};
-  $('rh-ed-' + i).innerHTML = rhEdInner(i, r);
+function rhyPadUpdate(k) {
+  const el = $('rhy-grid').querySelector(`[data-k="${k}"]`); if (!el) return;
+  const r = rhy.r, c = r.cells[k], per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res);
+  const lit = el.classList.contains('lit');
+  el.outerHTML = rhyPadHTML(k, k % per, spb);
+  if (lit) $('rhy-grid').querySelector(`[data-k="${k}"]`).classList.add('lit');
+  rhyPrev();
 }
-function rhSet(i, key, v) {
-  const r = rhNorm(draft.parts[i].rhythm);
-  const m = {mes: r.mes, res: r.res, bars: r.bars}; m[key] = v;
+// aperçu en flèches, mis à jour en direct
+function rhyPrev() {
+  const r = rhy.r, per = rhPerBar(r.mes, r.res);
+  let h = '';
+  r.cells.forEach((c, k) => {
+    if (k && k % per === 0) h += '<em>|</em>';
+    h += c ? `<i class="${c.d} a${c.a}">${RHY_G[c.d]}</i>` : '<i class="n">·</i>';
+  });
+  $('rhy-prev').innerHTML = h;
+}
+function rhySync() {
+  const r = rhy.r;
+  $('rhy-mes').value = r.mes; $('rhy-res').value = r.res; $('rhy-bars').value = r.bars;
+  const rn = {8: 'Croches', 12: 'Triolets', 16: 'Doubles croches'}[r.res];
+  $('rhy-sum').textContent = `Réglages · ${r.mes} · ${rn} · ${r.bars} mesure${r.bars > 1 ? 's' : ''}`;
+}
+function rhySetOpt(key, v) {
+  const r = rhy.r, m = {mes: r.mes, res: r.res, bars: r.bars}; m[key] = v;
   if (m.mes === '6/8' && m.res === 12) m.res = 8;
-  rhReshape(r, m.mes, m.res, m.bars); renderParts();
+  const was = rhPlaying(rhyKey());
+  rhReshape(r, m.mes, m.res, m.bars); rhyGrid(); rhySync();
+  if (was) rhyTest(true);   // la cadence change : on relance proprement
 }
-function rhPreset(i, id) {
-  const x = RHYTHMS.find(z => z.id === id); if (!x) return;
-  draft.parts[i].rhythm = rhFromPat(x.pat, x.mes, x.res, 1); renderParts();
+function rhyClear() {
+  rhy.r = rhFromPat('', rhy.r.mes, rhy.r.res, rhy.r.bars); rhStop(); rhyGrid(); rhyTestSync(false);
 }
-function playEdRhythm(i) {
-  const p = draft.parts[i], r = rhNorm(p.rhythm);
-  if (rhPlaying('e' + i)) { rhStop(); return; }
-  if (!rhHas(r)) { toast('Ajoute des coups d’abord', true); return; }
-  rhStart(r, draft.bpm || 90, p.chords[0] || null, draft.capo, step => {
-    const el = $('rh-ed-' + i); if (!el) return;
-    const sv = el.querySelector('.scroll-x'); if (sv) sv.innerHTML = rhythmSVG(r, false, step == null ? {} : {cursor: step});
-    const b = $('rh-edbtn-' + i); if (b) b.classList.toggle('on', step != null);
-  }, {key: 'e' + i, chords: p.chords});
+function rhyPen(d) { rhPen.d = d; rhyPenSync(); }
+function rhyForce(a) { rhPen.a = rhPen.a === a ? 1 : a; rhyPenSync(); }
+function rhyPenSync() {
+  document.querySelectorAll('.rhy-pens button').forEach(b => { b.classList.toggle('sel', b.dataset.d === rhPen.d); b.setAttribute('aria-pressed', b.dataset.d === rhPen.d); });
+  [0, 2].forEach(a => { const b = $('rhy-s' + a); if (b) { b.classList.toggle('sel', rhPen.a === a); b.setAttribute('aria-pressed', rhPen.a === a); } });
+}
+// pads : tap = pose, même tap = efface, glisser = peindre, appui long = accent
+let rhyDrag = null;
+function rhyApply(k, mode, a) {
+  const r = rhy.r;
+  r.cells[k] = (mode === 'clear' || rhPen.d === '') ? null : {d: rhPen.d, a: a == null ? rhPen.a : a};
+  rhyPadUpdate(k);
+}
+function rhyDown(e) {
+  const b = e.target.closest('.rhy-pad'); if (!b) return;
+  e.preventDefault();
+  try { e.currentTarget.setPointerCapture(e.pointerId); } catch (x) {}
+  const k = +b.dataset.k, c = rhy.r.cells[k], same = c && c.d === rhPen.d && c.a === rhPen.a;
+  const D = rhyDrag = {mode: (rhPen.d === '' || same) ? 'clear' : 'set', seen: new Set([k]), moved: false};
+  rhyApply(k, D.mode);
+  D.lp = setTimeout(() => {
+    if (rhyDrag !== D || D.moved || !rhPen.d) return;
+    D.long = true; rhyApply(k, 'set', 2);
+    try { navigator.vibrate && navigator.vibrate(15); } catch (x) {}
+  }, 450);
+}
+function rhyMove(e) {
+  const D = rhyDrag; if (!D) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY), b = el && el.closest && el.closest('.rhy-pad'); if (!b) return;
+  const k = +b.dataset.k; if (D.seen.has(k)) return;
+  D.seen.add(k); D.moved = true; clearTimeout(D.lp);
+  rhyApply(k, D.mode);
+}
+function rhyUp() { if (rhyDrag) clearTimeout(rhyDrag.lp); rhyDrag = null; }
+// test en boucle (avec l'accord de la partie)
+function rhyTest(forceStart) {
+  if (!rhy) return;
+  const key = rhyKey();
+  if (rhPlaying(key) && !forceStart) { rhStop(); return; }
+  if (!rhHas(rhy.r)) { rhStop(); toast('Pose quelques coups d’abord', true); return; }
+  const p = rhyPart(), s = rhy.ctx === 'cur' ? cur : draft;
+  rhStart(rhy.r, s.bpm || 90, p.chords[0] || null, s.capo, rhyStep, {key, chords: p.chords});
+  rhyTestSync(true);
+}
+function rhyTestSync(on) {
+  const b = $('rhy-testb'); if (!b) return;
+  const s = rhy.ctx === 'cur' ? cur : draft;
+  b.classList.toggle('on', on);
+  b.innerHTML = (on ? RH_STOP_SVG : RH_PLAY_SVG) + (on ? 'Arrêter le test' : 'Tester en boucle') + `<small>${s.bpm || 90} BPM</small>`;
+}
+function rhyStep(i) {
+  if (!rhy) return;
+  if (rhy.lit) rhy.lit.classList.remove('lit');
+  rhy.lit = null;
+  if (i == null) { rhyTestSync(false); return; }
+  const el = $('rhy-grid').querySelector(`[data-k="${i}"]`);
+  if (el) { el.classList.add('lit'); rhy.lit = el; }
+}
+function rhyRecord() {
+  if (!rhy || rhy.ctx !== 'cur') return;
+  const i = rhy.i;
+  if (rhHas(rhy.r)) { cur.parts[i].rhythm = rhy.r; cur.updatedAt = Date.now(); DB.put('sheets', clone(cur)); }
+  rhyClose(); viewSheet(cur.id, i); rcOpen(i);
+}
+document.addEventListener('keydown', e => {
+  if (!rhy || e.ctrlKey || e.metaKey || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+  const k = e.key.toLowerCase();
+  if (k === 'escape') { rhyClose(); return; }
+  if (k === 'd' || k === 'u' || k === 'x' || k === '-') { rhyPen(k === '-' ? '' : k.toUpperCase()); return; }
+  if (k === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); rhyTest(); }
+});
+// Cahier : aperçu du rythme de la partie + accès à la feuille de création
+function rhythmEditorHTML(i, p) {
+  return `<div class="rh-wrap"><div class="scroll-x">${rhythmSVG(p.rhythm, false)}</div>
+    <div class="rh-tools"><button type="button" class="btn btn-primary btn-sm" style="min-height:44px" onclick="rhyOpen('draft',${i})">Modifier le rythme</button></div></div>`;
 }
 
 /* ═══════ LYRICS — optional, linked to chords/rhythm via inline tags ═══════
