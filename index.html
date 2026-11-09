@@ -461,6 +461,50 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .exo-err div::before{content:'!';position:absolute;left:10px;top:8px;font-weight:800;color:var(--terra)}
 .exo-ok{font-size:13px;line-height:1.6;color:var(--cream2);padding:10px 12px 10px 34px;background:rgba(124,138,92,.12);border-radius:8px;position:relative}
 .exo-ok::before{content:'✓';position:absolute;left:12px;top:9px;font-weight:800;color:var(--sage)}
+/* ── au feeling ── */
+.fl-lead{font-family:var(--serif);font-size:20px;font-weight:600;margin:4px 0 14px}
+.fl-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.fl-tile{position:relative;overflow:hidden;text-align:left;display:flex;flex-direction:column;gap:4px;min-height:132px;padding:16px 14px;border-radius:var(--ra);border:1px solid var(--border);color:var(--cream);background:linear-gradient(150deg,color-mix(in srgb,var(--amb) 34%,var(--card)),var(--card) 85%);transition:transform .18s,box-shadow .18s}
+.fl-tile:nth-child(even){border-radius:var(--rb)}
+.fl-tile::after{content:'';position:absolute;right:-26px;top:-26px;width:90px;height:90px;border-radius:50%;background:var(--amb);opacity:.22}
+.fl-tile:hover{transform:translateY(-3px);box-shadow:0 14px 36px var(--shadow)}
+.fl-em{font-size:34px;line-height:1}
+.fl-tn{font-family:var(--serif);font-size:19px;font-weight:700;line-height:1.15}
+.fl-td{font-size:12px;color:var(--cream2);line-height:1.35}
+.fl-ambh{display:flex;align-items:center;gap:12px;margin:6px 0 16px;padding:12px 14px;border-radius:var(--rs);background:color-mix(in srgb,var(--amb) 18%,var(--card));border-left:4px solid var(--amb)}
+.fl-cards{display:grid;grid-template-columns:1fr;gap:12px}
+.fl-card{position:relative;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;gap:8px;padding:16px 14px 12px;border-radius:var(--ra);background:var(--card);border:1px solid var(--border);transition:all .2s}
+.fl-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--amb)}
+.fl-card:hover{background:var(--card2);transform:translateY(-3px);box-shadow:0 14px 40px var(--shadow)}
+.fl-ct{font-family:var(--serif);font-size:17px;font-weight:700}
+.fl-deg{font-family:var(--mono);font-size:11px;color:var(--cream3)}
+.fl-dias{display:flex;gap:8px;flex-wrap:wrap}
+.fl-stage{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:16px;border-radius:var(--ra);border:1px solid var(--border);background:linear-gradient(150deg,color-mix(in srgb,var(--amb) 24%,var(--card)),var(--card))}
+.fl-cur{display:flex;align-items:center;gap:14px}
+.fl-name{font-family:var(--serif);font-size:56px;font-weight:700;line-height:1;color:var(--gold2);min-width:84px}
+.fl-side{display:flex;flex-direction:column;gap:10px;flex:1;min-width:150px}
+.fl-next{font-size:13px;color:var(--cream2)}.fl-next b{font-family:var(--serif);font-size:22px;color:var(--cream);margin-left:6px}
+.fl-bars{display:flex;gap:5px;flex-wrap:wrap}
+.fl-bars i{font-style:normal;font-family:var(--mono);font-size:11px;font-weight:700;min-width:30px;text-align:center;padding:6px 8px;border-radius:8px;background:var(--card2);color:var(--cream3);border:1px solid var(--border)}
+.fl-bars i.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.fl-pat{margin-top:12px}
+.fl-cells{display:flex;gap:4px;flex-wrap:wrap}
+.fl-cell{width:34px;height:60px;border-radius:9px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:20px;font-weight:800;transition:background .06s}
+.fl-cell.beat{background:var(--card2)}
+.fl-cell.exo-now{background:var(--gold);border-color:var(--gold)}.fl-cell.exo-now .sg-ar span,.fl-cell.exo-now .sg-c{color:var(--ink)!important}
+.fl-cell .sg-c{font-size:10px;font-family:var(--mono);font-weight:600;color:var(--cream3)}
+.fl-trans{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0;padding:12px 14px;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs)}
+.fl-play{width:68px;height:68px;border-radius:50%;border:0;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(200,120,58,.4)}
+.fl-play svg{width:30px;height:30px}.fl-play.on{background:var(--terra);color:#fff}
+.fl-ways .filters{margin-bottom:12px}
+.fl-lbl{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--cream3);margin:6px 0 7px}
+.fl-rec{font-style:normal;color:var(--gold3)}.filt.on .fl-rec{color:var(--ink)}
+.filt.off{opacity:.35;cursor:not-allowed}
+.fl-fx{margin-top:4px;padding:12px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--border)}
+.fl-fxn{font-weight:700;margin-bottom:6px}
+.fl-fxpat{display:flex;gap:6px;font-size:22px;font-weight:800}
+@media(min-width:640px){.fl-tiles{grid-template-columns:repeat(4,1fr)}.fl-cards{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){.fl-cards{grid-template-columns:repeat(4,1fr)}.fl-name{font-size:72px}.fl-cell{width:44px;height:68px}}
 .tempo-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-top:14px}
 .tc-v{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--gold);min-width:64px;text-align:center;line-height:1}
 .tc-v small{display:block;font-size:9px;color:var(--cream3);letter-spacing:1px;margin-top:3px}
@@ -1184,6 +1228,7 @@ const LIB = [
   {n:'Cadd9', f:[-1,3,2,0,3,3],  g:[0,2,1,0,3,4], fam:'add'},
   {n:'Gadd9', f:[3,0,0,2,0,3],   g:[2,0,0,1,0,3], fam:'add'},
   {n:'Bm',    f:[-1,2,4,4,3,2],  g:[0,1,3,4,2,1], fam:'min', barre:true},
+  {n:'Bm7',   f:[-1,2,0,2,0,2],  g:[0,1,0,2,0,3], fam:'7'},
   {n:'B',     f:[-1,2,4,4,4,2],  g:[0,1,2,3,4,1], fam:'maj', barre:true},
   {n:'Bb',    f:[-1,1,3,3,3,1],  g:[0,1,2,3,4,1], fam:'maj', barre:true},
   {n:'Bbm',   f:[-1,1,3,3,2,1],  g:[0,1,3,4,2,1], fam:'min', barre:true},
@@ -1545,14 +1590,14 @@ const rhCellTime = (P, k) => {
   const rh = P.rh, off = (rh.swing && rhSpb(rh.mes, rh.res) === 2 && k % 2 === 1) ? rh.swing*rhCellDur(rh, P.bpm) : 0;
   return P.t0 + (k - P.k0)*rhCellDur(rh, P.bpm) + off;
 };
-function rhPlayCell(c, t, chord, capo) {
+function rhPlayCell(c, t, chord, capo, pm) {
   if (!c) return;
   if (c.d === 'X') { chuckSound(t); return; }
   if (!chord) return;
   const idx = [0,1,2,3,4,5].filter(k => chord.frets[k] >= 0);
   const ord = c.d === 'U' ? idx.slice().reverse().slice(0, 4) : idx;
   const gap = c.a === 2 ? .024 : .016, vol = [.06, .10, .15][c.a];
-  ord.forEach((si, n) => pluck(fretFreq(si, chord.frets[si], capo), t + n*gap, .8, vol));
+  ord.forEach((si, n) => pluck(fretFreq(si, chord.frets[si], capo), t + n*gap, pm ? .16 : .8, pm ? vol*.9 : vol)); // pm = palm mute : note courte
 }
 function rhStart(rh, bpm, chord, capo, onStep, opt) {
   rhStop();
@@ -1561,16 +1606,16 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   const ac = audio(); if (ac.state === 'suspended') ac.resume();
   recStopPlay();
   const P = rhP = {key: opt.key || '', ctx: ac, rh, chords: opt.chords && opt.chords.length ? opt.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
-    k: 0, k0: 0, t0: ac.currentTime + 0.08, q: [], onStep, onCell: opt.onCell, timer: null, raf: 0};
+    k: 0, k0: 0, t0: ac.currentTime + 0.08, q: [], onStep, onCell: opt.onCell, mute: !!opt.mute, timer: null, raf: 0};
   const tick = () => {
     if (rhP !== P) return;
     const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res);
     while (rhCellTime(P, P.k) < ac.currentTime + 0.12) {
       const i = P.k % rh.cells.length, t = rhCellTime(P, P.k), inBar = i % per;
-      if (inBar % spb === 0) click(t, inBar === 0);
+      if (!P.mute && inBar % spb === 0) click(t, inBar === 0);
       // 1 accord = 1 mesure : la suite d'accords de la partie défile, mesure après mesure
       const ch = P.chords ? P.chords[Math.floor(P.k/per) % P.chords.length] : P.chord;
-      rhPlayCell(rh.cells[i], t, ch, P.capo);
+      if (opt.cellFn) opt.cellFn(rh.cells[i], t, ch, i, P.k, P); else rhPlayCell(rh.cells[i], t, ch, P.capo);
       if (P.onCell) P.onCell(i, t, P.k);
       P.q.push({i, t, k: P.k}); P.k++;
     }
@@ -3381,9 +3426,11 @@ function exoRender() {
   if (exoCur && EXO[exoCur]) { body.innerHTML = exoDetailHTML(EXO[exoCur]); return; }
   body.innerHTML = exoStatsHTML() +
     `<div class="mode-toggle exo-mode">
-      <button type="button" class="mode-pill big ${exoMode==='path'?'on':''}" onclick="exoMode='path';exoRender()">Parcours guidé</button>
-      <button type="button" class="mode-pill big ${exoMode==='axes'?'on':''}" onclick="exoMode='axes';exoRender()">Entraînement ciblé</button></div>` +
-    (exoMode === 'path' ? pathHTML() : axesHTML());
+      <button type="button" class="mode-pill big ${exoMode==='feel'?'on':''}" onclick="feelStop();exoMode='feel';exoRender()">Au feeling</button>
+      <button type="button" class="mode-pill big ${exoMode==='path'?'on':''}" onclick="feelStop();exoMode='path';exoRender()">Parcours guidé</button>
+      <button type="button" class="mode-pill big ${exoMode==='axes'?'on':''}" onclick="feelStop();exoMode='axes';exoRender()">Entraînement ciblé</button></div>` +
+    (exoMode === 'feel' ? feelHTML() : exoMode === 'path' ? pathHTML() : axesHTML());
+  if (exoMode === 'feel') feelAfter();
 }
 
 /* ═══ cours : visuels et liens vers les exercices ═══ */
@@ -3495,6 +3542,307 @@ function capoSVG(c) {
   } else s += `<text x="${x0}" y="${H - 2}" font-size="9.5" fill="var(--cream3)" font-family="JetBrains Mono">sans capo : le sillet d’origine</text>`;
   for (let f = 1; f <= 7; f++) s += `<text x="${x0 + (f - .5)*fw}" y="${top - 7}" text-anchor="middle" font-size="8" fill="var(--cream4)" font-family="JetBrains Mono">${f}</text>`;
   return s + '</svg>';
+}
+
+/* ═══════ AU FEELING — choisir une ambiance, jouer sa suite d'accords en boucle ═══════
+   Données (AMBIANCES, FEEL_PROGS, ARPS, EFFECTS) + un lecteur qui s'appuie sur le moteur rhStart :
+   1 accord = 1 mesure, le rythme (RHYTHMS) ou l'arpège (ARPS, écrit en rôles de cordes) s'applique à chaque accord,
+   un effet (EFFECTS) vient s'ajouter en fin de mesure. Tout se combine ; rien n'est stocké (état en mémoire). */
+const AMBIANCES = [
+  {id:'joyeux',       n:'Joyeux',        d:'Lumineux, qui donne le sourire'},
+  {id:'triste',       n:'Triste',        d:'Mineur, qui serre le cœur'},
+  {id:'melancolique', n:'Mélancolique',  d:'Doux-amer, nostalgique'},
+  {id:'energique',    n:'Énergique',     d:'Rock, ça pousse'},
+  {id:'feu',          n:'Feu de camp',   d:'Tout le monde chante'},
+  {id:'reveur',       n:'Rêveur',        d:'Planant, accords colorés'},
+  {id:'blues',        n:'Blues',         d:'Le 12 mesures, shuffle'},
+  {id:'epique',       n:'Épique',        d:'Grandiose, cinématique'},
+];
+
+const FEEL_PROGS = [
+ // ── JOYEUX
+ {id:'j1', amb:'joyeux', n:'La pop qui marche', ton:'G', deg:['I','V','vi','IV'], ch:['G','D','Em','C'], bpm:[90,120], rh:['feucamp','croches','chuck'], niv:1},
+ {id:'j2', amb:'joyeux', n:'Les quatre accords', ton:'C', deg:['I','V','vi','IV'], ch:['C','G','Am','F'], facile:['C','G','Am','Fmaj7'], bpm:[80,110], rh:['feucamp','ballade','croches'], niv:2, ex:['Let It Be']},
+ {id:'j3', amb:'joyeux', n:'Trois accords, zéro prise de tête', ton:'G', deg:['I','IV','I','V'], ch:['G','C','G','D'], bpm:[90,130], rh:['croches','feucamp','noires'], niv:1},
+ {id:'j4', amb:'joyeux', n:'Doo-wop ensoleillé', ton:'A', deg:['I','vi','IV','V'], ch:['A','F#m','D','E'], bpm:[85,115], rh:['ballade','croches','feucamp'], niv:2, ex:['Stand By Me']},
+
+ // ── TRISTE
+ {id:'t1', amb:'triste', n:'Le grand classique triste', ton:'G', deg:['vi','IV','I','V'], ch:['Em','C','G','D'], bpm:[70,95], rh:['ballade','noires','feucamp'], niv:1, ex:['Zombie']},
+ {id:'t2', amb:'triste', n:'Mineur pop', ton:'C', deg:['vi','IV','I','V'], ch:['Am','F','C','G'], facile:['Am','Fmaj7','C','G'], bpm:[65,90], rh:['ballade','six8','noires'], niv:2},
+ {id:'t3', amb:'triste', n:'Cadence andalouse', ton:'Am', deg:['i','VII','VI','V'], ch:['Am','G','F','E'], bpm:[70,100], rh:['feucamp','croches','noires'], niv:2},
+ {id:'t4', amb:'triste', n:'Larmes en ré mineur', ton:'F', deg:['vi','IV','I','V'], ch:['Dm','Bb','F','C'], bpm:[65,90], rh:['ballade','six8','noires'], niv:3},
+
+ // ── MÉLANCOLIQUE
+ {id:'m1', amb:'melancolique', n:'Le retour en boucle', ton:'C', deg:['vi','ii','V','I'], ch:['Am','Dm','G','C'], bpm:[70,100], rh:['ballade','six8','feucamp'], niv:1},
+ {id:'m2', amb:'melancolique', n:'Descente douce en sol', ton:'G', deg:['vi','ii','V','I'], ch:['Em','Am','D','G'], bpm:[70,100], rh:['ballade','feucamp','valse'], niv:1},
+ {id:'m3', amb:'melancolique', n:'Brume', ton:'C', deg:['vi','iii','IV','I'], ch:['Am','Em','Fmaj7','C'], bpm:[60,85], rh:['ballade','six8','noires'], niv:1},
+ {id:'m4', amb:'melancolique', n:'Ballade en la mineur (8 mesures)', ton:'Am', deg:['i','III','IV','VI','i','III','V','V'], ch:['Am','C','D','F','Am','C','E','E'], bpm:[70,100], rh:['six8','ballade','valse'], niv:2, ex:['The House of the Rising Sun']},
+
+ // ── ÉNERGIQUE
+ {id:'e1', amb:'energique', n:'Rock 1-4-5', ton:'E', deg:['I','IV','V','I'], ch:['E','A','B7','E'], facile:['E','A','B7','E'], bpm:[110,150], rh:['rock8','croches','chuck'], niv:1},
+ {id:'e2', amb:'energique', n:'Mixolydien (♭VII)', ton:'D', deg:['I','♭VII','IV','I'], ch:['D','C','G','D'], bpm:[100,140], rh:['rock8','croches','feucamp'], niv:1, ex:['Sweet Home Alabama']},
+ {id:'e3', amb:'energique', n:'Montée de rage', ton:'Am', deg:['i','♭VII','♭VI','♭VII'], ch:['Am','G','F','G'], bpm:[100,140], rh:['rock8','chuck','croches'], niv:2},
+ {id:'e4', amb:'energique', n:'La, en avant', ton:'A', deg:['I','♭VII','IV','I'], ch:['A','G','D','A'], bpm:[110,150], rh:['rock8','croches','chuck'], niv:1},
+
+ // ── FEU DE CAMP
+ {id:'f1', amb:'feu', n:'Le tube autour du feu', ton:'G', deg:['I','vi','IV','V'], ch:['G','Em','C','D'], bpm:[80,110], rh:['feucamp','croches','ballade'], niv:1},
+ {id:'f2', amb:'feu', n:'Do-la-fa-sol', ton:'C', deg:['I','vi','IV','V'], ch:['C','Am','F','G'], facile:['C','Am','Fmaj7','G'], bpm:[80,105], rh:['feucamp','ballade','valse'], niv:2},
+ {id:'f3', amb:'feu', n:'Ré-sol-la', ton:'D', deg:['I','IV','V','I'], ch:['D','G','A','D'], bpm:[90,120], rh:['feucamp','croches','noires'], niv:1},
+ {id:'f4', amb:'feu', n:'Sol-ré-do', ton:'G', deg:['I','V','IV','I'], ch:['G','D','C','G'], bpm:[85,115], rh:['feucamp','valse','reggae'], niv:1, ex:["Knockin' on Heaven's Door (G D Am / G D C)"]},
+
+ // ── RÊVEUR
+ {id:'r1', amb:'reveur', n:'Nuage jazzy', ton:'C', deg:['Imaj7','vi7','ii7','V7'], ch:['Cmaj7','Am7','Dm7','G7'], bpm:[70,100], rh:['ballade','six8','reggae'], niv:1},
+ {id:'r2', amb:'reveur', n:'Couleurs add9', ton:'G', deg:['Iadd9','vi7','IVadd9','Vsus4'], ch:['Gadd9','Em7','Cadd9','Dsus4'], bpm:[70,100], rh:['ballade','feucamp','six8'], niv:2},
+ {id:'r3', amb:'reveur', n:'Matin en ré', ton:'D', deg:['Imaj7','vi7','IVmaj7','V'], ch:['Dmaj7','Bm7','Gmaj7','A'], bpm:[70,100], rh:['ballade','six8','croches'], niv:2, note:'Bm7 = doigté à ajouter (section 0)'},
+ {id:'r4', amb:'reveur', n:'Escalier descendant', ton:'C', deg:['IVmaj7','iii7','ii7','Imaj7'], ch:['Fmaj7','Em7','Dm7','Cmaj7'], bpm:[60,90], rh:['six8','ballade','valse'], niv:1},
+
+ // ── BLUES (12 mesures, 1 accord par mesure dans `ch`)
+ {id:'b1', amb:'blues', n:'Blues en mi', ton:'E', deg:['I7','I7','I7','I7','IV7','IV7','I7','I7','V7','IV7','I7','V7'], ch:['E7','E7','E7','E7','A7','A7','E7','E7','B7','A7','E7','B7'], bpm:[70,110], rh:['shuffle','rock8','reggae'], niv:1},
+ {id:'b2', amb:'blues', n:'Blues en la', ton:'A', deg:['I7','I7','I7','I7','IV7','IV7','I7','I7','V7','IV7','I7','V7'], ch:['A7','A7','A7','A7','D7','D7','A7','A7','E7','D7','A7','E7'], bpm:[70,110], rh:['shuffle','rock8','reggae'], niv:1},
+ {id:'b3', amb:'blues', n:'Blues en sol', ton:'G', deg:['I7','I7','I7','I7','IV7','IV7','I7','I7','V7','IV7','I7','V7'], ch:['G7','G7','G7','G7','C7','C7','G7','G7','D7','C7','G7','D7'], bpm:[70,100], rh:['shuffle','rock8'], niv:1},
+ {id:'b4', amb:'blues', n:'Blues mineur', ton:'Am', deg:['i7','i7','i7','i7','iv7','iv7','i7','i7','V7','iv7','i7','V7'], ch:['Am7','Am7','Am7','Am7','Dm7','Dm7','Am7','Am7','E7','Dm7','Am7','E7'], bpm:[60,90], rh:['shuffle','ballade','six8'], niv:2},
+
+ // ── ÉPIQUE
+ {id:'p1', amb:'epique', n:'Marche en mi mineur', ton:'Em', deg:['i','♭VI','♭VII','i'], ch:['Em','C','D','Em'], bpm:[80,110], rh:['noires','rock8','six8'], niv:1},
+ {id:'p2', amb:'epique', n:'Grandeur en ré mineur', ton:'Dm', deg:['i','♭VI','♭VII','i'], ch:['Dm','Bb','C','Dm'], bpm:[75,105], rh:['noires','rock8','six8'], niv:3},
+ {id:'p3', amb:'epique', n:'Odyssée', ton:'Am', deg:['i','♭VI','♭VII','i'], ch:['Am','F','G','Am'], bpm:[75,105], rh:['noires','six8','rock8'], niv:2},
+ {id:'p4', amb:'epique', n:'Envolée en ré', ton:'D', deg:['vi','IV','I','V'], ch:['Bm','G','D','A'], bpm:[80,110], rh:['croches','noires','six8'], niv:2},
+];
+
+const ARPS = [
+ {id:'montee',   n:'Montée',                mes:'4/4', sub:2, motif:'B 3 2 1 B 3 2 1',     bpm:[60,100], niv:1, doigts:'p i m a p i m a'},
+ {id:'allerret', n:'Aller-retour',          mes:'4/4', sub:2, motif:'B 3 2 1 2 3 2 1',     bpm:[60,100], niv:1, doigts:'p i m a m i m a'},
+ {id:'travis',   n:'Folk (basse alternée)', mes:'4/4', sub:2, motif:'B 2 B2 3 B 2 B2 3',   bpm:[70,110], niv:2, doigts:'p m p i p m p i', note:'le pouce alterne B / B2, comme dans les exercices existants'},
+ {id:'pince',    n:'Pincé (chanson douce)', mes:'4/4', sub:2, motif:'B+1 3 2 3 B2+1 3 2 3',bpm:[60,95],  niv:2, doigts:'p+a i m i p+a i m i'},
+ {id:'ballade68',n:'Ballade 6/8',           mes:'6/8', sub:3, motif:'B 3 2 1 2 3',         bpm:[50,80],  niv:1, doigts:'p i m a m i'},
+ {id:'valse34',  n:'Valse 3/4',             mes:'3/4', sub:2, motif:'B 3+2+1 3+2+1',       bpm:[80,130], niv:1, doigts:'p (i m a) (i m a)', note:'1 case = 1 noire (sub:1)'},
+];
+
+const EFFECTS = [
+ {id:'hammer', n:'Hammer-on : Asus2 → A', acc:'Asus2→A', tab:'2.0 h 2.2', ou:'fin de mesure, avant de changer', niv:1,
+  expl:'Doigt posé sec sur la corde de si (case 2) : l\'accord s\'ouvre en La majeur.'},
+ {id:'pull',   n:'Pull-off : D → Dsus2', acc:'D→Dsus2', tab:'1.2 p 1.0', ou:'temps 4 ou sur le "et" de 4', niv:1,
+  expl:'Retire l\'annulaire de la corde de mi aigu en tirant légèrement vers le bas.'},
+ {id:'slide',  n:'Slide d\'entrée', acc:'→G', tab:'6.2 / 6.3', ou:'juste avant le temps 1 de la mesure suivante', niv:2,
+  expl:'Glisse la note grave depuis une case en dessous vers la note de l\'accord.'},
+ {id:'sus4',   n:'Sus4 : D → Dsus4 → D', acc:'D', tab:'1.2 h 1.3 p 1.2', ou:'sur 2 temps vides de rythme (ex. fin de phrase)', niv:2,
+  expl:'Petit doigt posé puis relâché sur la corde de mi aigu (case 3). Même idée : A → Asus4 : 2.2 h 2.3 p 2.2.'},
+ {id:'palm',   n:'Palm mute', acc:'E5 / A5', tab:'6.0+5.2@PM 6.0+5.2@PM 6.0+5.2@PM 6.0+5.2@PM 6.0+5.2@PM 6.0+5.2@PM 6.0+5.2@PM 6.0+5.2@PM', ou:'tout le couplet, puis relâche au refrain', niv:2,
+  expl:'Tranche de la main droite posée sur les cordes près du chevalet. Idéal avec rock8.'},
+ {id:'ghost',  n:'Note fantôme (étouffé)', acc:'tous', pat:'DUXUDUXU', ou:'temps 2 et 4', niv:2,
+  expl:'Main gauche relâche l\'accord, la main droite frappe quand même : le "chuck" qui donne le groove. Dans une tab : label @x.'},
+];
+const AMB_LOOK = {joyeux:['☀️','#e0a030'], triste:['🌧️','#5f86b0'], melancolique:['🍂','#b8743a'], energique:['⚡','#c8503a'],
+  feu:['🔥','#d0602a'], reveur:['☁️','#9c86ae'], blues:['🎷','#4f7f9a'], epique:['⛰️','#7c8a5c']};
+const feel = {amb:null, prog:null, easy:{}, kind:'rh', rh:'feucamp', arp:'montee', fx:null, bpm:90, click:true, bar:-1};
+const feelNames = p => (feel.easy[p.id] && p.facile) ? p.facile : p.ch;
+const feelAmbOf = id => AMBIANCES.find(a => a.id === id);
+const feelProg = () => FEEL_PROGS.find(p => p.id === feel.prog);
+const feelRhy = () => RHYTHMS.find(r => r.id === feel.rh);
+const feelArp = () => ARPS.find(a => a.id === feel.arp);
+/* mesure / résolution effectives de la façon de jouer */
+function feelMeter() {
+  if (feel.kind === 'arp') { const a = feelArp(); return {mes:a.mes, res: a.mes === '3/4' ? 4 : 8}; }
+  const r = feelRhy(); return {mes:r.mes, res:r.res};
+}
+/* rythme "fantôme" : temps 2 et 4 étouffés (4/4 en croches seulement) */
+function feelPat() {
+  const r = feelRhy();
+  if (feel.fx !== 'ghost' || r.mes !== '4/4' || r.res !== 8) return r.pat;
+  return r.pat.split('').map((c, i) => i === 2 || i === 6 ? 'X' : c).join('');
+}
+/* rôles de cordes → notes d'un accord ; B = grave la plus basse, B2 = 2e corde grave (cordes 4-6), 3/2/1 = sol/si/mi aigu */
+function arpNotes(tok, chord) {
+  if (tok === '-') return [];
+  const pl = [0,1,2,3,4,5].filter(i => chord.frets[i] >= 0), B = pl[0], low = pl.filter(i => i <= 2), B2 = low[1] != null ? low[1] : B;
+  return tok.split('+').map(r => ({B, B2, '3':3, '2':4, '1':5})[r]).filter(si => si != null && chord.frets[si] >= 0).map(si => ({si, fret:chord.frets[si]}));
+}
+const arpTabStr = (a, chord) => a.motif.split(' ').map(t => { const n = arpNotes(t, chord); return n.length ? n.map(o => `${6 - o.si}.${o.fret}`).join('+') : '-'; }).join(' ');
+/* un effet s'applique-t-il à la suite en cours ? */
+function fxApplies(fx, names) {
+  const m = feelMeter();
+  if (fx.id === 'hammer') return names.some(n => n === 'A' || n === 'Asus2');
+  if (fx.id === 'pull') return names.includes('D');
+  if (fx.id === 'sus4') return names.some(n => n === 'D' || n === 'A');
+  if (fx.id === 'palm') return feel.kind === 'rh';
+  if (fx.id === 'ghost') return feel.kind === 'rh' && m.mes === '4/4' && m.res === 8;
+  return true;
+}
+/* notes d'ornement : [{pos de fin de mesure (1 = dernière case), si, fret}] pour la mesure `bar` */
+function fxNotes(fx, names, bar) {
+  const cur = names[bar % names.length], nxt = findChord(names[(bar + 1) % names.length]);
+  if (fx === 'hammer' && (cur === 'A' || cur === 'Asus2')) return [[2, 4, 0], [1, 4, 2]];
+  if (fx === 'pull' && cur === 'D') return [[2, 5, 2], [1, 5, 0]];
+  if (fx === 'sus4' && (cur === 'D' || cur === 'A')) return cur === 'D' ? [[3, 5, 2], [2, 5, 3], [1, 5, 2]] : [[3, 4, 2], [2, 4, 3], [1, 4, 2]];
+  if (fx === 'slide' && nxt) { const si = nxt.f.findIndex(f => f >= 0); return nxt.f[si] > 0 ? [[2, si, nxt.f[si] - 1], [1, si, nxt.f[si]]] : []; }
+  return [];
+}
+
+/* ── écrans ── */
+function feelStop() { if (rhPlaying('feel')) rhStop(); }
+function feelBack() { feelStop(); if (feel.prog) feel.prog = null; else feel.amb = null; exoRender(); window.scrollTo(0, 0); }
+function feelPickAmb(id) { feelStop(); feel.amb = id; feel.prog = null; exoRender(); window.scrollTo(0, 0); }
+function feelPickProg(id) {
+  feelStop(); feel.prog = id; const p = feelProg();
+  feel.rh = p.rh[0]; feel.kind = 'rh'; feel.fx = null;
+  feel.bpm = Math.round((p.bpm[0] + p.bpm[1])/2); feelFixBpm();
+  exoLog('feel'); exoSave(); exoRender(); window.scrollTo(0, 0);
+}
+function feelFixBpm() { const m = feelMeter(); if (m.mes === '6/8' && feel.bpm > 85) feel.bpm = 66; if (m.mes !== '6/8' && feel.bpm < 50) feel.bpm = 70; }
+function feelEasy(id, e) {
+  if (e) e.stopPropagation();
+  const was = rhPlaying('feel'); feelStop(); feel.easy[id] = !feel.easy[id]; exoRender(); if (was) feelPlay();
+}
+function feelWay(kind, id) {
+  const was = rhPlaying('feel'); feelStop();
+  feel.kind = kind; feel[kind === 'rh' ? 'rh' : 'arp'] = id; feelFixBpm();
+  const fx = EFFECTS.find(f => f.id === feel.fx); if (fx && !fxApplies(fx, feelNames(feelProg()))) feel.fx = null;
+  exoRender(); if (was) feelPlay();
+}
+function feelFx(id) {
+  const was = rhPlaying('feel'); feelStop(); feel.fx = feel.fx === id ? null : id; exoRender(); if (was) feelPlay();
+}
+function feelTempo(d) {
+  feel.bpm = Math.max(30, Math.min(240, feel.bpm + d));
+  if (rhPlaying('feel')) rhSetBpm(feel.bpm);
+  const e = $('fl-bpm'); if (e) e.firstChild.nodeValue = feel.bpm;
+}
+function feelClick() {
+  feel.click = !feel.click; if (rhP && rhP.key === 'feel') rhP.mute = !feel.click;
+  const b = $('fl-click'); if (b) { b.classList.toggle('on', feel.click); b.textContent = feel.click ? 'Métronome : oui' : 'Métronome : non'; }
+}
+
+const feelDia = (n, sz) => chordSVG(newChord(n), {size:sz});
+function feelCard(p) {
+  const amb = feelAmbOf(p.amb), names = feelNames(p), easy = !!feel.easy[p.id];
+  return `<div class="fl-card" style="--amb:${AMB_LOOK[p.amb][1]}" onclick="feelPickProg('${p.id}')">
+    <div class="fl-ct">${esc(p.n)}</div>
+    <div class="fl-deg">${p.deg.slice(0, 4).map(esc).join(' · ')}${p.deg.length > 4 ? ' …' : ''}</div>
+    <div class="fl-dias">${[...new Set(names)].map(n => `<div class="chord-cell"><div class="cn" style="font-size:13px">${esc(n)}</div>${feelDia(n, .62)}</div>`).join('')}</div>
+    <div class="ec-meta"><span class="lvl" title="Niveau">${lvlDots(p.niv)}</span><span>${p.bpm[0]} → ${p.bpm[1]} BPM</span>
+      ${p.facile ? `<button type="button" class="filt ${easy ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div></div>`;
+}
+function feelTiles() {
+  return `<div class="fl-lead">Quelle ambiance as-tu envie de jouer ?</div>
+    <div class="fl-tiles">${AMBIANCES.map(a => `<button type="button" class="fl-tile" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
+      <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>`;
+}
+function feelList() {
+  const a = feelAmbOf(feel.amb), list = FEEL_PROGS.filter(p => p.amb === a.id);
+  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; Ambiances</button>
+    <div class="fl-ambh" style="--amb:${AMB_LOOK[a.id][1]}"><span class="fl-em">${AMB_LOOK[a.id][0]}</span><div><div class="fl-tn">${esc(a.n)}</div><div class="fl-td">${esc(a.d)}</div></div></div>
+    <div class="fl-cards">${list.map(feelCard).join('')}</div>`;
+}
+function feelPlayerHTML() {
+  const p = feelProg(), a = feelAmbOf(p.amb), names = feelNames(p), m = feelMeter();
+  const fxs = EFFECTS.map(f => ({f, ok: fxApplies(f, names)}));
+  const fx = EFFECTS.find(f => f.id === feel.fx);
+  const chip = (on, ok, click, label, rec) => `<button type="button" class="filt ${on ? 'on' : ''} ${ok === false ? 'off' : ''}" ${ok === false ? 'disabled title="Ne s’applique pas à cette suite"' : `onclick="${click}"`}>${label}${rec ? ' <i class="fl-rec">★</i>' : ''}</button>`;
+  const rhs = [...RHYTHMS].sort((x, y) => (p.rh.includes(y.id) ? 1 : 0) - (p.rh.includes(x.id) ? 1 : 0));
+  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; ${esc(a.n)}</button>
+    <div class="fl-ambh" style="--amb:${AMB_LOOK[a.id][1]}"><span class="fl-em">${AMB_LOOK[a.id][0]}</span>
+      <div><div class="fl-tn">${esc(p.n)}</div><div class="fl-td">${p.deg.slice(0, 4).map(esc).join(' · ')}${p.deg.length > 4 ? ' …' : ''}${p.ex ? ' · comme « ' + esc(p.ex[0]) + ' »' : ''}</div></div>
+      ${p.facile ? `<button type="button" class="filt ${feel.easy[p.id] ? 'on' : ''}" style="margin-left:auto" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div>
+    <div class="fl-stage" style="--amb:${AMB_LOOK[a.id][1]}">
+      <div class="fl-cur"><div class="fl-name" id="fl-name"></div><div id="fl-dia"></div></div>
+      <div class="fl-side"><div class="fl-next">Ensuite <b id="fl-next"></b></div><div class="fl-bars" id="fl-bars"></div></div></div>
+    <div class="fl-pat" id="fl-pat"></div>
+    <div class="fl-trans">
+      <button type="button" class="btn-icon" onclick="feelTempo(-4)" title="−4 BPM">−</button>
+      <div class="tc-v" id="fl-bpm">${feel.bpm}<small>BPM</small></div>
+      <button type="button" class="btn-icon" onclick="feelTempo(4)" title="+4 BPM">+</button>
+      <button type="button" class="fl-play" id="fl-playbtn" onclick="feelPlay()" aria-label="Jouer en boucle"></button>
+      <button type="button" class="filt ${feel.click ? 'on' : ''}" id="fl-click" onclick="feelClick()">${feel.click ? 'Métronome : oui' : 'Métronome : non'}</button></div>
+    <div class="fcard fl-ways">
+      <div class="fcard-t">Comment la jouer ?</div>
+      <div class="fl-lbl">Rythme (main droite)</div>
+      <div class="filters">${rhs.map(r => chip(feel.kind === 'rh' && feel.rh === r.id, true, `feelWay('rh','${r.id}')`, esc(r.n), p.rh.includes(r.id))).join('')}</div>
+      <div class="fl-lbl">Ou arpège (une note après l’autre)</div>
+      <div class="filters">${ARPS.map(r => chip(feel.kind === 'arp' && feel.arp === r.id, true, `feelWay('arp','${r.id}')`, esc(r.n))).join('')}</div>
+      <div class="fl-lbl">Un effet en plus (facultatif)</div>
+      <div class="filters">${fxs.map(o => chip(feel.fx === o.f.id, o.ok, `feelFx('${o.f.id}')`, esc(o.f.n.split(':')[0]))).join('')}</div>
+      ${fx ? feelFxHTML(fx) : ''}
+      <div class="exo-note">★ = conseillé pour cette suite · ${m.mes} · tout se combine.</div></div>
+    <div style="margin-top:16px"><button type="button" class="btn btn-primary" onclick="feelMakeSheet()">Créer une fiche avec cette suite</button></div>`;
+}
+function feelFxHTML(fx) {
+  const tab = fx.tab ? `<div class="scroll-x">${tabSVG('fl-fx', tabParse(fx.tab)).svg}</div>` : `<div class="fl-fxpat">${fx.pat.split('').map((c, i) => `<span>${strumGlyph(c, i)}</span>`).join('')}</div>`;
+  return `<div class="fl-fx"><div class="fl-fxn">${esc(fx.n)}</div>${tab}<div class="exo-note">${esc(fx.expl)} <b>Quand :</b> ${esc(fx.ou)}.</div></div>`;
+}
+/* affichage de la mesure `bar` : gros accord, suivant, pastilles, motif */
+function feelShowBar(bar) {
+  const p = feelProg(); if (!p || !$('fl-name')) return;
+  const names = feelNames(p), n = names.length, cur = names[bar % n], nxt = names[(bar + 1) % n];
+  feel.bar = bar;
+  $('fl-name').textContent = cur; $('fl-dia').innerHTML = feelDia(cur, 1.7); $('fl-next').textContent = nxt;
+  $('fl-bars').innerHTML = names.map((c, i) => `<i class="${i === bar % n ? 'on' : ''}">${n > 6 ? i + 1 : esc(c)}</i>`).join('');
+  if (feel.kind === 'arp') {
+    const r = tabSVG('fl-tab', tabParse(arpTabStr(feelArp(), newChord(cur))));
+    FEEL_TAB = r.pos; $('fl-pat').innerHTML = `<div class="scroll-x">${r.svg}</div><div class="exo-note">${esc(feelArp().n)} sur ${esc(cur)}${feelArp().note ? ' · ' + esc(feelArp().note) : ''}</div>`;
+  }
+}
+let FEEL_TAB = [];
+function feelPatHTML() {
+  if (feel.kind === 'arp') return '';
+  const r = feelRhy(), pat = feelPat(), per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res);
+  const cnt = i => r.mes === '6/8' ? ['1','2','3','4','5','6'][i] : r.res === 12 ? (i % 3 === 0 ? i/3 + 1 : i % 3 === 2 ? 'et' : '') : (i % spb === 0 ? i/spb + 1 : 'et');
+  return `<div class="fl-cells">${Array.from({length:per}, (_, i) => `<div class="fl-cell ${i % spb === 0 ? 'beat' : ''}" id="fl-c${i}"><div class="sg-ar">${strumGlyph(pat[i] || '-', i)}</div><div class="sg-c">${cnt(i)}</div></div>`).join('')}</div>
+    <div class="exo-note">${esc(r.n)} · ${r.mes}${feel.fx === 'palm' ? ' · coups étouffés à la paume' : ''}</div>`;
+}
+function feelBtn() {
+  const b = $('fl-playbtn'); if (!b) return;
+  const on = rhPlaying('feel'); b.classList.toggle('on', on);
+  b.innerHTML = on ? '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20"/></svg>';
+}
+function feelPlay() {
+  if (rhPlaying('feel')) { rhStop(); return; }
+  const p = feelProg(); if (!p) return;
+  if (metroPlaying) stopMetro();
+  const names = feelNames(p), chs = names.map(n => newChord(n)), m = feelMeter();
+  const per = rhPerBar(m.mes, m.res), arp = feel.kind === 'arp' ? feelArp() : null, fxId = feel.fx;
+  const rh = arp ? {v:2, mes:m.mes, res:m.res, bars:1, swing:0, cells:Array.from({length:per}, () => ({d:'D', a:1}))}
+                 : rhFromPat(feelPat(), m.mes, m.res, 1);
+  const toks = arp ? arp.motif.split(' ') : null;
+  const cellFn = (c, t, ch, i, k, P) => {
+    const bar = Math.floor(k/per), pos = i % per, cur = chs[bar % chs.length];
+    if (arp) arpNotes(toks[pos], cur).forEach((o, j) => pluck(fretFreq(o.si, o.fret, 0), t + j*.012, 1.1, .13));
+    else rhPlayCell(c, t, cur, 0, fxId === 'palm');
+    if (fxId) fxNotes(fxId, names, bar).forEach(([back, si, fret]) => { if (pos === per - back) pluck(fretFreq(si, fret, 0), t, .5, .12); });
+  };
+  let lastBar = -1, lastPos = -1;
+  rhStart(rh, feel.bpm, null, 0, (i, k) => {
+    const prev = lastPos >= 0 ? $('fl-c' + lastPos) : null; if (prev) prev.classList.remove('exo-now');
+    const tc = $('fl-tab-cur');
+    if (i == null) { lastBar = -1; lastPos = -1; feelBtn(); if (feelProg()) { feelShowBar(0); if (tc) tc.setAttribute('opacity', '0'); } return; }
+    const pos = i % per, bar = Math.floor(k/per) % chs.length;
+    if (bar !== lastBar) { lastBar = bar; feelShowBar(bar); }
+    lastPos = pos; const el = $('fl-c' + pos); if (el) el.classList.add('exo-now');
+    const tc2 = $('fl-tab-cur'); if (tc2 && FEEL_TAB[pos] != null) { tc2.setAttribute('x', FEEL_TAB[pos] - 12); tc2.setAttribute('opacity', '.25'); }
+  }, {key:'feel', chords:chs, cellFn, mute:!feel.click});
+  feelBtn();
+}
+function feelMakeSheet() {
+  const p = feelProg(), a = feelAmbOf(p.amb); if (!p) return;
+  feelStop();
+  const names = feelNames(p), rhy = feel.kind === 'rh' ? feelRhy() : RHYTHMS.find(r => r.id === p.rh[0]);
+  draft = newSheet_();
+  draft.color = COLORS[sheets.length % COLORS.length][0];
+  let title = `Suite ${a.n} ${FEEL_PROGS.filter(x => x.amb === a.id).indexOf(p) + 1}`;
+  if (titleTaken(title)) title = uniqueTitle(title);
+  draft.title = title; draft.artist = '';
+  draft.bpm = feel.bpm; draft.difficulty = ['Debutant', 'Intermediaire', 'Avance'][p.niv - 1] || ''; draft.blocks.diff = true;
+  const part = draft.parts[0]; part.chords = names.map(n => newChord(n));
+  part.rhythm = rhFromPat(rhy.pat, rhy.mes, rhy.res, 1);
+  openEditor('Nouvelle fiche');
+  toast('Fiche pré-remplie : ajuste puis enregistre');
+}
+function feelHTML() {
+  return !feel.amb ? feelTiles() : !feel.prog ? feelList() : feelPlayerHTML();
+}
+/* après rendu : remplit la scène du lecteur */
+function feelAfter() {
+  if (!feel.prog) return;
+  feelBtn(); feelShowBar(0); if (feel.kind === 'rh') $('fl-pat').innerHTML = feelPatHTML();
 }
 
 /* ═══════ BOÎTE À OUTILS — les sites qui comptent ═══════
