@@ -209,7 +209,20 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .add-btn.block{width:100%;justify-content:center}
 .add-part-btn{width:100%;padding:13px;border:2px dashed var(--border);background:none;border-radius:var(--r);color:var(--cream4);font-size:13px;font-weight:600;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
 .add-part-btn:hover{border-color:var(--gold);color:var(--gold)}
-.ed-foot{display:flex;justify-content:space-between;gap:9px;padding:16px 0 60px;border-top:1px solid var(--border);margin-top:6px}
+.ed-foot{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:12px 0 calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--border);margin-top:6px;position:sticky;bottom:0;background:var(--bg);z-index:5}
+.ed-foot .btn{min-height:46px}
+.ed-foot .btn-primary{min-width:130px}
+.opt-tag{font-weight:400;text-transform:none;letter-spacing:0;color:var(--cream4)}
+.qc-row{display:flex;gap:8px}.qc-row input{flex:1;min-width:0}
+.qc-sugg,.qc-parts{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.qc-sugg button,.qc-parts button{min-height:44px;min-width:44px;padding:0 14px;border:1px solid var(--border);background:var(--card);color:var(--cream2,inherit);border-radius:var(--rx);font-size:13px;font-weight:600}
+.qc-sugg button:hover,.qc-parts button:hover{border-color:var(--gold);color:var(--gold)}
+.qc-parts{margin-top:12px}.qc-parts .lbl{align-self:center;font-size:12px;color:var(--cream4)}
+.qc-meta{align-items:stretch}.qc-meta .fg{flex:1}
+.chord-chip.todo{border-color:var(--gold)}
+.chord-chip .todo-tag{font-size:9px;font-weight:700;color:var(--ink);background:var(--gold);padding:1px 7px;border-radius:8px}
+.more-opts>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--cream2,inherit);min-height:24px}
+.more-opts>summary span{font-weight:400;font-size:11px;color:var(--cream4);margin-left:8px}
 .opt-blocks{display:flex;gap:7px;flex-wrap:wrap}
 
 /* ── CHORD EDITOR ── */
@@ -729,30 +742,42 @@ a.filt{display:inline-block}
     <div class="fcard">
       <div class="fcard-t">Le morceau</div>
       <div class="frow">
-        <div class="fg"><label>Titre *</label><input type="text" id="f-title" placeholder="Ex: Wonderwall"></div>
-        <div class="fg"><label>Artiste *</label><input type="text" id="f-artist" placeholder="Ex: Oasis"></div>
+        <div class="fg"><label>Titre *</label><input type="text" id="f-title" placeholder="Ex : Wonderwall" autocomplete="off" enterkeyhint="next" onkeydown="edNext(event,'f-artist')"></div>
+        <div class="fg"><label>Artiste <span class="opt-tag" id="f-artist-tag">(facultatif)</span></label><input type="text" id="f-artist" placeholder="Ex : Oasis" autocomplete="off" enterkeyhint="next" onkeydown="edNext(event,'f-chords')"></div>
       </div>
-      <div class="fg" style="margin-bottom:0">
-        <label>Couleur du repere</label>
-        <div class="opt-blocks" id="color-row"></div>
+      <div class="fg">
+        <label>Accords — tape-les séparés par des espaces</label>
+        <div class="qc-row">
+          <input type="text" id="f-chords" placeholder="Ex : Em7 G Dsus4 A7sus4" autocomplete="off" autocapitalize="off" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();addChordLine()}">
+          <button type="button" class="btn btn-ghost" onclick="addChordLine()">Ajouter</button>
+        </div>
+        <div class="qc-sugg" id="qc-sugg"></div>
       </div>
-    </div>
-
-    <div id="opt-host"></div>
-
-    <div class="fcard">
-      <div class="fcard-t">Ajouter au besoin</div>
-      <div class="opt-blocks" id="opt-adders"></div>
+      <div class="frow qc-meta">
+        <div class="fg" style="margin-bottom:0"><label>BPM</label><input type="number" inputmode="numeric" min="30" max="300" id="f-bpm" placeholder="Ex : 90" oninput="draft.bpm=+this.value||0"></div>
+        <div class="fg" style="margin-bottom:0"><label>Capo</label><select id="f-capo" onchange="draft.capo=+this.value"></select></div>
+        <div class="fg" style="margin-bottom:0;display:flex;align-items:flex-end"><button type="button" class="btn btn-ghost" onclick="tapTempo(this)">Tap tempo</button></div>
+      </div>
     </div>
 
     <div class="fcard">
       <div class="fcard-t">Parties du morceau</div>
       <div id="parts-ed"></div>
-      <button class="add-part-btn" onclick="addPart()">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Ajouter une partie
-      </button>
+      <div class="qc-parts" id="qc-parts"></div>
     </div>
+
+    <details class="fcard more-opts" id="more-opts">
+      <summary>Plus d'options <span>accordage, difficulté, couleur, notes, Coffre</span></summary>
+      <div class="fg" style="margin-top:14px">
+        <label>Accordage</label><input type="text" id="f-tuning" placeholder="Standard, Drop D..." oninput="draft.tuning=this.value">
+      </div>
+      <div class="fg">
+        <label>Couleur du repère</label>
+        <div class="opt-blocks" id="color-row"></div>
+      </div>
+      <div id="opt-host"></div>
+      <div class="opt-blocks" id="opt-adders"></div>
+    </details>
 
     <div class="ed-foot">
       <button class="btn btn-danger btn-sm" id="ed-del" onclick="delFromEditor()">Supprimer</button>
@@ -3900,12 +3925,42 @@ async function mediaURL(id) {
 
 /* ═══════ EDITOR ═══════ */
 const OPT_DEFS = [
-  {k:'capo',   label:'Capo / Tuning'},
-  {k:'tempo',  label:'Tempo (BPM)'},
-  {k:'diff',   label:'Difficulte'},
+  {k:'diff',   label:'Difficulté'},
   {k:'coffre', label:'Le Coffre (videos, tutos, rythme)'},
 ];
-function newSheet() { draft = newSheet_(); openEditor('Nouvelle fiche'); }
+/* Décision provisoire (Lucas) : titre seul obligatoire. Passer à true pour exiger aussi l'artiste. */
+const REQUIRE_ARTIST = false;
+const QUICK_CHORDS = ['Am','C','G','D','Em','F','E','A7','Dm','A'];
+const QUICK_PARTS = ['Intro','Couplet','Refrain','Pont','Fin'];
+function newSheet() {
+  draft = newSheet_();
+  draft.color = COLORS[sheets.length % COLORS.length][0]; // couleur automatique
+  openEditor('Nouvelle fiche');
+  setTimeout(() => { const t = $('f-title'); if (t) t.focus(); }, 60);
+}
+function edNext(e, id) { if (e.key === 'Enter') { e.preventDefault(); const n = $(id); if (n) n.focus(); } }
+// "Em7 G, Dsus4" -> accords ajoutés à la 1re partie (inconnus = accord vide à compléter)
+function parseChordLine(str) {
+  return String(str||'').split(/[\s,;]+/).filter(Boolean).map(n => newChord(findChord(n) ? n : n.trim()));
+}
+function addChordLine(str) {
+  const inp = $('f-chords');
+  const list = parseChordLine(str != null ? str : (inp ? inp.value : ''));
+  if (!list.length) return;
+  if (!draft.parts.length) draft.parts.push(newPart('Couplet'));
+  draft.parts[0].chords.push(...list);
+  if (str == null && inp) { inp.value = ''; inp.focus(); }
+  renderParts();
+}
+function quickPart(name) { draft.parts.push(newPart(name)); renderParts(); }
+function renderQuick() {
+  $('qc-sugg').innerHTML = QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
+  $('qc-parts').innerHTML = `<span class="lbl">+ Partie :</span>` + QUICK_PARTS.map(n => `<button type="button" onclick="quickPart('${n}')">${n}</button>`).join('');
+  $('f-capo').innerHTML = [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('');
+  $('f-bpm').value = draft.bpm || '';
+  $('f-tuning').value = draft.tuning || 'Standard';
+  $('f-artist-tag').style.display = REQUIRE_ARTIST ? 'none' : '';
+}
 function editSheet(id) {
   const s = sheets.find(x => x.id === id); if (!s) return;
   draft = clone(s);
@@ -3922,7 +3977,10 @@ function dupSheet(id) {
 function openEditor(title) {
   $('ed-title').textContent = title;
   $('f-title').value = draft.title;
-  $('f-artist').value = draft.artist;
+  $('f-artist').value = draft.artist === '—' ? '' : draft.artist;
+  $('f-chords').value = '';
+  $('more-opts').open = false;
+  renderQuick();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';
   $('color-row').innerHTML = COLORS.map(([k,c]) =>
     `<button class="btn-icon ${draft.color===k?'on':''}" data-col="${k}" onclick="pickColor('${k}')" style="background:${c};border-color:${c}"></button>`).join('');
@@ -3936,20 +3994,11 @@ function delFromEditor() { if (draft && sheets.some(s => s.id === draft.id)) del
 function renderOptBlocks() {
   // adders: only show blocks not yet active — no empty sections ever rendered
   $('opt-adders').innerHTML = OPT_DEFS.filter(o => !draft.blocks[o.k]).map(o =>
-    `<button class="add-btn" onclick="addBlock('${o.k}')">+ ${o.label}</button>`).join('')
-    || `<span style="font-size:12px;color:var(--cream4)">Tous les blocs sont ajoutes.</span>`;
+    `<button class="add-btn" style="min-height:44px" onclick="addBlock('${o.k}')">+ ${o.label}</button>`).join('')
+    || '';
 
   let h = '';
-  if (draft.blocks.capo) h += `<div class="fcard"><div class="fcard-t">Capo / Tuning <button class="rm" onclick="rmBlock('capo')">retirer</button></div>
-    <div class="frow">
-      <div class="fg"><label>Capo</label><select id="f-capo" onchange="draft.capo=+this.value">${
-        [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('')}</select></div>
-      <div class="fg"><label>Accordage</label><input type="text" id="f-tuning" value="${esc(draft.tuning||'Standard')}" placeholder="Standard, Drop D..." oninput="draft.tuning=this.value"></div>
-    </div></div>`;
-  if (draft.blocks.tempo) h += `<div class="fcard"><div class="fcard-t">Tempo <button class="rm" onclick="rmBlock('tempo')">retirer</button></div>
-    <div class="frow"><div class="fg" style="margin-bottom:0"><label>BPM</label><input type="number" min="30" max="300" value="${draft.bpm||''}" placeholder="Ex: 90" oninput="draft.bpm=+this.value||0"></div>
-    <div class="fg" style="margin-bottom:0;display:flex;align-items:flex-end"><button class="btn btn-ghost btn-sm" onclick="tapTempo(this)">Tap tempo</button></div></div></div>`;
-  if (draft.blocks.diff) h += `<div class="fcard"><div class="fcard-t">Difficulte <button class="rm" onclick="rmBlock('diff')">retirer</button></div>
+  if (draft.blocks.diff) h += `<div class="fcard"><div class="fcard-t">Difficulté <button class="rm" onclick="rmBlock('diff')">retirer</button></div>
     <div class="fg" style="margin-bottom:0"><select onchange="draft.difficulty=this.value">
       ${['','Debutant','Intermediaire','Avance'].map(d => `<option value="${d}" ${draft.difficulty===d?'selected':''}>${d||'--'}</option>`).join('')}</select></div></div>`;
   if (draft.blocks.coffre) h += `<div class="fcard"><div class="fcard-t">Le Coffre <button class="rm" onclick="rmBlock('coffre')">retirer</button></div>
@@ -4003,7 +4052,7 @@ function tapTempo(btn) {
     const gaps = tapTimes.slice(1).map((t,i) => t - tapTimes[i]);
     const avg = gaps.reduce((a,b) => a+b, 0)/gaps.length;
     draft.bpm = Math.round(60000/avg);
-    const inp = btn.closest('.frow').querySelector('input[type=number]');
+    const inp = $('f-bpm');
     if (inp) inp.value = draft.bpm;
   }
   btn.textContent = tapTimes.length < 2 ? 'Encore...' : draft.bpm + ' BPM';
@@ -4134,9 +4183,10 @@ function renderParts() {
       <div class="part-body">
         <div class="part-sub"><span class="part-sub-t">Accords</span></div>
         <div class="chord-chips">
-          ${p.chords.map((c, ci) => `<div class="chord-chip" onclick="openChordEditor(${i},${ci})" title="Modifier">
+          ${p.chords.map((c, ci) => `<div class="chord-chip ${c.frets.every(f=>f===-1)?'todo':''}" onclick="openChordEditor(${i},${ci})" title="Modifier">
             <span class="x" onclick="event.stopPropagation();rmChord(${i},${ci})">&times;</span>
             <span class="cn">${esc(c.name || '?')}</span>${chordSVG(c, {size:.72})}
+            ${c.frets.every(f=>f===-1) ? `<span class="todo-tag">à compléter</span>` : ''}
             ${c.arp && c.arp.length ? `<span style="font-size:9px;font-weight:700;color:var(--ink);background:var(--gold2);padding:1px 7px;border-radius:8px">ARPEGE</span>` : ''}
           </div>`).join('')}
           <button class="add-btn" style="min-width:74px" onclick="openChordEditor(${i},-1)">+ Accord</button>
@@ -4463,12 +4513,15 @@ function ceRmStep(ti) {
 async function saveSheet() {
   draft.title = $('f-title').value.trim();
   draft.artist = $('f-artist').value.trim();
-  if (!draft.title || !draft.artist) { toast('Titre et artiste sont requis', true); return; }
+  if (!draft.title) { toast('Le titre est requis', true); $('f-title').focus(); return; }
+  if (REQUIRE_ARTIST && !draft.artist) { toast('Titre et artiste sont requis', true); $('f-artist').focus(); return; }
+  if (!draft.artist) draft.artist = '—';
+  if (($('f-chords').value||'').trim()) addChordLine(); // accords tapés mais pas encore ajoutés
   draft.updatedAt = Date.now();
   const i = sheets.findIndex(s => s.id === draft.id);
   i >= 0 ? sheets[i] = clone(draft) : sheets.push(clone(draft));
   await DB.put('sheets', clone(draft));
-  toast('Fiche enregistree');
+  toast('Fiche enregistrée');
   viewSheet(draft.id);
 }
 async function delSheet(id) {
