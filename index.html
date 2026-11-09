@@ -680,6 +680,144 @@ a.filt{display:inline-block}
 .tt-yt-t{font-size:12px;font-weight:700;color:var(--cream);line-height:1.4;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 @media(max-width:1180px){.logo-text{display:none}.nav-right{overflow-x:auto;max-width:calc(100vw - 80px)}.nav-link{padding:7px 10px}}
 
+/* ── ATELIER : titre → tutos → fiche, enregistrement auto ── */
+.nav-link.at-nav{background:var(--gold);color:var(--ink)}
+.nav-link.at-nav:hover{background:var(--gold2);color:var(--ink)}
+.nav-link.at-nav.on{background:var(--gold);color:var(--ink);box-shadow:0 0 0 2px var(--gold3)}
+.at{max-width:1280px;margin:0 auto;padding:0 16px 70px}
+.at-top{position:sticky;top:62px;z-index:20;background:var(--bg);padding:10px 0 8px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border)}
+.at-song{display:flex;gap:8px;align-items:stretch}
+.at-fld{position:relative;flex:1;min-width:0;background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:6px 14px;min-height:56px;display:flex;flex-direction:column;justify-content:center}
+.at-fld input{background:none;border:0;outline:none;width:100%;color:var(--cream)}
+.at-t{font-family:var(--serif);font-size:17px;font-weight:600;line-height:24px;height:24px}
+.at-a{font-size:12px;color:var(--cream2)!important;line-height:18px;height:18px;padding-right:110px!important}
+.at-fld:focus-within{border-color:var(--gold)}
+.at-mic{width:56px;flex-shrink:0;border-radius:14px;background:var(--card);border:1px solid var(--border2);color:var(--gold2);display:flex;align-items:center;justify-content:center}
+.at-mic.live{background:var(--terra);color:#fff;border-color:var(--terra)}
+.at-bar{display:flex;align-items:center;gap:10px}
+.at-seg{flex:1;display:flex;background:var(--card2);border-radius:50px;padding:3px;min-height:46px}
+.at-seg button{flex:1;white-space:nowrap;border-radius:50px;background:transparent;color:var(--cream2);font-size:13px;font-weight:700;min-height:44px}
+.at-seg button[aria-selected="true"]{background:var(--gold);color:var(--ink)}
+.at-seg b{display:inline-block;min-width:20px;padding:0 6px;margin-left:6px;border-radius:10px;background:var(--card3);color:var(--cream);font-size:12px}
+.at-seg button[aria-selected="true"] b{background:var(--ink);color:var(--gold3)}
+.at-stat{position:absolute;right:12px;bottom:7px;font-size:11px;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.at-stat::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor}
+.at-stat:empty{display:none}
+.at-stat.wait{color:var(--cream2)}
+.at-done{min-height:44px;font-size:14px;padding:0 16px}
+.at-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding-top:14px}
+.at-pan{min-width:0}
+.at-empty{padding:34px 16px;text-align:center;color:var(--cream2);font-size:14px;line-height:1.55;border:1.5px dashed var(--border2);border-radius:14px}
+.at-empty b{display:block;font-family:var(--serif);font-size:18px;color:var(--cream);margin-bottom:4px}
+.at-lbl{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cream2);margin:16px 0 8px;display:flex;justify-content:space-between;align-items:center}
+.at-sc{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.at-sc::-webkit-scrollbar{display:none}
+.at-sc>*{flex-shrink:0}
+.at-chip{min-height:44px;padding:0 14px;border-radius:50px;border:1px solid var(--border2);background:var(--card2);color:var(--cream);font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.at-chip.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+select.at-chip{appearance:none;-webkit-appearance:none;padding-right:14px}
+.at-chips3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.at-chips3 select{width:100%;text-align:center;text-align-last:center}
+.at-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.at-tw{position:relative}
+.at-tile{display:flex;flex-direction:column;justify-content:center;gap:1px;min-height:64px;padding:8px 40px 8px 14px;border-radius:14px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.at-tile b{font-size:14px}.at-tile small{font-size:12px;opacity:.92;line-height:1.25}
+.at-more{position:absolute;right:2px;top:2px;width:44px;height:44px;border-radius:50%;background:transparent;color:#fff;font-size:20px;font-weight:800;line-height:1}
+.at-links{margin-top:8px;border:1px solid var(--border2);border-radius:14px;background:var(--card);padding:6px}
+.at-lk{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 6px 0 10px;border-radius:10px}
+.at-lk a{flex:1;color:var(--cream);font-size:13px;font-weight:600}
+.at-lk:hover{background:var(--card2)}
+.at-sites .at-chip{height:36px;min-height:36px;font-size:12px;font-weight:600;text-decoration:none;color:var(--cream2)}
+.at-res{display:flex;flex-direction:column;gap:8px}
+.at-card{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:6px}
+.at-card.on{border-color:var(--gold)}
+.at-th{position:relative;flex:0 0 104px;height:58px;border-radius:8px;overflow:hidden;background:#000;padding:0}
+.at-th img{width:100%;height:100%;object-fit:cover;display:block}
+.at-th span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;background:rgba(0,0,0,.28)}
+.at-ct{flex:1;min-width:0}
+.at-ct b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13px;color:var(--cream);line-height:1.3}
+.at-ct small{font-size:12px;color:var(--cream2)}
+.at-pin{width:44px;height:44px;flex-shrink:0;border-radius:50%;background:var(--card2);color:var(--cream2);display:flex;align-items:center;justify-content:center}
+.at-pin[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+.at-note{font-size:13px;color:var(--cream2);line-height:1.5}
+.at-note button{color:var(--gold2);font-weight:700;text-decoration:underline;min-height:44px;font-size:13px}
+.at-banner{margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border:2px solid var(--gold);border-radius:14px;background:var(--card)}
+.at-banner span{flex:1 1 180px;font-size:13px;color:var(--cream);line-height:1.35}
+.at-banner input{flex:1 1 140px;min-width:0;min-height:44px;border-radius:50px;border:1px solid var(--border2);background:var(--bg2);color:var(--cream);padding:0 14px;font-size:14px}
+.at-pl{position:relative}
+.at-pl .yt-embed{margin:0}
+.at-pctl{display:flex;gap:6px;margin-top:8px}
+.at-pctl button{flex:1;min-height:44px;border-radius:50px;background:var(--card2);color:var(--cream);font-size:13px;font-weight:700;border:1px solid var(--border2)}
+.at-pctl button.on{background:var(--gold);color:var(--ink)}
+.at-hit{display:none;position:absolute;inset:0;background:transparent;border-radius:10px}
+.at-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.at-meta label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--cream2);font-weight:700}
+.at-meta select,.at-meta input{min-height:44px;border-radius:50px;border:1px solid var(--border2);background:var(--card2);color:var(--cream);padding:0 14px;font-size:14px;font-weight:700}
+.at-meta input{width:92px}
+.at-ptabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-top:12px}
+.at-ptabs button{flex-shrink:0}
+.at-ptabs .add{border-style:dashed}
+.at-ptools{display:flex;gap:8px;margin-top:8px}
+.at-ptools input{flex:1;min-width:0;min-height:44px;border-radius:12px;border:1px solid var(--border2);background:var(--card);color:var(--cream);padding:0 12px;font-size:14px}
+.at-seq{display:flex;flex-wrap:wrap;gap:8px;min-height:60px;align-items:center;margin:12px 0 4px}
+.at-ch{min-width:64px;min-height:56px;padding:0 14px;border-radius:12px;background:var(--card);border:1.5px solid var(--border2);color:var(--cream);font-family:var(--serif);font-size:22px;font-weight:600}
+.at-ch.sel{border-color:var(--gold);background:var(--card3)}
+.at-ch.todo{border-style:dashed}
+.at-ctl{display:flex;gap:8px;margin:6px 0}
+.at-ctl button{flex:1;min-height:44px;border-radius:50px;background:var(--card2);color:var(--cream);font-weight:700;font-size:14px;border:1px solid var(--border2)}
+.at-seqhint{font-size:12px;color:var(--cream2);padding:6px 0}
+.at-roots{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:10px}
+.at-roots button{min-height:48px;border-radius:12px;background:var(--card);border:1.5px solid var(--border2);color:var(--cream);font-family:var(--serif);font-size:20px;font-weight:600}
+.at-sfx{margin-top:8px}
+.at-sfx button{min-width:48px}
+.at-roots button[aria-pressed="true"],.at-sfx button[aria-pressed="true"]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.at-add{display:flex;gap:8px;margin-top:8px}
+.at-add .btn{min-height:48px;font-size:15px}
+.at-add .btn-primary{flex:1}
+.at-add .btn-primary[disabled]{opacity:.45;box-shadow:none}
+.at-txt{display:flex;gap:8px;margin-top:8px}
+.at-txt input{flex:1;min-width:0;min-height:44px;border-radius:12px;border:1px solid var(--border2);background:var(--card);color:var(--cream);padding:0 12px;font-size:14px}
+.at-rh{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 12px}
+.at-rh .row{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.at-rh .row .btn{min-height:44px}
+.at-play{width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center}
+.at-play svg{width:18px;height:18px}
+.at-in{display:flex;gap:8px}
+.at-in input{flex:1;min-width:0;min-height:44px;border-radius:12px;border:1px solid var(--border2);background:var(--card);color:var(--cream);padding:0 12px;font-size:14px}
+.at-in .btn{min-height:44px}
+.at-pins{display:flex;flex-direction:column;gap:8px}
+.at-pinrow{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:4px 4px 4px 12px;min-height:52px}
+.at-pinrow a{flex:1;min-width:0;color:var(--cream);font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.at-pinrow button{width:44px;height:44px;border-radius:50%;background:transparent;color:var(--cream2);font-size:18px}
+.at-drop{display:none;margin-top:8px;border:2px dashed var(--gold);border-radius:14px;padding:16px;text-align:center;font-size:13px;font-weight:700;color:var(--gold2)}
+.at-drop.over{background:var(--card2)}
+.at-lyr summary{min-height:44px;display:flex;align-items:center;font-size:13px;font-weight:700;color:var(--cream2);cursor:pointer}
+.at-lyr textarea{width:100%;min-height:110px;border-radius:12px;border:1px solid var(--border2);background:var(--card);color:var(--cream);padding:10px 12px;font-size:14px;font-family:inherit}
+.at-cpbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;font-size:12px;font-weight:700;color:var(--cream2)}
+.at-cpbar button{min-height:44px;padding:0 14px;border-radius:50px;background:var(--card2);color:var(--cream);font-size:13px;font-weight:700;border:1px solid var(--border2)}
+/* mobile / tablette portrait : un panneau à la fois, tous deux dans le DOM */
+@media(max-width:899px){
+  .at-grid[data-tab="tutos"] #at-pan-f,.at-grid[data-tab="fiche"] #at-pan-t,.at-grid[data-tab="fiche"] #at-copy{display:none}
+  .at-grid.copy[data-tab="tutos"] #at-pan-t{display:none}
+  .at-grid:not(.copy) #at-copy{display:none}
+  .at-grid[data-tab="fiche"] #at-player.on{position:fixed;right:12px;width:112px;z-index:15;box-shadow:0 6px 20px var(--shadow);border-radius:10px;overflow:hidden}
+  .at-grid[data-tab="fiche"] #at-player .at-pctl{display:none}
+  .at-grid[data-tab="fiche"] #at-player .at-hit{display:block}
+  .at-grid.hasplay[data-tab="fiche"] #at-pan-f{padding-top:70px}
+  .at-grid[data-tab="tutos"] .at-roots button{min-height:52px}
+}
+@media(min-width:900px){
+  .at-seg{display:none}
+  .at-top{flex-direction:row;align-items:center;justify-content:space-between}
+  .at-song{flex:1;max-width:640px}
+  .at-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;grid-template-areas:"p f" "t f";gap:14px 18px;align-items:start}
+  #at-player{grid-area:p}#at-pan-t{grid-area:t}#at-pan-f{grid-area:f}
+  #at-copy{display:none}
+  .at-drop{display:block}
+  .at-res{max-height:none}
+}
+@media(min-width:760px) and (max-width:899px){.at-roots button{min-height:56px}}
+
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--sage);color:var(--ink);padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;transform:translateY(90px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:calc(100vw - 48px)}
 .toast.show{transform:translateY(0);opacity:1}
@@ -906,6 +1044,7 @@ body.rhy-open{overflow:hidden}
     <span class="logo-text">Guitar <span>Memory</span> Sheets</span>
   </div>
   <div class="nav-right">
+    <button class="nav-link at-nav" id="nl-atelier" onclick="go('atelier')">Atelier</button>
     <button class="nav-link" id="nl-home" onclick="go('home')">Cahier</button>
     <button class="nav-link" id="nl-lib" onclick="go('lib')">Accords</button>
     <button class="nav-link" id="nl-cours" onclick="go('cours')">Cours</button>
@@ -1217,6 +1356,37 @@ body.rhy-open{overflow:hidden}
   </div>
 </div>
 
+<!-- ══ ATELIER ══ -->
+<div class="view" id="v-atelier">
+  <div class="at">
+    <div class="at-top" id="at-top">
+      <div class="at-song">
+        <div class="at-fld">
+          <input type="text" id="at-title" class="at-t" list="at-dl" placeholder="Quel morceau ?" autocomplete="off" enterkeyhint="next" aria-label="Titre du morceau" oninput="atTitleInput()" onblur="atCommitNow()" onkeydown="if(event.key==='Enter'){event.preventDefault();atCommitNow();$('at-artist').focus()}">
+          <input type="text" id="at-artist" class="at-a" placeholder="Artiste (facultatif)" autocomplete="off" enterkeyhint="done" aria-label="Artiste" oninput="atTitleInput()" onblur="atCommitNow()" onkeydown="if(event.key==='Enter'){event.preventDefault();atCommitNow();this.blur()}">
+          <datalist id="at-dl"></datalist>
+          <span class="at-stat" id="at-stat" aria-live="polite"></span>
+        </div>
+        <button type="button" class="at-mic" id="at-mic" onclick="atMic()" aria-label="Reconnaître le morceau au micro"></button>
+      </div>
+      <div class="at-bar">
+        <div class="at-seg" role="tablist" aria-label="Panneau de l’Atelier">
+          <button type="button" role="tab" id="at-sg-tutos" onclick="atTab('tutos')">Tutos</button>
+          <button type="button" role="tab" id="at-sg-fiche" onclick="atTab('fiche')">Fiche</button>
+        </div>
+        <button type="button" class="btn btn-ghost at-done" onclick="atDone()">Terminer</button>
+      </div>
+    </div>
+    <div id="at-banner"></div>
+    <div class="at-grid" id="at-grid" data-tab="tutos">
+      <div id="at-player"></div>
+      <div id="at-copy"></div>
+      <div id="at-pan-t" class="at-pan"></div>
+      <div id="at-pan-f" class="at-pan"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ OUTILS ══ -->
 <div class="view" id="v-tools">
   <div class="wrap">
@@ -1372,7 +1542,10 @@ const LIB = [
 ];
 const MAGIC = ['G','C','D','Em'];
 const ESSENTIAL = ['Am','E','A','Dm','F','B7'];
-const findChord = n => LIB.find(c => c.n.toLowerCase() === String(n||'').toLowerCase());
+const ENH_MAP = {'C#':'Db','Db':'C#','D#':'Eb','Eb':'D#','F#':'Gb','Gb':'F#','G#':'Ab','Ab':'G#','A#':'Bb','Bb':'A#'};
+const findChord1 = n => LIB.find(c => c.n.toLowerCase() === String(n||'').toLowerCase());
+// accepte aussi l'équivalent enharmonique (Db ↔ C#, A# ↔ Bb…)
+const findChord = n => { const r = findChord1(n); if (r) return r; const m = String(n||'').match(/^([A-G][#b])(.*)$/); return m && ENH_MAP[m[1]] ? findChord1(ENH_MAP[m[1]] + m[2]) : undefined; };
 
 const STRINGS = ['E','A','D','G','B','e'];   // index 0 = low E
 const OPEN_MIDI = [40,45,50,55,59,64];
@@ -4477,6 +4650,7 @@ function tutoSet(title, artist) {
     rec.unshift({t:tuto.title, a:tuto.artist}); LS.set('gms_tuto_recent', rec.slice(0, 8));
   }
   renderTuto();
+  atFromTuto();
   if (tuto.title && LS.get('gms_ytkey', '')) tutoLoadYT();
 }
 /* champ unique : « Titre – Artiste » (tiret, « by » ou « par »), sinon le titre seul */
@@ -4597,6 +4771,7 @@ function tutoComplete() {
 }
 
 function renderTuto() {
+  atRefresh();
   const host = $('tuto-body'); if (!host) return;
   const recent = LS.get('gms_tuto_recent', []), mine = sheets.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(0, 10);
   const keys = {yt: LS.get('gms_ytkey', ''), audd: LS.get('gms_audd', '')};
@@ -4688,6 +4863,357 @@ function tutoHeroSVG() {
     <circle cx="186" cy="112" r="16" fill="var(--sage)"/><circle cx="183" cy="109" r="6" stroke="var(--ink)" stroke-width="2.4"/><path d="M188 114l5 5" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round"/>
   </svg>`;
 }
+
+/* ═══════ ATELIER — un morceau : titre → tutos → fiche, enregistrement automatique ═══════
+   Une seule entité : at.s = la fiche du morceau (le même objet que dans `sheets`), créée dès le titre.
+   Les deux panneaux (tutos / fiche) restent dans le DOM (bascule CSS) : la vidéo et la saisie survivent.
+   Réutilise les fonctions de l'onglet Tutos (tutoPlatforms, tutoSites, tutoLoadYT, tutoKeep…) via l'état `tuto`. */
+let at = {s:null, fresh:false, pi:0, tab:'tutos', play:null, sel:-1, lk:-1, ext:null, dirty:false, ytFor:'', t:0, slow:false,
+  kb:{root:'', acc:'', q1:'', q2:'', q3:''}};
+let atTimers = {save:null, title:null};
+let atLinkList = [];
+const atNarrow = () => window.innerWidth < 900;
+const atOn = () => $('v-atelier') && $('v-atelier').classList.contains('on');
+const atTune = s => s && s.artist === '—' ? '' : (s && s.artist) || '';
+const atChordCount = () => at.s ? at.s.parts.reduce((n, p) => n + p.chords.length, 0) : 0;
+const atPins = () => at.s ? (at.s.links || []).filter(l => l.kind !== 'original') : [];
+
+/* ── ouverture / fermeture ── */
+function atOpen() {
+  at.tab = LS.get('gms_atelier_tab', 'tutos') === 'fiche' ? 'fiche' : 'tutos';
+  const dl = $('at-dl'); if (dl) dl.innerHTML = sheets.map(s => `<option value="${esc(s.title)}"></option>`).join('');
+  $('at-title').value = at.s ? at.s.title : tuto.title;
+  $('at-artist').value = at.s ? atTune(at.s) : tuto.artist;
+  $('at-mic').innerHTML = icon('mic', 22);
+  atRenderAll();
+}
+function atRenderAll() { atRenderGrid(); atRenderTutos(); atRenderFiche(); atRenderCopy(); atSeg(); atStat(); }
+function atRefresh() { // appelé par renderTuto() : liste des tutos + épingles, sans toucher au lecteur ni aux champs
+  if (!atOn()) return;
+  atRenderTutos(); atRenderPins(); atSeg();
+  $('at-mic').classList.toggle('live', !!tuto.listening);
+}
+function atFromTuto() { // tutoSet() (reconnaissance au micro) : reprendre le morceau trouvé
+  if (!atOn()) return;
+  $('at-title').value = tuto.title; $('at-artist').value = tuto.artist;
+  atCommitNow();
+}
+function atPause() { atYT('pauseVideo'); }
+async function atDone() {
+  await atFlush(); rhStop();
+  at = Object.assign(at, {s:null, fresh:false, pi:0, play:null, sel:-1, lk:-1, ext:null, ytFor:''});
+  tuto.title = ''; tuto.artist = ''; tuto.yt = null; tuto.show = false;
+  $('at-player').innerHTML = ''; $('at-banner').innerHTML = '';
+  go('home');
+}
+
+/* ── titre → fiche (titres uniques : un titre existant rouvre sa fiche) ── */
+function atTitleInput() { clearTimeout(atTimers.title); atTimers.title = setTimeout(atCommit, 700); }
+function atCommitNow() { clearTimeout(atTimers.title); atCommit(); atLoadYT(); }
+function atLoadYT() {
+  if (!tuto.title || !LS.get('gms_ytkey', '') || at.ytFor === tSong()) return;
+  at.ytFor = tSong(); tuto.yt = null; tutoLoadYT();
+}
+function atEmpty(s) {
+  return !s.parts.some(p => p.chords.length || p.rhythm || typeof p.lyrics === 'string') && !(s.links || []).length && !(s.original && s.original.url) && !(s.media || []).length;
+}
+function atCommit() {
+  clearTimeout(atTimers.title);
+  const t = $('at-title').value.trim().replace(/\s+/g, ' '), a = $('at-artist').value.trim();
+  if (!t) { tuto.title = at.s ? at.s.title : ''; tuto.artist = a; atRefresh(); return; }
+  const same = sheets.find(x => normTitle(x.title) === normTitle(t) && x !== at.s);
+  if (!at.s) {
+    if (same) return atAdopt(same, true);
+    const s = newSheet_();
+    s.title = t; s.artist = a || '—'; s.color = COLORS[sheets.length % COLORS.length][0];
+    sheets.push(s); at.s = s; at.fresh = true; at.pi = 0; at.sel = -1;
+    atSyncTuto(); atMark(true); atRenderAll();
+    return;
+  }
+  if (same) { // le titre tapé existe déjà ailleurs
+    if (at.fresh && atEmpty(at.s)) { sheets = sheets.filter(x => x !== at.s); DB.del('sheets', at.s.id); return atAdopt(same, true); }
+    toast(`Une fiche « ${same.title} » existe déjà : titre inchangé`, true);
+    $('at-title').value = at.s.title; return;
+  }
+  const changed = at.s.title !== t || atTune(at.s) !== a;
+  at.s.title = t; at.s.artist = a || '—';
+  atSyncTuto();
+  if (changed) { atMark(); atStat(); }
+  atRefresh();
+}
+function atAdopt(s, notify) { // rouvrir une fiche existante
+  at.s = s; at.fresh = false; at.pi = 0; at.sel = -1; at.ytFor = '';
+  const a = $('at-artist').value.trim();
+  if (a && s.artist === '—') { s.artist = a; atMark(); }
+  $('at-title').value = s.title; $('at-artist').value = atTune(s);
+  atSyncTuto(); atRenderAll();
+  if (notify) toast(`Fiche « ${s.title} » rouverte`);
+  atLoadYT();
+}
+function atSyncTuto() { tuto.title = at.s ? at.s.title : ''; tuto.artist = at.s ? atTune(at.s) : ''; tuto.show = !!tuto.title; }
+
+/* ── enregistrement auto (debounce 600 ms) ── */
+function atMark(now) {
+  if (!at.s) return;
+  at.s.updatedAt = Date.now(); at.dirty = true;
+  clearTimeout(atTimers.save);
+  atStat('wait');
+  atTimers.save = setTimeout(atFlush, now ? 0 : 600);
+}
+async function atFlush() {
+  clearTimeout(atTimers.save);
+  if (!at.s || !at.dirty) return;
+  at.dirty = false;
+  try { await DB.put('sheets', clone(at.s)); atStat(); } catch (e) { at.dirty = true; atStat('err'); }
+}
+function atStat(k) {
+  const el = $('at-stat'); if (!el) return;
+  el.className = 'at-stat' + (k === 'wait' ? ' wait' : '');
+  el.textContent = !at.s ? '' : k === 'wait' ? 'Enregistrement…' : k === 'err' ? 'Échec de l’enregistrement' : 'Enregistré';
+}
+window.addEventListener('pagehide', () => { atFlush(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') atFlush();
+  else if (at.ext && atOn()) atBanner();
+});
+
+/* ── navigation Tutos | Fiche ── */
+function atTab(t) {
+  at.tab = t; LS.set('gms_atelier_tab', t);
+  atRenderGrid(); atSeg();
+  if (atNarrow()) window.scrollTo({top: 0});
+}
+function atSeg() {
+  const n = atPins().length, c = atChordCount();
+  const a = $('at-sg-tutos'), b = $('at-sg-fiche'); if (!a) return;
+  a.innerHTML = `Tutos${n ? `<b aria-label="${n} tuto${n > 1 ? 's' : ''} épinglé${n > 1 ? 's' : ''}">${n}</b>` : ''}`;
+  b.innerHTML = `Fiche${c ? ` · ${c} accord${c > 1 ? 's' : ''}` : ''}`;
+  a.setAttribute('aria-selected', at.tab === 'tutos'); b.setAttribute('aria-selected', at.tab === 'fiche');
+}
+function atRenderGrid() {
+  const g = $('at-grid'); if (!g) return;
+  g.dataset.tab = at.tab; g.classList.toggle('copy', !!at.play); g.classList.toggle('hasplay', !!at.play);
+  const pl = $('at-player');
+  if (pl) pl.style.top = (at.tab === 'fiche' && atNarrow() && at.play) ? (62 + $('at-top').offsetHeight + 8) + 'px' : '';
+}
+(function () { // balayage horizontal = bascule (mobile)
+  let x0 = 0, y0 = 0, ok = false;
+  document.addEventListener('touchstart', e => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; ok = atOn() && atNarrow() && !!e.target.closest('#at-grid') && !e.target.closest('.at-sc,input,textarea,select,iframe'); }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if (!ok) return; ok = false;
+    const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    if (Math.abs(dx) > 70 && Math.abs(dy) < Math.abs(dx) / 2) atTab(dx < 0 ? 'fiche' : 'tutos');
+  }, {passive:true});
+})();
+
+/* ── lecteur YouTube (iframe API par postMessage, sans script externe) ── */
+function atPlay(id) {
+  at.play = id; at.t = 0; at.slow = false;
+  $('at-player').className = 'on';
+  $('at-player').innerHTML = `<div class="at-pl"><div class="yt-embed"><iframe id="at-ytf" src="https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1&enablejsapi=1" title="Tuto" allow="autoplay; encrypted-media" allowfullscreen onload="atYTListen()"></iframe></div>
+    <button type="button" class="at-hit" onclick="atTab('tutos')" aria-label="Agrandir le lecteur"></button>
+    <div class="at-pctl"><button type="button" onclick="atSeek(-10)">−10 s</button><button type="button" id="at-slow" onclick="atSlow()" aria-pressed="false">0,75×</button><button type="button" onclick="atSeek(10)">+10 s</button><button type="button" onclick="atClose()" aria-label="Fermer la vidéo">✕</button></div></div>`;
+  atRenderGrid(); atRenderTutos(); atRenderCopy();
+}
+function atClose() { at.play = null; $('at-player').className = ''; $('at-player').innerHTML = ''; atRenderGrid(); atRenderTutos(); }
+function atYT(func, args) { const f = $('at-ytf'); if (f && f.contentWindow) f.contentWindow.postMessage(JSON.stringify({event:'command', func, args:args || []}), '*'); }
+function atYTListen() { const f = $('at-ytf'); if (f && f.contentWindow) f.contentWindow.postMessage(JSON.stringify({event:'listening', id:1, channel:'widget'}), '*'); }
+window.addEventListener('message', e => {
+  if (!/youtube\.com$/.test(e.origin || '')) return;
+  try { const d = JSON.parse(e.data); if (d.info && typeof d.info.currentTime === 'number') at.t = d.info.currentTime; } catch (x) {}
+});
+function atSeek(dt) { atYT('seekTo', [Math.max(0, at.t + dt), true]); at.t = Math.max(0, at.t + dt); }
+function atSlow() { at.slow = !at.slow; atYT('setPlaybackRate', [at.slow ? 0.75 : 1]); const b = $('at-slow'); if (b) { b.classList.toggle('on', at.slow); b.setAttribute('aria-pressed', at.slow); } }
+
+/* ── panneau Tutos ── */
+function atOpt(k, v) { tuto[k] = v; at.ytFor = ''; if (tuto.title && LS.get('gms_ytkey', '')) atLoadYT(); else renderTuto(); }
+function atExt() { at.ext = Date.now(); }
+function atLinks(i) { at.lk = at.lk === i ? -1 : i; atRenderTutos(); }
+function atPinLink(i) { const [u, l] = atLinkList[i]; atKeep(u, l); }
+function atKeyForm() { tuto.showKeys = true; go('tuto'); }
+function atRenderTutos() {
+  const h = $('at-pan-t'); if (!h) return;
+  if (!tuto.title) { h.innerHTML = `<div class="at-empty"><b>Un morceau en tête ?</b>Tape son titre en haut : la fiche se crée toute seule, et les tutos arrivent ici.</div>`; return; }
+  const sel = (k, map, lab) => `<select class="at-chip" aria-label="${lab}" onchange="atOpt('${k}',this.value)">${Object.entries(map).map(([v, o]) => `<option value="${v}" ${tuto[k] === v ? 'selected' : ''}>${esc(typeof o === 'string' ? o : o.n)}</option>`).join('')}</select>`;
+  atLinkList = [];
+  const plats = tutoPlatforms();
+  let o = `<div class="at-chips3">${sel('lang', T_LANG, 'Langue')}${sel('lvl', T_LVL, 'Niveau')}${sel('kind', T_KIND, 'Type de tuto')}</div>
+    <div class="at-tiles">${plats.map((p, i) => `<div class="at-tw"><a class="at-tile" style="background:${p.bg}" href="${p.links[0][1]}" target="_blank" rel="noopener" onclick="atExt()" oncontextmenu="atLinks(${i});return false"><b>${esc(p.n)}</b><small>${esc(p.links[0][0])}</small></a><button type="button" class="at-more" onclick="atLinks(${i})" aria-label="Autres liens ${esc(p.n)}" aria-expanded="${at.lk === i}">⋯</button></div>`).join('')}</div>`;
+  if (at.lk >= 0 && plats[at.lk]) {
+    const p = plats[at.lk];
+    o += `<div class="at-links">${p.links.map(([l, u]) => { const i = atLinkList.push([u, p.n + ' · ' + l]) - 1; return `<div class="at-lk"><a href="${u}" target="_blank" rel="noopener" onclick="atExt()">${esc(l)} ↗</a><button type="button" class="at-pin" aria-pressed="${tutoPinned(u)}" aria-label="Épingler" onclick="atPinLink(${i})">${icon('pin', 18)}</button></div>`; }).join('')}</div>`;
+  }
+  o += `<div class="at-sc at-sites" style="margin-top:10px">${tutoSites().map(([n, d, u]) => `<a class="at-chip" href="${u}" target="_blank" rel="noopener" title="${esc(d)}" onclick="atExt()">${esc(n)}</a>`).join('')}</div>`;
+  const key = LS.get('gms_ytkey', '');
+  o += `<div class="at-lbl"><span>Dans l’appli (YouTube)</span></div>`;
+  if (!key) o += `<div class="at-note">Pour voir les vidéos ici, <button type="button" onclick="atKeyForm()">ajoute une clé YouTube</button> (gratuite).</div>`;
+  else if (tuto.ytLoading) o += `<div class="at-note">Chargement des vidéos…</div>`;
+  else if (tuto.ytErr) o += `<div class="at-note" style="color:var(--terra)">${esc(tuto.ytErr)}</div>`;
+  else if (!tuto.yt) o += `<button type="button" class="at-chip" onclick="at.ytFor='';atLoadYT()">Charger les vidéos</button>`;
+  else if (!tuto.yt.length) o += `<div class="at-note">Aucune vidéo trouvée : élargis le niveau ou le type de tuto.</div>`;
+  else o += `<div class="at-res">${tuto.yt.map((v, i) => { const u = 'https://www.youtube.com/watch?v=' + v.id, on = tutoPinned(u); return `<div class="at-card ${at.play === v.id ? 'on' : ''}" draggable="true" ondragstart="atDrag(event,${i})">
+      <button type="button" class="at-th" onclick="atPlay('${v.id}')" aria-label="Lire : ${esc(v.t)}"><img src="${v.th}" alt="" loading="lazy"><span>▶</span></button>
+      <div class="at-ct"><b>${esc(v.t)}</b><small>${esc(v.ch)}</small></div>
+      <button type="button" class="at-pin" aria-pressed="${on}" aria-label="${on ? 'Tuto épinglé' : 'Épingler ce tuto'}" onclick="atPinYT(${i})">${icon('pin', 18)}</button></div>`; }).join('')}</div>`;
+  h.innerHTML = o;
+}
+function atPinYT(i) { const v = tuto.yt && tuto.yt[i]; if (v) atKeep('https://www.youtube.com/watch?v=' + v.id, 'Tuto · ' + v.ch); }
+function atDrag(e, i) { const v = tuto.yt[i]; e.dataTransfer.setData('text/plain', 'https://www.youtube.com/watch?v=' + v.id + '\n' + 'Tuto · ' + v.ch); }
+function atDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('over'); const [u, l] = (e.dataTransfer.getData('text/plain') || '').split('\n'); if (u) atKeep(u, l); }
+async function atKeep(url, label) {
+  if (!at.s) { toast('Commence par le titre du morceau', true); $('at-title').focus(); return; }
+  atSyncTuto();
+  await tutoKeep(url, label);
+  atMark(); atRenderPins();
+}
+function atLabel(u) {
+  let h = ''; try { h = new URL(u).hostname.replace(/^www\./, ''); } catch (e) {}
+  const m = {'tiktok.com':'TikTok','instagram.com':'Instagram','youtu.be':'YouTube','youtube.com':'YouTube'}, k = Object.keys(m).find(x => h.endsWith(x));
+  return 'Tuto · ' + (k ? m[k] : h || 'lien');
+}
+/* retour d'un lien externe : proposer de coller le lien de la vidéo */
+async function atBanner() {
+  const b = $('at-banner'); if (!b) return;
+  let clip = ''; try { clip = (await navigator.clipboard.readText() || '').trim(); } catch (e) {}
+  const isUrl = /^https?:\/\/\S+$/.test(clip);
+  if (isUrl && atPins().some(l => l.url === clip)) { at.ext = null; b.innerHTML = ''; return; }
+  b.innerHTML = `<div class="at-banner" role="status">
+    <span>${isUrl ? `Lien copié : <b>${esc(clip.replace(/^https?:\/\/(www\.)?/, '').slice(0, 40))}</b>` : 'De retour ? Copie le lien de la vidéo, puis colle-le.'}</span>
+    ${isUrl ? '' : '<input type="url" id="at-bn-in" placeholder="https://…" aria-label="Lien de la vidéo">'}
+    <button type="button" class="btn btn-primary" style="min-height:44px" onclick="atBannerGo()">${isUrl ? 'Épingler' : 'Coller'}</button>
+    <button type="button" class="at-pin" onclick="atBannerOff()" aria-label="Fermer">✕</button></div>`;
+}
+function atBannerOff() { at.ext = null; $('at-banner').innerHTML = ''; }
+async function atBannerGo() {
+  let u = ($('at-bn-in') && $('at-bn-in').value || '').trim();
+  if (!u) { try { u = (await navigator.clipboard.readText() || '').trim(); } catch (e) { toast('Colle le lien dans le champ', true); return; } }
+  if (!/^https?:\/\//.test(u)) { toast('Aucun lien dans le presse-papiers : copie d’abord le lien de la vidéo', true); return; }
+  await atKeep(u, atLabel(u)); atBannerOff();
+}
+async function atMic() {
+  if (!LS.get('gms_audd', '')) { toast('Reconnaissance : ajoute ta clé AudD (onglet Tutos › Options avancées)', true); return; }
+  tutoRecognize();
+}
+
+/* ── panneau Fiche ── */
+const atPart = () => at.s && at.s.parts[Math.min(at.pi, at.s.parts.length - 1)];
+function atRenderFiche() {
+  const h = $('at-pan-f'); if (!h) return;
+  const s = at.s;
+  if (!s) { h.innerHTML = `<div class="at-empty"><b>Ta fiche apparaît ici</b>Tape le titre du morceau en haut : elle se crée et s’enregistre toute seule.</div>`; return; }
+  if (at.pi >= s.parts.length) at.pi = s.parts.length - 1;
+  const p = atPart(), pi = at.pi, rh = rhHas(p.rhythm), orig = (s.original && s.original.url) || '';
+  h.innerHTML = `
+    <div class="at-meta">
+      <label>Capo <select aria-label="Capo" onchange="at.s.capo=+this.value;atMark()">${[0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${s.capo === i ? 'selected' : ''}>${i ? i : '—'}</option>`).join('')}</select></label>
+      <label>BPM <input type="number" inputmode="numeric" min="30" max="300" value="${s.bpm || ''}" placeholder="90" aria-label="BPM" oninput="at.s.bpm=+this.value||0;atMark()"></label>
+    </div>
+    <div class="at-ptabs" role="tablist" aria-label="Parties">${s.parts.map((q, i) => `<button type="button" role="tab" class="at-chip ${i === pi ? 'on' : ''}" aria-selected="${i === pi}" onclick="atPartGo(${i})">${esc(q.name || 'Partie')}</button>`).join('')}<button type="button" class="at-chip add" onclick="atPartAdd()">+ Partie</button></div>
+    <div class="at-ptools"><input type="text" value="${esc(p.name)}" aria-label="Nom de la partie" onchange="atPartName(this.value)">${s.parts.length > 1 ? `<button type="button" class="at-chip" onclick="atPartDel()">Supprimer</button>` : ''}</div>
+    <div class="at-lbl"><span>Accords</span></div>
+    <div class="at-bld"></div>
+    <div class="at-lbl"><span>Rythme</span></div>
+    <div class="at-rh">${rh ? `<div class="scroll-x">${rhythmSVG(p.rhythm, false)}</div>` : `<div class="at-note">Pas encore de rythme pour cette partie.</div>`}
+      <div class="row">${rh ? `<button type="button" class="at-play" id="at-rhplay" onclick="atRhPlay()" aria-label="Écouter le rythme">${RH_PLAY_SVG}</button>` : ''}<button type="button" class="btn ${rh ? 'btn-ghost' : 'btn-primary'}" onclick="rhyOpen('at',${pi})">${rh ? 'Changer le rythme' : 'Créer un rythme'}</button></div></div>
+    <div class="at-lbl"><span>Original</span></div>
+    <div class="at-in"><input type="url" id="at-orig" inputmode="url" placeholder="Lien de la version originale" value="${esc(orig)}" aria-label="Lien de la version originale" oninput="atOrig(this.value)"><button type="button" class="btn btn-ghost" onclick="atOrigPaste()">Coller</button><button type="button" class="btn btn-ghost" onclick="atOrigSearch()">Chercher</button></div>
+    <div class="at-lbl"><span>Tutos épinglés</span></div>
+    <div class="at-pins" id="at-pins"></div>
+    <div class="at-drop" id="at-drop" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="atDrop(event)">Dépose un tuto ici pour l’épingler</div>
+    <details class="at-lyr" style="margin-top:14px"${typeof p.lyrics === 'string' && p.lyrics ? ' open' : ''}><summary>Paroles</summary><textarea aria-label="Paroles" placeholder="Paroles de la partie…" oninput="atLyrics(this.value)">${esc(p.lyrics || '')}</textarea></details>`;
+  atBuildRefresh(); atRenderPins();
+}
+function atRenderPins() {
+  const el = $('at-pins'); if (!el) return;
+  const l = atPins();
+  el.innerHTML = l.length ? l.map(x => `<div class="at-pinrow"><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title || x.url)} ↗</a><button type="button" onclick="atUnpin('${x.id}')" aria-label="Retirer ce tuto">✕</button></div>`).join('') : `<div class="at-note">Rien d’épinglé : appuie sur la punaise d’un tuto.</div>`;
+}
+function atUnpin(id) { at.s.links = at.s.links.filter(l => l.id !== id); atMark(); atRenderPins(); atRenderTutos(); atSeg(); }
+function atPartGo(i) { at.pi = i; at.sel = -1; atRenderFiche(); atRenderCopy(); }
+function atPartAdd() {
+  const used = new Set(at.s.parts.map(q => q.name)), nm = PART_NAMES.find(n => !used.has(n)) || 'Partie ' + (at.s.parts.length + 1);
+  at.s.parts.push(newPart(nm)); at.pi = at.s.parts.length - 1; at.sel = -1; atMark(); atRenderFiche(); atRenderCopy();
+}
+function atPartName(v) { atPart().name = v.trim().slice(0, 40) || 'Partie'; atMark(); atRenderFiche(); }
+function atPartDel() {
+  const p = atPart(); if (p.chords.length || p.rhythm) if (!confirm(`Supprimer la partie « ${p.name} » ?`)) return;
+  at.s.parts.splice(at.pi, 1); at.pi = Math.max(0, at.pi - 1); at.sel = -1; atMark(); atRenderFiche(); atRenderCopy(); atSeg();
+}
+function atLyrics(v) { const p = atPart(); if (v) p.lyrics = v; else delete p.lyrics; atMark(); }
+function atOrig(v) { v = v.trim(); if (v) at.s.original = {url: v}; else delete at.s.original; atMark(); }
+async function atOrigPaste() {
+  try { const t = (await navigator.clipboard.readText() || '').trim(); if (!t) throw 0; $('at-orig').value = t; atOrig(t); }
+  catch (e) { toast('Rien à coller : copie d’abord le lien', true); }
+}
+function atOrigSearch() { window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(tSong() + ' original'), '_blank', 'noopener'); atExt(); }
+function atRhPlay() {
+  const p = atPart(), key = 'at' + at.pi, b = $('at-rhplay');
+  if (rhPlaying(key)) { rhStop(); return; }
+  rhStart(p.rhythm, at.s.bpm || 90, p.chords[0] || null, at.s.capo, i => { const x = $('at-rhplay'); if (x && i == null) x.innerHTML = RH_PLAY_SVG; }, {key, chords: p.chords});
+  if (b) b.innerHTML = RH_PAUSE_SVG;
+}
+
+/* ── séquence d'accords + clavier (rendu partagé : panneau Fiche et mode copie) ── */
+const AT_SFX = [['♯','acc','#'],['♭','acc','b'],['m','q1','m'],['7','q2','7'],['maj7','q2','maj7'],['sus4','q3','sus4'],['sus2','q3','sus2'],['add9','q3','add9'],['dim','q1','dim']];
+const AT_ENH = {'E#':'F','B#':'C','Fb':'E','Cb':'B'};
+function atKbName() { const k = at.kb; if (!k.root) return ''; const r = AT_ENH[k.root + k.acc] || k.root + k.acc; return r + k.q1 + k.q2 + k.q3; }
+function atKb(f, v) {
+  const k = at.kb;
+  if (f === 'root') k.root = k.root === v ? '' : v;
+  else {
+    k[f] = k[f] === v ? '' : v;
+    if (f === 'q3' && /sus/.test(k.q3)) k.q1 = '';
+    if (f === 'q1' && k.q1 && /sus/.test(k.q3)) k.q3 = '';
+  }
+  atBuildRefresh();
+}
+function atKbAdd() {
+  const n = atKbName(); if (!n) { toast('Choisis d’abord une note (A à G)', true); return; }
+  atAdd([n]); at.kb = {root:'', acc:'', q1:'', q2:'', q3:''}; atBuildRefresh();
+}
+function atAdd(names) {
+  if (!at.s) { toast('Commence par le titre du morceau', true); $('at-title').focus(); return; }
+  const list = parseChordLine(names.join(' ')); if (!list.length) return;
+  atPart().chords.push(...list); at.sel = -1; atMark(); atBuildRefresh(); atSeg();
+}
+function atTxt(inp) {
+  const v = inp.value; if (!v.trim()) return;
+  inp.value = ''; atAdd([v]);
+  const n = [...document.querySelectorAll('.at-txt input')].find(i => i.offsetParent); if (n) n.focus();
+}
+function atSelChord(i) { at.sel = at.sel === i ? -1 : i; atBuildRefresh(); }
+function atMove(d) {
+  const c = atPart().chords, i = at.sel, j = i + d; if (i < 0 || j < 0 || j >= c.length) return;
+  [c[i], c[j]] = [c[j], c[i]]; at.sel = j; atMark(); atBuildRefresh();
+}
+function atDelChord() {
+  const c = atPart().chords; if (!c.length) return;
+  c.splice(at.sel >= 0 ? at.sel : c.length - 1, 1); at.sel = -1; atMark(); atBuildRefresh(); atSeg();
+}
+function atBuildHTML() {
+  if (!at.s) return '';
+  const p = atPart(), c = p.chords, k = at.kb, nm = atKbName();
+  return `<div class="at-seq" role="list" aria-label="Accords de la partie ${esc(p.name)}">${c.length ? c.map((x, i) => `<button type="button" role="listitem" class="at-ch ${i === at.sel ? 'sel' : ''} ${x.frets.every(f => f === -1) ? 'todo' : ''}" onclick="atSelChord(${i})" aria-pressed="${i === at.sel}">${esc(x.name || '?')}</button>`).join('') : `<span class="at-seqhint">Aucun accord : touche une note, puis « Ajouter ».</span>`}</div>
+    ${at.sel >= 0 && c[at.sel] ? `<div class="at-ctl"><button type="button" onclick="atMove(-1)" aria-label="Décaler à gauche">◀ Avant</button><button type="button" onclick="atMove(1)" aria-label="Décaler à droite">Après ▶</button><button type="button" onclick="atDelChord()">Retirer</button></div>` : ''}
+    <div class="at-roots">${['A','B','C','D','E','F','G'].map(r => `<button type="button" onclick="atKb('root','${r}')" aria-pressed="${k.root === r}">${r}</button>`).join('')}</div>
+    <div class="at-sc at-sfx" style="margin-top:8px">${AT_SFX.map(([l, f, v]) => `<button type="button" class="at-chip" onclick="atKb('${f}','${v}')" aria-pressed="${k[f] === v}">${l}</button>`).join('')}</div>
+    <div class="at-add"><button type="button" class="btn btn-ghost" onclick="atDelChord()">⌫ Effacer</button><button type="button" class="btn btn-primary" onclick="atKbAdd()" ${nm ? '' : 'disabled'}>Ajouter ${esc(nm.replace(/#/g, '♯').replace(/^([A-G])b/, '$1♭'))}</button></div>
+    <div class="at-txt"><input type="text" placeholder="Ou tape : Em7 G Dsus4" autocapitalize="off" autocomplete="off" aria-label="Taper des accords" onkeydown="if(event.key==='Enter'){event.preventDefault();atTxt(this)}"><button type="button" class="btn btn-ghost" style="min-height:44px" onclick="atTxt(this.previousElementSibling)">Ajouter</button></div>`;
+}
+function atBuildRefresh() { // met à jour toutes les instances (jamais le lecteur) ; le texte en cours de saisie est conservé
+  const ins = [...document.querySelectorAll('.at-txt input')], vals = ins.map(i => i.value), act = ins.indexOf(document.activeElement);
+  document.querySelectorAll('.at-bld').forEach(el => { el.innerHTML = atBuildHTML(); });
+  atRenderCopyBar();
+  const nw = [...document.querySelectorAll('.at-txt input')];
+  nw.forEach((i, n) => { if (vals[n]) i.value = vals[n]; });
+  if (act >= 0 && nw[act]) nw[act].focus();
+}
+function atRenderCopy() { // mode copie (mobile) : vidéo en haut, accords + clavier dessous
+  const h = $('at-copy'); if (!h) return;
+  h.innerHTML = at.play ? `<div class="at-cpbar"><span id="at-cpt"></span><button type="button" onclick="atClose()">Voir les résultats</button></div><div class="at-bld"></div>` : '';
+  atBuildRefresh();
+}
+function atRenderCopyBar() { const t = $('at-cpt'); if (t && at.s) t.textContent = 'Je copie : ' + atPart().name; }
 
 /* ═══════ RYTHME ENREGISTRÉ — micro → IndexedDB (store media) → boucle sans trou ═══════
    p.rec = {mediaId, start, end, dur, at} par partie. Le blob complet reste stocké : le rognage (start/end, en secondes)
@@ -4910,6 +5436,7 @@ async function rcDelete(i) {
 
 /* ═══════ NAV ═══════ */
 function go(v) {
+  if (v !== 'atelier' && atOn()) { atFlush(); atPause(); }
   stopPlay();
   if (v !== 'tuner') stopTuner();
   if (v !== 'import') stopCapture();
@@ -4919,13 +5446,14 @@ function go(v) {
   $('v-' + v).classList.add('on');
   document.body.classList.toggle('playing', v === 'sheet'); // mode jeu : navigation masquée
   v === 'sheet' ? wakeOn() : wakeOff();
-  ['home','lib','cours','exo','tuto','tools','metro','tuner','import'].forEach(k => { const b = $('nl-' + k); if (b) b.classList.toggle('on', k === v); });
+  ['atelier','home','lib','cours','exo','tuto','tools','metro','tuner','import'].forEach(k => { const b = $('nl-' + k); if (b) b.classList.toggle('on', k === v); });
   window.scrollTo(0,0);
   if (v === 'home') renderHome();
   if (v === 'lib') renderLib();
   if (v === 'cours') renderCours();
   if (v === 'exo') exoRender();
   if (v === 'tuto') renderTuto();
+  if (v === 'atelier') atOpen();
   if (v === 'tools') { $('tools-hero').innerHTML = toolsHeroSVG(); renderTools(); }
   if (v === 'metro') renderMetroAll();
   if (v === 'tuner') renderTunerStrings();
@@ -5652,13 +6180,14 @@ function initDnD(host) {
    La boucle de test lit rhy.r à chaque pas : modifier une case pendant la lecture est pris au pas suivant. */
 const rhPen = {d:'D', a:1};
 let rhy = null; // {ctx, i, r, q, lit}
-const rhyPart = () => rhy && (rhy.ctx === 'cur' ? cur : draft).parts[rhy.i];
+const rhySheet = ctx => ctx === 'cur' ? cur : ctx === 'at' ? at.s : draft;
+const rhyPart = () => rhy && rhySheet(rhy.ctx).parts[rhy.i];
 const rhyKey = () => 'e' + rhy.i;
 const RHY_G = {D:'↓', U:'↑', X:'✕'};
 const rhyNorm = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 function rhyOpen(ctx, i) {
   stopPlay();
-  const s = ctx === 'cur' ? cur : draft, p = s && s.parts[i]; if (!p) return;
+  const s = rhySheet(ctx), p = s && s.parts[i]; if (!p) return;
   rhy = {ctx, i, q: '', lv: '', am: '', lit: null, r: p.rhythm ? clone(rhNorm(p.rhythm)) : rhFromPat('', '4/4', 8, 1)};
   $('m-rhy').classList.remove('hide'); document.body.classList.add('rhy-open');
   rhyRender();
@@ -5674,6 +6203,7 @@ function rhyValidate() {
   const {ctx, i} = rhy, r = rhHas(rhy.r) ? rhy.r : null;
   rhyClose();
   if (ctx === 'draft') { draft.parts[i].rhythm = r; renderParts(); return; }
+  if (ctx === 'at') { at.s.parts[i].rhythm = r; atMark(); atRenderFiche(); toast(r ? 'Rythme ajouté à la fiche' : 'Rythme retiré'); return; }
   cur.parts[i].rhythm = r; cur.updatedAt = Date.now();
   DB.put('sheets', clone(cur)); viewSheet(cur.id, i);
   toast(r ? 'Rythme enregistré' : 'Rythme retiré');
@@ -5832,13 +6362,13 @@ function rhyTest(forceStart) {
   const key = rhyKey();
   if (rhPlaying(key) && !forceStart) { rhStop(); return; }
   if (!rhHas(rhy.r)) { rhStop(); toast('Pose quelques coups d’abord', true); return; }
-  const p = rhyPart(), s = rhy.ctx === 'cur' ? cur : draft;
+  const p = rhyPart(), s = rhySheet(rhy.ctx);
   rhStart(rhy.r, s.bpm || 90, p.chords[0] || null, s.capo, rhyStep, {key, chords: p.chords});
   rhyTestSync(true);
 }
 function rhyTestSync(on) {
   const b = $('rhy-testb'); if (!b) return;
-  const s = rhy.ctx === 'cur' ? cur : draft;
+  const s = rhySheet(rhy.ctx);
   b.classList.toggle('on', on);
   b.innerHTML = (on ? RH_STOP_SVG : RH_PLAY_SVG) + (on ? 'Arrêter le test' : 'Tester en boucle') + `<small>${s.bpm || 90} BPM</small>`;
 }
@@ -6454,6 +6984,7 @@ document.addEventListener('keydown', e => {
 (async function boot() {
   try { await DB.open(); } catch (e) { toast('Stockage indisponible', true); return; }
   sheets = await DB.all('sheets');
+  const hadSheets = sheets.length > 0;
   try { const ep = await DB.get('meta', 'exo'); if (ep && ep.v) exoProg = Object.assign(exoProg, ep.v); } catch (e) {}
   const flag = await DB.get('meta', 'migrated');
   if (!flag) {
@@ -6487,7 +7018,7 @@ document.addEventListener('keydown', e => {
     demo.parts = [p3, p1, p2];
     sheets.push(demo); await DB.put('sheets', demo);
   }
-  renderHome(); go('home');
+  renderHome(); go(hadSheets ? 'home' : 'atelier'); // Cahier s'il y a des fiches, sinon Atelier
 })();
 </script>
 <script>
