@@ -4,7 +4,7 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 
 ## Le code
 - App web en **un seul fichier** : `index.html` (HTML + CSS + JS vanilla, sans dépendance ni build). C'est la **source de vérité**.
-- `guitar-memory-sheets (3).html` est une ancienne copie : la garder identique à `index.html` (`cp index.html "guitar-memory-sheets (3).html"`) tant que Lucas n'a pas validé sa suppression.
+- `a supprimer/` : fichiers obsolètes en attente de suppression (validée par Lucas en fin de projet). Ne pas les modifier ni les synchroniser.
 - Le fichier fait ~4 800 lignes : **ne jamais le lire en entier**. Repérer avec `grep -n` les sections (`/* ═══════ NOM ═══════ */`), puis lire par plages.
 - Données : IndexedDB (`gms_v2` : stores `sheets`, `media`, `meta`) + quelques préférences en localStorage.
 - Interface **en français, avec accents** (les vieux textes sans accents sont à corriger au passage).

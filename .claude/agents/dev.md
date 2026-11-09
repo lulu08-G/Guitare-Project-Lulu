@@ -13,7 +13,6 @@ Méthode :
 - Suis le style du code existant (nommage, densité de commentaires, rendu par `innerHTML` + fonctions `renderX`, échappement avec `esc()`).
 - Changements minimaux et ciblés. Pas de dépendance externe sans accord.
 - Vérifie dans Chromium via Playwright (scripts dans le scratchpad) : 0 erreur console, desktop 1200px et mobile 390px.
-- Garde `guitar-memory-sheets (3).html` identique à `index.html`.
 - Ne committe pas sauf si le brief le demande.
 
 Rends un rapport court : ce qui a changé (sections touchées), comment tu l'as vérifié, ce qui reste à faire ou à décider. Pas de copie de code.
