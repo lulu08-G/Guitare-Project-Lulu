@@ -281,6 +281,25 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .stroke-btn{padding:8px 14px;border-radius:var(--rx);background:var(--card2);border:1px solid var(--border);font-size:13px;font-weight:700;transition:all .15s;display:flex;align-items:center;gap:5px}
 .stroke-btn:hover{border-color:var(--gold);color:var(--gold2)}
 .stroke-btn.d{color:var(--gold2)}.stroke-btn.u{color:var(--sage)}
+.rh-sets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.rh-sel{background:var(--card2);border:1px solid var(--border);border-radius:var(--rx);color:var(--cream);font-size:12px;padding:7px 8px;min-width:0}
+.rh-bar{display:grid;gap:4px;margin-top:8px}
+.rh-cell{height:40px;border-radius:7px;background:var(--card2);border:1px solid var(--border);color:var(--cream4);font-size:16px;font-weight:700;padding:0}
+.rh-cell.beat{border-left:2px solid var(--border2)}
+.rh-cell.on.D{color:var(--gold2);border-color:var(--gold)}.rh-cell.on.U{color:var(--sage);border-color:var(--sage)}.rh-cell.on.X{color:var(--terra);border-color:var(--terra)}
+.rh-cell.on.a0{font-size:11px}.rh-cell.on.a2{background:var(--card3);font-size:20px}
+.stroke-btn.sel{background:var(--card3);border-color:var(--gold)}
+.btn.on{border-color:var(--gold);color:var(--gold2)}
+.rh-player{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:12px}
+.rh-play{width:64px;height:64px;border-radius:50%;background:var(--gold);color:var(--ink);border:0;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.3);flex-shrink:0}
+.rh-play svg{width:26px;height:26px}
+.rh-play.on{background:var(--terra);color:#fff}
+.rh-bpm{display:flex;align-items:center;gap:6px}
+.rh-bpm button{width:44px;height:44px;border-radius:50%;background:var(--card2);border:1px solid var(--border);font-size:22px;font-weight:700;color:var(--cream)}
+.rh-bpm div{display:flex;flex-direction:column;align-items:center;min-width:46px;line-height:1.1}
+.rh-bpm b{font-size:22px;font-family:var(--serif)}
+.rh-bpm span{font-size:9px;letter-spacing:1.5px;color:var(--cream4)}
+.rh-player-t{font-size:11px;color:var(--cream4)}
 .force-row{display:flex;align-items:center;gap:8px;margin-top:8px}
 .force-row input[type=range]{flex:1;accent-color:var(--gold);height:4px}
 .force-val{font-size:11px;color:var(--cream3);width:56px;font-weight:600}
@@ -1181,25 +1200,27 @@ function rowsFromLegacy(fingers, pickOrder) {
   }
   return rows;
 }
+/* Presets hérités (ids des anciennes fiches) → motifs sur grille. Corrigés : chaque motif remplit une mesure entière.
+   Notation : D/U = bas/haut, majuscule = normal, minuscule = doux, X = étouffé, - = la main passe. */
 const LEGACY_R = {
-  folk:[['D',1],['U',.4],['D',.6],['U',.4]],
-  pop5:[['D',1],['D',.5],['U',.3],['D',1],['U',.3]],
-  waltz:[['D',1],['D',.4],['D',.4]],
-  reggae:[['-',0],['U',1],['-',0],['U',1]],
-  arpege:[['D',.6],['U',.3],['U',.3],['U',.3]],
-  ballad:[['D',1],['-',0],['D',.4],['U',.3]],
-  rock:[['D',1],['D',1],['D',1],['D',1]],
+  folk:{mes:'4/4', res:8, pat:'DuDuDuDu'},
+  pop5:{mes:'4/4', res:8, pat:'D-DU-UDU'},
+  waltz:{mes:'3/4', res:8, pat:'D-d-d-'},
+  reggae:{mes:'4/4', res:8, pat:'-U-U-U-U'},
+  arpege:{mes:'4/4', res:8, pat:'DuuuDuuu'},
+  ballad:{mes:'4/4', res:8, pat:'D-DUD-DU'},
+  rock:{mes:'4/4', res:8, pat:'DDDDDDDD'},
 };
 function legacyRhythm(id, custom, invert) {
-  let strokes = null;
   if (id === 'custom' && custom && custom.length) {
-    strokes = custom.map(v => v > .04 ? {dir:'U', force:Math.min(1,v)} : v < -.04 ? {dir:'D', force:Math.min(1,-v)} : {dir:'-', force:0});
-  } else if (LEGACY_R[id]) {
-    strokes = LEGACY_R[id].map(([d,f]) => ({dir:d, force:f}));
+    let strokes = custom.map(v => v > .04 ? {dir:'U', force:Math.min(1,v)} : v < -.04 ? {dir:'D', force:Math.min(1,-v)} : {dir:'-', force:0});
+    if (invert) strokes = strokes.map(s => ({...s, dir: s.dir === 'D' ? 'U' : s.dir === 'U' ? 'D' : '-'}));
+    return rhNorm({strokes});
   }
-  if (!strokes) return null;
-  if (invert) strokes = strokes.map(s => ({...s, dir: s.dir === 'D' ? 'U' : s.dir === 'U' ? 'D' : '-'}));
-  return {strokes};
+  const L = LEGACY_R[id]; if (!L) return null;
+  const r = rhFromPat(L.pat, L.mes, L.res);
+  if (invert) r.cells.forEach(c => { if (c && c.d !== 'X') c.d = c.d === 'D' ? 'U' : 'D'; });
+  return r;
 }
 
 /* ═══════ SVG: CHORD DIAGRAM ═══════ */
@@ -1296,39 +1317,93 @@ function tabStaffSVG(chords, light) {
   return s + '</svg>';
 }
 
+/* ═══════ RHYTHM MODEL ═══════
+   rhythm = {v:2, mes:'4/4'|'3/4'|'6/8', res:8|12|16, bars:1|2, swing:0, cells:[{d:'D'|'U'|'X', a:0|1|2} | null]}
+   Une case = une subdivision ; cellules par mesure = temps × subdivisions par temps (spb).
+   4/4, 3/4 : spb = res/4 (croches 2, triolets 3, doubles 4) ; 6/8 : 2 temps (noires pointées), spb 3 (croches) ou 6 (doubles).
+   null = la main passe sans toucher ; 'X' = coup étouffé ; a = doux / normal / accent.
+   Les anciens {strokes:[{dir,force}]} sont migrés à la volée par rhNorm (une stroke = une croche, complété en mesures de 4/4). */
+const RH_BEATS = {'4/4':4, '3/4':3, '6/8':2};
+const rhSpb = (mes, res) => mes === '6/8' ? (res === 16 ? 6 : 3) : res/4;
+const rhPerBar = (mes, res) => RH_BEATS[mes] * rhSpb(mes, res);
+function rhFromPat(pat, mes, res, bars) {
+  mes = mes || '4/4'; res = res || 8;
+  const per = rhPerBar(mes, res), n = per * (bars || Math.max(1, Math.ceil(pat.length/per)));
+  const cells = [];
+  for (let i = 0; i < n; i++) {
+    const ch = pat[i] || '-';
+    if (ch === 'X' || ch === 'x') cells.push({d:'X', a:1});
+    else if ('DdUu'.includes(ch)) cells.push({d: ch.toUpperCase(), a: ch === ch.toLowerCase() ? 0 : (i === 0 && ch === 'D' ? 2 : 1)});
+    else cells.push(null);
+  }
+  return {v:2, mes, res, bars: n/per, swing:0, cells};
+}
+const rhHas = r => !!(r && ((r.cells && r.cells.some(Boolean)) || (r.strokes && r.strokes.length)));
+function rhNorm(r) {
+  if (!r) return null;
+  if (r.v === 2 && Array.isArray(r.cells)) return r;
+  const st = r.strokes || [];
+  const cells = st.map(s => s.dir === 'D' || s.dir === 'U' ? {d:s.dir, a: s.force >= .9 ? 2 : s.force >= .5 ? 1 : 0} : null);
+  while (cells.length % 8 || !cells.length) cells.push(null);
+  delete r.strokes;
+  return Object.assign(r, {v:2, mes:'4/4', res:8, bars: cells.length/8, swing:0, cells});
+}
+// Changer signature / résolution / nombre de mesures : on garde les cases par position, on complète par du vide
+function rhReshape(r, mes, res, bars) {
+  const per = rhPerBar(mes, res), n = per*bars, old = r.cells;
+  r.mes = mes; r.res = res; r.bars = bars;
+  r.cells = Array.from({length:n}, (_, i) => old[i] || null);
+}
+const RHYTHMS = [
+  {id:'noires',  n:'Noires (les bases)',  mes:'4/4', res:8,  pat:'D-D-D-D-'},
+  {id:'croches', n:'Croches (balancier)', mes:'4/4', res:8,  pat:'DUDUDUDU'},
+  {id:'feucamp', n:'Feu de camp',         mes:'4/4', res:8,  pat:'D-DU-UDU'},
+  {id:'ballade', n:'Ballade',             mes:'4/4', res:8,  pat:'D-DUD-DU'},
+  {id:'chuck',   n:'Chuck (backbeat)',    mes:'4/4', res:8,  pat:'DUXUDUXU'},
+  {id:'reggae',  n:'Reggae (contretemps)',mes:'4/4', res:8,  pat:'-U-U-U-U'},
+  {id:'rock8',   n:'Rock en croches',     mes:'4/4', res:8,  pat:'DDDDDDDD'},
+  {id:'valse',   n:'Valse',               mes:'3/4', res:8,  pat:'D-d-d-'},
+  {id:'valse2',  n:'Valse chantante',     mes:'3/4', res:8,  pat:'D-dUdU'},
+  {id:'six8',    n:'Six-huit (berceuse)', mes:'6/8', res:8,  pat:'D-UD-U'},
+  {id:'shuffle', n:'Shuffle (blues)',     mes:'4/4', res:12, pat:'D-UD-UD-UD-U'},
+];
+
 /* ═══════ SVG: RHYTHM CURVE ═══════
-   Senior note: each stroke is a LOBE that leaves the central rest line and comes back to it —
-   so "2 downs in a row" reads as two distinct dips, not one long descent. That was the ask, and
-   it also makes the curve unambiguous when strokes repeat. */
+   Chaque coup = un LOBE qui quitte la ligne de repos et y revient (deux bas de suite = deux creux distincts).
+   Amplitude = accent ; croix = étouffé ; rond vide = la main passe. Barres de mesure + comptage sous la courbe. */
+const RH_AMP = [.4, .7, 1];
+function rhLabel(mes, spb, j, b) {
+  if (mes === '6/8') return String(b*3 + j + 1);
+  if (j === 0) return String(b + 1);
+  return spb === 2 ? '+' : spb === 4 ? ['', 'e', '+', 'a'][j] : '·';
+}
 function rhythmSVG(rh, light, opt) {
-  opt = opt || {};
-  const strokes = (rh && rh.strokes) || [];
-  if (!strokes.length) return `<div style="font-size:11px;color:${light?'#999':'var(--cream4)'};padding:4px 0">Aucun coup</div>`;
-  const cw = 28, W = 12 + strokes.length*cw + 8, H = 40, mid = H/2, amp = 13;
-  const lineC = light ? '#e8dfc8' : 'var(--border2)';
-  const dC = light ? '#c8783a' : 'var(--gold)', uC = light ? '#4a7a50' : 'var(--sage)';
+  opt = opt || {}; rh = rhNorm(rh);
+  if (!rhHas(rh)) return `<div style="font-size:11px;color:${light?'#999':'var(--cream4)'};padding:4px 0">Aucun coup</div>`;
+  const cells = rh.cells, spb = rhSpb(rh.mes, rh.res), per = rhPerBar(rh.mes, rh.res);
+  const cw = 28, W = 12 + cells.length*cw + 8, H = 54, mid = 19, amp = 13;
+  const lineC = light ? '#e8dfc8' : 'var(--border2)', txtC = light ? '#999' : 'var(--cream4)';
+  const dC = light ? '#c8783a' : 'var(--gold)', uC = light ? '#4a7a50' : 'var(--sage)', xC = light ? '#b85840' : 'var(--terra)';
+  const yOf = c => c.d === 'D' ? mid + RH_AMP[c.a]*amp : mid - RH_AMP[c.a]*amp;
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block">`;
   s += `<line x1="8" y1="${mid}" x2="${W-4}" y2="${mid}" stroke="${lineC}" stroke-width="1.2"/>`;
+  for (let i = 0; i <= cells.length; i += per) s += `<line x1="${12+i*cw}" y1="3" x2="${12+i*cw}" y2="${H-3}" stroke="${lineC}" stroke-width="${i % per === 0 ? 1.6 : 1}"/>`;
   let d = `M 12 ${mid}`;
-  strokes.forEach((st, i) => {
+  cells.forEach((c, i) => {
     const x0 = 12 + i*cw, x1 = x0 + cw, xm = x0 + cw/2;
-    if (st.dir === '-') { d += ` L ${x1} ${mid}`; return; }
-    const y = st.dir === 'D' ? mid + st.force*amp : mid - st.force*amp;
-    d += ` C ${x0+cw*.25} ${y}, ${xm-cw*.1} ${y}, ${xm} ${y}`;
-    d += ` C ${xm+cw*.1} ${y}, ${x1-cw*.25} ${mid}, ${x1} ${mid}`;
+    if (!c || c.d === 'X') { d += ` L ${x1} ${mid}`; return; }
+    const y = yOf(c);
+    d += ` C ${x0+cw*.25} ${y}, ${xm-cw*.1} ${y}, ${xm} ${y} C ${xm+cw*.1} ${y}, ${x1-cw*.25} ${mid}, ${x1} ${mid}`;
   });
   s += `<path d="${d}" fill="none" stroke="${light?'#c8783a':'var(--gold2)'}" stroke-width="1.8" stroke-linecap="round"/>`;
-  strokes.forEach((st, i) => {
-    const xm = 12 + i*cw + cw/2;
-    if (st.dir === '-') {
-      s += `<circle cx="${xm}" cy="${mid}" r="2.4" fill="none" stroke="${lineC}" stroke-width="1.1"/>`;
-    } else {
-      const y = st.dir === 'D' ? mid + st.force*amp : mid - st.force*amp;
-      const c = st.dir === 'D' ? dC : uC;
-      s += `<circle cx="${xm}" cy="${y}" r="${1.8+st.force*1.8}" fill="${c}"/>`;
-      const ay = st.dir === 'D' ? y + 8 : y - 5;
-      s += `<text x="${xm}" y="${ay}" text-anchor="middle" font-size="6.5" fill="${c}" font-family="JetBrains Mono">${st.dir==='D'?'&#8595;':'&#8593;'}</text>`;
-    }
+  cells.forEach((c, i) => {
+    const xm = 12 + i*cw + cw/2, j = i % per % spb, b = Math.floor(i % per / spb);
+    s += `<text x="${xm}" y="${H-5}" text-anchor="middle" font-size="${j === 0 ? 9 : 8}" font-weight="${j === 0 ? 700 : 400}" fill="${txtC}" font-family="JetBrains Mono">${rhLabel(rh.mes, spb, j, b)}</text>`;
+    if (!c) { s += `<circle cx="${xm}" cy="${mid}" r="2.4" fill="none" stroke="${lineC}" stroke-width="1.1"/>`; return; }
+    if (c.d === 'X') { s += `<text x="${xm}" y="${mid+4}" text-anchor="middle" font-size="11" font-weight="700" fill="${xC}" font-family="JetBrains Mono">&#10005;</text>`; return; }
+    const y = yOf(c), col = c.d === 'D' ? dC : uC;
+    s += `<circle cx="${xm}" cy="${y}" r="${1.8+RH_AMP[c.a]*1.8}" fill="${col}"/>`;
+    s += `<text x="${xm}" y="${c.d === 'D' ? y+8 : y-5}" text-anchor="middle" font-size="6.5" fill="${col}" font-family="JetBrains Mono">${c.d === 'D' ? '&#8595;' : '&#8593;'}</text>`;
   });
   if (opt.cursor != null) {
     const x = 12 + opt.cursor*cw + cw/2;
@@ -1367,28 +1442,71 @@ function click(t, hi) {
   g.gain.setValueAtTime(.09, t); g.gain.exponentialRampToValueAtTime(.0001, t+0.04);
   o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+0.05);
 }
-let playTimer = null;
-function stopPlay() { if (playTimer) { clearInterval(playTimer); playTimer = null; } document.querySelectorAll('.play-on').forEach(e => e.classList.remove('play-on')); }
-function playRhythm(strokes, bpm, chord, capo, onStep) {
-  stopPlay();
-  const ac = audio(); if (ac.state === 'suspended') ac.resume();
-  const iv = 60/(bpm || 90)/2;
-  let i = 0;
-  const step = () => {
-    if (i >= strokes.length) { stopPlay(); if (onStep) onStep(null); return; }
-    const st = strokes[i], t = ac.currentTime + 0.01;
-    click(t, i % 2 === 0);
-    if (st.dir !== '-' && chord) {
-      const idx = [0,1,2,3,4,5].filter(k => chord.frets[k] >= 0);
-      const ord = st.dir === 'U' ? idx.slice().reverse() : idx;
-      ord.forEach((si, k) => pluck(fretFreq(si, chord.frets[si], capo), t + k*0.018, .8, .05 + st.force*.10));
-    }
-    if (onStep) onStep(i);
-    i++;
-  };
-  step();
-  playTimer = setInterval(step, iv*1000);
+let rhP = null; // lecture en cours : {key, ctx, rh, bpm, chord, capo, k, k0, t0, timer, raf, q, onStep, click}
+function stopPlay() {
+  rhStop();
+  document.querySelectorAll('.play-on').forEach(e => e.classList.remove('play-on'));
 }
+/* Moteur de rythme : planificateur à anticipation sur l'horloge Web Audio (même principe que le métronome :
+   timer 25 ms, fenêtre 120 ms), temps absolu t = t0 + (k-k0) × durée de case → aucune dérive cumulée.
+   Boucle sans fin jusqu'à rhStop(). Points d'extension : rhPlayCell (rendu d'une case) et opt.onCell (hook
+   appelé par case planifiée, avec son temps audio) pour l'enregistrement au tap / le mode jeu. */
+const rhCellDur = (rh, bpm) => 60 / bpm / rhSpb(rh.mes, rh.res);
+const rhCellTime = (P, k) => {
+  const rh = P.rh, off = (rh.swing && rhSpb(rh.mes, rh.res) === 2 && k % 2 === 1) ? rh.swing*rhCellDur(rh, P.bpm) : 0;
+  return P.t0 + (k - P.k0)*rhCellDur(rh, P.bpm) + off;
+};
+function rhPlayCell(c, t, chord, capo) {
+  if (!c) return;
+  if (c.d === 'X') { chuckSound(t); return; }
+  if (!chord) return;
+  const idx = [0,1,2,3,4,5].filter(k => chord.frets[k] >= 0);
+  const ord = c.d === 'U' ? idx.slice().reverse().slice(0, 4) : idx;
+  const gap = c.a === 2 ? .024 : .016, vol = [.06, .10, .15][c.a];
+  ord.forEach((si, n) => pluck(fretFreq(si, chord.frets[si], capo), t + n*gap, .8, vol));
+}
+function rhStart(rh, bpm, chord, capo, onStep, opt) {
+  rhStop();
+  rh = rhNorm(rh); if (!rhHas(rh)) return false;
+  opt = opt || {};
+  const ac = audio(); if (ac.state === 'suspended') ac.resume();
+  const P = rhP = {key: opt.key || '', ctx: ac, rh, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
+    k: 0, k0: 0, t0: ac.currentTime + 0.08, q: [], onStep, onCell: opt.onCell, timer: null, raf: 0};
+  const tick = () => {
+    if (rhP !== P) return;
+    const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res);
+    while (rhCellTime(P, P.k) < ac.currentTime + 0.12) {
+      const i = P.k % rh.cells.length, t = rhCellTime(P, P.k), inBar = i % per;
+      if (inBar % spb === 0) click(t, inBar === 0);
+      rhPlayCell(rh.cells[i], t, P.chord, P.capo);
+      if (P.onCell) P.onCell(i, t, P.k);
+      P.q.push({i, t}); P.k++;
+    }
+    P.timer = setTimeout(tick, 25);
+  };
+  const draw = () => {
+    if (rhP !== P) return;
+    let cur = null;
+    while (P.q.length && P.q[0].t <= ac.currentTime) cur = P.q.shift();
+    if (cur && P.onStep) P.onStep(cur.i);
+    P.raf = requestAnimationFrame(draw);
+  };
+  tick(); draw();
+  return true;
+}
+// Changer le tempo en cours de lecture sans saut : on ré-ancre la grille sur la prochaine case à planifier
+function rhSetBpm(bpm) {
+  const P = rhP; if (!P) return;
+  P.t0 = rhCellTime(P, P.k); P.k0 = P.k; P.bpm = bpm;
+}
+function rhStop() {
+  const P = rhP; if (!P) return;
+  rhP = null;
+  clearTimeout(P.timer); cancelAnimationFrame(P.raf);
+  if (P.onStep) P.onStep(null);
+}
+const rhPlaying = key => !!rhP && rhP.key === key;
+document.addEventListener('visibilitychange', () => { if (document.hidden) rhStop(); });
 
 /* ═══════ METRONOME — visual pendulum + step-sequencer backing band ═══════
    Senior note: setInterval alone drifts (JS event loop jitter), which is
@@ -3785,10 +3903,8 @@ async function viewSheet(id) {
     const staff = tabStaffSVG(p.chords, false);
     if (staff) body += `<div class="pv-lbl">Tablature / arpege</div><div class="scroll-x">${staff}</div>`;
     if (p.tabText) body += `<div class="pv-lbl">Tab</div><div class="tab-ascii mono">${esc(p.tabText)}</div>`;
-    if (p.rhythm && p.rhythm.strokes && p.rhythm.strokes.length) {
-      body += `<div class="pv-lbl">Rythme</div><div class="scroll-x" id="rh-view-${i}">${rhythmSVG(p.rhythm, false)}</div>
-      <div style="margin-top:8px"><button class="btn btn-ghost btn-xs" onclick="playPartRhythm(${i})">
-        <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Ecouter au tempo</button></div>`;
+    if (rhHas(p.rhythm)) {
+      body += `<div class="pv-lbl">Rythme</div><div class="scroll-x" id="rh-view-${i}">${rhythmSVG(p.rhythm, false)}</div>${rhPlayerHTML(i)}`;
     }
     if (typeof p.lyrics === 'string' && p.lyrics.trim()) {
       body += `<div class="pv-lbl">Paroles</div><div class="pv-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>`;
@@ -3828,14 +3944,36 @@ async function toggleFav(id, e) {
   await DB.put('sheets', clone(s));
   renderHome();
 }
+/* Lecteur de rythme de la fiche : gros ▶/■ + tempo −/+ (le BPM est celui de la fiche, enregistré) */
+const RH_PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21"/></svg>';
+const RH_STOP_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>';
+function rhPlayerHTML(i) {
+  return `<div class="rh-player">
+    <button type="button" class="rh-play" id="rh-btn-${i}" onclick="playPartRhythm(${i})" aria-label="Lire le rythme">${RH_PLAY_SVG}</button>
+    <div class="rh-bpm"><button type="button" onclick="rhBpmStep(-1)" aria-label="Moins vite">&minus;</button><div><b id="rh-bpm-${i}">${cur.bpm || 90}</b><span>BPM</span></div><button type="button" onclick="rhBpmStep(1)" aria-label="Plus vite">+</button></div>
+    <span class="rh-player-t">${esc(cur.bpm ? 'Tempo de la fiche' : 'Tempo par défaut')} · boucle</span>
+  </div>`;
+}
+function rhRenderPlayer(i, step) {
+  const el = $('rh-view-' + i), b = $('rh-btn-' + i), p = cur && cur.parts[i];
+  if (el && p) el.innerHTML = rhythmSVG(p.rhythm, false, step == null ? {} : {cursor: step});
+  if (b) { const on = rhPlaying('v' + i); b.innerHTML = on ? RH_STOP_SVG : RH_PLAY_SVG; b.classList.toggle('on', on); }
+}
 function playPartRhythm(i) {
   const p = cur.parts[i]; if (!p || !p.rhythm) return;
-  const chord = p.chords[0] || null;
-  playRhythm(p.rhythm.strokes, cur.bpm || 90, chord, cur.capo, (step) => {
-    const el = $('rh-view-' + i); if (!el) return;
-    el.innerHTML = rhythmSVG(p.rhythm, false, step == null ? {} : {cursor: step});
-  });
+  if (rhPlaying('v' + i)) { rhStop(); return; }
+  rhStart(p.rhythm, cur.bpm || 90, p.chords[0] || null, cur.capo, step => rhRenderPlayer(i, step), {key: 'v' + i});
+  rhRenderPlayer(i);
 }
+function rhBpmStep(d) {
+  if (!cur) return;
+  cur.bpm = Math.max(30, Math.min(240, (cur.bpm || 90) + d));
+  document.querySelectorAll('[id^=rh-bpm-]').forEach(e => e.textContent = cur.bpm);
+  if (rhP) rhSetBpm(cur.bpm);
+  clearTimeout(rhBpmSave);
+  rhBpmSave = setTimeout(() => { const x = sheets.find(z => z.id === cur.id); if (x) x.bpm = cur.bpm; DB.put('sheets', clone(cur)); }, 600);
+}
+let rhBpmSave = null;
 function ytId(url) {
   const m = String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
   return m ? m[1] : null;
@@ -3953,9 +4091,13 @@ function addChordLine(str) {
   renderParts();
 }
 function quickPart(name) { draft.parts.push(newPart(name)); renderParts(); }
+function quickPartCustom() {
+  const n = (prompt('Nom de la partie ?', '') || '').trim();
+  if (n) quickPart(n.slice(0, 40));
+}
 function renderQuick() {
   $('qc-sugg').innerHTML = QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
-  $('qc-parts').innerHTML = `<span class="lbl">+ Partie :</span>` + QUICK_PARTS.map(n => `<button type="button" onclick="quickPart('${n}')">${n}</button>`).join('');
+  $('qc-parts').innerHTML = `<span class="lbl">+ Partie :</span>` + QUICK_PARTS.map(n => `<button type="button" onclick="quickPart('${n}')">${n}</button>`).join('') + `<button type="button" onclick="quickPartCustom()">+ Autre…</button>`;
   $('f-capo').innerHTML = [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('');
   $('f-bpm').value = draft.bpm || '';
   $('f-tuning').value = draft.tuning || 'Standard';
@@ -4197,7 +4339,7 @@ function renderParts() {
 
         <div class="part-sub"><span class="part-sub-t">Rythme</span>
           ${p.rhythm ? `<button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].rhythm=null;renderParts()">retirer</button>`
-                     : `<button class="add-btn" onclick="draft.parts[${i}].rhythm={strokes:[]};renderParts()">+ Courbe de rythme</button>`}
+                     : `<button class="add-btn" onclick="draft.parts[${i}].rhythm=rhFromPat('','4/4',8,1);renderParts()">+ Rythme</button>`}
         </div>
         ${p.rhythm ? rhythmEditorHTML(i, p) : ''}
 
@@ -4242,42 +4384,68 @@ function initDnD(host) {
 }
 
 /* ═══════ RHYTHM EDITOR ═══════ */
+const rhPen = {d:'D', a:1};
+function rhGridHTML(i, r) {
+  const per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = per <= 9 ? per : per/2;
+  let h = '';
+  for (let b = 0; b < r.bars; b++) {
+    h += `<div class="rh-bar" style="grid-template-columns:repeat(${row},minmax(0,1fr))">`;
+    for (let j = 0; j < per; j++) {
+      const k = b*per + j, c = r.cells[k];
+      const g = !c ? '·' : c.d === 'X' ? '&#10005;' : c.d === 'D' ? '&#8595;' : '&#8593;';
+      h += `<button type="button" class="rh-cell ${c ? 'on ' + c.d : ''} a${c ? c.a : 1} ${j % spb === 0 ? 'beat' : ''}" onclick="rhPaint(${i},${k})" aria-label="Case ${k+1}">${g}</button>`;
+    }
+    h += '</div>';
+  }
+  return h;
+}
+function rhEdInner(i, r) { return `<div class="scroll-x">${rhythmSVG(r, false)}</div>${rhGridHTML(i, r)}`; }
 function rhythmEditorHTML(i, p) {
+  const r = rhNorm(p.rhythm);
+  const sel = (id, opts, cur_) => `<select class="rh-sel" onchange="${id}">${opts.map(([v, l]) => `<option value="${v}" ${String(v) === String(cur_) ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
+  const penB = (d, l, cls) => `<button type="button" class="stroke-btn ${cls||''} ${rhPen.d === d ? 'sel' : ''}" onclick="rhPen.d='${d}';renderParts()">${l}</button>`;
   return `<div class="rh-wrap">
-    <div class="rh-canvas" id="rh-ed-${i}">${rhythmSVG(p.rhythm, false)}</div>
+    <div class="rh-sets">
+      ${sel(`rhSet(${i},'mes',this.value)`, [['4/4','4/4'],['3/4','3/4'],['6/8','6/8']], r.mes)}
+      ${sel(`rhSet(${i},'res',+this.value)`, [[8,'Croches'],[12,'Triolets'],[16,'Doubles croches']], r.res)}
+      ${sel(`rhSet(${i},'bars',+this.value)`, [[1,'1 mesure'],[2,'2 mesures']], r.bars)}
+      ${sel(`rhPreset(${i},this.value)`, [['','Partir d’un rythme…']].concat(RHYTHMS.map(x => [x.id, x.n])), '')}
+    </div>
+    <div class="rh-canvas" id="rh-ed-${i}">${rhEdInner(i, r)}</div>
     <div class="rh-tools">
-      <button class="stroke-btn d" onclick="addStroke(${i},'D')">&#8595; Bas</button>
-      <button class="stroke-btn u" onclick="addStroke(${i},'U')">&#8593; Haut</button>
-      <button class="stroke-btn" onclick="addStroke(${i},'-')">Silence</button>
-      <button class="btn btn-ghost btn-xs" onclick="undoStroke(${i})">Annuler</button>
-      <button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].rhythm={strokes:[]};renderParts()">Reset</button>
-      <button class="btn btn-ghost btn-xs" onclick="playEdRhythm(${i})">
-        <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Metronome</button>
+      ${penB('D', '&#8595; Bas', 'd')}${penB('U', '&#8593; Haut', 'u')}${penB('X', '&#10005; Étouffé')}${penB('', 'Silence')}
+      <select class="rh-sel" onchange="rhPen.a=+this.value;renderParts()"><option value="0" ${rhPen.a===0?'selected':''}>Doux</option><option value="1" ${rhPen.a===1?'selected':''}>Normal</option><option value="2" ${rhPen.a===2?'selected':''}>Accent</option></select>
+      <button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].rhythm=rhFromPat('','4/4',8,1);renderParts()">Vider</button>
+      <button class="btn btn-ghost btn-xs" id="rh-edbtn-${i}" onclick="playEdRhythm(${i})">${RH_PLAY_SVG.replace('<svg','<svg class="ico"')} Écouter en boucle</button>
     </div>
-    <div class="force-row">
-      <span class="force-val">Force ${Math.round(rhForce*100)}%</span>
-      <input type="range" min="20" max="100" value="${Math.round(rhForce*100)}" oninput="rhForce=this.value/100;this.previousElementSibling.textContent='Force '+this.value+'%'">
-    </div>
-    <div class="rh-hint">Chaque coup part de la ligne de repos et y revient : deux coups vers le bas = deux creux distincts.</div>
+    <div class="rh-hint">Choisis un coup, puis touche les cases. Silence = la main passe sans toucher ; étouffé = coup sec sans note. Au tempo de la fiche (${draft.bpm || 90} BPM).</div>
   </div>`;
 }
-let rhForce = 0.85;
-function addStroke(i, dir) {
-  const r = draft.parts[i].rhythm;
-  r.strokes.push({dir, force: dir === '-' ? 0 : rhForce});
-  $('rh-ed-' + i).innerHTML = rhythmSVG(r, false);
+function rhPaint(i, k) {
+  const r = rhNorm(draft.parts[i].rhythm), c = r.cells[k];
+  const same = c && c.d === rhPen.d && c.a === rhPen.a;
+  r.cells[k] = (rhPen.d === '' || same) ? null : {d: rhPen.d, a: rhPen.a};
+  $('rh-ed-' + i).innerHTML = rhEdInner(i, r);
 }
-function undoStroke(i) {
-  const r = draft.parts[i].rhythm;
-  r.strokes.pop();
-  $('rh-ed-' + i).innerHTML = rhythmSVG(r, false);
+function rhSet(i, key, v) {
+  const r = rhNorm(draft.parts[i].rhythm);
+  const m = {mes: r.mes, res: r.res, bars: r.bars}; m[key] = v;
+  if (m.mes === '6/8' && m.res === 12) m.res = 8;
+  rhReshape(r, m.mes, m.res, m.bars); renderParts();
+}
+function rhPreset(i, id) {
+  const x = RHYTHMS.find(z => z.id === id); if (!x) return;
+  draft.parts[i].rhythm = rhFromPat(x.pat, x.mes, x.res, 1); renderParts();
 }
 function playEdRhythm(i) {
-  const p = draft.parts[i];
-  if (!p.rhythm || !p.rhythm.strokes.length) { toast('Ajoute des coups d abord', true); return; }
-  playRhythm(p.rhythm.strokes, draft.bpm || 90, p.chords[0] || null, draft.capo, step => {
-    const el = $('rh-ed-' + i); if (el) el.innerHTML = rhythmSVG(p.rhythm, false, step == null ? {} : {cursor: step});
-  });
+  const p = draft.parts[i], r = rhNorm(p.rhythm);
+  if (rhPlaying('e' + i)) { rhStop(); return; }
+  if (!rhHas(r)) { toast('Ajoute des coups d’abord', true); return; }
+  rhStart(r, draft.bpm || 90, p.chords[0] || null, draft.capo, step => {
+    const el = $('rh-ed-' + i); if (!el) return;
+    const sv = el.querySelector('.scroll-x'); if (sv) sv.innerHTML = rhythmSVG(r, false, step == null ? {} : {cursor: step});
+    const b = $('rh-edbtn-' + i); if (b) b.classList.toggle('on', step != null);
+  }, {key: 'e' + i});
 }
 
 /* ═══════ LYRICS — optional, linked to chords/rhythm via inline tags ═══════
@@ -4754,7 +4922,7 @@ function printSheetHTML(s, compact) {
         ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.78:.92, light:true})}</div>`).join('')}</div>` : ''}
         ${staff ? `<div style="margin-bottom:6px">${staff}</div>` : ''}
         ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
-        ${p.rhythm && p.rhythm.strokes.length ? rhythmSVG(p.rhythm, true) : ''}
+        ${rhHas(p.rhythm) ? rhythmSVG(p.rhythm, true) : ''}
         ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? `<div class="p-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
         ${p.note && !compact ? `<div class="p-note">${esc(p.note)}</div>` : ''}
       </div>`;
@@ -4777,7 +4945,7 @@ function printCahierHTML(s) {
         <div style="display:flex;gap:9px;flex-wrap:wrap">${
           p.chords.length ? p.chords.map(c => `<div class="p-chord"><div class="cn" style="font-size:12px">${esc(c.name)}</div>${chordSVG(c,{size:.6,light:true})}</div>`).join('')
                            : '<span style="font-size:10px;color:#999">—</span>'}</div>
-        ${p.rhythm && p.rhythm.strokes.length ? `<div>${rhythmSVG(p.rhythm, true)}</div>` : ''}
+        ${rhHas(p.rhythm) ? `<div>${rhythmSVG(p.rhythm, true)}</div>` : ''}
       </div>
     </div>`).join('')}`;
 }
@@ -4862,11 +5030,11 @@ document.addEventListener('keydown', e => {
     demo.links = [{id:uid(), url:'https://www.youtube.com/watch?v=bx1Bh8ZvH84', title:'Video YouTube'}];
     const p1 = newPart('Couplet');
     p1.chords = [newChord('Em'), newChord('G'), newChord('D'), newChord('A7')];
-    p1.rhythm = {strokes:[{dir:'D',force:1},{dir:'U',force:.45},{dir:'D',force:.6},{dir:'U',force:.45}]};
+    p1.rhythm = rhFromPat('DuDuDuDu');
     p1.note = 'x2 — leger';
     const p2 = newPart('Refrain');
     p2.chords = [newChord('C'), newChord('Em'), newChord('G'), newChord('Asus4')];
-    p2.rhythm = {strokes:[{dir:'D',force:1},{dir:'D',force:.55},{dir:'U',force:.35},{dir:'D',force:1},{dir:'U',force:.35}]};
+    p2.rhythm = rhFromPat('D-DU-UDU');
     p2.note = 'Plus fort, on ouvre';
     const p3 = newPart('Intro');
     const em7 = newChord('Em7'); em7.arp = [[0],[3],[2],[3],[1],[3],[2],[3]];
