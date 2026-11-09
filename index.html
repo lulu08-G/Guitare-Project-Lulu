@@ -1547,27 +1547,110 @@ function rhythmSVG(rh, light, opt) {
 }
 
 /* ═══════ WEB AUDIO ═══════ */
+/* Moteur de guitare : Karplus-Strong par corde (AudioBuffer précalculé, mis en cache par hauteur), transitoire de médiator,
+   corps acoustique (EQ + petite convolution générée), grattage réaliste (cordes décalées, humanisation), amortissement
+   naturel des cordes qui sonnent quand le coup suivant arrive. Aucun fichier audio : tout est synthétisé, hors ligne OK. */
 let AC = null;
 const audio = () => (AC = AC || new (window.AudioContext || window.webkitAudioContext)());
-function pluck(freq, t, dur, vol) {
-  const ac = audio();
-  const o = ac.createOscillator(), o2 = ac.createOscillator(), g = ac.createGain(), f = ac.createBiquadFilter();
-  o.type = 'triangle'; o2.type = 'sine';
-  o.frequency.value = freq; o2.frequency.value = freq*2.001;
-  f.type = 'lowpass'; f.frequency.setValueAtTime(3800, t); f.frequency.exponentialRampToValueAtTime(900, t+dur);
-  g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(vol||.14, t+0.008);
-  g.gain.exponentialRampToValueAtTime(0.0005, t+dur);
-  o.connect(f); o2.connect(f); f.connect(g); g.connect(ac.destination);
-  o.start(t); o2.start(t); o.stop(t+dur); o2.stop(t+dur);
+const KS_CACHE = new Map(), AUD = new WeakMap(), MAX_VOICES = 40;
+let KS_NOISE = null;
+function ksBuffer(ac, freq) {
+  const sr = ac.sampleRate, key = sr + ':' + Math.round(freq*10);
+  let b = KS_CACHE.get(key); if (b) return b;
+  const len = Math.floor(sr*(freq < 150 ? 3 : 2.2)), N = sr/freq, D = N - .5, P = Math.floor(D), fr = D - P;
+  const y = new Float32Array(len), rho = Math.pow(.001, 1/(4.5*freq));   // ~4,5 s de T60 hors pertes du filtre
+  let seed = (Math.round(freq*10)*2654435761) >>> 0, lp = 0, prev = 0;
+  const rnd = () => ((seed = (seed*1664525 + 1013904223) >>> 0) / 2147483648) - 1;
+  const ex = new Float32Array(P + 2);
+  for (let i = 0; i < ex.length; i++) { lp += .55*(rnd() - lp); ex[i] = lp; }       // excitation adoucie (bruit passe-bas)
+  const pk = Math.floor(ex.length*.18);                                           // position du médiator : peigne -> timbre
+  for (let i = ex.length - 1; i >= pk; i--) ex[i] -= .6*ex[i - pk];
+  let mx = 0; for (let i = 0; i < ex.length; i++) mx = Math.max(mx, Math.abs(ex[i]));
+  for (let i = 0; i < len; i++) {
+    const a = i < P + 2 ? ex[i]/mx : 0, d1 = i >= P ? y[i-P] : 0, d2 = i >= P + 1 ? y[i-P-1] : 0;
+    const s = (1 - fr)*d1 + fr*d2, o = rho*.5*(s + prev); prev = s; y[i] = a + o;
+  }
+  const fade = Math.floor(sr*.25); for (let i = 0; i < fade; i++) y[len - 1 - i] *= i/fade;
+  let pe = 0; for (let i = 0; i < len; i++) pe = Math.max(pe, Math.abs(y[i])); for (let i = 0; i < len; i++) y[i] /= pe;
+  b = ac.createBuffer(1, len, sr); b.getChannelData(0).set(y); KS_CACHE.set(key, b); return b;
+}
+function noiseBuf(ac) {
+  if (KS_NOISE && KS_NOISE.sampleRate === ac.sampleRate) return KS_NOISE;
+  const n = Math.floor(ac.sampleRate*.3), b = ac.createBuffer(1, n, ac.sampleRate), d = b.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = Math.random()*2 - 1;
+  return (KS_NOISE = b);
+}
+function audioBus(ac) {
+  let B = AUD.get(ac); if (B) return B;
+  const inp = ac.createGain(), mk = (type, f, q, g) => { const n = ac.createBiquadFilter(); n.type = type; n.frequency.value = f; n.Q.value = q; if (g != null) n.gain.value = g; return n; };
+  // corps de guitare : résonance d'air (~100 Hz), de table (~210 Hz), creux médium, présence, coupure des aigus durs
+  const chain = [mk('highpass', 70, .7), mk('peaking', 100, 1.6, 4), mk('peaking', 215, 1.4, 3), mk('peaking', 480, 1, -2.5), mk('peaking', 2400, .9, 2), mk('lowpass', 6500, .6)];
+  chain.reduce((a, n) => (a.connect(n), n), inp);
+  const dry = ac.createGain(), wet = ac.createGain(), conv = ac.createConvolver(), comp = ac.createDynamicsCompressor();
+  const n = Math.floor(ac.sampleRate*.22), ir = ac.createBuffer(2, n, ac.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); let l = 0; for (let i = 0; i < n; i++) { l += .35*((Math.random()*2 - 1) - l); d[i] = l*Math.pow(1 - i/n, 3.5); } }
+  conv.buffer = ir; dry.gain.value = .8; wet.gain.value = .5;
+  const last = chain[chain.length - 1]; last.connect(dry); last.connect(conv); conv.connect(wet);
+  comp.threshold.value = -14; comp.ratio.value = 4; comp.attack.value = .004; comp.release.value = .2;
+  dry.connect(comp); wet.connect(comp); comp.connect(ac.destination);
+  B = {inp, voices: []}; AUD.set(ac, B); return B;
+}
+// amortit (≈ main qui étouffe) les voix encore actives à l'instant t ; tau = vitesse d'extinction
+function audioDamp(ac, t, tau, onlyStrum) {
+  const B = audioBus(ac);
+  B.voices = B.voices.filter(v => v.end > t - .05);
+  B.voices.forEach(v => { if (v.t <= t && v.end > t && !v.damped && (!onlyStrum || v.strum)) { v.damped = 1; v.damp.gain.setTargetAtTime(0, t, tau); v.end = t + tau*6; try { v.src.stop(t + tau*6 + .02); } catch (e) {} } });
+}
+function pluck(freq, t, dur, vol, o) {
+  const ac = audio(), B = audioBus(ac); o = o || {};
+  const pm = dur <= .3 || o.pm, v = vol || .14;
+  B.voices = B.voices.filter(x => x.end > t - .05);
+  if (B.voices.length >= MAX_VOICES) { const old = B.voices.shift(); old.damp.gain.setTargetAtTime(0, Math.max(t, ac.currentTime), .02); try { old.src.stop(Math.max(t, ac.currentTime) + .12); } catch (e) {} }
+  const src = ac.createBufferSource(), lp = ac.createBiquadFilter(), env = ac.createGain(), damp = ac.createGain();
+  src.buffer = ksBuffer(ac, freq);
+  lp.type = 'lowpass'; lp.Q.value = .5;
+  lp.frequency.setValueAtTime(pm ? 1200 : Math.min(9000, 2200 + v*14000*(o.bright || 1)), t);
+  if (!pm) lp.frequency.exponentialRampToValueAtTime(1800, t + Math.min(dur, 1.5));
+  const g = v*1.5, hold = pm ? dur*.5 : dur*.6, end = t + dur + (pm ? .05 : .25);
+  env.gain.setValueAtTime(0, t); env.gain.linearRampToValueAtTime(g, t + .002);
+  env.gain.setValueAtTime(g, t + hold); env.gain.exponentialRampToValueAtTime(.0008, end);
+  src.connect(lp); lp.connect(env); env.connect(damp); damp.connect(B.inp);
+  src.start(t); src.stop(end + .05);
+  const voice = {t, end: end + .05, src, damp, strum: !!o.strum};
+  B.voices.push(voice);
+  src.onended = () => { try { src.disconnect(); lp.disconnect(); env.disconnect(); damp.disconnect(); } catch (e) {} };
+}
+// bruit de médiator / étouffé : court burst filtré
+function pickNoise(t, vol, f, q, dur, type) {
+  const ac = audio(), B = audioBus(ac), src = ac.createBufferSource(), flt = ac.createBiquadFilter(), g = ac.createGain();
+  src.buffer = noiseBuf(ac); flt.type = type || 'bandpass'; flt.frequency.value = f; flt.Q.value = q;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0005, t + dur);
+  src.connect(flt); flt.connect(g); g.connect(B.inp); src.start(t, Math.random()*.15); src.stop(t + dur + .02);
+  src.onended = () => { try { src.disconnect(); flt.disconnect(); g.disconnect(); } catch (e) {} };
 }
 const fretFreq = (si, fret, capo) => 440 * Math.pow(2, ((OPEN_MIDI[si] + fret + (capo||0)) - 69)/12);
+const hum = (x, a) => x*(1 + (Math.random()*2 - 1)*a);
+// vrai grattage : dir 'D' (grave→aigu) ou 'U' (aigu→grave, plus léger, cordes aiguës), lvl 0..2 (doux, moyen, accent)
+function strumChord(chord, capo, dir, t, lvl, pm) {
+  const ac = audio(); lvl = lvl == null ? 1 : lvl;
+  const idx = [0,1,2,3,4,5].filter(k => chord.frets[k] >= 0), up = dir === 'U' || dir === 'u';
+  const ord = up ? idx.slice().reverse().slice(0, lvl === 2 ? 5 : 4) : idx;
+  const gap = [.0085, .0105, .0125][lvl]*(up ? .8 : 1), vol = [.05, .085, .125][lvl]*(up ? .72 : 1);
+  audioDamp(ac, t, pm ? .012 : .035, true);                    // la main arrête les cordes du coup précédent
+  pickNoise(t, vol*.9, up ? 4800 : 3200, .8, .035);
+  ord.forEach((si, n) => {
+    const w = hum(vol*(up ? 1 : 1 - n*.025), .1), tt = t + n*gap + (Math.random()*.003 - .0015)*(n ? 1 : 0);
+    pluck(fretFreq(si, chord.frets[si], capo), Math.max(tt, t), pm ? .18 : (up ? .55 : .9) + lvl*.1, w, {strum: 1, pm, bright: up ? 1.1 : .9});
+  });
+}
+function chuckSound(t, chord, capo) {
+  const ac = audio(); audioDamp(ac, t, .01, true);
+  pickNoise(t, .3, 1100, .9, .06); pickNoise(t, .2, 220, .7, .05, 'lowpass');
+  if (chord) [0,1,2,3,4,5].filter(k => chord.frets[k] >= 0).forEach((si, n) => pluck(fretFreq(si, chord.frets[si], capo), t + n*.006, .06, hum(.035, .2), {strum: 1, pm: 1}));
+}
 function playChord(ch, capo, dir, when) {
   const ac = audio(); if (ac.state === 'suspended') ac.resume();
-  const t0 = when || ac.currentTime + 0.02;
-  const idx = [0,1,2,3,4,5].filter(i => ch.frets[i] >= 0);
-  const order = dir === 'U' ? idx.slice().reverse() : idx;
-  order.forEach((si, k) => pluck(fretFreq(si, ch.frets[si], capo), t0 + k*0.055, 1.5, .13));
+  strumChord(ch, capo, dir === 'U' ? 'U' : 'D', when || ac.currentTime + 0.02, 2);
 }
 function click(t, hi) {
   const ac = audio();
@@ -1592,12 +1675,9 @@ const rhCellTime = (P, k) => {
 };
 function rhPlayCell(c, t, chord, capo, pm) {
   if (!c) return;
-  if (c.d === 'X') { chuckSound(t); return; }
+  if (c.d === 'X') { chuckSound(t, chord, capo); return; }
   if (!chord) return;
-  const idx = [0,1,2,3,4,5].filter(k => chord.frets[k] >= 0);
-  const ord = c.d === 'U' ? idx.slice().reverse().slice(0, 4) : idx;
-  const gap = c.a === 2 ? .024 : .016, vol = [.06, .10, .15][c.a];
-  ord.forEach((si, n) => pluck(fretFreq(si, chord.frets[si], capo), t + n*gap, pm ? .16 : .8, pm ? vol*.9 : vol)); // pm = palm mute : note courte
+  strumChord(chord, capo, c.d, t, c.a, pm);   // pm = palm mute : sustain court, passe-bas
 }
 function rhStart(rh, bpm, chord, capo, onStep, opt) {
   rhStop();
@@ -3030,26 +3110,14 @@ function strumBlock(id, b, exId) {
     </div>
     <div class="legend"><span><b style="color:var(--gold2)">↓</b> vers le bas</span><span><b style="color:var(--sage)">↑</b> vers le haut</span><span style="opacity:.7">flèche pâle = la main passe sans toucher</span><span><b style="color:var(--terra)">✕</b> chuck étouffé</span><span>grande = accentué · petite = doux</span></div></div>`;
 }
-function chuckSound(t) {
-  const ac = audio(), n = Math.floor(ac.sampleRate*0.06), buf = ac.createBuffer(1, n, ac.sampleRate), d = buf.getChannelData(0);
-  for (let i = 0; i < n; i++) d[i] = (Math.random()*2 - 1) * Math.pow(1 - i/n, 3);
-  const src = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
-  src.buffer = buf; f.type = 'bandpass'; f.frequency.value = 1300; g.gain.value = .55;
-  src.connect(f); f.connect(g); g.connect(ac.destination); src.start(t);
-}
 function exoPlayStrum(id) {
   const R = STRUMREG[id]; if (!R) return;
   const len = R.pat.length, chords = R.chords.map(c => newChord(c));
   exoLoop(id, 60 / exoBpmOf(R.ex) / 2, k => {
     const i = k % len, ch = R.pat[i], chord = chords[Math.floor(k / len) % chords.length], t = audio().currentTime + 0.01;
     if (i % 2 === 0) click(t, i === 0);
-    if (ch === 'X') chuckSound(t);
-    else if ('DdUu'.includes(ch)) {
-      const idx = [0,1,2,3,4,5].filter(s => chord.frets[s] >= 0);
-      const ord = 'Uu'.includes(ch) ? idx.slice().reverse().slice(0, 4) : idx;
-      const vol = ch === 'D' ? .15 : ch === 'U' ? .1 : .055;
-      ord.forEach((si, n) => pluck(fretFreq(si, chord.frets[si], 0), t + n*0.012, .9, vol));
-    }
+    if (ch === 'X') chuckSound(t, chord, 0);
+    else if ('DdUu'.includes(ch)) strumChord(chord, 0, ch.toUpperCase(), t, ch === 'D' || ch === 'U' ? 2 : 0);
     for (let j = 0; j < len; j++) { const el = $(id + '-' + j); if (el) el.classList.toggle('exo-now', j === i); }
   });
 }
