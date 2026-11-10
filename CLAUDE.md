@@ -27,6 +27,7 @@ Claude principal = bras droit de Lucas : il découpe, délègue, vérifie et ren
 | `musicien` | Justesse musicale, contenu d'entraînement | **actif** |
 | `testeur` | Tests + regard de débutant guitare | en réserve |
 | `marketing` | Positionnement, stores, communication | en réserve |
+| `motion` | Animations, transitions, vidéos de démo | en réserve |
 
 **Validation de Lucas** : pour toute tâche longue (gros changement d'écran, refonte, nouveau parcours), présenter d'abord le plan court et/ou une maquette, et attendre son accord avant de lancer le code. Rien n'est committé sans vérification ; un rendu qui ne lui plaît pas est annulé.
 
