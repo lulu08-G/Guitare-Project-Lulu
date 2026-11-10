@@ -591,59 +591,133 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .sgl{display:flex;color:var(--cream4);justify-content:center;width:100%}.sgl .rga{max-width:22px;height:34px}.sgl .rgd{opacity:.5}
 .exo-now .sgl{color:var(--ink)!important}
 /* bloc rythme en ligne (éditeur de fiche + Atelier) : « Mon rythme » */
+/* façon de jouer : zone de la carte Partie (segment, ruban cerclé, ▶, même rythme) */
 .rb{display:flex;flex-direction:column;gap:10px}
-.rb-empty{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:52px;padding:0;background:none;border-bottom:1px solid var(--border);text-align:left}
-.rb-empty span{color:var(--cream3);font-size:15px}.rb-empty b{color:var(--gold2);font-size:14px;font-weight:700;white-space:nowrap}
-.rb-sum{display:flex;flex-direction:column;gap:6px}
-.rb-mact{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.rb-play{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0;background:none;font-weight:700;font-size:15px;color:var(--cream)}
-.rb-play i{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);color:var(--gold2);display:flex;align-items:center;justify-content:center;flex:none}
-.rb-play i svg{width:18px;height:18px}
-.rb-play.on i{background:var(--terra);border-color:var(--terra);color:#fff}
+.rb-seg{display:flex;gap:2px;background:var(--card2);border-radius:50px;padding:4px}
+.rb-seg button{flex:1;min-height:44px;border-radius:50px;background:none;font-weight:800;font-size:15px;color:var(--cream3);transition:background .15s,color .15s,box-shadow .15s}
+.rb-seg button.on{background:var(--gold);color:var(--ink);box-shadow:0 2px 8px rgba(200,120,58,.35)}
+:root[data-theme="light"] .rb-seg button.on{color:#fff}
+.rb-seg.sm{flex:1}.rb-seg.sm button{min-height:40px;font-size:14px}
+.rb-lane{display:flex;align-items:center;gap:8px}
+.rb-rib{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:60px;padding:8px;border:1.5px dashed var(--gold);border-radius:16px;background:var(--bg2);cursor:pointer;transition:background .15s}
+.pc .rb-rib{background:var(--bg)}
+.rb-rib:hover{background:color-mix(in srgb,var(--gold) 8%,var(--bg2))}
+.rb-rib:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.rb-ll{flex:none;width:46px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--gold2);line-height:1.2}
+.rb-ll i{display:block;font-style:normal;font-size:14px;letter-spacing:0}
+.rb-view{flex:1;min-width:0}.rb-view .rg{max-width:none}
+.rb-emp{flex:1;display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--cream3);font-size:14px}.rb-emp b{color:var(--gold2);font-size:14px;font-weight:700;white-space:nowrap}
+.rb-same{align-self:flex-start;min-height:44px;padding:0 18px;border-radius:50px;background:var(--card2);color:var(--cream2);font-weight:700;font-size:14px}
+.rb-same:hover{background:var(--card3)}
+.rb-play{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:50px;background:var(--gold);color:var(--ink);font-weight:800;font-size:16px;flex:none}
+:root[data-theme="light"] .rb-play{color:#fff}
+.rb-play i{display:flex}.rb-play i svg{width:16px;height:16px}
+.rb-play.on{background:var(--terra);color:#fff}
+.rb-pl-r{width:46px;height:46px;min-height:0;padding:0;border-radius:50%}.rb-pl-r span{display:none}.rb-pl-r i svg{width:17px;height:17px}
 .rb-lnk{background:none;color:var(--cream3);font-weight:600;font-size:13.5px;min-height:44px;padding:0 6px}
 .rb-lnk.acc{color:var(--gold2);font-weight:700;margin-left:auto}
-.rb-mact>.rb-lnk:last-child{margin-left:auto}
 .rb-recl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;min-height:48px;padding:0;color:var(--cream2);font-size:14px}
 .rb-rd{width:16px;height:16px;border-radius:50%;background:var(--terra);flex:none}
 .rb-recl small{flex-basis:100%;margin-left:26px;margin-top:-6px;font-size:12px;color:var(--cream3);font-weight:500}
-.rb-man{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:14px 14px 8px}
-.pc .rb-man{background:var(--bg2)}
-.rb-mh{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.rb-mh b{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--cream);flex:1}
-.rb-mh select.rb-bars{width:auto;background:none;border:0;padding:6px 2px;font-size:13px;font-weight:600;color:var(--cream3);box-shadow:none}
-.rb-x{width:44px;height:44px;margin:-6px -8px -6px 0;border-radius:50%;background:none;color:var(--cream3);display:flex;align-items:center;justify-content:center}
-.rb-x svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
-.rm-row{margin-bottom:6px}
-.rm-cells{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));background:var(--bg2);border:1px solid var(--border2);border-radius:18px;overflow:hidden}
-.pc .rm-cells{background:var(--card)}
-.rmc{height:66px;display:flex;align-items:center;justify-content:center;background:none;border:0;border-left:1px solid var(--border);color:var(--cream);padding:0;min-width:0;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
-.rmc:first-child{border-left:0}.rmc.beat{border-left-color:var(--border2)}.rmc:first-child.beat{border-left:0}
-.rmc .rga{height:48px;max-width:28px}
-.rmc.nxt{background:color-mix(in srgb,var(--gold) 14%,transparent);box-shadow:inset 0 0 0 2px var(--gold);border-radius:14px}
-.rmc.lit{background:var(--gold);color:var(--ink)}
-.rmc:focus-visible{outline:2px solid var(--gold);outline-offset:-3px}
-.rm-lbls{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));margin-top:5px}
-.rml{text-align:center;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--cream3);line-height:20px}
-.rml.b{font-style:normal;font-weight:600;font-size:20px;color:var(--cream)}
-.rb-cyc{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--cream3);font-size:13px;margin:2px 2px 0}
-.rb-cyc span{display:inline-flex;color:var(--cream)}.rb-cyc .rga{width:14px;max-width:14px;height:20px}
-.rb-cyc small{font-size:13px}
-.rb-det{border-top:1px solid var(--border);padding-top:2px}
-.rb-det>summary{min-height:44px;display:flex;align-items:center;font-size:13px;font-weight:700;color:var(--cream2);cursor:pointer}
-.rb-fil{display:flex;gap:8px;margin-bottom:8px}.rb-fil input{flex:1;min-width:0}.rb-fil select{flex:none;width:130px}
-.rb-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;max-height:250px;overflow-y:auto}
-.rb-card{border-radius:12px;background:var(--card);border:1px solid var(--border2);padding:8px 10px;text-align:left;display:flex;flex-direction:column;gap:3px;min-height:56px;color:var(--cream)}
-.pc .rb-card{background:var(--card2)}
-.rb-card b{font-size:12px;font-weight:700;line-height:1.25}.rb-card span{font-family:var(--mono);font-size:13px;color:var(--gold2);letter-spacing:1px;overflow:hidden;white-space:nowrap}
-.rb-card:hover{border-color:var(--gold)}
-.rb-none{font-size:13px;color:var(--cream3);padding:8px}
-.rb-tip{font-size:12px;line-height:1.45;color:var(--cream2)}.rb-tip:not(:empty){padding:8px 2px 0}
 .rb-take{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px}
 .rb-take b{flex:1;min-width:120px;font-size:13px}
 .rb-takeb svg{width:14px;height:14px;vertical-align:-2px;margin-right:4px}
 .rb-sels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:2px 0 6px}
+.rb-sels[hidden]{display:none}
 .rb-sels label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--cream3)}.rb-sels select{min-width:0;width:100%}
 .rb-mm{display:inline-flex}.mm-btn{white-space:nowrap}
+/* arpège : pastilles numérotées par corde, basse en cuivre (même famille que le ruban de rythme) */
+.arb{position:relative;width:100%;height:58px;--d:21px}
+.arb::before{content:"";position:absolute;left:50%;top:3px;bottom:3px;border-left:1.3px dotted var(--rg-base)}
+.nb{position:absolute;left:50%;top:calc((100% - var(--d)) * var(--r) / 3);width:var(--d);height:var(--d);margin-left:calc(var(--d) / -2);border-radius:50%;border:1.5px solid var(--rg-ink);background:var(--card);color:var(--rg-ink);font:700 11px/calc(var(--d) - 3px) var(--sans);text-align:center;font-style:normal;z-index:1;transition:border-color .06s}
+.nb.bs{background:var(--rg-cu);border-color:var(--rg-cu);color:#fff}
+.rg.light .nb{background:#fff}
+.rg.arp.mini .arb{height:44px;--d:17px}.rg.arp.mini .nb{font-size:10px}
+.rgc.lit .nb:not(.bs){border-color:var(--rg-cu);color:var(--rg-cu)}
+/* ruban cerclé : nom de la façon de jouer + ruban */
+.pv-way{display:flex;align-items:center;gap:8px;margin-top:12px}
+.pv-wl{flex:none;width:46px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--cream3);line-height:1.2}
+.pv-way .sv-rh{flex:1;min-width:0;margin:0}
+.pv-pl{flex:none;width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s}
+:root[data-theme="light"] .pv-pl{color:#fff}
+.pv-pl svg{width:16px;height:16px}.pv-pl.on{background:var(--terra);color:#fff}
+.pv-pl:active{transform:scale(.94)}
+.pv-capo{font-size:12px;font-weight:700;background:var(--card2);color:var(--gold2);border-radius:50px;padding:4px 10px;white-space:nowrap}
+.pv-lyrd{margin-top:10px;border-top:1px dashed var(--border2)}
+.pv-lyrd>summary{list-style:none;min-height:44px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700;color:var(--cream3);cursor:pointer}
+.pv-lyrd>summary::-webkit-details-marker{display:none}
+.pv-lyrd>summary b::before{content:"Voir ▾"}.pv-lyrd[open]>summary b::before{content:"Masquer ▴"}
+#v-sheet .pv-lyrd .pv-lyr{display:block;margin-top:4px}
+/* éditeurs plein écran (rythme, arpège) */
+.we{position:fixed;inset:0;z-index:600;display:flex;background:var(--bg)}
+.we[hidden]{display:none}
+body.we-open{overflow:hidden}
+.we-sheet{flex:1;min-width:0;overflow-y:auto;overscroll-behavior:contain;padding:0 16px 48px;max-width:640px;margin:0 auto}
+.we-top{position:sticky;top:0;z-index:2;background:var(--bg);display:flex;align-items:center;gap:10px;padding:10px 0}
+.we-top h2{flex:1;min-width:0;text-align:center;font-family:var(--serif);font-size:22px;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.we-x,.we-ok{flex:none;min-width:48px;height:48px;border-radius:50px;background:var(--card2);color:var(--cream2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;padding:0 14px}
+.we-ok{background:var(--gold);color:var(--ink);font-weight:800;padding:0 20px}
+:root[data-theme="light"] .we-ok{color:#fff}
+.we-x svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.we-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}.we-chips::-webkit-scrollbar{display:none}
+.we-chip{flex:none;min-height:44px;padding:0 18px;border-radius:50px;background:var(--card2);color:var(--cream2);font-weight:700;font-size:14px;white-space:nowrap}
+.we-chip:hover{background:var(--card3)}
+.we-sec{font-size:11px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--cream3);margin:18px 0 8px}
+.we-card{background:var(--card);border:1.5px solid var(--gold);border-radius:20px;padding:10px}
+.we-rib{touch-action:none;user-select:none;-webkit-user-select:none}
+.we-rib .rg{max-width:none;gap:6px}.we-rib .rg-row{gap:6px}
+.we-rib .rgb{border-radius:16px;padding:6px 3px 4px}
+.we-rib .rgn{font-size:20px}
+.we-rib .rgc{cursor:pointer;border-radius:10px;min-height:48px}
+.we-rib .rgc:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.we-rib .rgs{width:100%;height:auto;max-height:78px}
+.we-rib .rgp{stroke:var(--rg-cu)}.we-rib .rgp.soft{opacity:.75}
+.we-rib .rgc.gh .rgp{stroke:var(--cream3);stroke-dasharray:5 7;opacity:.5}.we-rib .rgc.gh .rgbase{opacity:0}
+.we-rib .rgl{font-size:13px}
+.we-meta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.we-lnk{min-height:44px;padding:0 6px;background:none;font-size:13px;font-weight:700;color:var(--cream3)}.we-lnk.acc{color:var(--gold2)}
+.we-hint{margin:12px 0;padding:10px 14px;border-radius:12px;background:color-mix(in srgb,var(--gold) 12%,transparent);font-size:13px;line-height:1.4;color:var(--cream2)}
+.we-hint b{color:var(--gold2)}
+.we-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.we-tool{min-height:68px;border-radius:14px;background:var(--card);border:1.5px solid var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font-size:12px;font-weight:700;color:var(--cream2)}
+.we-tool .rga{height:28px;max-width:20px;color:var(--cream)}.we-tool span{display:flex;height:30px;align-items:center}
+.we-tool.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,var(--card));color:var(--gold2)}
+.we-tool.on .rga{color:var(--gold2)}
+.we-play{display:flex;align-items:center;gap:10px;margin:14px 0 4px}
+.we-play .rb-play{flex:1;min-height:52px}
+.we-bpm{display:flex;align-items:center;background:var(--card2);border-radius:50px;height:52px;padding:0 4px;flex:none}
+.we-bpm button{width:44px;height:44px;border-radius:50%;background:none;font-size:20px;font-weight:700;color:var(--cream2)}
+.we-bpm b{min-width:40px;text-align:center;font-size:17px;color:var(--cream)}
+.we-mm{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:6px;font-size:12px;font-weight:700;color:var(--cream3)}
+.we-motifs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.we-motif{background:var(--card);border:1.5px solid var(--border2);border-radius:14px;padding:8px 8px 6px;text-align:left;min-height:68px}
+.we-motif.on{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.we-motif .t{display:flex;justify-content:space-between;font-weight:800;font-size:13px;color:var(--cream);margin-bottom:4px}.we-motif .t i{font-style:normal;color:var(--gold2)}
+.arm{display:flex;gap:1px}.arm .arb{flex:1;height:36px;--d:13px;--rg-base:var(--cream4)}.arm .arb::before{display:none}.arm .nb{font-size:8px;border-width:1px}
+.we-card#we-grid{padding:10px 8px}
+.wag{display:grid;grid-template-columns:34px 1fr;gap:6px}
+.wag-l{display:flex;flex-direction:column;gap:4px;padding:4px 0}.wag-l span{height:44px;line-height:44px;font:700 11px var(--sans);text-align:right;color:var(--cream3)}
+.wag-bs{display:flex;gap:5px;min-width:0}
+.wag-b{flex:1;min-width:0;display:flex;gap:2px;border:1.2px solid var(--rg-line);border-radius:12px;padding:4px;background:var(--bg)}
+.wag-c{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;border-radius:8px}
+.wag-i{height:44px;border-radius:7px;background:color-mix(in srgb,var(--cream3) 16%,transparent);transition:background .1s}
+.wag-i.on{background:var(--rg-cu)}.wag-i.bs{background:var(--gold2);box-shadow:inset 0 0 0 2px rgba(0,0,0,.18)}
+.wag-c.lit .wag-i:not(.on):not(.bs){background:color-mix(in srgb,var(--rg-cu) 24%,transparent)}
+.wag-i:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.we-bass{display:flex;align-items:center;gap:10px;margin:12px 0 4px}.we-bass>span{font-size:13px;font-weight:700;color:var(--cream3)}
+.we-note{font-size:12.5px;color:var(--cream3);margin:2px 0 6px}
+/* aperçu « Dans la fiche » */
+.wpc{position:relative;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:12px 12px 10px 16px;box-shadow:0 2px 10px var(--shadow)}
+.wpc::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--c,var(--gold))}
+.wpc-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}.wpc-h b{font-family:var(--serif);font-size:17px;font-weight:800;color:var(--cream)}
+.wpc-ch{display:flex;gap:6px;margin-bottom:10px}
+.wpc-ch span{flex:1;min-width:0;text-align:center;border-radius:11px;background:var(--bg);border:1px solid var(--border);padding:7px 0;font-family:var(--serif);font-weight:800;font-size:18px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wpc-ch em,.wpc-way em{font-size:13px;color:var(--cream3);font-style:normal}
+.wpc-way .rg{max-width:none}
+@media(min-width:900px){
+  .we{background:rgba(10,6,2,.55);justify-content:flex-end}
+  .we-sheet{flex:none;width:560px;max-width:100%;margin:0;background:var(--bg);box-shadow:-14px 0 44px var(--shadow);padding:0 26px 48px}
+}
 /* éditeur de fiche */
 .ed-wrap{padding-bottom:calc(var(--dock-h,120px) + 28px)}
 .ed-top{display:flex;align-items:center;gap:10px;padding:14px 0 12px;position:sticky;top:62px;z-index:20;background:var(--bg)}
@@ -669,13 +743,19 @@ input.ed-in-a{color:var(--cream2)}
 .pc .part-tools button{width:36px;height:36px}
 .part-card.collapsed .pc-b{display:none}.part-card.collapsed .pc-h{margin-bottom:0}
 .part-card.collapsed .collapse-ico{transform:rotate(-90deg)}
-.ed-capo{position:relative;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px;border:1.5px solid var(--border2);border-radius:50px;color:var(--cream)}
+.ed-capo{display:inline-flex;align-items:center;gap:4px;height:44px;padding:0 4px 0 14px;border:1.5px solid var(--border2);border-radius:50px;color:var(--cream)}
 .ed-capo.on{border-color:var(--gold)}
-.ed-capo:focus-within{outline:2px solid var(--gold);outline-offset:2px}
-.ed-capo small{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--cream3)}
-.ed-capo b{font-family:var(--serif);font-size:22px;line-height:1;color:var(--gold2);font-weight:600;min-width:12px;text-align:center}
-.ed-capo svg{width:12px;height:12px;stroke:var(--cream3);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.ed-capo select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}
+.ed-capo small{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--cream3);margin-right:4px}
+.ed-capo b{font-family:var(--serif);font-size:22px;line-height:1;color:var(--gold2);font-weight:600;min-width:22px;text-align:center}
+.ed-capo button{width:36px;height:36px;border-radius:50%;background:var(--card2);color:var(--cream2);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.ed-capo button:disabled{opacity:.35;cursor:not-allowed}
+.pc-names{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}.pc-names::-webkit-scrollbar{display:none}
+.pc-chip{flex:none;min-height:44px;padding:0 16px;border-radius:50px;background:var(--card2);color:var(--cream2);font-weight:700;font-size:14px;white-space:nowrap;transition:background .15s,color .15s}
+.pc-chip.on{background:var(--gold);color:var(--ink)}
+:root[data-theme="light"] .pc-chip.on{color:#fff}
+.pc-opt{font-size:12px;color:var(--cream3)}
+.part-card.collapsed .pc-names,.part-card.collapsed .pc-name{display:none}
+.pc .pc-name{margin-bottom:8px;width:100%}
 .ed-chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:12px}
 .ed-ct{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 6px;border:1px solid var(--border2);border-radius:18px;background:var(--card);color:var(--cream);cursor:pointer;min-height:118px;text-align:center}
 .ed-ct:hover{border-color:var(--gold)}
@@ -1162,6 +1242,9 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 #v-sheet.all .parts-view .pv-block{display:block;padding:14px 0 16px;border-bottom:1px solid var(--border);position:relative;cursor:pointer}
 #v-sheet.all .parts-view .pv-block.on::before{content:"";position:absolute;left:-18px;top:14px;bottom:16px;width:5px;border-radius:0 4px 4px 0;background:var(--gold)}
 #v-sheet.all .parts-view .pv-block>.pv-hdr{display:flex;background:none;border:0;padding:0 0 8px}
+#v-sheet.one:not(.solo) .parts-view .pv-block>.pv-hdr{display:flex;background:none;border:0;padding:0 0 8px;gap:10px}
+#v-sheet.one:not(.solo) .pv-name{font-family:var(--serif);font-size:26px;font-weight:800;text-transform:none;letter-spacing:0;color:var(--cream)}
+#v-sheet .pv-hdr .pv-capo{margin-right:auto}
 #v-sheet.all .pv-name{font-family:var(--serif);font-size:26px;font-weight:800;text-transform:none;letter-spacing:0;color:var(--cream)}
 .pv-rep{font-size:14px;font-weight:700;color:var(--cream3);margin-left:6px;font-family:var(--sans)}
 #v-sheet.all .pv-extra{display:none}
@@ -1191,6 +1274,7 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
   #v-sheet.all .chord-cell .cn{font-size:30px}
   #v-sheet.all .chord-cell svg{width:min(100%,110px)}
   #v-sheet.all .sv-rh{margin:0}
+  #v-sheet.all .pv-lyrd{grid-column:1/-1;margin-top:6px}
   #v-sheet.all.compact .chords-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   #v-sheet.all.compact .chord-cell .cn{font-size:24px}
 }
@@ -1393,6 +1477,7 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="we" id="we" hidden role="dialog" aria-modal="true" aria-label="Éditeur de la façon de jouer"><div class="we-sheet" id="we-sheet"></div></div>
 
 <!-- ══ HOME / CAHIER ══ -->
 <div class="view on" id="v-home">
@@ -1924,6 +2009,7 @@ const findChord = n => { const r = findChord1(n); if (r) return r; const m = Str
 const STRINGS = ['E','A','D','G','B','e'];   // index 0 = low E
 const OPEN_MIDI = [40,45,50,55,59,64];
 const PART_NAMES = ['Intro','Couplet','Refrain','Pont','Solo','Outro'];
+const PC_NAMES = ['Intro','Couplet','Refrain','Pont','Outro'];   // pastilles de nom dans l'éditeur
 const COLORS = [['gold','#c8783a'],['sage','#6a9070'],['terra','#b85840'],['mauve','#8a7aaa'],['cream','#c8b49a']];
 
 /* ── MODEL FACTORIES ── */
@@ -2225,7 +2311,7 @@ function rhRow(mes, res) {
    chaque case est un demi-trait (↓ = la vague descend, ↑ = elle remonte), la flèche en est la pointe, ✕ = étouffé,
    pointillé = la main passe sans jouer. Une case = un petit SVG (viewBox fixe, mis à l'échelle par la largeur) pour que
    le surlignage du coup en cours soit un simple changement de classe (.lit). */
-const rhGeo = mini => mini ? {W:32, H:34, yT:5, yB:29, l:6, x:3.4, w:[1.5, 2.2, 3]} : {W:32, H:56, yT:8, yB:48, l:8, x:4.4, w:[1.9, 2.8, 3.8]};
+const rhGeo = (mini, edit) => mini ? {W:32, H:34, yT:5, yB:29, l:6, x:3.4, w:[1.5, 2.2, 3]} : edit ? {W:44, H:60, yT:9, yB:51, l:9, x:4.8, w:[2.2, 3.2, 4.4]} : {W:32, H:56, yT:8, yB:48, l:8, x:4.4, w:[1.9, 2.8, 3.8]};
 const rhN = v => Math.round(v*100)/100;
 const rhLerp = (a, b, t) => [a[0] + (b[0] - a[0])*t, a[1] + (b[1] - a[1])*t];
 const rhBez = (p, t) => { const m = 1 - t; return [0, 1].map(i => m*m*m*p[0][i] + 3*m*m*t*p[1][i] + 3*m*t*t*p[2][i] + t*t*t*p[3][i]); };
@@ -2245,13 +2331,15 @@ function rhCellSVG(c, dir, g) {
   }
   return s + '</svg>';
 }
-// opt = {cursor: case en lecture, mini: taille réduite, idp: préfixe d'id des cases (exercices)}
+// direction d'un coup « automatique » : ↓ sur le temps, ↑ entre les temps (triolets : ↓ puis ↑)
+const rhAutoDir = (spb, j) => spb === 3 ? (j ? 'U' : 'D') : (j % 2 ? 'U' : 'D');
+// opt = {cursor: case en lecture, mini: taille réduite, idp: préfixe d'id des cases (exercices), edit: saisie (cases vides fantômes), rowB: temps par ligne}
 function rhythmSVG(rh, light, opt) {
   opt = opt || {}; rh = rhNorm(rh);
-  if (!rhHas(rh)) return `<div style="font-size:11px;color:${light ? '#999' : 'var(--cream4)'};padding:4px 0">Aucun coup</div>`;
-  const cells = rh.cells, spb = rhSpb(rh.mes, rh.res), per = rhPerBar(rh.mes, rh.res), nB = RH_BEATS[rh.mes], g = rhGeo(opt.mini);
+  if (!rhHas(rh) && !opt.edit) return `<div style="font-size:11px;color:${light ? '#999' : 'var(--cream4)'};padding:4px 0">Aucun coup</div>`;
+  const cells = rh.cells, spb = rhSpb(rh.mes, rh.res), per = rhPerBar(rh.mes, rh.res), nB = RH_BEATS[rh.mes], g = rhGeo(opt.mini, opt.edit);
   const flat = rh.mes !== '6/8' && spb === 3;           // triolets : bas, (passage), haut
-  const rowB = rh.mes === '4/4' && spb >= 4 ? 2 : nB;   // doubles croches : 2 temps par ligne
+  const rowB = opt.rowB || (rh.mes === '4/4' && spb >= 4 ? 2 : nB);   // doubles croches : 2 temps par ligne ; opt.rowB : saisie sur petit écran
   let h = `<div class="rg${light ? ' light' : ''}${opt.mini ? ' mini' : ''}${spb >= 4 ? ' dense' : ''}" role="img" aria-label="Rythme : ${rh.mes}, ${rh.bars} mesure${rh.bars > 1 ? 's' : ''}">`;
   for (let b = 0; b < rh.bars; b++) for (let t0 = 0; t0 < nB; t0 += rowB) {
     h += `<div class="rg-row${t0 === 0 ? ' bar' : ''}">`;
@@ -2259,14 +2347,80 @@ function rhythmSVG(rh, light, opt) {
       h += `<div class="rgb"><div class="rgn">${rhLabel(rh.mes, spb, 0, t)}</div><div class="rgcs">`;
       for (let j = 0; j < spb; j++) {
         const k = b*per + t*spb + j, c = cells[k];
-        const dir = c ? (c.d === 'U' ? 'U' : 'D') : flat && j === 1 ? 'F' : j % 2 ? 'U' : 'D';
-        h += `<div class="rgc${k === opt.cursor ? ' lit' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}" data-k="${k}"${opt.idp ? ` id="${opt.idp}-${k}"` : ''}>${rhCellSVG(c, dir, g)}<span class="rgl">${j ? rhLabel(rh.mes, spb, j, t) : ''}</span></div>`;
+        const gh = opt.edit && !c;   // saisie : une case vide est une flèche fantôme (la direction que poserait « Coup »)
+        const dir = gh ? rhAutoDir(spb, j) : c ? (c.d === 'U' ? 'U' : 'D') : flat && j === 1 ? 'F' : j % 2 ? 'U' : 'D';
+        h += `<div class="rgc${k === opt.cursor ? ' lit' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}${gh ? ' gh' : ''}" data-k="${k}"${opt.idp ? ` id="${opt.idp}-${k}"` : ''}>${rhCellSVG(gh ? {d: dir, a: 1} : c, dir, g)}<span class="rgl">${j ? rhLabel(rh.mes, spb, j, t) : ''}</span></div>`;
       }
       h += '</div></div>';
     }
     h += '</div>';
   }
   return h + '</div>';
+}
+
+/* ═══════ FAÇON DE JOUER D'UNE PARTIE : rythme OU arpège ═══════
+   p.way : 'rh' (défaut) | 'arp' | 'none' ; p.rhythm = modèle rythme (ci-dessus) ; p.arp = {v:1, mes:'4/4', bass:'auto'|6|5|4, motif:id|'', steps:[[rôles]×8]}.
+   Rôles d'arpège : 'B' = basse, '3' '2' '1' = cordes sol, si, mi aigu. Une colonne = une croche, 1 accord = 1 mesure (comme le rythme).
+   Les anciennes fiches (sans arp ni way) sont lues comme « rythme » ou « aucun ». */
+const ARP_ROW = {'1': 0, '2': 1, '3': 2, 'B': 3};   // ligne, de haut en bas : la corde la plus aiguë est en haut
+const ARP_MOTIFS = [
+  {id:'classique', n:'Classique', motif:'B 3 2 3 B 3 2 3'},
+  {id:'montant',   n:'Montant',   motif:'B 3 2 1 B 3 2 1'},
+  {id:'ballade',   n:'Ballade',   motif:'B 1 2 3 B 1 2 3'},
+  {id:'alterne',   n:'Alterné',   motif:'B 3 2 3 B 2 3 2'},
+];
+const arpSteps = m => m.motif.split(' ').map(t => t === '-' ? [] : t.split('+'));
+const arpEmpty = () => ({v:1, mes:'4/4', bass:'auto', motif:'', steps: Array.from({length: 8}, () => [])});
+const arpHas = a => !!(a && Array.isArray(a.steps) && a.steps.some(s => s.length));
+const arpMotifOf = a => ARP_MOTIFS.find(m => JSON.stringify(arpSteps(m)) === JSON.stringify(a.steps));
+function pWay(p) {
+  if (!p || p.way === 'none') return 'none';
+  if (p.way === 'arp') return arpHas(p.arp) ? 'arp' : 'none';
+  return rhHas(p.rhythm) ? 'rh' : 'none';
+}
+const pHas = p => pWay(p) !== 'none';
+// rythme jouable de la partie : pour un arpège, 8 croches « vides » qui cadencent le moteur (1 mesure par accord)
+const arpRh = () => ({v:2, mes:'4/4', res:8, bars:1, swing:0, cells: Array.from({length: 8}, () => ({d:'D', a:1}))});
+const pRh = p => pWay(p) === 'arp' ? arpRh() : p.rhythm;
+// corde de la basse : la plus grave jouée (auto) ou la 6 / 5 / 4 demandée si l'accord la joue
+function arpBassSi(chord, bass) {
+  const pl = [0,1,2,3,4,5].filter(i => chord && chord.frets[i] >= 0); if (!pl.length) return 0;
+  const si = bass === 'auto' || !bass ? pl[0] : 6 - bass;
+  return chord.frets[si] >= 0 ? si : pl[0];
+}
+function arpStepNotes(roles, chord, bass) {
+  if (!chord || !chord.frets) return [];
+  const out = [];
+  (roles || []).forEach(r => {
+    const si = r === 'B' ? arpBassSi(chord, bass) : ({'3': 3, '2': 4, '1': 5})[r];
+    if (si != null && chord.frets[si] >= 0) out.push({si, fret: chord.frets[si], bs: r === 'B'});
+  });
+  return out;
+}
+function arpPlay(a, i, ch, t, capo) {
+  arpStepNotes(a.steps[i], ch, a.bass).forEach((o, j) => pluck(fretFreq(o.si, o.fret, capo), t + j*.012, o.bs ? 1.4 : 1.1, o.bs ? .16 : .13));
+}
+const arpCellFn = (a, capo) => (c, t, ch, i) => arpPlay(a, i, ch, t, capo);
+// pastilles numérotées d'une colonne (--r = ligne) ; bn = n° de la corde de basse
+const arpBubbles = (roles, bn) => (roles || []).map(r => `<i class="nb${r === 'B' ? ' bs' : ''}" style="--r:${ARP_ROW[r]}">${r === 'B' ? bn : r}</i>`).join('');
+// opt = {cursor: colonne en lecture, mini: taille réduite, chord: accord dont on affiche la basse}
+function arpRibbonHTML(a, light, opt) {
+  opt = opt || {}; a = a || arpEmpty();
+  const bn = opt.chord ? 6 - arpBassSi(opt.chord, a.bass) : (a.bass === 'auto' || !a.bass ? 5 : +a.bass);
+  let h = `<div class="rg arp${light ? ' light' : ''}${opt.mini ? ' mini' : ''}" role="img" aria-label="Arpège sur 4 temps"><div class="rg-row bar">`;
+  for (let b = 0; b < 4; b++) {
+    h += `<div class="rgb"><div class="rgn">${b + 1}</div><div class="rgcs">`;
+    for (let j = 0; j < 2; j++) { const k = b*2 + j;
+      h += `<div class="rgc${k === opt.cursor ? ' lit' : ''}" data-k="${k}"><div class="arb">${arpBubbles(a.steps[k], bn)}</div><span class="rgl">${j ? 'et' : ''}</span></div>`;
+    }
+    h += '</div></div>';
+  }
+  return h + '</div></div>';
+}
+// façon de jouer d'une partie, rendue comme dans la fiche (rythme en ruban ou arpège), light = impression
+function pWayHTML(p, light, opt) {
+  const w = pWay(p);
+  return w === 'arp' ? arpRibbonHTML(p.arp, light, opt) : w === 'rh' ? rhythmSVG(p.rhythm, light, opt) : '';
 }
 
 /* ═══════ WEB AUDIO ═══════ */
@@ -5389,7 +5543,7 @@ function atLoadYT() {
   at.ytFor = tSong(); tuto.yt = null; tutoLoadYT();
 }
 function atEmpty(s) {
-  return !s.parts.some(p => p.chords.length || rhHas(p.rhythm) || typeof p.lyrics === 'string') && !(s.links || []).length && !(s.original && s.original.url) && !(s.media || []).length;
+  return !s.parts.some(p => p.chords.length || rhHas(p.rhythm) || arpHas(p.arp) || typeof p.lyrics === 'string') && !(s.links || []).length && !(s.original && s.original.url) && !(s.media || []).length;
 }
 function atCommit() {
   clearTimeout(atTimers.title);
@@ -5600,7 +5754,7 @@ function atRenderFiche() {
     <div class="at-ptools"><input type="text" value="${esc(p.name)}" aria-label="Nom de la partie" onchange="atPartName(this.value)">${s.parts.length > 1 ? `<button type="button" class="at-chip" onclick="atPartDel()">Supprimer</button>` : ''}</div>`}
     <div class="at-lbl"><span>Accords</span></div>
     <div class="at-bld"></div>
-    <div class="at-lbl"><span>Rythme</span></div>
+    <div class="at-lbl"><span>Rythme ou arpège</span></div>
     <div class="at-rh">${rbHTML('at', pi)}</div>
     <div class="at-lbl"><span>Original</span></div>
     <div class="at-in"><input type="url" id="at-orig" inputmode="url" placeholder="Lien de la version originale" value="${esc(orig)}" aria-label="Lien de la version originale" oninput="atOrig(this.value)"><button type="button" class="btn btn-ghost" onclick="atOrigPaste()">Coller</button><button type="button" class="btn btn-ghost" onclick="atOrigSearch()">Chercher</button></div>
@@ -5625,7 +5779,7 @@ function atPartAdd() {
 }
 function atPartName(v) { atPart().name = v.trim().slice(0, 40) || 'Partie'; atMark(); atRenderFiche(); }
 function atPartDel() {
-  const p = atPart(); if (p.chords.length || rhHas(p.rhythm)) if (!confirm(`Supprimer la partie « ${p.name} » ?`)) return;
+  const p = atPart(); if (p.chords.length || rhHas(p.rhythm) || arpHas(p.arp)) if (!confirm(`Supprimer la partie « ${p.name} » ?`)) return;
   at.s.parts.splice(at.pi, 1); at.pi = Math.max(0, at.pi - 1); at.sel = -1; atMark(); atRenderFiche(); atRenderCopy(); atSeg();
 }
 function atLyrics(v) { const p = atPart(); if (v) p.lyrics = v; else delete p.lyrics; atMark(); }
@@ -6140,6 +6294,7 @@ let svAll = false; // vue « Tout » : le morceau entier, parties empilées
 const SV_COMPACT = 12; // au-delà, accords en noms seuls
 // rythme d'une partie dans la fiche (en vue « Tout » la taille mini est réglée par le CSS) : seul point d'appel de l'affichage du rythme
 const svRhHTML = (rh, opt) => rhythmSVG(rh, false, Object.assign({mini: svAll}, opt));
+const svWayHTML = (p, opt) => pWayHTML(p, false, Object.assign({mini: svAll}, opt));
 const hasLyr = p => !!(p && typeof p.lyrics === 'string' && p.lyrics.trim());
 async function viewSheet(id, keepPart) {
   const s = sheets.find(x => x.id === id); if (!s) return;
@@ -6173,7 +6328,10 @@ async function viewSheet(id, keepPart) {
       body += `<div class="chords-row">` +
         p.chords.map((c, j) => `<div class="chord-cell" onclick="svChordTap(${i},${j},this,event)"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size:2.2})}</div>`).join('') + `</div>`;
     }
-    if (rhHas(p.rhythm)) body += `<div class="sv-rh" id="rh-view-${i}">${svRhHTML(p.rhythm)}</div><button type="button" class="btn btn-ghost btn-sm pv-extra" style="min-height:44px;margin-top:6px" onclick="rbEditCur(${i})">Changer le rythme</button>`;
+    const way = pWay(p);   // rythme OU arpège : une ligne « Rythme » / « Arpège » avec son ▶
+    if (way !== 'none') body += `<div class="pv-way"><span class="pv-wl">${way === 'arp' ? 'Arpège' : 'Rythme'}</span><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div>
+      <button type="button" class="pv-pl" data-i="${i}" onclick="svWayPlay(${i},event)" aria-label="${way === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'} de la partie">${RH_PLAY_SVG}</button></div>
+      <button type="button" class="btn btn-ghost btn-sm pv-extra" style="min-height:44px;margin-top:6px" onclick="rbEditCur(${i})">${way === 'arp' ? 'Changer l’arpège' : 'Changer le rythme'}</button>`;
     if (p.rec) {
       const d = p.rec.end - p.rec.start;
       body += `<div class="sv-reccard pv-extra"><b>Ma prise à la guitare<small>Boucle de ${d.toFixed(1).replace('.', ',')} s</small></b>
@@ -6182,16 +6340,16 @@ async function viewSheet(id, keepPart) {
         <button type="button" class="btn btn-ghost btn-sm" onclick="rcDelete(${i})">Supprimer</button></div>`;
     }
     let more = '';   // détails d'une partie : visibles quand elle est seule à l'écran, cachés en vue « Tout »
-    if (hasLyr(p)) more += `<div class="pv-lyr">${lyricsPreviewHTML(p.lyrics)}</div>`;
     if (p.note) more += `<div class="pv-note">${esc(p.note)}</div>`;
     const staff = tabStaffSVG(p.chords, false);
     if (staff) more += `<div class="pv-lbl">Tablature / arpège</div><div class="scroll-x">${staff}</div>`;
     if (p.tabText) more += `<div class="pv-lbl">Tab</div><div class="tab-ascii mono">${esc(p.tabText)}</div>`;
     if (more) body += `<div class="pv-extra">${more}</div>`;
+    if (hasLyr(p)) body += `<details class="pv-lyrd"${s.showLyrics ? ' open' : ''} onclick="event.stopPropagation()"><summary><span>Paroles</span><b></b></summary><div class="pv-lyr">${lyricsPreviewHTML(p.lyrics)}</div></details>`;
     if (!body) body = `<div style="font-size:13px;color:var(--cream3)">Partie vide — ajoute des accords avec « Modifier ».</div>`;
     const rep = +(p.repeat || p.reps || 0);   // ×N si la partie se répète (champ facultatif)
     return `<div class="pv-block ${i===svPart?'on':''}" data-idx="${i}" id="pvb-${i}" ${svAll ? `onclick="svPick(${i})"` : ''}>
-      <div class="pv-hdr"><div class="pv-name">${esc(p.name || 'Partie ' + (i+1))}${rep > 1 ? `<span class="pv-rep">×${rep}</span>` : ''}</div></div>
+      <div class="pv-hdr"><div class="pv-name">${esc(p.name || 'Partie ' + (i+1))}${rep > 1 ? `<span class="pv-rep">×${rep}</span>` : ''}</div>${i === 0 && s.capo > 0 ? `<span class="pv-capo">Capo ${s.capo}</span>` : ''}</div>
       <div class="pv-body">${body}</div>
     </div>`;
   }).join('');
@@ -6208,7 +6366,7 @@ function svShowPart(i) {
   svAll = i < 0 && cur.parts.length > 1;
   if (i >= 0) svPart = i;
   $('v-sheet').classList.toggle('all', svAll);
-  cur.parts.forEach((q, j) => { const el = $('rh-view-' + j); if (el) el.innerHTML = svRhHTML(q.rhythm); });   // taille mini en vue « Tout »
+  cur.parts.forEach((q, j) => { const el = $('rh-view-' + j); if (el) el.innerHTML = svWayHTML(q, {chord: q.chords[0]}); });   // taille mini en vue « Tout »
   document.querySelectorAll('#sv-tabs .sv-tab').forEach(b => b.classList.toggle('on', svAll ? +b.dataset.idx < 0 : +b.dataset.idx === svPart));
   document.querySelectorAll('#sv-parts .pv-block').forEach(b => {
     b.classList.toggle('on', +b.dataset.idx === svPart);
@@ -6251,15 +6409,19 @@ const REC_DOT_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
 function svSync() {
   if (!cur) return;
   const p = cur.parts[svPart];
-  const on = rhPlaying('v' + svPart), rp = !!recPlay, recing = !!(rc && rc.stage === 'rec'), has = rhHas(p && p.rhythm);
+  const on = rhPlaying('v' + svPart), rp = !!recPlay, recing = !!(rc && rc.stage === 'rec'), has = pHas(p);
   const bar = $('sv-bar');
   bar.classList.toggle('rec', recing); bar.classList.toggle('playing', on && !recing);
   const pl = $('sv-play'), cap = $('sv-play-cap');
   pl.classList.toggle('create', !has && !recing);
   if (recing) { pl.innerHTML = RH_STOP_SVG; cap.textContent = 'Arrêter'; pl.setAttribute('aria-label', 'Arrêter l’enregistrement'); }
-  else if (has) { pl.innerHTML = on ? RH_PAUSE_SVG : RH_PLAY_SVG; cap.textContent = on ? 'Pause' : 'Jouer'; pl.setAttribute('aria-label', on ? 'Mettre le rythme en pause' : 'Lancer le rythme en boucle'); }
-  else { pl.innerHTML = RH_PLUS_SVG; cap.textContent = 'Créer'; pl.setAttribute('aria-label', 'Créer un rythme pour cette partie'); }
-  $('sv-live').textContent = 'Rythme en boucle' + (p && p.name ? ' · ' + p.name : '');
+  else if (has) { const ar = pWay(p) === 'arp'; pl.innerHTML = on ? RH_PAUSE_SVG : RH_PLAY_SVG; cap.textContent = on ? 'Pause' : 'Jouer'; pl.setAttribute('aria-label', on ? (ar ? 'Mettre l’arpège en pause' : 'Mettre le rythme en pause') : (ar ? 'Lancer l’arpège en boucle' : 'Lancer le rythme en boucle')); }
+  else { pl.innerHTML = RH_PLUS_SVG; cap.textContent = 'Créer'; pl.setAttribute('aria-label', 'Créer un rythme ou un arpège pour cette partie'); }
+  $('sv-live').textContent = (pWay(p) === 'arp' ? 'Arpège en boucle' : 'Rythme en boucle') + (p && p.name ? ' · ' + p.name : '');
+  document.querySelectorAll('#sv-parts .pv-pl').forEach(b => {   // ▶ de chaque carte
+    const pn = rhPlaying('v' + b.dataset.i) && !recing; if (b.dataset.on === String(pn)) return;
+    b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
+  });
   $('sv-rec').innerHTML = REC_DOT_SVG;
   const nTk = cur.parts.filter(x => x.rec).length, tk = $('sv-takes');
   tk.innerHTML = (rp ? 'Stop prise' : 'Prises' + (nTk ? ` (${nTk})` : '')) + '<i>›</i>';
@@ -6305,10 +6467,9 @@ function svTakes() {
 function svPick2() { document.querySelectorAll('#sv-parts .pv-block').forEach(b => b.classList.toggle('on', +b.dataset.idx === svPart)); }
 async function svToggleLyrics() {
   if (!cur) return;
-  // les paroles s'affichent dans la vue d'une partie : on passe sur la première qui en a
-  if (!hasLyr(cur.parts[svPart])) { const k = cur.parts.findIndex(hasLyr); if (k < 0) return; svShowPart(k); }
-  else if (svAll && !cur.showLyrics) svShowPart(svPart);
-  cur.showLyrics = !cur.showLyrics;
+  if (!cur.parts.some(hasLyr)) return;
+  cur.showLyrics = !cur.showLyrics;   // les paroles de chaque carte sont repliées par défaut : le bouton les déplie / replie toutes
+  document.querySelectorAll('#sv-parts .pv-lyrd').forEach(d => { d.open = !!cur.showLyrics; });
   $('v-sheet').classList.toggle('lyr-on', cur.showLyrics);
   svSync();
   await DB.put('sheets', clone(cur));
@@ -6316,7 +6477,7 @@ async function svToggleLyrics() {
 function svPlayCur() {
   if (rc && rc.stage === 'rec') { rcStop(); return; }
   const p = cur && cur.parts[svPart]; if (!p) return;
-  if (!rhHas(p.rhythm)) { rbEditCur(svPart); return; }
+  if (!pHas(p)) { rbEditCur(svPart); return; }
   playPartRhythm(svPart);
 }
 function svRecBtn() {
@@ -6386,10 +6547,10 @@ const RH_STOP_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
 const rhLastCi = {};
 function rhRenderPlayer(i, step, k) {
   const el = $('rh-view-' + i), p = cur && cur.parts[i];
-  if (el && p) el.innerHTML = svRhHTML(p.rhythm, step == null ? {} : {cursor: step});
   // accord en cours (1 accord = 1 mesure)
-  const r = p && rhNorm(p.rhythm), n = p ? p.chords.length : 0;
+  const r = p && pHas(p) ? rhNorm(pRh(p)) : null, n = p ? p.chords.length : 0;
   const ci = (step != null && k != null && r && n) ? Math.floor(k / rhPerBar(r.mes, r.res)) % n : -1;
+  if (el && p) el.innerHTML = svWayHTML(p, step == null ? {chord: p.chords[0]} : {cursor: step, chord: p.chords[ci]});   // arpège : la basse suit l'accord en cours
   document.querySelectorAll(`#pvb-${i} .chord-cell`).forEach((c, j) => c.classList.toggle('now', j === ci));
   if (step != null) {   // anim calée sur l'horloge audio : ce rendu est déclenché par la file de temps du moteur
     mPulse(el && el.querySelector('.rgc.lit'));
@@ -6399,10 +6560,17 @@ function rhRenderPlayer(i, step, k) {
   svSync();
 }
 function playPartRhythm(i) {
-  const p = cur.parts[i]; if (!p || !p.rhythm) return;
+  const p = cur.parts[i]; if (!p || !pHas(p)) return;
   if (rhPlaying('v' + i)) { rhStop(); return; }
-  rhStart(p.rhythm, cur.bpm || 90, p.chords[0] || null, cur.capo, (step, k) => rhRenderPlayer(i, step, k), {key: 'v' + i, chords: p.chords});
+  const arp = pWay(p) === 'arp', chs = p.chords.length ? p.chords : [newChord('Em')];
+  rhStart(pRh(p), cur.bpm || 90, chs[0], cur.capo, (step, k) => rhRenderPlayer(i, step, k), Object.assign({key: 'v' + i, chords: chs}, arp ? {cellFn: arpCellFn(p.arp, cur.capo)} : {}));
   svSync();
+}
+// ▶ d'une carte Partie : la rend active puis lance / arrête sa façon de jouer
+function svWayPlay(i, e) {
+  if (e) e.stopPropagation();
+  if (i !== svPart) { if (rhP || recPlay) stopPlay(); svPart = i; svPick2(); }
+  playPartRhythm(i);
 }
 function rhBpmStep(d) {
   if (!cur) return;
@@ -6571,7 +6739,7 @@ function openEditor(title) {
   $('f-chords').value = '';
   $('f-orig').value = (draft.original && draft.original.url) || '';
   $('more-opts').open = false;
-  cp.ed = false; cp.pi = 0; edRpI = 0; edNaming.clear(); rbOpenS.clear(); edLv.length = 0;
+  cp.ed = false; cp.pi = 0; edRpI = 0; edNaming.clear(); edLv.length = 0;
   document.querySelectorAll('#v-ed .ed-row[open]').forEach(d => d.open = false);
   renderQuick();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';
@@ -6762,16 +6930,27 @@ const edRp = () => Math.max(0, Math.min(edRpI, draft.parts.length - 1));
 function edRpSet(i) { if (i !== edRpI) { edRpI = i; if (!(rc && rc.inline)) edBar(); } }
 function edRpPick(i) { edRpI = i; edBar(); }
 function edMoreT(id, on) { on ? edMoreOpen.add(id) : edMoreOpen.delete(id); }
+function edPartName(i, n) {   // pastille de nom : une partie unique peut rester sans nom (re-toucher le nom l'enlève)
+  const p = draft.parts[i]; edNaming.delete(p.id);
+  p.name = p.name === n && draft.parts.length === 1 ? '' : n;
+  renderParts();
+}
 function edNameStart(i) { edNaming.add(draft.parts[i].id); renderParts(); const n = document.querySelector(`#parts-ed [data-i="${i}"] .pc-name`); if (n) n.focus(); }
 function edCapoSync() {
   const v = draft.capo || 0;
   $('f-capo').value = v;
-  document.querySelectorAll('.ed-capo').forEach(l => { l.classList.toggle('on', v > 0); l.querySelector('b').textContent = v || '—'; l.querySelector('select').value = v; });
+  document.querySelectorAll('.ed-capo').forEach(l => {
+    l.classList.toggle('on', v > 0); l.querySelector('b').textContent = v || '—';
+    const b = l.querySelectorAll('button'); b[0].disabled = v <= 0; b[1].disabled = v >= 9;
+  });
 }
+function edCapoStep(d) { draft.capo = Math.max(0, Math.min(9, (draft.capo || 0) + d)); edCapoSync(); }
+// capo : − / + (frette 0 à 9, « — » = sans capo)
 function edCapoHTML() {
   const v = draft.capo || 0;
-  return `<label class="ed-capo${v ? ' on' : ''}"><small>Capo</small><b>${v || '—'}</b><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
-    <select aria-label="Capo" onchange="draft.capo=+this.value;edCapoSync()">${[0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${v === i ? 'selected' : ''}>${i ? 'Frette ' + i : 'Sans capo'}</option>`).join('')}</select></label>`;
+  return `<div class="ed-capo${v ? ' on' : ''}" role="group" aria-label="Capo"><small>Capo</small>
+    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button><b>${v || '—'}</b>
+    <button type="button" onclick="edCapoStep(1)" aria-label="Capo plus haut" ${v >= 9 ? 'disabled' : ''}>+</button></div>`;
 }
 // « Liens et enregistrements » : ouvre les Médias (vidéos, tutos, prises audio) dans « Plus d'options » et y amène
 function edOpenCoffre(target) {
@@ -6824,28 +7003,31 @@ function renderParts() {
   const host = $('parts-ed'), solo = draft.parts.length === 1;
   const g0 = host.querySelector('.cp-grid'), gy = g0 ? g0.scrollTop : 0;
   host.innerHTML = draft.parts.map((p, i) => {
-    const nC = p.chords.length, naming = !!p.name || edNaming.has(p.id);
+    const nC = p.chords.length;
     const summary = p.collapsed
-      ? `<span class="pc-sum">${nC ? nC + ' accord' + (nC > 1 ? 's' : '') : ''}${rhHas(p.rhythm) ? ' · rythme' : ''}</span>` : '';
-    const nameInp = `<input class="pc-name" value="${esc(p.name)}" oninput="draft.parts[${i}].name=this.value" placeholder="Nom de la partie (Couplet, Refrain…)" aria-label="Nom de la partie">`;
+      ? `<span class="pc-sum">${nC ? nC + ' accord' + (nC > 1 ? 's' : '') : ''}${pWay(p) === 'arp' ? ' · arpège' : rhHas(p.rhythm) ? ' · rythme' : ''}</span>` : '';
+    const custom = !!p.name && !PC_NAMES.includes(p.name), nameOn = custom || edNaming.has(p.id);
+    const nameInp = `<input class="pc-name" value="${esc(p.name)}" oninput="draft.parts[${i}].name=this.value" onchange="renderParts()" placeholder="Nom de la partie" aria-label="Nom de la partie">`;
+    const chips = `<div class="pc-names" role="group" aria-label="Nom de la partie">${PC_NAMES.map(n => `<button type="button" class="pc-chip${p.name === n ? ' on' : ''}" aria-pressed="${p.name === n}" onclick="edPartName(${i},'${n}')">${n}</button>`).join('')}<button type="button" class="pc-chip${nameOn ? ' on' : ''}" aria-pressed="${nameOn}" onclick="edNameStart(${i})">${custom ? esc(p.name) : 'Autre…'}</button></div>${nameOn ? nameInp : ''}`;
+    const title = esc(p.name || (solo ? 'Partie du morceau' : 'Partie ' + (i + 1)));
     const head = solo
-      ? `<div class="pc-h">${naming ? nameInp : `<b class="pc-t">Partie du morceau</b><button type="button" class="pc-nm" onclick="edNameStart(${i})">Nommer ›</button>`}</div>`
+      ? `<div class="pc-h"><b class="pc-t">${title}</b>${p.name ? '' : '<small class="pc-opt">nom facultatif</small>'}</div>${chips}`
       : `<div class="pc-h"><span class="drag-handle" title="Glisser pour réordonner"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg></span>
-        ${nameInp}${summary}
+        <b class="pc-t">${title}</b>${summary}
         <div class="part-tools">
           <button onclick="togglePart(${i})" title="Replier" aria-label="Replier la partie"><svg class="ico collapse-ico" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
           <button onclick="dupPart(${i})" title="Dupliquer" aria-label="Dupliquer la partie"><svg class="ico" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
           <button class="danger" onclick="rmPart(${i})" title="Supprimer" aria-label="Supprimer la partie"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div></div>`;
+        </div></div>${chips}`;
     return `<div class="part-card pc ${p.collapsed ? 'collapsed' : ''} ${solo ? 'solo' : ''}" data-i="${i}">${head}
       <div class="pc-b">
         ${i === 0 ? `<div class="ed-capo-row">${edCapoHTML()}</div>` : ''}
         ${edChordsHTML(p, i)}
-        ${solo ? '' : `<div class="ed-lab in"><b>Rythme</b><small>facultatif</small></div>${rbHTML('draft', i)}`}
+        <div class="ed-lab in"><b>Façon de jouer</b><small>facultatif</small></div>${rbHTML('draft', i)}
         ${edMoreHTML(p, i)}
       </div></div>`;
   }).join('');
-  $('ed-solo-rh').innerHTML = solo ? `<div class="ed-lab"><b>Rythme</b><small>facultatif</small></div>${rbHTML('draft', 0)}` : '';
+  $('ed-solo-rh').innerHTML = '';
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
   // un accord ajouté se pose (les accords déjà vus ne rejouent rien)
@@ -6951,74 +7133,37 @@ function initDnD(host) {
   };
 }
 
-/* ═══════ BLOC RYTHME EN LIGNE ═══════
-   Un seul composant pour l'éditeur de fiche (ctx 'draft') et le panneau Fiche de l'Atelier (ctx 'at'), sans plein écran.
-   Fermé : « Pas encore de rythme — Saisir à la main › », ou le rythme en ruban + ▶ Écouter + Modifier.
-   Ouvert (« Mon rythme ») : une rangée de cases (8 = 1 mesure de croches), un tap sur une case = ↓ → ↑ → ✕ → vide, appui long = accent
-   (modèle v:2, la mesure s'allonge à 2 mesures au besoin) ; ▶ Écouter, Effacer ; rythmes tout faits et mesure/subdivision repliés.
-   La boucle d'écoute lit le rythme en direct : modifier une case pendant la lecture est pris au pas suivant. */
+/* ═══════ FAÇON DE JOUER : ZONE DANS LA CARTE + ÉDITEURS DE RYTHME ET D'ARPÈGE ═══════
+   rbHTML(ctx, i) : un seul composant pour l'éditeur de fiche (ctx 'draft') et le panneau Fiche de l'Atelier (ctx 'at').
+   Segment Rythme | Arpège | Aucun (une partie a l'un OU l'autre), puis le ruban cerclé de pointillés cuivre qui ouvre l'éditeur, + ▶ Écouter
+   et « Même rythme que la partie d'avant ».
+   Éditeurs (weOpen) : feuille plein écran sur mobile, panneau à droite sur PC. Rythme : le ruban en grand EST l'éditeur (cases vides =
+   flèche fantôme ; pinceaux Coup / Fort / Étouffé / Gomme ; toucher = poser, glisser = poser en série). Arpège : 4 motifs tout faits,
+   « Affiner » (grille Basse / 3 / 2 / 1 × 8 colonnes), basse Auto / 6 / 5 / 4. Les deux montrent « Dans la fiche » en direct ;
+   ✕ annule tout (on rétablit l'état d'ouverture), OK garde. La boucle d'écoute lit les données en direct. */
 const rbSheet = ctx => ctx === 'at' ? at.s : draft;
 const rbPart = (ctx, i) => { const s = rbSheet(ctx); return s && s.parts[i]; };
 const rbId = (ctx, i) => `rb-${ctx}-${i}`;
 const rbKey = (ctx, i) => 'rb' + ctx + i;
-const rbNorm = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-const RB_CYCLE = ['D', 'U', 'X', null];
-const rbF = {q: '', lv: ''};
-const rbOpenS = new Set();   // éditeurs de cases ouverts (rbKey)
-let rbLit = null, rbTapS = null;
-function rbR(ctx, i, make) {   // rythme de la partie (créé à la demande, au 1er coup)
-  const p = rbPart(ctx, i); if (!p) return null;
-  if (!p.rhythm && make) p.rhythm = rhFromPat('', '4/4', 8, 1);
-  return p.rhythm ? rhNorm(p.rhythm) : null;
-}
-const rbPos = r => r.pos != null ? Math.min(r.pos, r.cells.length) : r.cells.map(Boolean).lastIndexOf(true) + 1;
+const wayOf = p => p.way || 'rh';
+let rbLit = null;
 const rbEmpty = () => rhFromPat('', '4/4', 8, 1);
 const rbRN = {8: 'croches', 12: 'triolets', 16: 'doubles croches'};
-// cases de saisie : une rangée par mesure (16 cases → 2 rangées de 8), comptage dessous
-function rbCellsHTML(r, lit) {
-  const per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = rhRow(r.mes, r.res), pos = rbPos(r);
-  let h = '';
-  for (let b = 0; b < r.bars; b++) for (let a = 0; a < per; a += row) {
-    h += `<div class="rm-row" style="--cols:${row}"><div class="rm-cells">`;
-    for (let j = a; j < a + row; j++) {
-      const k = b*per + j, c = r.cells[k];
-      h += `<button type="button" class="rmc${j % spb === 0 ? ' beat' : ''}${k === lit ? ' lit' : ''}${k === pos && k < r.cells.length ? ' nxt' : ''}" data-k="${k}" aria-label="Case ${k + 1}, ${c ? ({D: 'bas', U: 'haut', X: 'étouffé'})[c.d] : k < pos ? 'silence' : 'vide'}">${c ? rhArrow(c.d, c.a) : k < pos ? '<i class="rgd"></i>' : ''}</button>`;
-    }
-    h += '</div><div class="rm-lbls">';
-    for (let j = a; j < a + row; j++) h += `<span class="rml${j % spb === 0 ? ' b' : ''}">${rhLabel(r.mes, spb, j % spb, Math.floor(j/spb))}</span>`;
-    h += '</div></div>';
-  }
-  return h;
-}
-function rbViewHTML(ctx, i) {
-  const r = rbR(ctx, i) || rbEmpty(), l = rbLit && rbLit.ctx === ctx && rbLit.i === i ? rbLit.k : -1;
-  return rbOpenS.has(rbKey(ctx, i)) ? rbCellsHTML(r, l) : rhythmSVG(r, false, {cursor: l});
-}
+const rbLitK = (ctx, i) => rbLit && rbLit.ctx === ctx && rbLit.i === i ? rbLit.k : -1;
 function rbHTML(ctx, i) {
-  const p = rbPart(ctx, i), r = rbR(ctx, i), id = rbId(ctx, i), a = `'${ctx}',${i}`, open = rbOpenS.has(rbKey(ctx, i)), has = rhHas(r);
-  const play = `<button type="button" class="rb-play" data-ctx="${ctx}" data-i="${i}" id="${id}-play" onclick="rbPlay(${a})"></button>`;
-  let h = `<div class="rb" id="${id}">`;
-  if (open) {
-    h += `<div class="rb-man"><div class="rb-mh"><b>Mon rythme</b>
-        <select class="rb-bars" id="${id}-bars" aria-label="Longueur" onchange="rbOpt(${a},'bars',+this.value)"><option value="1">1 mesure</option><option value="2">2 mesures</option></select>
-        <button type="button" class="rb-x" onclick="rbOpenEd(${a},false)" aria-label="Fermer la saisie du rythme"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-      <div class="rb-view" onpointerdown="rbDown(event,${a})" onpointerup="rbUp()" onpointercancel="rbCancel()" onpointerleave="rbCancel()" onkeydown="rbKbd(event,${a})" oncontextmenu="return false">${rbViewHTML(ctx, i)}</div>
-      <div class="rb-cyc">Touche une case : <span class="D">${rhArrow('D', 1)}</span>→<span class="U">${rhArrow('U', 1)}</span>→<span class="X">${rhArrow('X', 1)}</span>→<i class="rgd"></i> <small>(silence)</small></div>
-      <div class="rb-mact">${play}<span class="rb-mm">${mmBtn('learn')}</span><button type="button" class="rb-lnk" onclick="rbClear(${a})">Effacer</button></div>
-      <details class="rb-det" ontoggle="if(this.open)rbCards(${a})"><summary>Partir d’un rythme tout fait</summary>
-        <div class="rb-pre"><div class="rb-fil"><input type="search" placeholder="Chercher…" autocomplete="off" aria-label="Chercher un rythme" value="${esc(rbF.q)}" oninput="rbF.q=this.value;rbCards(${a})">
-          <select aria-label="Niveau" onchange="rbF.lv=this.value;rbCards(${a})"><option value="">Tous niveaux</option><option value="1" ${rbF.lv == 1 ? 'selected' : ''}>● Facile</option><option value="2" ${rbF.lv == 2 ? 'selected' : ''}>●● Moyen</option><option value="3" ${rbF.lv == 3 ? 'selected' : ''}>●●● Costaud</option></select></div>
-          <div class="rb-cards" id="${id}-cards"></div><div class="rb-tip" id="${id}-tip"></div></div></details>
-      <details class="rb-det"><summary id="${id}-sum"></summary>
-        <div class="rb-sels">
-          <label>Mesure<select id="${id}-mes" onchange="rbOpt(${a},'mes',this.value)"><option>4/4</option><option>3/4</option><option>6/8</option></select></label>
-          <label>Subdivision<select id="${id}-res" onchange="rbOpt(${a},'res',+this.value)"><option value="8">Croches</option><option value="12">Triolets</option><option value="16">Doubles croches</option></select></label>
-        </div></details></div>`;
-  } else if (has) {
-    h += `<div class="rb-sum"><div class="rb-view">${rbViewHTML(ctx, i)}</div>
-      <div class="rb-mact">${play}<button type="button" class="rb-lnk acc" onclick="rbOpenEd(${a},true)">Modifier ›</button></div></div>`;
-  } else {
-    h += `<button type="button" class="rb-empty" onclick="rbOpenEd(${a},true)"><span>Pas encore de rythme</span><b>Saisir à la main ›</b></button>`;
+  const p = rbPart(ctx, i), w = wayOf(p), a = `'${ctx}',${i}`, id = rbId(ctx, i), l = rbLitK(ctx, i);
+  let h = `<div class="rb" id="${id}" data-live="${ctx}-${i}"><div class="rb-seg" role="group" aria-label="Façon de jouer de la partie">${[['rh', 'Rythme'], ['arp', 'Arpège'], ['none', 'Aucun']].map(([k, t]) =>
+    `<button type="button" class="${w === k ? 'on' : ''}" aria-pressed="${w === k}" onclick="rbWay(${a},'${k}')">${t}</button>`).join('')}</div>`;
+  if (w !== 'none') {
+    const arp = w === 'arp', has = arp ? arpHas(p.arp) : rhHas(p.rhythm);
+    const prev = i > 0 && rbPart(ctx, i - 1), pk = arp ? 'arp' : 'rhythm';
+    h += `<div class="rb-lane"><div class="rb-rib" role="button" tabindex="0" onclick="weOpen(${a})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();weOpen(${a})}" aria-label="${has ? 'Modifier' : 'Saisir'} ${arp ? 'l’arpège' : 'le rythme'} de la partie">
+      <span class="rb-ll">${arp ? 'Arpège' : 'Rythme'}<i>✎</i></span>
+      ${has ? `<div class="rb-view">${arp ? arpRibbonHTML(p.arp, false, {mini: true, cursor: l, chord: p.chords[0]}) : rhythmSVG(p.rhythm, false, {mini: true, cursor: l})}</div>`
+            : `<span class="rb-emp">Pas encore ${arp ? 'd’arpège' : 'de rythme'}<b>Saisir ›</b></span>`}</div>
+      ${has ? `<button type="button" class="rb-play rb-pl-r" data-ctx="${ctx}" data-i="${i}" id="${id}-play" onclick="rbPlay(${a})" aria-label="Écouter"></button>` : ''}</div>`;
+    if (prev && pWay(prev) === (arp ? 'arp' : 'rh') && JSON.stringify(prev[pk]) !== JSON.stringify(p[pk]))
+      h += `<button type="button" class="rb-same" onclick="rbSame(${a})">Même ${arp ? 'arpège' : 'rythme'} que la partie d’avant</button>`;
   }
   if (ctx === 'at') {   // l'éditeur de fiche a sa grande barre ⏺ en bas ; l'Atelier garde un accès discret
     h += p.rec
@@ -7030,18 +7175,9 @@ function rbHTML(ctx, i) {
   }
   return h + '</div>';
 }
-// après insertion du HTML (ou changement de réglage) : réglages + boutons ▶ à jour
-function rbSync(ctx, i) {
-  const r = rbR(ctx, i) || rbEmpty(), id = rbId(ctx, i);
-  const m = $(id + '-mes'); if (m) {
-    m.value = r.mes; $(id + '-res').value = r.res; $(id + '-bars').value = r.bars;
-    $(id + '-sum').textContent = `Mesure et subdivision · ${r.mes} · ${rbRN[r.res]}`;
-  }
-  rbSyncPlay();
-}
+const rbSync = () => rbSyncPlay();
 function rbSyncAll() {
-  document.querySelectorAll('.rb').forEach(el => { const [, ctx, i] = el.id.split('-'); rbSync(ctx, +i); });
-  rbSyncRec();
+  rbSyncPlay(); rbSyncRec();
 }
 function rbSyncPlay() {
   document.querySelectorAll('.rb-play').forEach(b => {
@@ -7057,104 +7193,246 @@ function rbSyncRec() {
   });
   if (typeof edBarPlay === 'function') edBarPlay();
 }
-function rbOpenEd(ctx, i, open) {
-  const k = rbKey(ctx, i);
-  if (rhPlaying(k)) rhStop();
-  open ? rbOpenS.add(k) : rbOpenS.delete(k);
-  if (ctx === 'draft') edRpSet(i);
-  const el = $(rbId(ctx, i)); if (!el) return;
-  el.outerHTML = rbHTML(ctx, i);
-  rbSync(ctx, i);
-}
+// la zone de la carte est refaite (segment, ruban, ▶) ; dans l'Atelier, tout changement déclenche l'enregistrement auto
 function rbChanged(ctx, i) {
   if (ctx === 'at') atMark();
   const el = $(rbId(ctx, i)); if (!el) return;
-  const v = el.querySelector('.rb-view'); if (!v) { rbOpenEd(ctx, i, true); return; }
-  v.innerHTML = rbViewHTML(ctx, i);
-  rbSync(ctx, i);
+  el.outerHTML = rbHTML(ctx, i);
+  rbSyncPlay();
 }
-function rbClear(ctx, i) {
-  const p = rbPart(ctx, i), r = rbR(ctx, i); if (!p || !r) return;
+function rbWay(ctx, i, k) {
+  const p = rbPart(ctx, i); if (!p) return;
   if (rhPlaying(rbKey(ctx, i))) rhStop();
-  p.rhythm = rhFromPat('', r.mes, r.res, 1); p.rhythm.pos = 0;
+  p.way = k;
   rbChanged(ctx, i);
+  if (ctx === 'draft') edRpSet(i);
 }
-// tap = cycle ↓ ↑ ✕ vide, appui long = accent
-function rbCycle(ctx, i, k) {
-  const r = rbR(ctx, i, true), c = r.cells[k], nx = RB_CYCLE[(RB_CYCLE.indexOf(c ? c.d : null) + 1) % 4];
-  r.cells[k] = nx ? {d: nx, a: c ? c.a : 1} : null;
-  if (k >= rbPos(r)) r.pos = k + 1;
+function rbSame(ctx, i) {
+  const p = rbPart(ctx, i), q = rbPart(ctx, i - 1); if (!p || !q) return;
+  if (rhPlaying(rbKey(ctx, i))) rhStop();
+  if (pWay(q) === 'arp') { p.arp = clone(q.arp); p.way = 'arp'; } else { p.rhythm = clone(q.rhythm); p.way = 'rh'; }
   rbChanged(ctx, i);
+  toast('C’est le même que la partie d’avant');
 }
-function rbDown(e, ctx, i) {
-  const c = e.target.closest('.rmc[data-k]'); if (!c) return;
-  rbCancel();
-  const S = rbTapS = {ctx, i, k: +c.dataset.k, long: false};
-  S.tm = setTimeout(() => {
-    S.long = true;
-    const r = rbR(ctx, i), x = r && r.cells[S.k];
-    if (x) { x.a = x.a === 2 ? 1 : 2; rbChanged(ctx, i); try { navigator.vibrate && navigator.vibrate(15); } catch (er) {} }
-  }, 450);
-}
-function rbUp() {
-  const S = rbTapS; if (!S) return;
-  clearTimeout(S.tm); rbTapS = null;
-  if (!S.long) rbCycle(S.ctx, S.i, S.k);
-}
-function rbKbd(e, ctx, i) {   // clavier : Entrée / Espace = même cycle que le tap
-  if (e.key !== 'Enter' && e.key !== ' ') return;
-  const c = e.target.closest('.rmc[data-k]'); if (!c) return;
-  e.preventDefault(); rbCycle(ctx, i, +c.dataset.k);
-  const n = document.querySelector(`#${rbId(ctx, i)} .rmc[data-k="${c.dataset.k}"]`); if (n) n.focus();
-}
-function rbCancel() { if (rbTapS) clearTimeout(rbTapS.tm); rbTapS = null; }
-function rbOpt(ctx, i, key, v) {
-  const r = rbR(ctx, i, true), m = {mes: r.mes, res: r.res, bars: r.bars}; m[key] = v;
-  if (m.mes === '6/8' && m.res === 12) m.res = 8;
-  rhReshape(r, m.mes, m.res, m.bars); r.pos = rbPos(r);
-  rbChanged(ctx, i);
-}
-// écoute en boucle (accords de la partie, vrai son)
+// écoute en boucle (accords de la partie, vrai son) ; la case / colonne en cours s'allume partout où elle apparaît (zone, éditeur, aperçu)
 function rbStep(ctx, i) {
+  const sel = `[data-live="${ctx}-${i}"]`;
   return k => {
     const old = rbLit; rbLit = k == null ? null : {ctx, i, k};
-    if (old) { const e = document.querySelector(`#${rbId(old.ctx, old.i)} [data-k].lit`); if (e) e.classList.remove('lit'); }
+    if (old) document.querySelectorAll(`[data-live="${old.ctx}-${old.i}"] .lit`).forEach(e => e.classList.remove('lit'));
     if (k == null) { rbSyncPlay(); return; }
-    const e = document.querySelector(`#${rbId(ctx, i)} [data-k="${k}"]`); if (e) { e.classList.add('lit'); mPulse(e); }
+    document.querySelectorAll(`${sel} [data-k="${k}"]`).forEach(e => { e.classList.add('lit'); mPulse(e); });
   };
 }
 function rbPlay(ctx, i) {
   const key = rbKey(ctx, i);
   if (rhPlaying(key)) { rhStop(); return; }
-  const r = rbR(ctx, i); if (!r || !rhHas(r)) { toast('Ajoute quelques coups d’abord', true); return; }
-  const p = rbPart(ctx, i), s = rbSheet(ctx);
-  stopPlay();
-  rhStart(r, s.bpm || 90, p.chords[0] || null, s.capo, rbStep(ctx, i), {key, chords: p.chords, mm: 'learn'});
+  const p = rbPart(ctx, i), s = rbSheet(ctx); if (!p) return;
+  const chs = p.chords.length ? p.chords : [newChord('Em')];
+  if (wayOf(p) === 'arp') {
+    if (!arpHas(p.arp)) { toast('Choisis un motif d’abord', true); return; }
+    stopPlay();
+    rhStart(arpRh(), s.bpm || 90, chs[0], s.capo, rbStep(ctx, i), {key, chords: chs, cellFn: arpCellFn(p.arp, s.capo)});
+  } else {
+    const r = p.rhythm && rhNorm(p.rhythm); if (!r || !rhHas(r)) { toast('Ajoute quelques coups d’abord', true); return; }
+    stopPlay();
+    rhStart(r, s.bpm || 90, chs[0], s.capo, rbStep(ctx, i), {key, chords: chs, mm: 'learn'});
+  }
   rbSyncPlay();
 }
-// « Partir d'un rythme tout fait » : liste filtrable, un tap pose le rythme et l'écoute tout de suite
-function rbCards(ctx, i) {
-  const el = $(rbId(ctx, i) + '-cards'); if (!el) return;
-  const q = rbNorm(rbF.q.trim());
-  const list = RHYTHMS.filter(x => (!q || rbNorm(x.n + ' ' + x.mes).includes(q)) && (!rbF.lv || x.niv == rbF.lv));
-  el.innerHTML = list.map(x => `<button type="button" class="rb-card" onclick="rbPreset('${ctx}',${i},'${x.id}')"><b>${esc(x.n)}</b><span>${[...x.pat].map(ch => ch === '-' ? '·' : ch.toLowerCase() === 'x' ? '✕' : ch.toLowerCase() === 'u' ? '↑' : '↓').join('')}</span></button>`).join('')
-    || '<div class="rb-none">Aucun rythme ne correspond.</div>';
-}
-function rbPreset(ctx, i, id) {
-  const x = RHYTHMS.find(z => z.id === id), p = rbPart(ctx, i); if (!x || !p) return;
-  rhStop();
-  p.rhythm = rhFromPat(x.pat, x.mes, x.res, 1); p.rhythm.pos = p.rhythm.cells.length;
-  rbChanged(ctx, i);
-  const t = $(rbId(ctx, i) + '-tip'); if (t) t.textContent = x.tip ? '💡 ' + x.tip : '';
-  rbPlay(ctx, i);
-}
 function rbRec(ctx, i) { stopPlay(); rcOpen(i, null, ctx); }
-// mode jeu → « Créer / Changer le rythme » : on ouvre l'éditeur de la fiche, posé sur le bloc rythme de la partie
+// mode jeu → « Créer / Changer le rythme » : on ouvre l'éditeur de la fiche, puis l'éditeur de la partie
 function rbEditCur(i) {
   stopPlay(); editSheet(cur.id);
-  if (draft.parts[i]) { draft.parts[i].collapsed = false; rbOpenS.add(rbKey('draft', i)); renderParts(); }
-  setTimeout(() => { const el = $(rbId('draft', i)); if (el) el.scrollIntoView({block: 'center'}); }, 80);
+  if (draft.parts[i]) { draft.parts[i].collapsed = false; renderParts(); }
+  setTimeout(() => weOpen('draft', i), 80);
 }
+
+/* ── éditeurs plein écran ── */
+let we = null;   // {ctx, i, kind:'rh'|'arp', tool, snap, drag, sets}
+const wePart = () => we && rbPart(we.ctx, we.i);
+const weSheet = () => we && rbSheet(we.ctx);
+const WE_START = [['folk2', 'Folk'], ['popsync', 'Pop'], ['ballade', 'Ballade'], ['feucamp', 'Feu de camp'], ['', 'Vide']];
+const WE_TOOLS = [['coup', 'Coup', rhArrow('D', 1)], ['fort', 'Fort', rhArrow('D', 2)], ['etouffe', 'Étouffé', rhArrow('X', 1)],
+  ['gomme', 'Gomme', '<svg class="rga" viewBox="0 0 24 40" aria-hidden="true"><circle cx="12" cy="20" r="7" stroke-dasharray="3 3.6" stroke-width="2.2"/></svg>']];
+function weOpen(ctx, i) {
+  const p = rbPart(ctx, i); if (!p) return;
+  stopPlay();
+  const kind = wayOf(p) === 'arp' ? 'arp' : 'rh';
+  we = {ctx, i, kind, tool: 'coup', snap: clone({way: p.way === undefined ? null : p.way, rhythm: p.rhythm || null, arp: p.arp || null}), drag: null, sets: false};
+  if (kind === 'arp') { if (!p.arp) p.arp = arpEmpty(); p.way = 'arp'; }
+  else { p.rhythm = p.rhythm ? rhNorm(p.rhythm) : rbEmpty(); p.way = 'rh'; }
+  $('we').hidden = false; document.body.classList.add('we-open');
+  weRender();
+  const sh = $('we-sheet'); sh.scrollTop = 0;
+  setTimeout(() => { const b = document.querySelector('#we .we-ok'); if (b) b.focus({preventScroll: true}); }, 40);
+}
+function weClose(ok) {
+  if (!we) return;
+  const {ctx, i} = we, p = wePart();
+  stopPlay();
+  if (!ok && p) { p.way = we.snap.way === null ? undefined : we.snap.way; if (p.way === undefined) delete p.way; p.rhythm = we.snap.rhythm; p.arp = we.snap.arp; }
+  we = null; $('we').hidden = true; document.body.classList.remove('we-open');
+  if (ctx === 'at') { if (ok) atMark(); atRenderFiche(); } else renderParts();
+  const r = document.querySelector(`#${rbId(ctx, i)} .rb-rib`); if (r) r.focus({preventScroll: true});
+}
+document.addEventListener('keydown', e => { if (we && e.key === 'Escape') { e.preventDefault(); weClose(false); } });
+const weChanged = () => { if (we && we.ctx === 'at') atMark(); };
+function weTop(p) {
+  return `<div class="we-top"><button type="button" class="we-x" onclick="weClose(false)" aria-label="Annuler et fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2>${we.kind === 'arp' ? 'Arpège' : 'Rythme'}${p.name ? ' · ' + esc(p.name) : ''}</h2><button type="button" class="we-ok" onclick="weClose(true)">OK</button></div>`;
+}
+function weRender() {
+  const p = wePart(), s = weSheet(); if (!p) return;
+  const sh = $('we-sheet'), a = `'${we.ctx}',${we.i}`;
+  const play = `<div class="we-play"><button type="button" class="rb-play we-listen" data-ctx="${we.ctx}" data-i="${we.i}" onclick="rbPlay(${a})"></button>
+    <div class="we-bpm" role="group" aria-label="Tempo"><button type="button" onclick="weBpm(-1)" aria-label="Plus lent">−</button><b id="we-bpm">${s.bpm || 90}</b><button type="button" onclick="weBpm(1)" aria-label="Plus vite">+</button></div></div>`;
+  let h = weTop(p) + `<div class="we-body" data-live="${we.ctx}-${we.i}">`;
+  if (we.kind === 'rh') {
+    const r = rhNorm(p.rhythm);
+    h += `<div class="we-chips" role="group" aria-label="Partir d’un rythme tout fait">${WE_START.map(([id, t]) => `<button type="button" class="we-chip" onclick="weStart('${id}')">${t}</button>`).join('')}</div>
+      <div class="we-sec">Pose tes coups</div>
+      <div class="we-card"><div class="we-rib" id="we-rib" onpointerdown="weRibDown(event)" onpointermove="weRibMove(event)" onpointerup="weRibUp()" onpointercancel="weRibUp()" onkeydown="weRibKey(event)"></div>
+        <div class="we-meta"><button type="button" class="we-lnk" onclick="we.sets=!we.sets;$('we-sets').hidden=!we.sets" aria-expanded="${we.sets}">${r.mes} · ${rbRN[r.res]}</button>
+          <button type="button" class="we-lnk acc" onclick="weBars(${r.bars > 1 ? -1 : 1})">${r.bars > 1 ? '− mesure' : '+ mesure'}</button></div>
+        <div class="rb-sels" id="we-sets" ${we.sets ? '' : 'hidden'}>
+          <label>Mesure<select onchange="weOpt('mes',this.value)">${['4/4', '3/4', '6/8'].map(m => `<option ${r.mes === m ? 'selected' : ''}>${m}</option>`).join('')}</select></label>
+          <label>Subdivision<select onchange="weOpt('res',+this.value)">${[[8, 'Croches'], [12, 'Triolets'], [16, 'Doubles croches']].map(([v, t]) => `<option value="${v}" ${r.res === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label></div></div>
+      <div class="we-hint"><b>Touche</b> un temps pour poser un coup, <b>glisse</b> pour en poser plusieurs. Retouche pour l’enlever.</div>
+      <div class="we-tools" role="group" aria-label="Pinceau">${WE_TOOLS.map(([k, t, ic]) => `<button type="button" class="we-tool${we.tool === k ? ' on' : ''}" aria-pressed="${we.tool === k}" onclick="weTool('${k}')"><span>${ic}</span>${t}</button>`).join('')}</div>
+      ${play}<div class="we-mm"><span>Son</span>${mmBtn('learn')}</div>`;
+  } else {
+    h += `<div class="we-sec">Choisis un motif</div><div class="we-motifs" id="we-motifs"></div>
+      <div class="we-sec">Affiner (touche une case)</div><div class="we-card" id="we-grid"></div>
+      <div class="we-bass"><span>Basse</span><div class="rb-seg sm" role="group" aria-label="Corde de la basse" id="we-bass"></div></div>
+      <p class="we-note">Auto : la corde grave de l’accord (Do = 5, Mi = 6…).</p>${play}`;
+  }
+  h += `<div class="we-sec">Dans la fiche</div><div id="we-prev"></div></div>`;
+  sh.innerHTML = h;
+  if (we.kind === 'rh') weRibRefresh(); else weArpRefresh();
+  rbSyncPlay();
+}
+/* aperçu « Dans la fiche » : la même carte qu'en lecture (nom, capo, accords, rythme ou arpège) */
+function wePrevHTML() {
+  const p = wePart(), s = weSheet(), col = (COLORS.find(c => c[0] === s.color) || COLORS[0])[1];
+  const way = pWayHTML(p, false, {mini: true, chord: p.chords[0], cursor: rbLitK(we.ctx, we.i)});
+  return `<div class="wpc" style="--c:${col}"><div class="wpc-h"><b>${esc(p.name || 'Partie')}</b>${we.i === 0 && s.capo > 0 ? `<span class="pv-capo">Capo ${s.capo}</span>` : ''}</div>
+    <div class="wpc-ch">${p.chords.length ? p.chords.map(c => `<span>${esc(c.name || '?')}</span>`).join('') : '<em>Ajoute des accords à la partie</em>'}</div>
+    <div class="wpc-way">${way || `<em>${we.kind === 'arp' ? 'L’arpège' : 'Le rythme'} apparaît ici.</em>`}</div></div>`;
+}
+const weBpm = d => {
+  const s = weSheet(); if (!s) return;
+  s.bpm = Math.max(30, Math.min(240, (s.bpm || 90) + d));
+  const e = $('we-bpm'); if (e) e.textContent = s.bpm;
+  if (rhP) rhSetBpm(s.bpm);
+  weChanged();
+};
+/* ── rythme : le ruban est l'éditeur ── */
+function weRowB(r) {   // temps par ligne : on coupe pour que chaque case reste ≥ 44 px
+  const nB = RH_BEATS[r.mes], spb = rhSpb(r.mes, r.res), box = $('we-rib');
+  const W = box && box.clientWidth ? box.clientWidth : Math.min(innerWidth, 560) - 56;
+  for (const n of [nB, nB/2, 1]) if (Number.isInteger(n) && n >= 1 && (W - 8*(n - 1))/n - 6 >= 44*spb) return n;
+  return 1;
+}
+function weRibRefresh() {
+  const box = $('we-rib'), p = wePart(); if (!box || !p) return;
+  const r = rhNorm(p.rhythm);
+  box.innerHTML = rhythmSVG(r, false, {edit: true, rowB: weRowB(r), cursor: rbLitK(we.ctx, we.i)});
+  box.querySelectorAll('.rgc[data-k]').forEach(c => { c.tabIndex = 0; c.setAttribute('role', 'button'); c.setAttribute('aria-label', `Case ${+c.dataset.k + 1}`); });
+  const pv = $('we-prev'); if (pv) pv.innerHTML = wePrevHTML();
+}
+function weTool(k) {
+  we.tool = k;
+  document.querySelectorAll('#we .we-tool').forEach((b, j) => { const on = WE_TOOLS[j][0] === k; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+}
+// ce que poserait le pinceau sur la case k (null = gomme)
+function weBrush(r, k) {
+  if (we.tool === 'gomme') return null;
+  if (we.tool === 'etouffe') return {d: 'X', a: 1};
+  return {d: rhAutoDir(rhSpb(r.mes, r.res), k % rhSpb(r.mes, r.res)), a: we.tool === 'fort' ? 2 : 1};
+}
+function weRibDown(e) {
+  const c = e.target.closest('.rgc[data-k]'); if (!c) return;
+  e.preventDefault();
+  const r = rhNorm(wePart().rhythm), k = +c.dataset.k, b = weBrush(r, k), x = r.cells[k];
+  we.drag = {erase: !b || !!(x && x.d === b.d && x.a === b.a), seen: new Set()};   // retoucher la même case = l'enlever (et glisser enlève en série)
+  weApplyCell(k);
+  try { $('we-rib').setPointerCapture(e.pointerId); } catch (er) {}
+}
+function weRibMove(e) {
+  if (!we || !we.drag) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY), c = el && el.closest && el.closest('#we-rib .rgc[data-k]');
+  if (c) weApplyCell(+c.dataset.k);
+}
+function weRibUp() { if (we) we.drag = null; }
+function weApplyCell(k) {
+  const d = we.drag; if (!d || d.seen.has(k)) return;
+  d.seen.add(k);
+  const r = rhNorm(wePart().rhythm); r.cells[k] = d.erase ? null : weBrush(r, k);
+  weRibRefresh(); weChanged();
+  if (d.seen.size === 1) mAnim(document.querySelector(`#we-rib [data-k="${k}"]`), [{transform: 'scale(.86)'}, {transform: 'none'}], {duration: 150, easing: 'cubic-bezier(.22,.8,.3,1)'});
+}
+function weRibKey(e) {   // clavier : Entrée / Espace = poser (ou enlever) avec le pinceau actif
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const c = e.target.closest('.rgc[data-k]'); if (!c) return;
+  e.preventDefault();
+  const r = rhNorm(wePart().rhythm), k = +c.dataset.k, b = weBrush(r, k), x = r.cells[k];
+  we.drag = {erase: !b || !!(x && x.d === b.d && x.a === b.a), seen: new Set()}; weApplyCell(k); we.drag = null;
+  const n = document.querySelector(`#we-rib [data-k="${k}"]`); if (n) n.focus();
+}
+function weStart(id) {   // départs rapides : un tap pose le rythme et l'écoute tout de suite
+  const p = wePart(), r = rhNorm(p.rhythm), x = RHYTHMS.find(z => z.id === id);
+  if (rhPlaying(rbKey(we.ctx, we.i))) rhStop();
+  p.rhythm = x ? rhFromPat(x.pat, x.mes, x.res, 1) : rhFromPat('', r.mes, r.res, r.bars);
+  weChanged(); weRender();
+  if (x) rbPlay(we.ctx, we.i);
+}
+function weBars(d) {
+  const r = rhNorm(wePart().rhythm);
+  rhReshape(r, r.mes, r.res, Math.max(1, Math.min(2, r.bars + d)));
+  weChanged(); weRender();
+}
+function weOpt(key, v) {
+  const r = rhNorm(wePart().rhythm), m = {mes: r.mes, res: r.res, bars: r.bars}; m[key] = v;
+  if (m.mes === '6/8' && m.res === 12) m.res = 8;
+  rhReshape(r, m.mes, m.res, m.bars);
+  weChanged(); weRender();
+}
+/* ── arpège : motifs, grille, basse ── */
+function weArpMini(steps, bn) { return `<div class="arm">${steps.map(st => `<div class="arb">${arpBubbles(st, bn)}</div>`).join('')}</div>`; }
+function weArpRefresh() {
+  const p = wePart(), a = p.arp, mo = arpMotifOf(a), ch = p.chords[0];
+  const bn = ch ? 6 - arpBassSi(ch, a.bass) : (a.bass === 'auto' ? 5 : +a.bass);
+  $('we-motifs').innerHTML = ARP_MOTIFS.map(m => `<button type="button" class="we-motif${mo && mo.id === m.id ? ' on' : ''}" aria-pressed="${!!(mo && mo.id === m.id)}" onclick="weArpMotif('${m.id}')"><span class="t">${m.n}${mo && mo.id === m.id ? '<i>✓</i>' : ''}</span>${weArpMini(arpSteps(m), bn)}</button>`).join('');
+  const rows = ['1', '2', '3', 'B'];
+  let g = `<div class="wag" id="we-gridi"><div class="wag-l">${['1', '2', '3', 'Basse'].map(t => `<span>${t}</span>`).join('')}</div><div class="wag-bs">`;
+  for (let b = 0; b < 4; b++) {
+    g += '<div class="wag-b">';
+    for (let j = 0; j < 2; j++) { const k = b*2 + j;
+      g += `<div class="wag-c${k === rbLitK(we.ctx, we.i) ? ' lit' : ''}" data-k="${k}">${rows.map(r => { const on = (a.steps[k] || []).includes(r);
+        return `<button type="button" class="wag-i${on ? (r === 'B' ? ' bs' : ' on') : ''}" aria-pressed="${on}" aria-label="Temps ${b + 1}${j ? ' et' : ''}, ${r === 'B' ? 'basse' : 'corde ' + r}" onclick="weArpCell(${k},'${r}')"></button>`; }).join('')}</div>`;
+    }
+    g += '</div>';
+  }
+  $('we-grid').innerHTML = g + '</div></div>';
+  $('we-bass').innerHTML = [['auto', 'Auto'], [6, '6'], [5, '5'], [4, '4']].map(([v, t]) => `<button type="button" class="${a.bass === v || (v === 'auto' && !a.bass) ? 'on' : ''}" aria-pressed="${a.bass === v}" onclick="weBass('${v}')">${t}</button>`).join('');
+  const pv = $('we-prev'); if (pv) pv.innerHTML = wePrevHTML();
+}
+function weArpMotif(id) {
+  const m = ARP_MOTIFS.find(x => x.id === id), a = wePart().arp; if (!m) return;
+  a.steps = arpSteps(m); a.motif = id;   // sur place : la boucle d'écoute en cours suit
+  weChanged(); weArpRefresh();
+  if (!rhPlaying(rbKey(we.ctx, we.i))) rbPlay(we.ctx, we.i);
+}
+function weArpCell(k, r) {
+  const a = wePart().arp, st = a.steps[k], x = st.indexOf(r);
+  if (x >= 0) st.splice(x, 1); else st.push(r);
+  st.sort((u, v) => ARP_ROW[v] - ARP_ROW[u]);
+  const mo = arpMotifOf(a); a.motif = mo ? mo.id : '';
+  weChanged(); weArpRefresh();
+  const n = document.querySelector(`#we-grid [data-k="${k}"] .wag-i:nth-child(${['1', '2', '3', 'B'].indexOf(r) + 1})`); if (n) { n.focus({preventScroll: true}); mAnim(n, [{transform: 'scale(.85)'}, {transform: 'none'}], {duration: 150, easing: 'cubic-bezier(.22,.8,.3,1)'}); }
+}
+function weBass(v) { const a = wePart().arp; a.bass = v === 'auto' ? 'auto' : +v; weChanged(); weArpRefresh(); }
 
 /* ═══════ LYRICS — optional, linked to chords/rhythm via inline tags ═══════
    [ChordName] inserted at cursor covers both grattage AND arpege chords (an
@@ -7399,7 +7677,11 @@ async function saveSheet() {
   if (!draft.title) { toast('Le titre est requis', true); $('f-title').focus(); return; }
   if (looksLikeChords(draft.title)) { toast('Ça ressemble à des accords : le titre est le nom du morceau, les accords se mettent plus bas', true); $('f-title').focus(); return; }
   stopPlay();
-  draft.parts.forEach(p => { if (p.rhythm && !rhHas(p.rhythm)) p.rhythm = null; });   // rythme vidé : on n'en garde pas la coquille
+  draft.parts.forEach(p => {   // une partie a UNE façon de jouer : on ne garde que celle choisie, jamais une coquille vide
+    const w = pWay(p);
+    if (w !== 'rh') p.rhythm = null; if (w !== 'arp') p.arp = null;
+    if (w === 'arp') p.way = 'arp'; else delete p.way;
+  });
   if (REQUIRE_ARTIST && !draft.artist) { toast('Titre et artiste sont requis', true); $('f-artist').focus(); return; }
   if (!draft.artist) draft.artist = '—';
   // noms uniques : plusieurs fiches pour un même morceau, mais jamais deux fois le même titre
@@ -7654,7 +7936,7 @@ function printSheetHTML(s, compact) {
         ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.78:.92, light:true})}</div>`).join('')}</div>` : ''}
         ${staff ? `<div style="margin-bottom:6px">${staff}</div>` : ''}
         ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
-        ${rhHas(p.rhythm) ? rhythmSVG(p.rhythm, true) : ''}
+        ${pWayHTML(p, true)}
         ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? `<div class="p-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
         ${p.note && !compact ? `<div class="p-note">${esc(p.note)}</div>` : ''}
       </div>`;
@@ -7677,7 +7959,7 @@ function printCahierHTML(s) {
         <div style="display:flex;gap:9px;flex-wrap:wrap">${
           p.chords.length ? p.chords.map(c => `<div class="p-chord"><div class="cn" style="font-size:12px">${esc(c.name)}</div>${chordSVG(c,{size:.6,light:true})}</div>`).join('')
                            : '<span style="font-size:10px;color:#999">—</span>'}</div>
-        ${rhHas(p.rhythm) ? `<div>${rhythmSVG(p.rhythm, true, {mini: true})}</div>` : ''}
+        ${pHas(p) ? `<div>${pWayHTML(p, true, {mini: true})}</div>` : ''}
       </div>
     </div>`).join('')}`;
 }
