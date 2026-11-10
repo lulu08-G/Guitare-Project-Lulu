@@ -518,7 +518,7 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .fl-fx{margin-top:4px;padding:12px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--border)}
 .fl-fxn{font-weight:700;margin-bottom:6px}
 .fl-fxpat{display:flex;gap:6px}.fl-fxpat span{width:24px}
-.fl-surp{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}.fl-surp span{font-size:12px;color:var(--cream3)}
+.fl-surp{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 14px}.fl-surp .fl-lead{margin:0}.fl-surp span{font-size:12px;color:var(--cream3)}
 .fl-allrh{margin:6px 0 0;border-bottom:1px solid var(--border);padding-bottom:6px}.fl-allrh summary{display:flex;justify-content:space-between;font-size:15px;color:var(--cream2);cursor:pointer;min-height:48px;align-items:center;list-style:none}.fl-allrh summary::-webkit-details-marker{display:none}.fl-allrh[open]>summary span+span{transform:rotate(90deg)}.fl-rf{margin-bottom:8px!important}.filt.sm{padding:5px 11px;font-size:12px}
 .fl-tip{margin-top:8px;font-size:13px;line-height:1.5;color:var(--cream2);padding:8px 12px;border-radius:var(--rs);background:var(--card2);border-left:3px solid var(--gold)}
 .rc-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:12px;color:var(--cream3);font-family:var(--mono)}
@@ -1311,6 +1311,32 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 .subnav button{flex:0 1 auto;min-height:44px;padding:0 18px;border-radius:50px;border:1px solid var(--border);background:var(--card2);color:var(--cream2);font-size:14px;font-weight:700}
 .subnav button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
 #v-atelier .subnav{max-width:1280px;padding:0 16px}
+/* ── S'ENTRAÎNER : grand segment collant, carte héro, leçons ── */
+.subnav.seg-big{position:sticky;top:62px;z-index:25;max-width:1000px;padding:8px 24px;margin-top:0;background:var(--bg)}
+.subnav.seg-big button{flex:1;min-height:44px;border:0;background:var(--card2);border-radius:0;font-size:15px;font-weight:800;color:var(--cream3)}
+.subnav.seg-big button:first-child{border-radius:50px 0 0 50px}.subnav.seg-big button:last-child{border-radius:0 50px 50px 0}
+.subnav.seg-big button.on{background:var(--gold);color:var(--ink)}
+.cl-t{font-size:11px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--cream3);margin:18px 0 8px}
+.ph-card{border-radius:20px;padding:16px;color:#f2e8d5;background:linear-gradient(135deg,#4a2f1a,#2a1b10);position:relative;overflow:hidden;margin:6px 0}
+.ph-card::after{content:"";position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(201,122,63,.35)}
+.ph-card h3{font-family:var(--serif);font-size:22px;font-weight:800;position:relative;z-index:1}
+.ph-s{font-size:13px;opacity:.8;margin:3px 0 12px;position:relative;z-index:1}
+.ph-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.ph-ring{width:50px;height:50px;border-radius:50%;flex:none;background:conic-gradient(#e8964e calc(var(--p)*1%),rgba(255,255,255,.18) 0);display:flex;align-items:center;justify-content:center}
+.ph-ring span{width:40px;height:40px;border-radius:50%;background:#33220f;font:700 12px/40px var(--sans);text-align:center}
+.ph-nx{flex:1;min-width:0;font-size:12px;opacity:.9}.ph-nx b{display:block;font-size:14px}
+.ph-go{background:#e8964e;color:#2a1b10;font-weight:800;flex:none}
+.cl-list{display:flex;flex-direction:column}
+.les{display:flex;align-items:center;gap:12px;min-height:56px;padding:0;background:none;border:0;border-bottom:1px solid var(--border);text-align:left;color:var(--cream);width:100%}
+.les b{font-family:var(--serif);font-size:16px;font-weight:600}.les small{margin-left:auto;font-size:12px;color:var(--cream3)}
+.les-n{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border2);font:700 13px/27px var(--sans);text-align:center;color:var(--cream3);flex:none}
+.les-n.d{background:var(--sage);border-color:var(--sage);color:#fff}
+.cl-more{display:block;width:100%;min-height:44px;margin:6px 0 20px;background:none;color:var(--gold2);font-size:13px;font-weight:700}
+.row-go{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 14px;margin-bottom:8px;border-radius:16px;background:var(--card);border:1px solid var(--border);text-align:left;color:var(--cream)}
+.row-go:hover{background:var(--card2)}.row-go b{display:block;font-family:var(--serif);font-size:16px}.row-go small{display:block;font-size:12px;color:var(--cream3)}
+.row-go i{margin-left:auto;font-style:normal;font-size:22px;color:var(--cream4)}
+.rg-ic{width:40px;height:40px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+@media(max-width:899px){.subnav.seg-big{padding:8px 16px;overflow:visible}}
 .more-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;padding:6px 0 40px}
 .more-grid button{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 16px;border-radius:var(--rs);background:var(--card);border:1px solid var(--border);text-align:left;color:var(--cream)}
 .more-grid button:hover{background:var(--card2)}
@@ -1841,11 +1867,9 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
 <!-- ══ COURS ══ -->
 <div class="view" id="v-cours">
   <div class="wrap">
-    <div class="hero"><div><h1>Le <em>cours</em> d’accords</h1><p>Comprendre ce que tes doigts jouent : notes, intervalles, couleurs, tonalités, progressions</p></div></div>
-    <div class="sv-body">
-      <div class="sv-tabs" id="cours-tabs"></div>
-      <div class="parts-view" id="cours-body" style="padding-bottom:60px"></div>
-    </div>
+    <div id="cours-hero"></div>
+    <div id="cours-list"></div>
+    <div class="parts-view" id="cours-body" style="padding-bottom:60px"></div>
   </div>
 </div>
 </div>
@@ -3618,36 +3642,61 @@ function quizAnswer(q) {
 
 /* ── shell ── */
 const COURS = [
-  {k:'notes',     t:'Les notes',               f:lessonNotes},
-  {k:'intervals', t:'Les intervalles',         f:lessonIntervals},
-  {k:'build',     t:'Construire un accord',    f:lessonBuild},
-  {k:'colors',    t:'Couleurs & effets',       f:lessonColors},
-  {k:'dissect',   t:'Décortiquer un accord',   f:lessonDissect},
-  {k:'key',       t:'Tonalité & familles',     f:lessonKey},
-  {k:'progs',     t:'Progressions célèbres',   f:lessonProgs},
-  {k:'tension',   t:'Tension & résolution',    f:lessonTension},
-  {k:'capo',      t:'Capo & transposition',    f:lessonCapo},
-  {k:'barre',     t:'Barrés : formes mobiles', f:lessonBarre},
-  {k:'inv',       t:'Renversements & basses',  f:lessonInversions},
-  {k:'ear',       t:'Entraîner l’oreille',     f:lessonEar},
+  {k:'notes',     t:'Les notes',               m:3, f:lessonNotes},
+  {k:'intervals', t:'Les intervalles',         m:4, f:lessonIntervals},
+  {k:'build',     t:'Construire un accord',    m:5, f:lessonBuild},
+  {k:'colors',    t:'Couleurs & effets',       m:4, f:lessonColors},
+  {k:'dissect',   t:'Décortiquer un accord',   m:4, f:lessonDissect},
+  {k:'key',       t:'Tonalité & familles',     m:5, f:lessonKey},
+  {k:'progs',     t:'Progressions célèbres',   m:5, f:lessonProgs},
+  {k:'tension',   t:'Tension & résolution',    m:5, f:lessonTension},
+  {k:'capo',      t:'Capo & transposition',    m:4, f:lessonCapo},
+  {k:'barre',     t:'Barrés : formes mobiles', m:6, f:lessonBarre},
+  {k:'inv',       t:'Renversements & basses',  m:5, f:lessonInversions},
+  {k:'ear',       t:'Entraîner l’oreille',     m:5, f:lessonEar},
 ];
+/* Cours : trois états. 'list' = carte héro + leçons à la carte ; 'lesson' = une leçon ; 'path' = le parcours guidé détaillé */
+let coursView = 'list', coursAll = false;
+const coursDone = () => { const d = new Set(); PATH.forEach((st, si) => st.items.forEach((it, ii) => { if (it[0] === 'cours' && exoProg.path[si + '-' + ii]) d.add(it[1]); })); return d; };
+/* Carte héro « Parcours guidé » : isolée ici pour être remplacée par le futur parcours animé (conteneur #cours-hero) */
+function parcoursHeroHTML() {
+  const total = PATH.reduce((a, st) => a + st.items.length, 0), n = PATH.reduce((a, st, si) => a + st.items.filter((_, ii) => exoProg.path[si + '-' + ii]).length, 0);
+  const cur = PATH.findIndex((st, si) => st.items.some((_, ii) => !exoProg.path[si + '-' + ii])), pct = Math.round(n / total * 100);
+  const fin = cur < 0, st = PATH[fin ? PATH.length - 1 : cur];
+  return `<div class="ph-card"><h3>Parcours guidé</h3><div class="ph-s">De ta première note à ton premier morceau.</div>
+    <div class="ph-row"><div class="ph-ring" style="--p:${pct}" role="img" aria-label="${pct} % du parcours"><span>${pct}%</span></div>
+      <div class="ph-nx">${fin ? 'Parcours terminé' : n ? 'Prochaine étape' : 'Pour commencer'}<b>${fin ? 'Bravo, à toi de jouer' : `Étape ${cur + 1} · ${esc(st.n)}`}</b></div>
+      <button type="button" class="btn ph-go" onclick="coursPath()">${n && !fin ? 'Reprendre' : fin ? 'Revoir' : 'Commencer'}</button></div></div>`;
+}
+function coursListHTML() {
+  const done = coursDone(), show = coursAll ? COURS : COURS.slice(0, 7);
+  return `<div class="cl-t">Leçons à la carte</div>
+    <div class="cl-list">${show.map(l => { const i = COURS.indexOf(l), ok = done.has(l.k);
+      return `<button type="button" class="les" onclick="coursOpen('${l.k}')"><span class="les-n ${ok ? 'd' : ''}">${ok ? '✓' : i + 1}</span><b>${l.t}</b><small>${l.m} min</small></button>`; }).join('')}</div>
+    <button type="button" class="cl-more" onclick="coursAll=!coursAll;renderCours()">${coursAll ? 'Voir moins ▴' : `Voir les ${COURS.length} leçons ▾`}</button>`;
+}
+function coursList() { coursStop(); coursView = 'list'; go('cours'); }
+function coursPath() { coursView = 'path'; renderCours(); window.scrollTo(0, 0); }
 function renderCours() {
-  $('cours-tabs').innerHTML = COURS.map((l, i) =>
-    `<button type="button" class="sv-tab ${l.k===coursCur?'on':''}" onclick="coursOpen('${l.k}')">${i+1}. ${l.t}</button>`).join('');
-  renderCoursLesson();
+  const list = coursView === 'list';
+  $('cours-hero').innerHTML = list ? parcoursHeroHTML() : '';
+  $('cours-list').innerHTML = list ? coursListHTML() : '';
+  if (list) $('cours-body').innerHTML = '';
+  else if (coursView === 'path') $('cours-body').innerHTML = `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="coursList()">&#8592; Cours</button>` + exoStatsHTML() + pathHTML();
+  else renderCoursLesson();
 }
 function renderCoursLesson() {
   const i = COURS.findIndex(l => l.k === coursCur), l = COURS[i];
   const nav = `<div style="display:flex;justify-content:space-between;gap:8px;margin-top:22px;flex-wrap:wrap">
     ${i > 0 ? `<button type="button" class="btn btn-ghost btn-sm" onclick="coursOpen('${COURS[i-1].k}')">&#8592; ${COURS[i-1].t}</button>` : '<span></span>'}
     ${i < COURS.length - 1 ? `<button type="button" class="btn btn-primary btn-sm" onclick="coursOpen('${COURS[i+1].k}')">${COURS[i+1].t} &#8594;</button>` : ''}</div>`;
-  $('cours-body').innerHTML = `<div class="pv-block on">
+  $('cours-body').innerHTML = `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="coursList()">&#8592; Leçons</button><div class="pv-block on">
     <div class="pv-hdr"><div class="pv-dot"></div><div class="pv-name">Leçon ${i+1} / ${COURS.length} — ${l.t}</div></div>
     <div class="pv-body">${l.f()}${practiceChips(l.k)}${nav}</div></div>`;
 }
 function coursOpen(k) {
   coursStop();
-  coursCur = k;
+  coursCur = k; coursView = 'lesson';
   renderCours();
   const top = $('cours-body').getBoundingClientRect().top + window.scrollY - 80;
   if (window.scrollY > top) window.scrollTo(0, top);
@@ -4338,11 +4387,14 @@ function exoOpen(id, param) {
   if (param && id === 'anchor') exoSt.anchor = param;
   exoCur = id;
   if ($('v-exo').classList.contains('on')) { exoStop(); exoRender(); window.scrollTo(0, 0); }
-  else go('exo');
+  else { exoRet = $('v-cours').classList.contains('on') ? 'cours' : null; go('exo'); }
 }
-function exoBack() { exoStop(); exoCur = null; exoRender(); window.scrollTo(0, 0); }
-function coursGo(k) { coursCur = k; go('cours'); }
-function pathToggle(key) { exoProg.path[key] = !exoProg.path[key]; exoSave(); exoRender(); }
+function exoBack() { exoStop(); exoCur = null; if (exoRet) { exoRet = null; go('cours'); return; } exoRender(); window.scrollTo(0, 0); }
+function exoHome() { rccStop(); feelStop(); exoMode = 'feel'; exoRender(); window.scrollTo(0, 0); }
+function coursGo(k) { coursCur = k; coursView = 'lesson'; go('cours'); }
+function pathToggle(key) { exoProg.path[key] = !exoProg.path[key]; exoSave(); trainRefresh(); }
+const trainRefresh = () => $('v-cours').classList.contains('on') ? renderCours() : exoRender();
+let exoRet = null;   // d'où l'on vient quand un exercice s'ouvre depuis le Cours (parcours, leçon)
 
 /* ── rendering ── */
 const lvlDots = l => '●'.repeat(l) + '○'.repeat(3 - l);
@@ -4402,7 +4454,7 @@ function pathHTML() {
       const n = s.items.filter((_, ii) => exoProg.path[si + '-' + ii]).length, pct = Math.round(n / s.items.length * 100);
       const cls = n === s.items.length ? 'past' : si === cur ? 'cur' : 'fut';
       return `<div class="path-step ${cls}"><div class="ps-dot">${cls === 'past' ? '✓' : si + 1}</div>
-        <div class="ps-head" onclick="exoSt.openStep=${si === open ? -1 : si};exoRender()">
+        <div class="ps-head" onclick="exoSt.openStep=${si === open ? -1 : si};trainRefresh()">
           <div class="ps-t">Étape ${si + 1} · ${s.n}<small>${s.dur} · ${n}/${s.items.length}</small></div>
           <div class="ps-d">${s.goal}</div><div class="ps-bar"><i style="width:${pct}%"></i></div></div>
         ${si === open ? `<div class="ps-body"><div class="ps-tip">${s.tip}</div>${s.items.map((it, ii) => pathItem(it, si, ii)).join('')}</div>` : ''}</div>`;
@@ -4424,7 +4476,7 @@ function exoDetailHTML(ex) {
       <div class="tc-prog"><div class="tc-bar"><i style="width:${pct}%"></i></div>
         <div class="tc-l">Départ ${a} · <b style="color:var(--gold2)">record ${best || '—'}</b> · objectif ${b} BPM</div></div></div>`;
   }
-  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="exoBack()">&#8592; ${exoMode === 'path' ? 'Parcours guidé' : 'Tous les exercices'}</button>
+  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="exoBack()">&#8592; ${exoRet ? 'Cours' : exoMode === 'axes' ? 'Entraînement ciblé' : 'Exercices'}</button>
     <div class="pv-block on" style="--ax:${ax.c}">
       <div class="pv-hdr"><div class="pv-dot" style="background:${ax.c}"></div><div class="pv-name">${ax.n}</div></div>
       <div class="pv-body">
@@ -4446,17 +4498,18 @@ function exoDetailHTML(ex) {
         ${related.length ? `<div class="practice"><div class="exo-sec-t">Dans le même axe</div><div class="filters">${related.map(e => `<button type="button" class="filt" onclick="exoOpen('${e.id}')">${e.n}</button>`).join('')}</div></div>` : ''}
       </div></div>`;
 }
+/* « Aller plus loin » : deux entrées, sous la grille des ambiances */
+function exoMoreHTML() {
+  const row = (ic, t, d, mode) => `<button type="button" class="row-go" onclick="rccStop();feelStop();exoMode='${mode}';exoRender();window.scrollTo(0,0)"><span class="rg-ic">${ic}</span><span><b>${t}</b><small>${d}</small></span><i>›</i></button>`;
+  return `<div class="cl-t">Aller plus loin</div>` + row('↓↑', 'Apprendre les rythmes', RH_COURSE.length + ' rythmes, un par un', 'rhy') + row('◎', 'Entraînement ciblé', 'Accords, passages, effets, arpèges', 'axes');
+}
 function exoRender() {
   const body = $('exo-body'); if (!body) return;
   $('v-exo').classList.toggle('fl-solo', !exoCur && exoMode === 'feel' && !!feel.prog);   // lecteur d'une suite : écran épuré
   if (exoCur && EXO[exoCur]) { body.innerHTML = exoDetailHTML(EXO[exoCur]); return; }
-  body.innerHTML = (exoMode === 'path' || exoMode === 'axes' ? exoStatsHTML() : '') +
-    `<div class="mode-toggle exo-mode">
-      <button type="button" class="mode-pill big ${exoMode==='feel'?'on':''}" onclick="rccStop();feelStop();exoMode='feel';exoRender()">Au feeling</button>
-      <button type="button" class="mode-pill big ${exoMode==='path'?'on':''}" onclick="rccStop();feelStop();exoMode='path';exoRender()">Parcours guidé</button>
-      <button type="button" class="mode-pill big ${exoMode==='rhy'?'on':''}" onclick="rccStop();feelStop();exoMode='rhy';exoRender()">Apprendre les rythmes</button>
-      <button type="button" class="mode-pill big ${exoMode==='axes'?'on':''}" onclick="rccStop();feelStop();exoMode='axes';exoRender()">Entraînement ciblé</button></div>` +
-    (exoMode === 'feel' ? feelHTML() : exoMode === 'rhy' ? rccHTML() : exoMode === 'path' ? pathHTML() : axesHTML());
+  const back = exoMode === 'axes' || exoMode === 'rhy' && rcz.cur == null ? `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="exoHome()">&#8592; Exercices</button>` : '';
+  body.innerHTML = (exoMode === 'axes' ? back + exoStatsHTML() : exoMode === 'rhy' ? back : '') +
+    (exoMode === 'rhy' ? rccHTML() : exoMode === 'axes' ? axesHTML() : feelHTML() + (!feel.amb ? exoMoreHTML() : ''));
   if (exoMode === 'feel') feelAfter();
   if (exoMode === 'rhy') rccAfter();
 }
@@ -4857,8 +4910,7 @@ function feelCard(p) {
       ${p.facile ? `<button type="button" class="filt ${easy ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div></div>`;
 }
 function feelTiles() {
-  return `<div class="fl-lead">Quelle ambiance as-tu envie de jouer ?</div>
-    <div class="fl-surp"><button type="button" class="btn btn-primary" onclick="feelSurprise()">🎲 Surprends-moi</button><span>Une suite et un rythme au hasard, et on joue.</span></div>
+  return `<div class="fl-surp"><div class="fl-lead">Ton envie du jour ?</div><button type="button" class="btn btn-primary" onclick="feelSurprise()" title="Une suite et un rythme au hasard">🎲 Surprends-moi</button></div>
     <div class="fl-tiles">${AMBIANCES.map(a => `<button type="button" class="fl-tile" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
       <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>`;
 }
@@ -6142,6 +6194,7 @@ function go(v) {
   if (v === 'home') renderHome();
   if (v === 'lib') renderLib();
   if (v === 'cours') renderCours();
+  if (v === 'exo' && !exoCur) exoRet = null;
   if (v === 'exo') exoRender();
   if (v === 'tuto') renderTuto();
   if (v === 'atelier') atOpen();
@@ -6184,7 +6237,8 @@ function renderSubnav(v) {
   document.querySelectorAll('.subnav').forEach(e => e.remove());
   const sp = SPACE_OF[v], items = SUBNAV[sp]; if (!items) return;
   const el = document.createElement('div'); el.className = 'subnav'; el.setAttribute('role', 'tablist');
-  el.innerHTML = items.map(([k, l]) => `<button type="button" role="tab" aria-selected="${k === v}" class="${k === v ? 'on' : ''}" onclick="go('${k}')">${l}</button>`).join('');
+  el.innerHTML = items.map(([k, l]) => `<button type="button" role="tab" aria-selected="${k === v}" class="${k === v ? 'on' : ''}" onclick="${k === 'cours' ? 'coursList()' : `go('${k}')`}">${l}</button>`).join('');
+  if (sp === 'train') el.classList.add('seg-big');
   const view = $('v-' + v); view.insertBefore(el, view.firstChild);
 }
 function renderPlus() {
