@@ -5919,7 +5919,7 @@ function newSheet() {
   openEditor('Nouvelle fiche');
   setTimeout(() => { const t = $('f-title'); if (t) t.focus(); }, 60);
 }
-function edNext(e, id) { if (e.key === 'Enter') { e.preventDefault(); const n = $(id); if (n) n.focus(); } }
+function edNext(e, id) { if (e.key === 'Enter') { e.preventDefault(); const n = $(id); if (!n) return; const d = n.closest('details'); if (d) d.open = true; n.focus(); } }
 // "Em7 G, Dsus4" -> accords ajoutés à la 1re partie (inconnus = accord vide à compléter)
 function parseChordLine(str) {
   return String(str||'').split(/[\s,;]+/).filter(Boolean).map(n => newChord(findChord(n) ? n : n.trim()));
