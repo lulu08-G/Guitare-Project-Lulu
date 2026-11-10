@@ -28,4 +28,6 @@ Claude principal = bras droit de Lucas : il découpe, délègue, vérifie et ren
 | `testeur` | Tests + regard de débutant guitare | en réserve |
 | `marketing` | Positionnement, stores, communication | en réserve |
 
+**Validation de Lucas** : pour toute tâche longue (gros changement d'écran, refonte, nouveau parcours), présenter d'abord le plan court et/ou une maquette, et attendre son accord avant de lancer le code. Rien n'est committé sans vérification ; un rendu qui ne lui plaît pas est annulé.
+
 Règles d'économie : briefs courts et précis ; chaque agent rend un **rapport court** (pas de copie de code ni de fichier) ; ne lancer que les agents utiles à la tâche.
