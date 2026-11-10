@@ -18,6 +18,9 @@
   --ra:18px 12px 20px 14px; --rb:12px 20px 14px 18px; --rc:20px 10px 18px 12px;
   --serif:'Spectral',Georgia,serif; --sans:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   color-scheme: dark;
+  /* ── mouvement ── */
+  --ease-out:cubic-bezier(.22,.8,.3,1); --ease-pop:cubic-bezier(.34,1.56,.64,1);
+  --t-fast:120ms; --t-mid:200ms; --t-slow:300ms;
 }
 :root[data-theme="light"]{
   /* ── jour ── */
@@ -725,7 +728,7 @@ input.ed-in-a{color:var(--cream2)}
 .ed-rc-t{margin-left:auto;font-family:var(--mono);font-size:24px;font-weight:700;color:var(--cream)}
 .ed-rc-m{margin-left:auto;font-size:13px;color:var(--cream3);font-weight:600}
 .ed-dot{width:14px;height:14px;border-radius:50%;background:var(--terra);box-shadow:0 0 0 5px rgba(184,84,58,.2);animation:edp 1.1s ease-in-out infinite;flex:none}
-@keyframes edp{50%{box-shadow:0 0 0 8px rgba(184,84,58,.08)}}
+@keyframes edp{50%{transform:scale(1.22);opacity:.8}}
 .ed-ok{width:28px;height:28px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;flex:none}
 .ed-ok svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
 .ed-wave{display:flex;align-items:center;justify-content:space-between;gap:3px;height:44px;margin:6px 0 10px}
@@ -1030,9 +1033,9 @@ select.at-chip{appearance:none;-webkit-appearance:none;padding-right:14px}
 @media(min-width:760px) and (max-width:899px){.at-roots button{min-height:56px}}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--sage);color:var(--ink);padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;transform:translateY(90px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:calc(100vw - 48px)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--sage);color:var(--ink);padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;transform:translateY(90px);opacity:0;transition:transform var(--t-mid) var(--ease-out),opacity var(--t-mid);box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:calc(100vw - 48px)}
 body:has(#v-ed.on) .toast{bottom:150px}
-.toast.show{transform:translateY(0);opacity:1}
+.toast.show{transform:translateY(0);opacity:1;transition:transform var(--t-slow) var(--ease-pop),opacity var(--t-mid)}
 .toast.err{background:var(--terra);color:#fff}
 
 /* ── PRINT ── */
@@ -1289,6 +1292,62 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 .ed-chords{margin:10px 0 4px}.ed-chords input{min-height:46px;font-size:16px}
 .at-card{flex-wrap:wrap}.at-card .at-create{flex:1 0 100%;min-height:44px}
 @media(max-width:899px){.hide-m{display:none!important}.hm-w{display:none}.hm-top h1 small{margin:0;font-size:15px}.hm-top{padding-top:12px}}
+
+/* ── MOUVEMENT : sobre, transform + opacity, 120–300 ms (jetons --ease-* / --t-* en :root) ── */
+.btn,.ed-rec,.ed-rcb{overflow:hidden}
+.btn:active,.btn-icon:active,.ed-rec:active,.ed-rcb:active{transform:scale(.95)}
+.btn-icon,.ed-rcb{transition:transform var(--t-fast) var(--ease-out),background var(--t-fast),color var(--t-fast)}
+.ed-rec{transition:transform var(--t-fast) var(--ease-out)}
+.m-rip{position:absolute;border-radius:50%;background:rgba(245,184,112,.35);pointer-events:none;transform:scale(0)}
+/* vues : fondu + glissement léger (opacité seule là où un bloc fixe vit dans la vue) */
+.view.on{animation:viewIn var(--t-mid) var(--ease-out) both}
+#v-sheet.on,#v-ed.on,#v-atelier.on{animation-name:viewFade}
+@keyframes viewIn{from{opacity:0;transform:translateX(var(--vx,14px))}}
+@keyframes viewFade{from{opacity:0}}
+/* pastille de la barre du bas */
+#tb-pill{display:none}
+@media(max-width:759px){
+  #tb-pill{display:block;position:absolute;top:0;left:0;width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--gold2);pointer-events:none;transition:transform var(--t-slow) var(--ease-out),opacity var(--t-mid)}
+  #tb-pill.nt{transition:none}
+}
+/* accord qui se pose */
+.ed-ct.landing{animation:ctLand 280ms var(--ease-pop) both}
+.ed-ct.landing svg circle:not([fill="none"]){transform-box:fill-box;transform-origin:center;animation:ctDot 200ms var(--ease-pop) both}
+.ed-ct.landing svg circle:not([fill="none"]):nth-of-type(1){animation-delay:140ms}
+.ed-ct.landing svg circle:not([fill="none"]):nth-of-type(2){animation-delay:190ms}
+.ed-ct.landing svg circle:not([fill="none"]):nth-of-type(n+3){animation-delay:240ms}
+@keyframes ctLand{0%{transform:translateY(-14px) scale(.92);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes ctDot{from{transform:scale(0)}to{transform:scale(1)}}
+/* barre ⏺ : entrée de chaque état, décompte, jauge, coche */
+.ed-rc.enter,.ed-rec.enter{animation:rcIn var(--t-slow) var(--ease-out) both}
+.ed-rc.done.enter{animation-name:rcDone;animation-duration:300ms}
+@keyframes rcIn{from{transform:translateY(18px);opacity:0}}
+@keyframes rcDone{0%{transform:translateY(0)}40%{transform:translateY(-4px)}100%{transform:none}}
+.ed-rc-n.pop{animation:rcN 260ms var(--ease-out) both}
+@keyframes rcN{0%{transform:scale(1.6);opacity:0}40%{opacity:1}100%{transform:scale(1);opacity:1}}
+.ed-rc.live{position:relative;overflow:hidden}
+.ed-gauge{position:absolute;left:0;right:0;top:0;height:3px;background:var(--terra);transform:scaleX(0);transform-origin:left;pointer-events:none;opacity:.7}
+.ed-rc.done.enter .ed-ok{animation:okPop 300ms var(--ease-pop) both}
+.ed-rc.done.enter .ed-ok svg path{stroke-dasharray:24;stroke-dashoffset:24;animation:okDraw 260ms var(--ease-out) 80ms forwards}
+@keyframes okPop{from{transform:scale(.4)}to{transform:scale(1)}}
+@keyframes okDraw{to{stroke-dashoffset:0}}
+/* coche du toast */
+.toast .tk{width:15px;height:15px;vertical-align:-2px;margin-right:7px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:24;stroke-dashoffset:24}
+.toast.show .tk{animation:okDraw 240ms var(--ease-out) 120ms forwards}
+/* panneaux repliés (details) : le contenu se déroule à l'ouverture */
+details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
+@keyframes detIn{from{opacity:0;transform:translateY(-6px)}}
+@supports selector(::details-content){
+  :root{interpolate-size:allow-keywords}
+  details::details-content{block-size:0;overflow:clip;transition:block-size var(--t-slow) var(--ease-out),content-visibility var(--t-slow) allow-discrete}
+  details[open]::details-content{block-size:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  :root{--t-fast:1ms;--t-mid:1ms;--t-slow:1ms}
+  *,*::before,*::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+  .ed-dot,.rec-dot,.cap-blob-ring,.tt-live{animation:none!important}
+  details::details-content{transition:none!important}
+}
 </style>
 </head>
 <body>
@@ -1325,6 +1384,7 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 </nav>
 
 <div id="tabbar" role="navigation" aria-label="Navigation principale">
+  <i id="tb-pill" aria-hidden="true"></i>
   <button id="tb-fiches" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 015.5 4H19v15H5.5A1.5 1.5 0 004 20.5z"/><path d="M4 20.5A1.5 1.5 0 005.5 22H19v-3"/><path d="M9 8h6"/></svg><span>Fiches</span></button>
   <button id="tb-trouver" onclick="go('atelier')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>Trouver</span></button>
   <button id="tb-creer" class="tb-create" onclick="newSheet()" aria-label="Créer une fiche"><span class="tb-circle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span class="tb-l">Créer</span></button>
@@ -1723,9 +1783,33 @@ const $ = id => document.getElementById(id);
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 const esc = s => s == null ? '' : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const clone = o => JSON.parse(JSON.stringify(o));
+/* ── MOUVEMENT (helpers) : tout est transform/opacity ; rien si « réduire les animations » ── */
+const mReduced = () => matchMedia('(prefers-reduced-motion:reduce)').matches;
+function mAnim(el, frames, opt) { if (!el || !el.animate || mReduced()) return null; return el.animate(frames, opt); }
+const mPulse = el => mAnim(el, [{transform: 'scale(1)'}, {transform: 'scale(1.1)', offset: .35}, {transform: 'scale(1)'}], {duration: 160, easing: 'ease-out'});
+function mPop(el) { if (!el) return; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+// toucher : onde discrète sous le doigt
+document.addEventListener('pointerdown', e => {
+  if (mReduced()) return;
+  const b = e.target.closest && e.target.closest('.btn,.ed-rec,.ed-rcb'); if (!b || b.disabled) return;
+  const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height) * 1.6;
+  if (getComputedStyle(b).position === 'static') b.style.position = 'relative';
+  const o = document.createElement('span'); o.className = 'm-rip'; o.setAttribute('aria-hidden', 'true');
+  o.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d/2}px;top:${e.clientY - r.top - d/2}px`;
+  b.appendChild(o);
+  const a = mAnim(o, [{transform: 'scale(0)', opacity: .9}, {transform: 'scale(1)', opacity: 0}], {duration: 360, easing: 'cubic-bezier(.22,.8,.3,1)'});
+  if (a) a.onfinish = () => o.remove(); else o.remove();
+}, {passive: true});
+// panneaux <details> : le contenu se déroule à l'ouverture (clic sur le résumé, pas au rendu)
+document.addEventListener('click', e => {
+  const sm = e.target.closest && e.target.closest('summary'); if (!sm) return;
+  const d = sm.parentElement; if (!d || d.tagName !== 'DETAILS' || d.open || mReduced()) return;
+  d.classList.add('det-in'); setTimeout(() => d.classList.remove('det-in'), 380);
+});
 function toast(msg, err) {
   const el = $('toast');
   el.textContent = msg;
+  if (!err) el.insertAdjacentHTML('afterbegin', '<svg class="tk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>');
   el.className = 'toast' + (err ? ' err' : '') + ' show';
   el._ts = Date.now();
   clearTimeout(el._t);
@@ -5794,7 +5878,7 @@ async function rcStart() {
   me.timers = [];
   for (let n = 0; n < 4; n++) {
     click(t0 + n*beat, n === 0);
-    me.timers.push(setTimeout(() => { const e = $('rc-n') || $('ed-rc-n'); if (e) e.textContent = 4 - n; }, Math.max(0, (t0 + n*beat - ac.currentTime)*1000)));
+    me.timers.push(setTimeout(() => { const e = $('rc-n') || $('ed-rc-n'); if (e) { e.textContent = 4 - n; mPop(e); } }, Math.max(0, (t0 + n*beat - ac.currentTime)*1000)));
   }
   me.timers.push(setTimeout(begin, Math.max(0, (t0 + 4*beat - ac.currentTime)*1000)));
 }
@@ -5891,7 +5975,10 @@ function go(v) {
   if (v !== 'import') stopCapture();
   coursStop();
   exoStop();
+  const sOrd = ['fiches','trouver','creer','train','plus'], spOf = x => x === 'ed' ? 'creer' : (SPACE_OF[x] || 'fiches');
+  const vx = (sOrd.indexOf(spOf(v)) >= sOrd.indexOf(spOf(curView)) ? 14 : -14) + 'px';   // sens du glissement de la vue
   document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
+  $('v-' + v).style.setProperty('--vx', vx);
   $('v-' + v).classList.add('on');
   document.body.classList.toggle('playing', v === 'sheet'); // mode jeu : navigation masquée
   v === 'sheet' ? wakeOn() : wakeOff();
@@ -5920,7 +6007,18 @@ function navMark(v) {
   if (v === 'ed') sp = (typeof draft !== 'undefined' && draft && sheets.some(x => x.id === draft.id)) ? 'fiches' : 'creer';
   ['fiches','trouver','creer','train','plus'].forEach(k => ['nl-','tb-'].forEach(p => { const b = $(p + k); if (b) { b.classList.toggle('on', k === sp); if (k === sp) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); } }));
   $('nav-title').textContent = VIEW_TITLE[v] || SPACE_TITLE[sp];
+  tbPill(sp);
 }
+// pastille de la barre du bas : glisse sous l'onglet actif (transform seul)
+let tbPillOn = false;
+function tbPill(sp) {
+  const pill = $('tb-pill'), b = $('tb-' + (sp || (typeof curView !== 'undefined' && SPACE_OF[curView]) || 'fiches')); if (!pill || !b || !b.offsetWidth) return;
+  const x = b.offsetLeft + b.offsetWidth/2 - 14;
+  if (!tbPillOn) { pill.classList.add('nt'); pill.style.transform = `translateX(${x}px)`; void pill.offsetWidth; pill.classList.remove('nt'); tbPillOn = true; }
+  else pill.style.transform = `translateX(${x}px)`;
+  pill.style.opacity = sp === 'creer' ? 0 : 1;
+}
+addEventListener('resize', () => { tbPillOn = false; const on = document.querySelector('#tabbar button.on'); if (on) tbPill(on.id.slice(3)); });
 function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'exo'); }
 let curView = 'home';
 const SUBNAV = {
@@ -6285,6 +6383,7 @@ const RH_PLAY_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
 const RH_PAUSE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>';
 const RH_PLUS_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 const RH_STOP_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>';
+const rhLastCi = {};
 function rhRenderPlayer(i, step, k) {
   const el = $('rh-view-' + i), p = cur && cur.parts[i];
   if (el && p) el.innerHTML = svRhHTML(p.rhythm, step == null ? {} : {cursor: step});
@@ -6292,6 +6391,11 @@ function rhRenderPlayer(i, step, k) {
   const r = p && rhNorm(p.rhythm), n = p ? p.chords.length : 0;
   const ci = (step != null && k != null && r && n) ? Math.floor(k / rhPerBar(r.mes, r.res)) % n : -1;
   document.querySelectorAll(`#pvb-${i} .chord-cell`).forEach((c, j) => c.classList.toggle('now', j === ci));
+  if (step != null) {   // anim calée sur l'horloge audio : ce rendu est déclenché par la file de temps du moteur
+    mPulse(el && el.querySelector('.rgc.lit'));
+    if (ci !== rhLastCi[i] && rhLastCi[i] != null) { const nc = document.querySelector(`#pvb-${i} .chord-cell.now`); mAnim(nc, [{transform: 'translateX(18px) scale(.96)', opacity: .4}, {transform: 'none', opacity: 1}], {duration: 220, easing: 'cubic-bezier(.22,.8,.3,1)'}); }
+    rhLastCi[i] = ci;
+  } else rhLastCi[i] = null;
   svSync();
 }
 function playPartRhythm(i) {
@@ -6691,7 +6795,7 @@ function edChordsHTML(p, i) {
   const open = cp.ed && cp.pi === i;
   return `<div class="ed-chs">${p.chords.map((c, ci) => {
       const todo = c.frets.every(f => f === -1);
-      return `<div class="ed-ct${todo ? ' todo' : ''}" role="button" tabindex="0" onclick="edRpSet(${i});openChordEditor(${i},${ci})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openChordEditor(${i},${ci})}" title="Modifier l’accord">
+      return `<div class="ed-ct${todo ? ' todo' : ''}" data-cid="${esc(c.id || '')}" role="button" tabindex="0" onclick="edRpSet(${i});openChordEditor(${i},${ci})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openChordEditor(${i},${ci})}" title="Modifier l’accord">
         <button type="button" class="ed-ctx" onclick="event.stopPropagation();rmChord(${i},${ci})" aria-label="Retirer ${esc(c.name || 'l’accord')}"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
         <b>${esc(c.name || '?')}</b>${chordSVG(c, {size:.86})}
         ${todo ? '<em>à compléter</em>' : c.arp && c.arp.length ? '<em>arpège</em>' : ''}</div>`; }).join('')}
@@ -6715,6 +6819,7 @@ function edMoreHTML(p, i) {
     ${p.tabText ? `<div class="part-sub"><span class="part-sub-t">Tab importée</span><button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].tabText='';renderParts()">retirer</button></div>
       <div class="tab-ascii mono">${esc(p.tabText)}</div>` : ''}</details>`;
 }
+let edSeen = new Set(), edSeenFor = null;
 function renderParts() {
   const host = $('parts-ed'), solo = draft.parts.length === 1;
   const g0 = host.querySelector('.cp-grid'), gy = g0 ? g0.scrollTop : 0;
@@ -6743,6 +6848,9 @@ function renderParts() {
   $('ed-solo-rh').innerHTML = solo ? `<div class="ed-lab"><b>Rythme</b><small>facultatif</small></div>${rbHTML('draft', 0)}` : '';
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
+  // un accord ajouté se pose (les accords déjà vus ne rejouent rien)
+  if (edSeenFor !== draft) { edSeenFor = draft; edSeen = new Set(); host.querySelectorAll('.ed-ct[data-cid]').forEach(e => edSeen.add(e.dataset.cid)); }
+  else host.querySelectorAll('.ed-ct[data-cid]').forEach(e => { if (!edSeen.has(e.dataset.cid)) { edSeen.add(e.dataset.cid); if (!mReduced()) e.classList.add('landing'); } });
   renderQuickParts(); rbSyncAll(); edSyncSave(); edBar();
 }
 /* ── grande barre ⏺ « Enregistrer mon rythme » (éditeur de fiche) : collée en bas, suit la page ──
@@ -6752,7 +6860,8 @@ const edLv = [];              // niveaux récents du micro (onde en direct)
 const edPkC = {};             // mediaId -> pics de la prise (onde statique)
 const ED_WAVE_N = 40;
 const edWaveBars = (vals, cls) => `<div class="ed-wave ${cls || ''}" aria-hidden="true">${Array.from({length: ED_WAVE_N}, (_, k) => `<i style="height:${Math.round(5 + 34*Math.min(1, vals[k] || 0))}px"></i>`).join('')}</div>`;
-function edBarReset() { const h = $('ed-recbar'); if (h) h.innerHTML = ''; }
+let edBarSt = '';
+function edBarReset() { const h = $('ed-recbar'); if (h) h.innerHTML = ''; edBarSt = ''; }
 function edBar() {
   const host = $('ed-recbar'); if (!host || !draft) return;
   const i = edRp(), p = draft.parts[i], multi = draft.parts.length > 1;
@@ -6763,7 +6872,7 @@ function edBar() {
       <p class="ed-rc-s">Quatre clics, puis gratte ton rythme.</p>
       <button type="button" class="ed-rcb ghost" onclick="edRecCancel()">Annuler</button></div>`;
   } else if (rc && rc.inline && rc.stage === 'rec') {
-    h = `<div class="ed-rc live"><div class="ed-rc-h"><span class="ed-dot"></span><b>Enregistrement…</b><span class="ed-rc-t" id="ed-rc-t">0:00</span></div>
+    h = `<div class="ed-rc live"><div class="ed-rc-h"><i class="ed-gauge" aria-hidden="true"></i><span class="ed-dot"></span><b>Enregistrement…</b><span class="ed-rc-t" id="ed-rc-t">0:00</span></div>
       ${edWaveBars(edLv.slice(-ED_WAVE_N), 'live')}
       <button type="button" class="ed-rcb stop" onclick="rcStop()"><i>${RH_STOP_SVG}</i>Arrêter</button></div>`;
   } else if (p && p.rec) {
@@ -6778,6 +6887,15 @@ function edBar() {
     h = `<button type="button" class="ed-rec" onclick="edRecStart()"><i class="ed-rec-d"></i><span><b>Enregistrer mon rythme</b><small>Gratte 1 ou 2 mesures, l’app s’en souvient</small></span></button>`;
   }
   host.innerHTML = pick + h;
+  const st = rc && rc.inline && (rc.stage === 'count' || rc.stage === 'rec') ? rc.stage : (p && p.rec ? 'done' : 'idle');
+  if (st !== edBarSt && edBarSt !== '') {   // changement d'état : la barre entre, la coche se trace
+    const bar = host.querySelector('.ed-rc,.ed-rec'); if (bar && !mReduced()) bar.classList.add('enter');
+  }
+  edBarSt = st;
+  if (st === 'rec' && rc.t0) {   // jauge de la prise (garde-fou 90 s), reprise à l'instant écoulé
+    const a = mAnim(host.querySelector('.ed-gauge'), [{transform: 'scaleX(0)'}, {transform: 'scaleX(1)'}], {duration: 90000, easing: 'linear', fill: 'forwards'});
+    if (a) a.currentTime = performance.now() - rc.t0;
+  }
   edBarPlay();
   $('v-ed').style.setProperty('--dock-h', host.offsetHeight + 'px');
 }
@@ -7002,7 +7120,7 @@ function rbStep(ctx, i) {
     const old = rbLit; rbLit = k == null ? null : {ctx, i, k};
     if (old) { const e = document.querySelector(`#${rbId(old.ctx, old.i)} [data-k].lit`); if (e) e.classList.remove('lit'); }
     if (k == null) { rbSyncPlay(); return; }
-    const e = document.querySelector(`#${rbId(ctx, i)} [data-k="${k}"]`); if (e) e.classList.add('lit');
+    const e = document.querySelector(`#${rbId(ctx, i)} [data-k="${k}"]`); if (e) { e.classList.add('lit'); mPulse(e); }
   };
 }
 function rbPlay(ctx, i) {
