@@ -761,7 +761,24 @@ select.at-chip{appearance:none;-webkit-appearance:none;padding-right:14px}
 .at-ptools input{flex:1;min-width:0;min-height:44px;border-radius:12px;border:1px solid var(--border2);background:var(--card);color:var(--cream);padding:0 12px;font-size:14px}
 .at-seq{display:flex;flex-wrap:wrap;gap:8px;min-height:60px;align-items:center;margin:12px 0 4px}
 .at-ch{min-width:64px;min-height:56px;padding:0 14px;border-radius:12px;background:var(--card);border:1.5px solid var(--border2);color:var(--cream);font-family:var(--serif);font-size:22px;font-weight:600}
+.at-ch{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 12px}
+.at-ch svg{display:block;pointer-events:none}
 .at-ch.sel{border-color:var(--gold);background:var(--card3)}
+/* sélecteur d'accords visuel (Atelier + éditeur) */
+.cp-open{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;margin-top:10px;border-radius:12px;background:var(--card2);border:1.5px solid var(--gold);color:var(--gold);font-weight:800;font-size:15px}
+.cp-panel{margin-top:10px;border:1px solid var(--border2);border-radius:14px;background:var(--card);padding:10px}
+.cp-added{font-size:12px;color:var(--cream2);min-height:18px;margin-bottom:8px;overflow-wrap:anywhere}
+.cp-added b{color:var(--gold);font-family:var(--serif);font-size:14px}
+.cp-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.cp-tabs button{flex:0 0 auto;min-height:44px;padding:0 14px;border-radius:50px;background:var(--card2);border:1px solid var(--border2);color:var(--cream2);font-weight:700;font-size:13px}
+.cp-tabs button[aria-pressed=true]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.cp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;max-height:min(46vh,340px);overflow-y:auto;overscroll-behavior:contain;padding:2px}
+.cp-cell{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px;padding:6px 4px;border-radius:12px;background:var(--card2);border:1.5px solid var(--border2);color:var(--cream)}
+.cp-cell:active{border-color:var(--gold);background:var(--card3)}
+.cp-cell span{font-family:var(--serif);font-weight:700;font-size:15px}
+.cp-close{display:block;width:100%;min-height:44px;margin-top:10px;border-radius:50px;background:var(--card2);border:1px solid var(--border2);color:var(--cream);font-weight:700}
+.cp-names{margin-top:12px}
+.cp-names>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:13px;font-weight:700;color:var(--cream2)}
 .at-ch.todo{border-style:dashed}
 .at-ctl{display:flex;gap:8px;margin:6px 0}
 .at-ctl button{flex:1;min-height:44px;border-radius:50px;background:var(--card2);color:var(--cream);font-weight:700;font-size:14px;border:1px solid var(--border2)}
@@ -1156,12 +1173,15 @@ body.rhy-open{overflow:hidden}
         <div class="fg"><label>Artiste <span class="opt-tag" id="f-artist-tag">(facultatif)</span></label><input type="text" id="f-artist" placeholder="Ex : Oasis" autocomplete="off" enterkeyhint="next" onkeydown="edNext(event,'f-chords')"></div>
       </div>
       <div class="fg">
-        <label>Accords — tape-les séparés par des espaces</label>
+        <label>Accords</label>
+        <div id="cp-ed"></div>
+        <details class="cp-names"><summary>Je connais les noms</summary>
         <div class="qc-row">
           <input type="text" id="f-chords" placeholder="Ex : Em7 G Dsus4 A7sus4" autocomplete="off" autocapitalize="off" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();addChordLine()}">
           <button type="button" class="btn btn-ghost" onclick="addChordLine()">Ajouter</button>
         </div>
         <div class="qc-sugg" id="qc-sugg"></div>
+        </details>
       </div>
       <div class="fg">
         <label>Version originale <span class="opt-tag">(lien YouTube, Spotify… pour « Écouter l’original »)</span></label>
@@ -5156,6 +5176,36 @@ function atRhPlay() {
 /* ── séquence d'accords + clavier (rendu partagé : panneau Fiche et mode copie) ── */
 const AT_SFX = [['♯','acc','#'],['♭','acc','b'],['m','q1','m'],['7','q2','7'],['maj7','q2','maj7'],['sus4','q3','sus4'],['sus2','q3','sus2'],['add9','q3','add9'],['dim','q1','dim']];
 const AT_ENH = {'E#':'F','B#':'C','Fb':'E','Cb':'B'};
+/* ── sélecteur d'accords visuel (diagrammes) : partagé Atelier / éditeur de fiche ── */
+const cp = {at:false, ed:false, tab:'top', names:false};
+const CP_TOP = ['Em','C','G','D','Am','E','A','Dm','F','A7','D7','E7','Cadd9','Dsus4'];
+const CP_TABS = [['top','Les plus utilisés'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9']];
+function cpList() { return cp.tab === 'top' ? CP_TOP.map(findChord1).filter(Boolean) : LIB.filter(c => c.fam === cp.tab); }
+function cpTarget(ctx) { return ctx === 'at' ? (at.s ? atPart().chords : []) : (draft && draft.parts[0] ? draft.parts[0].chords : []); }
+function cpHTML(ctx) {
+  if (ctx === 'at' && !at.s) return '';
+  const open = cp[ctx], last = cpTarget(ctx).slice(-8).map(c => esc(c.name || '?'));
+  let h = `<button type="button" class="cp-open" onclick="cpToggle('${ctx}')" aria-expanded="${open}">${open ? '▲ Masquer les accords' : '+ Accord'}</button>`;
+  if (!open) return h;
+  h += `<div class="cp-panel"><div class="cp-added">${last.length ? 'Dans la partie : <b>' + last.join('</b> · <b>') + '</b>' : 'Touche un diagramme pour l’ajouter.'}</div>
+    <div class="cp-tabs" role="tablist">${CP_TABS.map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')">${l}</button>`).join('')}</div>
+    <div class="cp-grid">${cpList().map(c => `<button type="button" class="cp-cell" onclick="cpPick('${ctx}','${esc(c.n)}')" aria-label="Ajouter ${esc(c.n)}">${chordSVG({frets:c.f, fingers:c.g}, {size:.72})}<span>${esc(c.n)}</span></button>`).join('')}</div>
+    <button type="button" class="cp-close" onclick="cpToggle('${ctx}')">Fermer</button></div>`;
+  return h;
+}
+function cpRefresh(ctx) {
+  if (ctx === 'at') { atBuildRefresh(); return; }
+  const el = $('cp-ed'); if (!el) return;
+  const g = el.querySelector('.cp-grid'), y = g ? g.scrollTop : 0;
+  el.innerHTML = cpHTML('ed');
+  const g2 = el.querySelector('.cp-grid'); if (g2) g2.scrollTop = y;
+}
+function cpToggle(ctx) { cp[ctx] = !cp[ctx]; cpRefresh(ctx); }
+function cpTab(ctx, t) { cp.tab = t; cpRefresh(ctx); }
+function cpPick(ctx, name) {
+  try { playChord(newChord(name), ctx === 'at' ? (at.s && at.s.capo) || 0 : (draft && draft.capo) || 0, 'D'); } catch (e) {}
+  if (ctx === 'at') atAdd([name]); else { addChordLine(name); cpRefresh('ed'); }
+}
 function atKbName() { const k = at.kb; if (!k.root) return ''; const r = AT_ENH[k.root + k.acc] || k.root + k.acc; return r + k.q1 + k.q2 + k.q3; }
 function atKb(f, v) {
   const k = at.kb;
@@ -5193,16 +5243,20 @@ function atDelChord() {
 function atBuildHTML() {
   if (!at.s) return '';
   const p = atPart(), c = p.chords, k = at.kb, nm = atKbName();
-  return `<div class="at-seq" role="list" aria-label="Accords de la partie ${esc(p.name)}">${c.length ? c.map((x, i) => `<button type="button" role="listitem" class="at-ch ${i === at.sel ? 'sel' : ''} ${x.frets.every(f => f === -1) ? 'todo' : ''}" onclick="atSelChord(${i})" aria-pressed="${i === at.sel}">${esc(x.name || '?')}</button>`).join('') : `<span class="at-seqhint">Aucun accord : touche une note, puis « Ajouter ».</span>`}</div>
+  return `<div class="at-seq" role="list" aria-label="Accords de la partie ${esc(p.name)}">${c.length ? c.map((x, i) => `<button type="button" role="listitem" class="at-ch ${i === at.sel ? 'sel' : ''} ${x.frets.every(f => f === -1) ? 'todo' : ''}" onclick="atSelChord(${i})" aria-pressed="${i === at.sel}"><span>${esc(x.name || '?')}</span>${x.frets.every(f => f === -1) ? '' : chordSVG(x, {size:.6})}</button>`).join('') : `<span class="at-seqhint">Aucun accord : touche une note, puis « Ajouter ».</span>`}</div>
     ${at.sel >= 0 && c[at.sel] ? `<div class="at-ctl"><button type="button" onclick="atMove(-1)" aria-label="Décaler à gauche">◀ Avant</button><button type="button" onclick="atMove(1)" aria-label="Décaler à droite">Après ▶</button><button type="button" onclick="atDelChord()">Retirer</button></div>` : ''}
+    ${cpHTML('at')}
+    <details class="cp-names"${cp.names ? ' open' : ''} ontoggle="cp.names=this.open"><summary>Je connais les noms</summary>
     <div class="at-roots">${['A','B','C','D','E','F','G'].map(r => `<button type="button" onclick="atKb('root','${r}')" aria-pressed="${k.root === r}">${r}</button>`).join('')}</div>
     <div class="at-sc at-sfx" style="margin-top:8px">${AT_SFX.map(([l, f, v]) => `<button type="button" class="at-chip" onclick="atKb('${f}','${v}')" aria-pressed="${k[f] === v}">${l}</button>`).join('')}</div>
     <div class="at-add"><button type="button" class="btn btn-ghost" onclick="atDelChord()">⌫ Effacer</button><button type="button" class="btn btn-primary" onclick="atKbAdd()" ${nm ? '' : 'disabled'}>Ajouter ${esc(nm.replace(/#/g, '♯').replace(/^([A-G])b/, '$1♭'))}</button></div>
-    <div class="at-txt"><input type="text" placeholder="Ou tape : Em7 G Dsus4" autocapitalize="off" autocomplete="off" aria-label="Taper des accords" onkeydown="if(event.key==='Enter'){event.preventDefault();atTxt(this)}"><button type="button" class="btn btn-ghost" style="min-height:44px" onclick="atTxt(this.previousElementSibling)">Ajouter</button></div>`;
+    <div class="at-txt"><input type="text" placeholder="Ou tape : Em7 G Dsus4" autocapitalize="off" autocomplete="off" aria-label="Taper des accords" onkeydown="if(event.key==='Enter'){event.preventDefault();atTxt(this)}"><button type="button" class="btn btn-ghost" style="min-height:44px" onclick="atTxt(this.previousElementSibling)">Ajouter</button></div></details>`;
 }
 function atBuildRefresh() { // met à jour toutes les instances (jamais le lecteur) ; le texte en cours de saisie est conservé
   const ins = [...document.querySelectorAll('.at-txt input')], vals = ins.map(i => i.value), act = ins.indexOf(document.activeElement);
+  const ys = [...document.querySelectorAll('.at-bld .cp-grid')].map(g => g.scrollTop);
   document.querySelectorAll('.at-bld').forEach(el => { el.innerHTML = atBuildHTML(); });
+  document.querySelectorAll('.at-bld .cp-grid').forEach((g, n) => { g.scrollTop = ys[n] || 0; });
   atRenderCopyBar();
   const nw = [...document.querySelectorAll('.at-txt input')];
   nw.forEach((i, n) => { if (vals[n]) i.value = vals[n]; });
@@ -5885,6 +5939,7 @@ function quickPartCustom() {
   if (n) quickPart(n.slice(0, 40));
 }
 function renderQuick() {
+  if ($('cp-ed')) $('cp-ed').innerHTML = cpHTML('ed');
   $('qc-sugg').innerHTML = QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
   $('qc-parts').innerHTML = `<span class="lbl">+ Partie :</span>` + QUICK_PARTS.map(n => `<button type="button" onclick="quickPart('${n}')">${n}</button>`).join('') + `<button type="button" onclick="quickPartCustom()">+ Autre…</button>`;
   $('f-capo').innerHTML = [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('');
