@@ -170,8 +170,6 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .tab-ascii{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:12px;color:var(--cream2);overflow-x:auto;white-space:pre}
 
 /* ── EDITOR ── */
-.ed-head{padding:26px 0 20px}
-.ed-head h2{font-family:var(--serif);font-size:24px;font-weight:800;color:var(--cream)}
 .fcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px}
 .fcard-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .fcard-t::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -210,9 +208,6 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .add-btn.block{width:100%;justify-content:center}
 .add-part-btn{width:100%;padding:13px;border:2px dashed var(--border);background:none;border-radius:var(--r);color:var(--cream4);font-size:13px;font-weight:600;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
 .add-part-btn:hover{border-color:var(--gold);color:var(--gold)}
-.ed-foot{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:12px 0 calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--border);margin-top:6px;position:sticky;bottom:0;background:var(--bg);z-index:5}
-.ed-foot .btn{min-height:46px}
-.ed-foot .btn-primary{min-width:130px}
 .opt-tag{font-weight:400;text-transform:none;letter-spacing:0;color:var(--cream4)}
 .qc-row{display:flex;gap:8px}.qc-row input{flex:1;min-width:0}
 .qc-sugg,.qc-parts{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
@@ -547,61 +542,190 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .sg-cell{width:40px;height:64px;border-radius:9px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:background .06s}
 .sg-cell.beat{border-color:var(--border2)}
 .sg-ar{line-height:0;width:100%;display:flex;justify-content:center}
-/* rythme : rangée de cases (rhythmSVG), flèches partagées avec les grilles d'exercices */
-:root{--rg-d:var(--gold2);--rg-u:var(--sage);--rg-x:var(--terra);--rg-line:var(--border2);--rg-txt:var(--cream3);--rg-bg:var(--card);--rg-b:var(--cream)}
-.rg.light{--rg-d:#b5602f;--rg-u:#4a7a50;--rg-x:#b85840;--rg-line:#d8cdb4;--rg-txt:#777;--rg-bg:transparent;--rg-b:#222}
-.rg{display:flex;flex-direction:column;gap:6px;width:100%;max-width:640px}
-.rg-row{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));background:var(--rg-bg);border:1px solid var(--rg-line);border-radius:10px;overflow:hidden}
-.rg-row.bar{border-left:4px solid var(--rg-line)}
-.rgc{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding:7px 0 5px;min-width:0;transition:background .06s;-webkit-tap-highlight-color:transparent}
-.rgc.sep{border-left:1px solid var(--rg-line)}
-.rgs{display:flex;align-items:center;justify-content:center;width:100%;height:40px;color:var(--rg-line)}
-.rgc.D .rgs,.sgl.D{color:var(--rg-d)}.rgc.U .rgs,.sgl.U{color:var(--rg-u)}.rgc.X .rgs,.sgl.X{color:var(--rg-x)}
+/* rythme : ruban dans des blocs par temps (rhythmSVG). Les flèches droites .rga ne servent plus qu'aux cases de saisie et au guide « Touche une case » */
+:root{--rg-ink:var(--cream);--rg-mut:var(--cream3);--rg-base:var(--cream4);--rg-cu:var(--gold2);--rg-line:var(--border2);--rg-d:var(--gold2);--rg-u:var(--sage);--rg-x:var(--terra)}
+:root[data-theme="light"]{--rg-cu:var(--gold)}
+.rg.light{--rg-ink:#2a2118;--rg-mut:#8a7a5c;--rg-base:#cfc3a6;--rg-cu:#b5602f;--rg-line:#d8cdb4;max-width:340px}
+.rg{display:flex;flex-direction:column;gap:8px;width:100%;max-width:640px;color:var(--rg-ink)}
+.rg-row{display:flex;gap:8px}
+.rgb{flex:1 1 0;min-width:0;border:1.2px solid var(--rg-line);border-radius:18px;padding:7px 3px 3px;text-align:center;transition:background .06s,border-color .06s,box-shadow .06s}
+.rgb:has(.rgc.lit,.rgc.exo-now){border-color:var(--rg-cu);box-shadow:inset 0 0 0 1px var(--rg-cu);background:color-mix(in srgb,var(--rg-cu) 10%,transparent)}
+.rgn{font-family:var(--serif);font-weight:600;font-size:20px;line-height:1;color:var(--rg-ink)}
+.rgb:has(.rgc.lit,.rgc.exo-now) .rgn{color:var(--rg-cu)}
+.rgcs{display:flex;margin-top:2px}
+.rgc{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center}
+.rgs{display:block;width:100%;height:auto;fill:none;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.rgbase{stroke:var(--rg-base);stroke-width:1.4;opacity:.8}
+.rgdot{stroke:var(--rg-base);stroke-width:2;stroke-dasharray:.1 5}
+.rgp{stroke:var(--rg-ink)}.rgp.soft{opacity:.7}
+.rgc.lit .rgp,.rgc.exo-now .rgp{stroke:var(--rg-cu);opacity:1}
+.rgc.lit .rgbase,.rgc.exo-now .rgbase{stroke:var(--rg-cu);opacity:.35}
+.rgc.lit .rgdot,.rgc.exo-now .rgdot{stroke:var(--rg-cu)}
+.rgl{font-family:var(--serif);font-style:italic;font-size:13px;line-height:16px;height:16px;color:var(--rg-mut)}
+.rgc.lit .rgl,.rgc.exo-now .rgl{color:var(--rg-cu)}
+.rg.dense .rgl{font-size:11px}
+.rg.mini,.rg.mini .rg-row{gap:5px}
+.rg.mini .rgb{border-radius:12px;padding:4px 2px 2px}.rg.mini .rgn{font-size:13px}.rg.mini .rgl{font-size:10px;line-height:12px;height:12px}
+.strum .rg{max-width:420px}
 .rga{width:100%;max-width:26px;height:38px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
 .rga.soft{opacity:.65}
 .rgd{display:block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+.sgl.D{color:var(--rg-d)}.sgl.U{color:var(--rg-u)}.sgl.X{color:var(--rg-x)}
 .sgl{display:flex;color:var(--cream4);justify-content:center;width:100%}.sgl .rga{max-width:22px;height:34px}.sgl .rgd{opacity:.5}
-.rgl{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--rg-txt);opacity:.8;line-height:1.2;white-space:nowrap}
-.rgc.beat .rgl{font-size:13px;font-weight:800;color:var(--rg-b);opacity:1}
-.rgc.lit{background:var(--gold)}.rgc.lit .rgs,.rgc.lit .rgl{color:var(--ink)}
 .exo-now .sgl{color:var(--ink)!important}
-.rg.edit .rgc{cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
-.rg.edit .rgc.nxt{box-shadow:inset 0 0 0 2px var(--gold)}
-.rg.edit .rgc:hover{background:var(--card2)}.rg.edit .rgc.lit:hover{background:var(--gold)}
-/* bloc rythme en ligne (éditeur de fiche + Atelier) */
+/* bloc rythme en ligne (éditeur de fiche + Atelier) : « Mon rythme » */
 .rb{display:flex;flex-direction:column;gap:10px}
-.rb-hint{font-size:12px;color:var(--cream3);line-height:1.4}
-.rb-pens{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.rb-pens button{min-height:68px;border-radius:14px;background:var(--card);border:1.5px solid var(--border2);color:var(--cream2);font-size:12px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px}
-.rb-pens button b{font-size:30px;line-height:1;font-weight:800}
-.rb-pens .D{border-color:var(--rg-d)}.rb-pens .D b{color:var(--rg-d)}
-.rb-pens .U{border-color:var(--rg-u)}.rb-pens .U b{color:var(--rg-u)}
-.rb-pens .X{border-color:var(--rg-x)}.rb-pens .X b{color:var(--rg-x)}
-.rb-pens button:active{transform:scale(.96);background:var(--card2)}
-.rb-act{display:flex;gap:8px;flex-wrap:wrap}
-.rb-act .btn{min-height:52px}.rb-act .btn-ghost{flex:1}
-.rb-mm{flex:1 1 100%;order:0;display:flex;justify-content:flex-end}
-.mm-btn{white-space:nowrap}
-.rb-play{flex:1 1 100%;order:3;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:800}
-.rb-play svg{width:18px;height:18px;flex:none}.rb-play small{font-size:11px;font-weight:600;opacity:.75}
-.rb-play.on{background:var(--terra);border-color:var(--terra);color:#fff}
+.rb-empty{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:52px;padding:0;background:none;border-bottom:1px solid var(--border);text-align:left}
+.rb-empty span{color:var(--cream3);font-size:15px}.rb-empty b{color:var(--gold2);font-size:14px;font-weight:700;white-space:nowrap}
+.rb-sum{display:flex;flex-direction:column;gap:6px}
+.rb-mact{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rb-play{display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0;background:none;font-weight:700;font-size:15px;color:var(--cream)}
+.rb-play i{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);color:var(--gold2);display:flex;align-items:center;justify-content:center;flex:none}
+.rb-play i svg{width:18px;height:18px}
+.rb-play.on i{background:var(--terra);border-color:var(--terra);color:#fff}
+.rb-lnk{background:none;color:var(--cream3);font-weight:600;font-size:13.5px;min-height:44px;padding:0 6px}
+.rb-lnk.acc{color:var(--gold2);font-weight:700;margin-left:auto}
+.rb-mact>.rb-lnk:last-child{margin-left:auto}
+.rb-recl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left;min-height:48px;padding:0;color:var(--cream2);font-size:14px}
+.rb-rd{width:16px;height:16px;border-radius:50%;background:var(--terra);flex:none}
+.rb-recl small{flex-basis:100%;margin-left:26px;margin-top:-6px;font-size:11px;color:var(--cream3);font-weight:500}
+.rb-man{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:14px 14px 8px}
+.pc .rb-man{background:var(--bg2)}
+.rb-mh{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.rb-mh b{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--cream);flex:1}
+.rb-mh select.rb-bars{width:auto;background:none;border:0;padding:6px 2px;font-size:13px;font-weight:600;color:var(--cream3);box-shadow:none}
+.rb-x{width:44px;height:44px;margin:-6px -8px -6px 0;border-radius:50%;background:none;color:var(--cream3);display:flex;align-items:center;justify-content:center}
+.rb-x svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.rm-row{margin-bottom:6px}
+.rm-cells{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));background:var(--bg2);border:1px solid var(--border2);border-radius:18px;overflow:hidden}
+.pc .rm-cells{background:var(--card)}
+.rmc{height:66px;display:flex;align-items:center;justify-content:center;background:none;border:0;border-left:1px solid var(--border);color:var(--cream);padding:0;min-width:0;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.rmc:first-child{border-left:0}.rmc.beat{border-left-color:var(--border2)}.rmc:first-child.beat{border-left:0}
+.rmc .rga{height:48px;max-width:28px}
+.rmc.nxt{background:color-mix(in srgb,var(--gold) 14%,transparent);box-shadow:inset 0 0 0 2px var(--gold);border-radius:14px}
+.rmc.lit{background:var(--gold);color:var(--ink)}
+.rmc:focus-visible{outline:2px solid var(--gold);outline-offset:-3px}
+.rm-lbls{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));margin-top:5px}
+.rml{text-align:center;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--cream3);line-height:20px}
+.rml.b{font-style:normal;font-weight:600;font-size:20px;color:var(--cream)}
+.rb-cyc{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--cream3);font-size:13px;margin:2px 2px 0}
+.rb-cyc span{display:inline-flex;color:var(--cream)}.rb-cyc .rga{width:14px;max-width:14px;height:20px}
+.rb-cyc small{font-size:13px}
 .rb-det{border-top:1px solid var(--border);padding-top:2px}
 .rb-det>summary{min-height:44px;display:flex;align-items:center;font-size:13px;font-weight:700;color:var(--cream2);cursor:pointer}
 .rb-fil{display:flex;gap:8px;margin-bottom:8px}.rb-fil input{flex:1;min-width:0}.rb-fil select{flex:none;width:130px}
 .rb-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;max-height:250px;overflow-y:auto}
 .rb-card{border-radius:12px;background:var(--card);border:1px solid var(--border2);padding:8px 10px;text-align:left;display:flex;flex-direction:column;gap:3px;min-height:56px;color:var(--cream)}
+.pc .rb-card{background:var(--card2)}
 .rb-card b{font-size:12px;font-weight:700;line-height:1.25}.rb-card span{font-family:var(--mono);font-size:13px;color:var(--gold2);letter-spacing:1px;overflow:hidden;white-space:nowrap}
 .rb-card:hover{border-color:var(--gold)}
 .rb-none{font-size:13px;color:var(--cream3);padding:8px}
 .rb-tip{font-size:12px;line-height:1.45;color:var(--cream2)}.rb-tip:not(:empty){padding:8px 2px 0}
-.rb-recb{display:flex;align-items:center;gap:12px;text-align:left;padding:12px;border-radius:var(--r);background:var(--card);border:2px solid var(--terra);color:var(--cream);min-height:56px}
-.rb-recb .rb-mic{font-size:24px;flex:none}.rb-recb b{display:block;font-size:14px}.rb-recb small{display:block;font-size:11px;color:var(--cream3);margin-top:2px;line-height:1.35}
 .rb-take{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px}
 .rb-take b{flex:1;min-width:120px;font-size:13px}
 .rb-takeb svg{width:14px;height:14px;vertical-align:-2px;margin-right:4px}
-.rb-sels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:2px 0 6px}
+.rb-sels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:2px 0 6px}
 .rb-sels label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--cream3)}.rb-sels select{min-width:0;width:100%}
-@media(max-width:420px){.rgl{font-size:9px}.rgc.beat .rgl{font-size:12px}.rg.r12 .rgc{padding:7px 0 5px}}
+.rb-mm{display:inline-flex}.mm-btn{white-space:nowrap}
+/* éditeur de fiche */
+.ed-wrap{padding-bottom:calc(var(--dock-h,120px) + 28px)}
+.ed-top{display:flex;align-items:center;gap:10px;padding:14px 0 12px;position:sticky;top:62px;z-index:20;background:var(--bg)}
+.ed-top h2{flex:1;min-width:0;font-family:var(--serif);font-size:22px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ed-x{width:44px;height:44px;border-radius:50%;background:none;color:var(--cream2);display:flex;align-items:center;justify-content:center;flex:none}
+.ed-x svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.ed-save{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:50px;background:var(--gold);color:var(--ink);font-weight:800;font-size:15px;flex:none;box-shadow:0 4px 14px rgba(200,120,58,.3);transition:background .15s}
+:root[data-theme="light"] .ed-save{color:#fff}
+.ed-save svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ed-save.off{background:var(--card2);color:var(--cream4);box-shadow:none}
+.ed-ta{display:grid;grid-template-columns:1.45fr 1fr;gap:10px;margin:2px 0 16px}
+input.ed-in{width:100%;min-width:0;min-height:54px;border-radius:14px;background:transparent;border:1px solid var(--border2);padding:0 14px;color:var(--cream);font-size:15px;font-weight:600;outline:none}
+input.ed-in:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,120,58,.12)}
+input.ed-in-t{font-family:var(--serif);font-size:21px;font-weight:600}
+input.ed-in-a{color:var(--cream2)}
+.part-card.pc{background:var(--card);border:1px solid var(--border2);border-radius:24px;padding:14px 16px 16px;margin-bottom:12px}
+.pc-h{display:flex;align-items:center;gap:8px;min-height:44px;margin-bottom:8px}
+.pc-t{flex:1;font-family:var(--serif);font-size:20px;font-weight:600;color:var(--cream)}
+.pc-nm{background:none;color:var(--gold2);font-weight:700;font-size:14px;min-height:44px;padding:0 4px}
+.pc-name{flex:1;min-width:0;background:transparent;border:1px solid var(--border2);border-radius:12px;min-height:44px;padding:0 12px;font-size:16px;font-weight:600;color:var(--cream);outline:none}
+.pc-name:focus{border-color:var(--gold)}
+.pc-sum{font-size:11px;color:var(--cream4);white-space:nowrap}
+.pc .part-tools button{width:36px;height:36px}
+.part-card.collapsed .pc-b{display:none}.part-card.collapsed .pc-h{margin-bottom:0}
+.part-card.collapsed .collapse-ico{transform:rotate(-90deg)}
+.ed-capo{position:relative;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px;border:1.5px solid var(--border2);border-radius:50px;color:var(--cream)}
+.ed-capo.on{border-color:var(--gold)}
+.ed-capo:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+.ed-capo small{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--cream3)}
+.ed-capo b{font-family:var(--serif);font-size:22px;line-height:1;color:var(--gold2);font-weight:600;min-width:12px;text-align:center}
+.ed-capo svg{width:12px;height:12px;stroke:var(--cream3);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ed-capo select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}
+.ed-chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:12px}
+.ed-ct{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 2px 6px;border:1px solid var(--border2);border-radius:18px;background:var(--card);color:var(--cream);cursor:pointer;min-height:118px;text-align:center}
+.ed-ct:hover{border-color:var(--gold)}
+.ed-ct b{font-family:var(--serif);font-size:21px;font-weight:700;line-height:1.15;color:var(--cream)}
+.ed-ct svg{width:min(100%,70px);height:auto;pointer-events:none}
+.ed-ct em{font-size:10px;font-style:normal;font-weight:700;color:var(--gold2)}
+.ed-ct.todo{border-color:var(--gold)}
+.ed-ct.add{border:1.5px dashed var(--cream4);background:transparent;justify-content:center;gap:0;color:var(--cream3);font-weight:700;font-size:13px}
+.ed-ct.add span{font-size:30px;line-height:1;color:var(--gold);font-weight:500}
+.ed-ctx{position:absolute;top:-8px;right:-6px;width:28px;height:28px;border-radius:50%;background:var(--card2);border:1px solid var(--border2);color:var(--cream2);display:flex;align-items:center;justify-content:center;padding:0;z-index:2}
+.ed-ctx::before{content:'';position:absolute;inset:-8px}
+.ed-ctx svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+.ed-ctx:hover{background:var(--terra);color:#fff;border-color:var(--terra)}
+.pc .cp-panel{margin-top:12px}
+.pc .cp-panel{background:var(--bg2)}
+.ed-capo-row{margin-bottom:0}
+.pc-more{margin-top:12px;border-top:1px solid var(--border)}
+.pc-more>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:13px;font-weight:700;color:var(--cream3)}
+.qc-parts button.ed-addp{width:100%;min-height:52px;border:1.5px dashed var(--cream4);border-radius:22px;background:none;color:var(--gold2);font-weight:700;font-size:15.5px;margin:0}
+.ed-lab{display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 8px}
+.ed-lab.in{margin:16px 0 8px}
+.ed-lab b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--cream2)}
+.ed-lab small{font-size:11px;color:var(--cream3)}
+.ed-lab+.ed-row{border-top:1px solid var(--border)}
+.ed-row{display:block;width:100%;border-bottom:1px solid var(--border);background:none;text-align:left}
+.ed-row>summary,.ed-rowb{display:flex;align-items:center;gap:12px;min-height:52px;font-weight:600;font-size:14.5px;color:var(--cream);cursor:pointer;list-style:none;padding:0}
+.ed-row>summary::-webkit-details-marker{display:none}
+.ed-row svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ed-row summary small{margin-left:auto;color:var(--cream3);font-weight:500;font-size:12px}
+.ed-row-b{padding:2px 0 12px}.ed-row-b label{display:block;font-size:12px;color:var(--cream2);margin-bottom:6px}
+.ed-more{margin-top:14px}
+.ed-more>summary{min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-weight:700;font-size:14px;color:var(--cream2);text-align:center}
+.ed-more>summary span{font-size:12px;font-weight:500;color:var(--cream3)}
+.ed-more-b{padding:8px 0 10px;border-top:1px dashed var(--border2);margin-top:6px}
+.ed-dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:22px 0 calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,var(--bg) 26%);pointer-events:none}
+.ed-dock .wrap-narrow>*{pointer-events:auto}
+.ed-rec{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:78px;padding:10px 18px;border-radius:26px;background:linear-gradient(180deg,#c9573b,#a8472e);color:#fff;text-align:left;box-shadow:0 8px 22px rgba(168,71,46,.38);transition:transform .12s}
+.ed-rec:active{transform:scale(.985)}
+.ed-rec-d{width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.28);flex:none}
+.ed-rec b{display:block;font-size:18px;font-weight:800}
+.ed-rec small{display:block;font-size:12px;font-weight:600;opacity:.9;margin-top:2px}
+.ed-rc{background:var(--card);border:2px solid var(--terra);border-radius:26px;padding:12px 16px 14px;box-shadow:0 8px 24px var(--shadow)}
+.ed-rc.done{border-color:var(--sage)}
+.ed-rc-h{display:flex;align-items:center;gap:10px;min-height:34px}
+.ed-rc-h b{font-size:17px;font-weight:800;color:var(--terra)}.ed-rc.done .ed-rc-h b{color:var(--cream)}
+.ed-rc-s{font-size:13px;color:var(--cream3);margin:2px 0 10px}
+.ed-rc-n{margin-left:auto;font-family:var(--serif);font-size:40px;font-weight:700;color:var(--terra);line-height:1}
+.ed-rc-t{margin-left:auto;font-family:var(--mono);font-size:24px;font-weight:700;color:var(--cream)}
+.ed-rc-m{margin-left:auto;font-size:13px;color:var(--cream3);font-weight:600}
+.ed-dot{width:14px;height:14px;border-radius:50%;background:var(--terra);box-shadow:0 0 0 5px rgba(184,84,58,.2);animation:edp 1.1s ease-in-out infinite;flex:none}
+@keyframes edp{50%{box-shadow:0 0 0 8px rgba(184,84,58,.08)}}
+.ed-ok{width:28px;height:28px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;flex:none}
+.ed-ok svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ed-wave{display:flex;align-items:center;justify-content:space-between;gap:3px;height:44px;margin:6px 0 10px}
+.ed-wave i{flex:1;max-width:6px;border-radius:3px;background:var(--terra);min-height:4px;transition:height .08s}
+.ed-wave.done i{background:var(--sage)}
+.ed-rcb{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;width:100%;border-radius:50px;font-weight:800;font-size:17px;color:#fff;padding:0 16px}
+.ed-rcb i{display:flex}.ed-rcb i svg{width:20px;height:20px}
+.ed-rcb.stop{background:var(--terra)}
+.ed-rcb.play{background:var(--sage)}
+.ed-rcb.sand,.ed-rcb.ghost{background:var(--card2);border:1px solid var(--border2);color:var(--cream)}
+.ed-rc-r{display:grid;grid-template-columns:1.25fr 1fr;gap:10px}
+.ed-rc-l{display:flex;justify-content:center;gap:22px;margin-top:2px}
+.ed-rc-l button{background:none;font-size:13px;font-weight:600;color:var(--cream3);min-height:38px}
+.ed-rp{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--cream2);margin:0 0 6px;padding:2px 10px;border-radius:12px;background:var(--bg);width:fit-content;max-width:100%}
+.ed-rp select{width:auto;padding:4px 8px;font-size:13px;min-height:36px}
+@media(max-width:600px){.ed-wrap{padding-left:16px;padding-right:16px}.ed-dock .wrap-narrow{padding:0 16px}.ed-top{top:56px}}
 .sg-c{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--cream3)}
 .sg-cell.exo-now{background:var(--gold);border-color:var(--gold)}
 .sg-cell.exo-now span,.sg-cell.exo-now .sg-c{color:var(--ink)!important;opacity:1!important}
@@ -894,6 +1018,7 @@ select.at-chip{appearance:none;-webkit-appearance:none;padding-right:14px}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--sage);color:var(--ink);padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;transform:translateY(90px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.4);max-width:calc(100vw - 48px)}
+body:has(#v-ed.on) .toast{bottom:150px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.err{background:var(--terra);color:#fff}
 
@@ -959,8 +1084,7 @@ body.playing .toast{bottom:190px}
 #v-sheet .chord-cell .cn{font-size:32px;font-weight:800;line-height:1.15;color:var(--cream)}
 #v-sheet .chord-cell svg{width:min(100%,128px);height:auto}
 #v-sheet .chord-cell.now{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold)}
-.sv-rh{margin-top:14px}
-.sv-rh .rgs{height:54px}.sv-rh .rga{max-width:30px;height:50px}
+.sv-rh{margin-top:14px}.sv-rh .rg{max-width:520px}
 .sv-reccard{margin-top:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px}
 .sv-reccard b{font-size:13px;color:var(--cream);flex:1;min-width:140px}
 .sv-reccard b small{display:block;font-weight:500;color:var(--cream3);font-size:11px}
@@ -1017,7 +1141,6 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 @media(min-width:900px){
   #v-sheet .chord-cell .cn{font-size:44px}
   #v-sheet .chord-cell svg{width:min(100%,190px)}
-  .sv-rh .rgs{height:64px}.sv-rh .rga{max-width:38px;height:60px}.sv-rh .rgc.beat .rgl{font-size:15px}
 }
 /* vue « Tout » : le morceau entier, parties empilées */
 #v-sheet.all .parts-view .pv-block{display:block;padding:14px 0 16px;border-bottom:1px solid var(--border);position:relative;cursor:pointer}
@@ -1028,15 +1151,12 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 #v-sheet.all .pv-extra{display:none}
 #v-sheet.all .sv-rh{margin-top:8px;max-width:420px}
 #v-sheet.all .sv-rh .rg{max-width:none}
-#v-sheet.all .sv-rh .rgs{height:28px}#v-sheet.all .sv-rh .rga{max-width:16px;height:26px}
-#v-sheet.all .sv-rh .rgl,#v-sheet.all .sv-rh .rgc.beat .rgl{font-size:9px}
 #v-sheet.all .chords-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 4px;margin-top:6px}
 #v-sheet.all .chord-cell{background:none;border:0;border-top:3px solid transparent;border-radius:0;padding:2px 0 0}
 #v-sheet.all .chord-cell .cn{font-size:22px}
 #v-sheet.all .chord-cell svg{width:min(100%,86px)}
 #v-sheet.all .chord-cell.now{box-shadow:none;border-top-color:var(--gold)}
 #v-sheet.all .chord-cell.now .cn{color:var(--gold2)}
-#v-sheet.all .rgc.lit{background:var(--gold)}
 /* compact : trop d'accords → noms seuls, appui = diagramme en bulle */
 #v-sheet.all.compact .chord-cell{border:1px solid var(--border2);border-radius:14px;background:var(--card);padding:10px 2px;cursor:pointer}
 #v-sheet.all.compact .chord-cell svg{display:none}
@@ -1055,8 +1175,6 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
   #v-sheet.all .chord-cell .cn{font-size:30px}
   #v-sheet.all .chord-cell svg{width:min(100%,110px)}
   #v-sheet.all .sv-rh{margin:0}
-  #v-sheet.all .sv-rh .rgs{height:44px}#v-sheet.all .sv-rh .rga{max-width:24px;height:40px}
-  #v-sheet.all .sv-rh .rgl,#v-sheet.all .sv-rh .rgc.beat .rgl{font-size:11px}
   #v-sheet.all.compact .chords-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   #v-sheet.all.compact .chord-cell .cn{font-size:24px}
 }
@@ -1216,67 +1334,65 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 
 <!-- ══ EDITOR ══ -->
 <div class="view" id="v-ed">
-  <div class="wrap-narrow">
-    <div class="ed-head"><h2 id="ed-title">Nouvelle fiche</h2></div>
+  <div class="wrap-narrow ed-wrap">
+    <div class="ed-top">
+      <button type="button" class="ed-x" onclick="edClose()" aria-label="Fermer sans enregistrer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <h2 id="ed-title">Nouvelle fiche</h2>
+      <button type="button" class="ed-save" id="ed-save" onclick="edSaveTap()"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Enregistrer</button>
+    </div>
 
-    <div class="fcard">
-      <div class="fcard-t">Le morceau</div>
-      <div class="frow">
-        <div class="fg"><label>Titre *</label><input type="text" id="f-title" placeholder="Ex : Wonderwall" autocomplete="off" enterkeyhint="next" onkeydown="edNext(event,'f-artist')"></div>
-        <div class="fg"><label>Artiste <span class="opt-tag" id="f-artist-tag">(facultatif)</span></label><input type="text" id="f-artist" placeholder="Ex : Oasis" autocomplete="off" enterkeyhint="next" onkeydown="edNext(event,'f-chords')"></div>
-      </div>
-      <div class="fg">
-        <label>Accords</label>
-        <div id="cp-ed"></div>
-        <details class="cp-names"><summary>Je connais les noms</summary>
-        <div class="qc-row">
-          <input type="text" id="f-chords" placeholder="Ex : Em7 G Dsus4 A7sus4" autocomplete="off" autocapitalize="off" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();addChordLine()}">
-          <button type="button" class="btn btn-ghost" onclick="addChordLine()">Ajouter</button>
-        </div>
-        <div class="qc-sugg" id="qc-sugg"></div>
-        </details>
-      </div>
-      <div class="fg">
-        <label>Version originale <span class="opt-tag">(lien YouTube, Spotify… pour « Écouter l’original »)</span></label>
+    <div class="ed-ta">
+      <input type="text" id="f-title" class="ed-in ed-in-t" placeholder="Titre du morceau" aria-label="Titre du morceau" autocomplete="off" enterkeyhint="next" oninput="edSyncSave()" onkeydown="edNext(event,'f-artist')">
+      <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done">
+    </div>
+
+    <div id="parts-ed"></div>
+    <div class="qc-parts" id="qc-parts"></div>
+    <div id="ed-solo-rh"></div>
+
+    <div class="ed-lab"><b>Liens et enregistrements</b><small>facultatif</small></div>
+    <details class="ed-row">
+      <summary><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg>Ajouter un lien<small>original, tuto…</small></summary>
+      <div class="ed-row-b">
+        <label for="f-orig">Version originale <span class="opt-tag">(YouTube, Spotify… pour « Écouter l’original »)</span></label>
         <div class="qc-row">
           <input type="url" id="f-orig" placeholder="https://…" autocomplete="off" inputmode="url" oninput="draft.original={url:this.value.trim()}">
           <button type="button" class="btn btn-ghost" onclick="searchOriginal()">Chercher</button>
         </div>
+        <button type="button" class="rb-lnk acc" style="margin-top:6px" onclick="edOpenCoffre('link-in')">Ajouter un tuto ou une vidéo ›</button>
       </div>
-      <div class="frow qc-meta">
-        <div class="fg" style="margin-bottom:0"><label>BPM</label><input type="number" inputmode="numeric" min="30" max="300" id="f-bpm" placeholder="Ex : 90" oninput="draft.bpm=+this.value||0"></div>
-        <div class="fg" style="margin-bottom:0"><label>Capo</label><select id="f-capo" onchange="draft.capo=+this.value"></select></div>
-        <div class="fg" style="margin-bottom:0;display:flex;align-items:flex-end"><button type="button" class="btn btn-ghost" onclick="tapTempo(this)">Tap tempo</button></div>
-      </div>
-    </div>
-
-    <div class="fcard">
-      <div class="fcard-t">Parties du morceau</div>
-      <div id="parts-ed"></div>
-      <div class="qc-parts" id="qc-parts"></div>
-    </div>
-
-    <details class="fcard more-opts" id="more-opts">
-      <summary>Plus d'options <span>accordage, difficulté, couleur, notes, Coffre</span></summary>
-      <div class="fg" style="margin-top:14px">
-        <label>Accordage</label><input type="text" id="f-tuning" placeholder="Standard, Drop D..." oninput="draft.tuning=this.value">
-      </div>
-      <div class="fg">
-        <label>Couleur du repère</label>
-        <div class="opt-blocks" id="color-row"></div>
-      </div>
-      <div id="opt-host"></div>
-      <div class="opt-blocks" id="opt-adders"></div>
     </details>
+    <button type="button" class="ed-row ed-rowb" onclick="edOpenCoffre('draft-media-audio')"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><path d="M12 19v4"/></svg>Enregistrer une prise audio</button>
 
-    <div class="ed-foot">
-      <button class="btn btn-danger btn-sm" id="ed-del" onclick="delFromEditor()">Supprimer</button>
-      <div style="display:flex;gap:9px">
-        <button class="btn btn-ghost" onclick="go('home')">Annuler</button>
-        <button class="btn btn-primary" onclick="saveSheet()">Enregistrer</button>
+    <details class="ed-more" id="more-opts">
+      <summary>Plus d’options <span>BPM, accordage, difficulté, couleur, notes, Coffre</span></summary>
+      <div class="ed-more-b">
+        <div class="frow qc-meta">
+          <div class="fg" style="margin-bottom:0"><label>BPM</label><input type="number" inputmode="numeric" min="30" max="300" id="f-bpm" placeholder="Ex : 90" oninput="draft.bpm=+this.value||0"></div>
+          <div class="fg" style="margin-bottom:0"><label>Capo</label><select id="f-capo" onchange="draft.capo=+this.value;edCapoSync()"></select></div>
+          <div class="fg" style="margin-bottom:0;display:flex;align-items:flex-end"><button type="button" class="btn btn-ghost" onclick="tapTempo(this)">Tap tempo</button></div>
+        </div>
+        <div class="fg" style="margin-top:14px">
+          <label>Accordage</label><input type="text" id="f-tuning" placeholder="Standard, Drop D..." oninput="draft.tuning=this.value">
+        </div>
+        <details class="cp-names"><summary>Je connais les noms des accords</summary>
+          <div class="qc-row">
+            <input type="text" id="f-chords" placeholder="Ex : Em7 G Dsus4 A7sus4" autocomplete="off" autocapitalize="off" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();addChordLine()}">
+            <button type="button" class="btn btn-ghost" onclick="addChordLine()">Ajouter</button>
+          </div>
+          <div class="qc-sugg" id="qc-sugg"></div>
+        </details>
+        <div class="fg" style="margin-top:14px">
+          <label>Couleur du repère</label>
+          <div class="opt-blocks" id="color-row"></div>
+        </div>
+        <div id="opt-host"></div>
+        <div class="opt-blocks" id="opt-adders"></div>
+        <button class="btn btn-danger btn-sm" id="ed-del" onclick="delFromEditor()" style="margin-top:18px">Supprimer la fiche</button>
       </div>
-    </div>
+    </details>
   </div>
+  <div class="ed-dock"><div class="wrap-narrow" id="ed-recbar"></div></div>
 </div>
 
 <!-- ══ CHORD LIBRARY ══ -->
@@ -1914,21 +2030,53 @@ function rhArrow(d, a) {
   const head = a === 2 ? '<path d="M3.5 22L12 36.5L20.5 22Z" fill="currentColor" stroke-width="1.6"/>' : `<path d="M4.5 23.5L12 35L19.5 23.5" stroke-width="${w}"/>`;
   return `<svg class="rga${a === 0 ? ' soft' : ''}" viewBox="0 0 24 40" aria-hidden="true"><g${d === 'U' ? ' transform="rotate(180 12 20)"' : ''}><path d="M12 4V${a === 2 ? 26 : 33}" stroke-width="${w}"/>${head}</g></svg>`;
 }
-// cases par ligne : une mesure tient sur une ligne (≤ 9 cases), sinon on coupe sur un temps (16 cases → 2 lignes de 8)
+// cases par ligne de saisie : une mesure tient sur une ligne (≤ 9 cases), sinon on coupe sur un temps (16 cases → 2 lignes de 8)
 function rhRow(mes, res) {
   const per = rhPerBar(mes, res), spb = rhSpb(mes, res);
   return per <= 9 ? per : (per % 2 === 0 && (per/2) % spb === 0 ? per/2 : per);
 }
+/* Vue du rythme « ruban dans des blocs » : un bloc arrondi par temps (le chiffre dessus), et dedans la vague de la main —
+   chaque case est un demi-trait (↓ = la vague descend, ↑ = elle remonte), la flèche en est la pointe, ✕ = étouffé,
+   pointillé = la main passe sans jouer. Une case = un petit SVG (viewBox fixe, mis à l'échelle par la largeur) pour que
+   le surlignage du coup en cours soit un simple changement de classe (.lit). */
+const rhGeo = mini => mini ? {W:32, H:34, yT:5, yB:29, l:6, x:3.4, w:[1.5, 2.2, 3]} : {W:32, H:56, yT:8, yB:48, l:8, x:4.4, w:[1.9, 2.8, 3.8]};
+const rhN = v => Math.round(v*100)/100;
+const rhLerp = (a, b, t) => [a[0] + (b[0] - a[0])*t, a[1] + (b[1] - a[1])*t];
+const rhBez = (p, t) => { const m = 1 - t; return [0, 1].map(i => m*m*m*p[0][i] + 3*m*m*t*p[1][i] + 3*m*t*t*p[2][i] + t*t*t*p[3][i]); };
+function rhSplit(p, t) { const a = rhLerp(p[0], p[1], t), b = rhLerp(p[1], p[2], t), c = rhLerp(p[2], p[3], t), d = rhLerp(a, b, t), e = rhLerp(b, c, t); return [p[0], a, d, rhLerp(d, e, t)]; }
+const rhCub = p => `M${rhN(p[0][0])} ${rhN(p[0][1])}C${rhN(p[1][0])} ${rhN(p[1][1])} ${rhN(p[2][0])} ${rhN(p[2][1])} ${rhN(p[3][0])} ${rhN(p[3][1])}`;
+function rhCellSVG(c, dir, g) {
+  const {W, yT, yB} = g;
+  const p = dir === 'D' ? [[0, yT], [W/2, yT], [W/2, yB], [W, yB]] : dir === 'U' ? [[0, yB], [W/2, yB], [W/2, yT], [W, yT]] : [[0, yB], [W/3, yB], [2*W/3, yB], [W, yB]];
+  let s = `<svg class="rgs" viewBox="0 0 ${W} ${g.H}" aria-hidden="true">`;
+  if (!c) return s + `<path class="rgdot" d="${rhCub(p)}"/></svg>`;
+  const a = c.a === 2 ? 2 : c.a === 0 ? 0 : 1, w = g.w[a], T = .74, e = rhBez(p, T), e2 = rhBez(p, T - .03);
+  s += `<path class="rgbase" d="${rhCub(p)}"/><path class="rgp${a === 0 ? ' soft' : ''}" stroke-width="${w}" d="${rhCub(rhSplit(p, T))}"/>`;
+  if (c.d === 'X') { const m = g.x; s += `<path class="rgp" stroke-width="${w}" d="M${rhN(e[0] - m)} ${rhN(e[1] - m)}l${rhN(2*m)} ${rhN(2*m)}m0 ${rhN(-2*m)}l${rhN(-2*m)} ${rhN(2*m)}"/>`; }
+  else {
+    const ang = Math.atan2(e[1] - e2[1], e[0] - e2[0]), q = d => [e[0] - g.l*Math.cos(ang + d), e[1] - g.l*Math.sin(ang + d)], A = q(.62), B = q(-.62);
+    s += `<path class="rgp${a === 0 ? ' soft' : ''}" stroke-width="${w}" d="M${rhN(A[0])} ${rhN(A[1])}L${rhN(e[0])} ${rhN(e[1])}L${rhN(B[0])} ${rhN(B[1])}"/>`;
+  }
+  return s + '</svg>';
+}
+// opt = {cursor: case en lecture, mini: taille réduite, idp: préfixe d'id des cases (exercices)}
 function rhythmSVG(rh, light, opt) {
   opt = opt || {}; rh = rhNorm(rh);
-  if (!rhHas(rh) && !opt.edit) return `<div style="font-size:11px;color:${light ? '#999' : 'var(--cream4)'};padding:4px 0">Aucun coup</div>`;
-  const cells = rh.cells, spb = rhSpb(rh.mes, rh.res), per = rhPerBar(rh.mes, rh.res), row = rhRow(rh.mes, rh.res);
-  let h = `<div class="rg${light ? ' light' : ''}${opt.edit ? ' edit' : ''}" role="img" aria-label="Rythme : ${rh.mes}, ${rh.bars} mesure${rh.bars > 1 ? 's' : ''}">`;
-  for (let b = 0; b < rh.bars; b++) for (let a = 0; a < per; a += row) {
-    h += `<div class="rg-row${a === 0 ? ' bar' : ''}" style="--cols:${row}">`;
-    for (let j = a; j < a + row; j++) {
-      const k = b*per + j, c = cells[k], jj = j % spb;
-      h += `<div class="rgc${jj === 0 ? ' beat' : ''}${jj === 0 && j > a ? ' sep' : ''}${k === opt.cursor ? ' lit' : ''}${k === opt.pos ? ' nxt' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}"${opt.edit ? ` data-k="${k}" role="button" aria-label="Case ${k + 1}"` : ''}><span class="rgs">${c ? rhArrow(c.d, c.a) : '<i class="rgd"></i>'}</span><span class="rgl">${rhLabel(rh.mes, spb, jj, Math.floor(j/spb))}</span></div>`;
+  if (!rhHas(rh)) return `<div style="font-size:11px;color:${light ? '#999' : 'var(--cream4)'};padding:4px 0">Aucun coup</div>`;
+  const cells = rh.cells, spb = rhSpb(rh.mes, rh.res), per = rhPerBar(rh.mes, rh.res), nB = RH_BEATS[rh.mes], g = rhGeo(opt.mini);
+  const flat = rh.mes !== '6/8' && spb === 3;           // triolets : bas, (passage), haut
+  const rowB = rh.mes === '4/4' && spb >= 4 ? 2 : nB;   // doubles croches : 2 temps par ligne
+  let h = `<div class="rg${light ? ' light' : ''}${opt.mini ? ' mini' : ''}${spb >= 4 ? ' dense' : ''}" role="img" aria-label="Rythme : ${rh.mes}, ${rh.bars} mesure${rh.bars > 1 ? 's' : ''}">`;
+  for (let b = 0; b < rh.bars; b++) for (let t0 = 0; t0 < nB; t0 += rowB) {
+    h += `<div class="rg-row${t0 === 0 ? ' bar' : ''}">`;
+    for (let t = t0; t < Math.min(nB, t0 + rowB); t++) {
+      h += `<div class="rgb"><div class="rgn">${rhLabel(rh.mes, spb, 0, t)}</div><div class="rgcs">`;
+      for (let j = 0; j < spb; j++) {
+        const k = b*per + t*spb + j, c = cells[k];
+        const dir = c ? (c.d === 'U' ? 'U' : 'D') : flat && j === 1 ? 'F' : j % 2 ? 'U' : 'D';
+        h += `<div class="rgc${k === opt.cursor ? ' lit' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}" data-k="${k}"${opt.idp ? ` id="${opt.idp}-${k}"` : ''}>${rhCellSVG(c, dir, g)}<span class="rgl">${j ? rhLabel(rh.mes, spb, j, t) : ''}</span></div>`;
+      }
+      h += '</div></div>';
     }
     h += '</div>';
   }
@@ -3568,8 +3716,7 @@ function strumGlyph(ch, i) {
 }
 function strumBlock(id, b, exId) {
   STRUMREG[id] = {pat:b.pat, chords:b.chords, ex:exId};
-  const cells = b.pat.split('').map((ch, i) =>
-    `<div class="sg-cell ${i % 2 ? '' : 'beat'}" id="${id}-${i}"><div class="sg-ar">${strumGlyph(ch, i)}</div><div class="sg-c">${CNT8[i % 8]}</div></div>`).join('');
+  const cells = rhythmSVG(rhFromPat(b.pat, '4/4', 8), false, {idp: id});
   return `<div class="exo-vis"><div class="exo-vis-h"><span>${b.n || 'Rythme'} · ${b.chords.join(' → ')}</span>
     <span style="display:flex;gap:8px;align-items:center">${mmBtn('learn')}<button type="button" class="btn btn-ghost btn-xs" id="pb-${id}" onclick="exoPlayStrum('${id}')">${exoPlaying === id ? STOP_HTML : PLAY_HTML}</button></span></div>
     <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
@@ -4578,13 +4725,7 @@ function rccDone() {
   rcz.fin = true; exoRender();
 }
 function rccNext() { rcz.fin = false; if (rcz.cur < RH_COURSE.length - 1) rccOpen(rcz.cur + 1); else rccBack(); }
-function rccCells(r) {
-  const per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = per <= 9 ? per : per/2, pat = r.pat;
-  let h = '';
-  for (let a = 0; a < per; a += row) h += `<div class="rc-row" style="--cols:${row}">${Array.from({length:row}, (_, q) => { const i = a + q;
-    return `<div class="fl-cell rc-cell ${i % spb === 0 ? 'beat' : ''}" id="rc-c${i}"><div class="sg-ar">${strumGlyph(pat[i] || '-', i)}</div><div class="sg-c">${rhCnt(r, i)}</div></div>`; }).join('')}</div>`;
-  return h;
-}
+function rccCells(r) { return rhythmSVG(rhFromPat(r.pat, r.mes, r.res, 1), false, {idp: 'rc-c'}); }
 function rccHTML() {
   if (rcz.cur == null) {
     const nDone = RH_COURSE.filter(s => exoProg.done[s.id]).length, nxt = RH_COURSE.findIndex(s => !exoProg.done[s.id]);
@@ -5299,15 +5440,15 @@ function atOrigSearch() { window.open('https://www.youtube.com/results?search_qu
 const AT_SFX = [['♯','acc','#'],['♭','acc','b'],['m','q1','m'],['7','q2','7'],['maj7','q2','maj7'],['sus4','q3','sus4'],['sus2','q3','sus2'],['add9','q3','add9'],['dim','q1','dim']];
 const AT_ENH = {'E#':'F','B#':'C','Fb':'E','Cb':'B'};
 /* ── sélecteur d'accords visuel (diagrammes) : partagé Atelier / éditeur de fiche ── */
-const cp = {at:false, ed:false, tab:'top', names:false};
+const cp = {at:false, ed:false, pi:0, tab:'top', names:false};   // cp.pi : partie de l'éditeur de fiche qui reçoit les accords
 const CP_TOP = ['Em','C','G','D','Am','E','A','Dm','F','A7','D7','E7','Cadd9','Dsus4'];
 const CP_TABS = [['top','Les plus utilisés'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9']];
 function cpList() { return cp.tab === 'top' ? CP_TOP.map(findChord1).filter(Boolean) : LIB.filter(c => c.fam === cp.tab); }
-function cpTarget(ctx) { return ctx === 'at' ? (at.s ? atPart().chords : []) : (draft && draft.parts[0] ? draft.parts[0].chords : []); }
+function cpTarget(ctx) { return ctx === 'at' ? (at.s ? atPart().chords : []) : (draft && draft.parts[cp.pi] ? draft.parts[cp.pi].chords : []); }
 function cpHTML(ctx) {
   if (ctx === 'at' && !at.s) return '';
   const open = cp[ctx], last = cpTarget(ctx).slice(-8).map(c => esc(c.name || '?'));
-  let h = `<button type="button" class="cp-open" onclick="cpToggle('${ctx}')" aria-expanded="${open}">${open ? '▲ Masquer les accords' : '+ Accord'}</button>`;
+  let h = ctx === 'ed' ? '' : `<button type="button" class="cp-open" onclick="cpToggle('${ctx}')" aria-expanded="${open}">${open ? '▲ Masquer les accords' : '+ Accord'}</button>`;   // éditeur : la tuile « + Accord » ouvre le panneau
   if (!open) return h;
   h += `<div class="cp-panel"><div class="cp-added">${last.length ? 'Dans la partie : <b>' + last.join('</b> · <b>') + '</b>' : 'Touche un diagramme pour l’ajouter.'}</div>
     <div class="cp-tabs" role="tablist">${CP_TABS.map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')">${l}</button>`).join('')}</div>
@@ -5317,16 +5458,13 @@ function cpHTML(ctx) {
 }
 function cpRefresh(ctx) {
   if (ctx === 'at') { atBuildRefresh(); return; }
-  const el = $('cp-ed'); if (!el) return;
-  const g = el.querySelector('.cp-grid'), y = g ? g.scrollTop : 0;
-  el.innerHTML = cpHTML('ed');
-  const g2 = el.querySelector('.cp-grid'); if (g2) g2.scrollTop = y;
+  renderParts();   // la grille garde son défilement (renderParts)
 }
-function cpToggle(ctx) { cp[ctx] = !cp[ctx]; cpRefresh(ctx); }
+function cpToggle(ctx, pi) { if (pi != null) { if (cp[ctx] && cp.pi === pi) cp[ctx] = false; else { cp[ctx] = true; cp.pi = pi; } } else cp[ctx] = !cp[ctx]; cpRefresh(ctx); }
 function cpTab(ctx, t) { cp.tab = t; cpRefresh(ctx); }
 function cpPick(ctx, name) {
   try { playChord(newChord(name), ctx === 'at' ? (at.s && at.s.capo) || 0 : (draft && draft.capo) || 0, 'D'); } catch (e) {}
-  if (ctx === 'at') atAdd([name]); else { addChordLine(name); cpRefresh('ed'); }
+  if (ctx === 'at') atAdd([name]); else addChordLine(name);
 }
 function atKbName() { const k = at.kb; if (!k.root) return ''; const r = AT_ENH[k.root + k.acc] || k.root + k.acc; return r + k.q1 + k.q2 + k.q3; }
 function atKb(f, v) {
@@ -5466,7 +5604,8 @@ function rcRender() {
   if (!rc) return;
   const p = rcSheet(rc.ctx).parts[rc.part], bpm = rcSheet(rc.ctx).bpm || 90, h = $('m-rec-body');
   const name = p.name ? ' — ' + esc(p.name) : '';
-  $('m-rec').classList.toggle('hide', rc.stage === 'rec' && rc.ctx === 'cur'); // mode jeu : pendant la prise, tout se passe dans la barre du bas
+  $('m-rec').classList.toggle('hide', (rc.stage === 'rec' && rc.ctx === 'cur') || !!rc.inline); // mode jeu : pendant la prise, tout se passe dans la barre du bas ; éditeur : dans la grande barre ⏺
+  if (rc.inline) { edBar(); return; }
   if (rc.ctx === 'cur') svSync();
   if (rc.stage === 'load') h.innerHTML = `<div class="modal-t">Rythme enregistré ${name}</div><p style="color:var(--cream3)">Chargement…</p>`;
   else if (rc.stage === 'idle') h.innerHTML = `<div class="modal-t">Ma prise ${name}</div>
@@ -5500,10 +5639,10 @@ function rcRender() {
 }
 async function rcStart() {
   const me = rc; if (!me) return;
-  if (!window.MediaRecorder || !navigator.mediaDevices) { toast('Enregistrement audio non supporté ici', true); return; }
+  if (!window.MediaRecorder || !navigator.mediaDevices) { toast('Enregistrement audio non supporté ici', true); if (me.inline) { rcClose(); edBar(); } return; }
   let stream;
   try { stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}}); }
-  catch (e) { toast('Micro refusé ou indisponible', true); return; }
+  catch (e) { toast('Micro refusé ou indisponible', true); if (me.inline) { rcClose(); edBar(); } return; }
   if (rc !== me) { stream.getTracks().forEach(t => t.stop()); return; }
   me.stream = stream; me.chunks = [];
   try { // jauge de niveau du micro (pas relié aux haut-parleurs)
@@ -5521,11 +5660,14 @@ async function rcStart() {
       const sec = Math.floor((performance.now() - me.t0)/1000), e = $('sv-rec-t'), e2 = $('rc-t');
       if (e2) e2.textContent = sec + ' s';
       if (e) e.textContent = 'Enregistrement ' + Math.floor(sec/60) + ':' + String(sec % 60).padStart(2, '0');
+      let lv = 0;
       if (me.an) {
         me.an.getByteTimeDomainData(me.b8); let m = 0;
         for (let k = 0; k < me.b8.length; k++) m = Math.max(m, Math.abs(me.b8[k] - 128));
-        const l = $('sv-lvl'); if (l) l.firstChild.style.width = Math.min(100, m/128*160) + '%';
+        lv = Math.min(1, m/128*1.6);
+        const l = $('sv-lvl'); if (l) l.firstChild.style.width = lv*100 + '%';
       }
+      if (me.inline) edRecTick(sec, lv);
     }, 70);
     me.tm = setTimeout(rcStop, 90000); // garde-fou : 90 s max
   };
@@ -5536,7 +5678,7 @@ async function rcStart() {
   me.timers = [];
   for (let n = 0; n < 4; n++) {
     click(t0 + n*beat, n === 0);
-    me.timers.push(setTimeout(() => { const e = $('rc-n'); if (e) e.textContent = 4 - n; }, Math.max(0, (t0 + n*beat - ac.currentTime)*1000)));
+    me.timers.push(setTimeout(() => { const e = $('rc-n') || $('ed-rc-n'); if (e) e.textContent = 4 - n; }, Math.max(0, (t0 + n*beat - ac.currentTime)*1000)));
   }
   me.timers.push(setTimeout(begin, Math.max(0, (t0 + 4*beat - ac.currentTime)*1000)));
 }
@@ -5547,10 +5689,11 @@ async function rcStopped(me) {
   try {
     me.blob = new Blob(me.chunks, {type: me.mr.mimeType || 'audio/webm'});
     me.buf = await recDecode(me.blob);
-  } catch (e) { toast('Enregistrement illisible, réessaie', true); me.stage = 'idle'; rcRender(); return; }
+  } catch (e) { toast('Enregistrement illisible, réessaie', true); if (me.inline) { rcClose(); edBar(); return; } me.stage = 'idle'; rcRender(); return; }
   if (rc !== me) return;
-  if (me.buf.duration < .4) { toast('Trop court, réessaie', true); me.stage = 'idle'; rcRender(); return; }
+  if (me.buf.duration < .4) { toast('Trop court, réessaie', true); if (me.inline) { rcClose(); edBar(); return; } me.stage = 'idle'; rcRender(); return; }
   me.start = 0; me.end = me.buf.duration; me.isNew = true; me.peaks = rcPeaks(me.buf); me.stage = 'trim';
+  if (me.inline) { rcSave(); return; }   // éditeur : la prise entière est gardée tout de suite
   rcRender();
 }
 function rcAgain() { if (!rc) return; rcPreviewStop(); Object.assign(rc, {stage: 'idle', isNew: true, blob: null, buf: null}); rcRender(); }
@@ -5605,7 +5748,10 @@ async function rcSave() {
     mediaId = uid();
     await DB.put('media', {id: mediaId, blob: R.blob, type: R.blob.type});
     recBuf[mediaId] = R.buf;
-    if (p.rec && ctx !== 'draft') { await DB.del('media', p.rec.mediaId); delete recBuf[p.rec.mediaId]; }
+    if (p.rec) {
+      const sv = ctx === 'draft' ? sheets.find(x => x.id === draft.id) : null;   // éditeur : l'ancienne prise ne part que si la fiche enregistrée ne la référence pas
+      if (ctx !== 'draft' || !(sv && (sv.parts || []).some(q => q.rec && q.rec.mediaId === p.rec.mediaId))) { await DB.del('media', p.rec.mediaId); delete recBuf[p.rec.mediaId]; }
+    }
   }
   p.rec = {mediaId, start: +R.start.toFixed(3), end: +R.end.toFixed(3), dur: +R.buf.duration.toFixed(3), at: Date.now()};
   rcClose(); toast('Ta prise est gardée');
@@ -5746,7 +5892,7 @@ let svPart = 0; // partie affichée en mode jeu (en vue « Tout » : partie acti
 let svAll = false; // vue « Tout » : le morceau entier, parties empilées
 const SV_COMPACT = 12; // au-delà, accords en noms seuls
 // rythme d'une partie dans la fiche (en vue « Tout » la taille mini est réglée par le CSS) : seul point d'appel de l'affichage du rythme
-const svRhHTML = (rh, opt) => rhythmSVG(rh, false, opt);
+const svRhHTML = (rh, opt) => rhythmSVG(rh, false, Object.assign({mini: svAll}, opt));
 const hasLyr = p => !!(p && typeof p.lyrics === 'string' && p.lyrics.trim());
 async function viewSheet(id, keepPart) {
   const s = sheets.find(x => x.id === id); if (!s) return;
@@ -5815,6 +5961,7 @@ function svShowPart(i) {
   svAll = i < 0 && cur.parts.length > 1;
   if (i >= 0) svPart = i;
   $('v-sheet').classList.toggle('all', svAll);
+  cur.parts.forEach((q, j) => { const el = $('rh-view-' + j); if (el) el.innerHTML = svRhHTML(q.rhythm); });   // taille mini en vue « Tout »
   document.querySelectorAll('#sv-tabs .sv-tab').forEach(b => b.classList.toggle('on', svAll ? +b.dataset.idx < 0 : +b.dataset.idx === svPart));
   document.querySelectorAll('#sv-parts .pv-block').forEach(b => {
     b.classList.toggle('on', +b.dataset.idx === svPart);
@@ -6127,16 +6274,17 @@ function addChordLine(str) {
   const list = parseChordLine(str != null ? str : (inp ? inp.value : ''));
   if (!list.length) return;
   if (!draft.parts.length) draft.parts.push(newPart(''));
-  draft.parts[0].chords.push(...list);
+  const pi = Math.min(cp.pi, draft.parts.length - 1);
+  draft.parts[pi].chords.push(...list); edRpSet(pi);
   if (str == null && inp) { inp.value = ''; inp.focus(); }
   renderParts();
 }
-function quickPart(name) { if (soloPart(draft.parts)) draft.parts[0].name = 'Couplet'; draft.parts.push(newPart(name)); renderParts(); }
+function quickPart(name) { if (draft.parts.length === 1 && !draft.parts[0].name) draft.parts[0].name = 'Couplet'; draft.parts.push(newPart(name)); renderParts(); }
 // une fiche neuve n'a qu'une partie sans nom ; « + Ajouter une partie » la nomme « Couplet » et en ajoute une 2e
-function startParts() { draft.parts[0].name = 'Couplet'; draft.parts.push(newPart('Refrain')); renderParts(); }
+function startParts() { if (!draft.parts[0].name) draft.parts[0].name = 'Couplet'; edNaming.clear(); draft.parts.push(newPart('Refrain')); renderParts(); }
 function renderQuickParts() {
-  $('qc-parts').innerHTML = soloPart(draft.parts)
-    ? `<button type="button" onclick="startParts()">+ Ajouter une partie</button>`
+  $('qc-parts').innerHTML = draft.parts.length === 1
+    ? `<button type="button" class="ed-addp" onclick="startParts()">+ Ajouter une partie</button>`
     : `<span class="lbl">+ Partie :</span>` + QUICK_PARTS.map(n => `<button type="button" onclick="quickPart('${n}')">${n}</button>`).join('') + `<button type="button" onclick="quickPartCustom()">+ Autre…</button>`;
 }
 function quickPartCustom() {
@@ -6144,12 +6292,10 @@ function quickPartCustom() {
   if (n) quickPart(n.slice(0, 40));
 }
 function renderQuick() {
-  if ($('cp-ed')) $('cp-ed').innerHTML = cpHTML('ed');
   $('qc-sugg').innerHTML = QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
   $('f-capo').innerHTML = [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('');
   $('f-bpm').value = draft.bpm || '';
   $('f-tuning').value = draft.tuning || 'Standard';
-  $('f-artist-tag').style.display = REQUIRE_ARTIST ? 'none' : '';
 }
 function editSheet(id) {
   const s = sheets.find(x => x.id === id); if (!s) return;
@@ -6172,6 +6318,8 @@ function openEditor(title) {
   $('f-chords').value = '';
   $('f-orig').value = (draft.original && draft.original.url) || '';
   $('more-opts').open = false;
+  cp.ed = false; cp.pi = 0; edRpI = 0; edNaming.clear(); rbOpenS.clear(); edLv.length = 0;
+  document.querySelectorAll('#v-ed .ed-row[open]').forEach(d => d.open = false);
   renderQuick();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';
   $('color-row').innerHTML = COLORS.map(([k,c]) =>
@@ -6354,63 +6502,168 @@ function rmPart(i) {
 }
 function togglePart(i) { draft.parts[i].collapsed = !draft.parts[i].collapsed; renderParts(); }
 
-function renderParts() {
-  const host = $('parts-ed'), solo = soloPart(draft.parts);
-  host.innerHTML = draft.parts.map((p, i) => {
-    const nC = p.chords.length;
-    const hasLyrics = typeof p.lyrics === 'string' && p.lyrics.trim();
-    const summary = p.collapsed
-      ? `<span style="font-size:11px;color:var(--cream4);margin-right:6px">${nC?nC+' accord'+(nC>1?'s':''):''}${rhHas(p.rhythm)?' · rythme':''}${hasLyrics?' · paroles':''}${p.note?' · note':''}</span>` : '';
-    return `<div class="part-card ${p.collapsed?'collapsed':''} ${solo?'solo':''}" data-i="${i}">
-      <div class="part-hdr">
-        <span class="drag-handle" title="Glisser pour reordonner"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg></span>
-        <input class="part-title-inp" value="${esc(p.name)}" oninput="draft.parts[${i}].name=this.value" placeholder="Nom de la partie">
-        ${summary}
-        <div class="part-tools">
-          <button onclick="togglePart(${i})" title="Replier"><svg class="ico collapse-ico" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
-          <button onclick="dupPart(${i})" title="Dupliquer"><svg class="ico" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
-          <button class="danger" onclick="rmPart(${i})" title="Supprimer"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div>
-      </div>
-      <div class="part-body">
-        <div class="part-sub"><span class="part-sub-t">Accords</span></div>
-        <div class="chord-chips">
-          ${p.chords.map((c, ci) => `<div class="chord-chip ${c.frets.every(f=>f===-1)?'todo':''}" onclick="openChordEditor(${i},${ci})" title="Modifier">
-            <span class="x" onclick="event.stopPropagation();rmChord(${i},${ci})">&times;</span>
-            <span class="cn">${esc(c.name || '?')}</span>${chordSVG(c, {size:.72})}
-            ${c.frets.every(f=>f===-1) ? `<span class="todo-tag">à compléter</span>` : ''}
-            ${c.arp && c.arp.length ? `<span style="font-size:9px;font-weight:700;color:var(--ink);background:var(--gold2);padding:1px 7px;border-radius:8px">ARPEGE</span>` : ''}
-          </div>`).join('')}
-          <button class="add-btn" style="min-width:74px" onclick="openChordEditor(${i},-1)">+ Accord</button>
-        </div>
-
-        ${p.chords.length ? `<div class="part-sub"><span class="part-sub-t">Tablature (apercu)</span></div>
-          <div class="scroll-x">${tabStaffSVG(p.chords, false) || '<span style="font-size:11px;color:var(--cream4)">Ouvre un accord et clique sa timeline d arpege pour dessiner la tab.</span>'}</div>` : ''}
-
-        <div class="part-sub"><span class="part-sub-t">Rythme</span></div>
-        ${rbHTML('draft', i)}
-
-        <div class="part-sub"><span class="part-sub-t">Paroles</span>
-          ${typeof p.lyrics === 'string' ? `<button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].lyrics=undefined;renderParts()">retirer</button>`
-                                          : `<button class="add-btn" onclick="draft.parts[${i}].lyrics='';renderParts()">+ Paroles</button>`}
-        </div>
-        ${typeof p.lyrics === 'string' ? lyricsEditorHTML(i, p) : ''}
-
-        <div class="part-sub"><span class="part-sub-t">Note</span></div>
-        <textarea rows="2" placeholder="x2, plus doux, laisser sonner..." oninput="draft.parts[${i}].note=this.value">${esc(p.note)}</textarea>
-        ${p.tabText ? `<div class="part-sub"><span class="part-sub-t">Tab importee</span><button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].tabText='';renderParts()">retirer</button></div>
-          <div class="tab-ascii mono">${esc(p.tabText)}</div>` : ''}
-      </div>
-    </div>`;
-  }).join('');
-  initDnD(host);
-  renderQuickParts(); rbSyncAll();
+const edNaming = new Set();   // parties dont le nom se saisit (« Nommer › »)
+const edMoreOpen = new Set(); // parties dont « Paroles, note… » est ouvert
+let edRpI = 0;                // partie visée par la grande barre ⏺ (la dernière touchée)
+const edRp = () => Math.max(0, Math.min(edRpI, draft.parts.length - 1));
+function edRpSet(i) { if (i !== edRpI) { edRpI = i; if (!(rc && rc.inline)) edBar(); } }
+function edRpPick(i) { edRpI = i; edBar(); }
+function edMoreT(id, on) { on ? edMoreOpen.add(id) : edMoreOpen.delete(id); }
+function edNameStart(i) { edNaming.add(draft.parts[i].id); renderParts(); const n = document.querySelector(`#parts-ed [data-i="${i}"] .pc-name`); if (n) n.focus(); }
+function edCapoSync() {
+  const v = draft.capo || 0;
+  $('f-capo').value = v;
+  document.querySelectorAll('.ed-capo').forEach(l => { l.classList.toggle('on', v > 0); l.querySelector('b').textContent = v || '—'; l.querySelector('select').value = v; });
 }
+function edCapoHTML() {
+  const v = draft.capo || 0;
+  return `<label class="ed-capo${v ? ' on' : ''}"><small>Capo</small><b>${v || '—'}</b><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+    <select aria-label="Capo" onchange="draft.capo=+this.value;edCapoSync()">${[0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${v === i ? 'selected' : ''}>${i ? 'Frette ' + i : 'Sans capo'}</option>`).join('')}</select></label>`;
+}
+// « Liens et enregistrements » : ouvre le Coffre (vidéos, tutos, prises audio) dans « Plus d'options » et y amène
+function edOpenCoffre(target) {
+  if (!draft.blocks.coffre) { draft.blocks.coffre = true; renderOptBlocks(); }
+  $('more-opts').open = true;
+  setTimeout(() => { const t = $(target); if (t) { t.scrollIntoView({block: 'center', behavior: 'smooth'}); if (t.tagName === 'INPUT') t.focus(); } }, 60);
+}
+function edClose() { rcCleanup(); stopPlay(); edBarReset(); go('home'); }
+const edOK = () => !!($('f-title').value.trim() && draft && draft.parts.some(p => p.chords.length));
+function edSyncSave() {
+  const b = $('ed-save'); if (!b) return;
+  const ok = edOK(); b.classList.toggle('off', !ok); b.setAttribute('aria-disabled', ok ? 'false' : 'true');
+}
+function edSaveTap() {
+  if (edOK()) { saveSheet(); return; }
+  const noT = !$('f-title').value.trim();
+  toast(noT ? 'Ajoute le titre du morceau' : 'Ajoute au moins un accord', true);
+  if (noT) $('f-title').focus();
+}
+function edChordsHTML(p, i) {
+  const open = cp.ed && cp.pi === i;
+  return `<div class="ed-chs">${p.chords.map((c, ci) => {
+      const todo = c.frets.every(f => f === -1);
+      return `<div class="ed-ct${todo ? ' todo' : ''}" role="button" tabindex="0" onclick="edRpSet(${i});openChordEditor(${i},${ci})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openChordEditor(${i},${ci})}" title="Modifier l’accord">
+        <button type="button" class="ed-ctx" onclick="event.stopPropagation();rmChord(${i},${ci})" aria-label="Retirer ${esc(c.name || 'l’accord')}"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
+        <b>${esc(c.name || '?')}</b>${chordSVG(c, {size:.86})}
+        ${todo ? '<em>à compléter</em>' : c.arp && c.arp.length ? '<em>arpège</em>' : ''}</div>`; }).join('')}
+    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>${open ? cpHTML('ed') : ''}`;
+}
+function edMoreHTML(p, i) {
+  const hasLyr = typeof p.lyrics === 'string';
+  const has = hasLyr || p.note || p.tabText || p.chords.length;
+  if (!has) return '';
+  const key = p.id || i;
+  return `<details class="pc-more" ${edMoreOpen.has(key) || hasLyr && p.lyrics || p.note ? 'open' : ''} ontoggle="edMoreT('${key}',this.open)"><summary>Paroles, note, tablature</summary>
+    ${p.chords.length ? `<div class="part-sub"><span class="part-sub-t">Tablature (aperçu)</span></div>
+      <div class="scroll-x">${tabStaffSVG(p.chords, false) || '<span style="font-size:11px;color:var(--cream4)">Ouvre un accord et clique sa timeline d’arpège pour dessiner la tab.</span>'}</div>` : ''}
+    <div class="part-sub"><span class="part-sub-t">Paroles</span>
+      ${hasLyr ? `<button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].lyrics=undefined;renderParts()">retirer</button>`
+               : `<button class="add-btn" onclick="draft.parts[${i}].lyrics='';edMoreOpen.add('${key}');renderParts()">+ Paroles</button>`}
+    </div>
+    ${hasLyr ? lyricsEditorHTML(i, p) : ''}
+    <div class="part-sub"><span class="part-sub-t">Note</span></div>
+    <textarea rows="2" placeholder="x2, plus doux, laisser sonner..." oninput="draft.parts[${i}].note=this.value">${esc(p.note)}</textarea>
+    ${p.tabText ? `<div class="part-sub"><span class="part-sub-t">Tab importée</span><button class="btn btn-ghost btn-xs" onclick="draft.parts[${i}].tabText='';renderParts()">retirer</button></div>
+      <div class="tab-ascii mono">${esc(p.tabText)}</div>` : ''}</details>`;
+}
+function renderParts() {
+  const host = $('parts-ed'), solo = draft.parts.length === 1;
+  const g0 = host.querySelector('.cp-grid'), gy = g0 ? g0.scrollTop : 0;
+  host.innerHTML = draft.parts.map((p, i) => {
+    const nC = p.chords.length, naming = !!p.name || edNaming.has(p.id);
+    const summary = p.collapsed
+      ? `<span class="pc-sum">${nC ? nC + ' accord' + (nC > 1 ? 's' : '') : ''}${rhHas(p.rhythm) ? ' · rythme' : ''}</span>` : '';
+    const nameInp = `<input class="pc-name" value="${esc(p.name)}" oninput="draft.parts[${i}].name=this.value" placeholder="Nom de la partie (Couplet, Refrain…)" aria-label="Nom de la partie">`;
+    const head = solo
+      ? `<div class="pc-h">${naming ? nameInp : `<b class="pc-t">Partie du morceau</b><button type="button" class="pc-nm" onclick="edNameStart(${i})">Nommer ›</button>`}</div>`
+      : `<div class="pc-h"><span class="drag-handle" title="Glisser pour réordonner"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg></span>
+        ${nameInp}${summary}
+        <div class="part-tools">
+          <button onclick="togglePart(${i})" title="Replier" aria-label="Replier la partie"><svg class="ico collapse-ico" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <button onclick="dupPart(${i})" title="Dupliquer" aria-label="Dupliquer la partie"><svg class="ico" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+          <button class="danger" onclick="rmPart(${i})" title="Supprimer" aria-label="Supprimer la partie"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div></div>`;
+    return `<div class="part-card pc ${p.collapsed ? 'collapsed' : ''} ${solo ? 'solo' : ''}" data-i="${i}">${head}
+      <div class="pc-b">
+        ${i === 0 ? `<div class="ed-capo-row">${edCapoHTML()}</div>` : ''}
+        ${edChordsHTML(p, i)}
+        ${solo ? '' : `<div class="ed-lab in"><b>Rythme</b><small>facultatif</small></div>${rbHTML('draft', i)}`}
+        ${edMoreHTML(p, i)}
+      </div></div>`;
+  }).join('');
+  $('ed-solo-rh').innerHTML = solo ? `<div class="ed-lab"><b>Rythme</b><small>facultatif</small></div>${rbHTML('draft', 0)}` : '';
+  initDnD(host);
+  const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
+  renderQuickParts(); rbSyncAll(); edSyncSave(); edBar();
+}
+/* ── grande barre ⏺ « Enregistrer mon rythme » (éditeur de fiche) : collée en bas, suit la page ──
+   4 états : repos (gros bouton rouge) → décompte → enregistrement (chrono + onde + ■ Arrêter) → prise faite (▶ Réécouter / ↺ Refaire).
+   Même flux rc* que le mode jeu, sans fenêtre : l'arrêt garde la prise entière (« Rogner » reste possible). */
+const edLv = [];              // niveaux récents du micro (onde en direct)
+const edPkC = {};             // mediaId -> pics de la prise (onde statique)
+const ED_WAVE_N = 40;
+const edWaveBars = (vals, cls) => `<div class="ed-wave ${cls || ''}" aria-hidden="true">${Array.from({length: ED_WAVE_N}, (_, k) => `<i style="height:${Math.round(5 + 34*Math.min(1, vals[k] || 0))}px"></i>`).join('')}</div>`;
+function edBarReset() { const h = $('ed-recbar'); if (h) h.innerHTML = ''; }
+function edBar() {
+  const host = $('ed-recbar'); if (!host || !draft) return;
+  const i = edRp(), p = draft.parts[i], multi = draft.parts.length > 1;
+  const pick = multi ? `<label class="ed-rp">Rythme pour la partie <select aria-label="Partie à enregistrer" onchange="edRpPick(+this.value)">${draft.parts.map((q, j) => `<option value="${j}" ${j === i ? 'selected' : ''}>${esc(q.name || 'Partie ' + (j + 1))}</option>`).join('')}</select></label>` : '';
+  let h;
+  if (rc && rc.inline && rc.stage === 'count') {
+    h = `<div class="ed-rc"><div class="ed-rc-h"><b>Prépare-toi…</b><span class="ed-rc-n" id="ed-rc-n">4</span></div>
+      <p class="ed-rc-s">Quatre clics, puis gratte ton rythme.</p>
+      <button type="button" class="ed-rcb ghost" onclick="edRecCancel()">Annuler</button></div>`;
+  } else if (rc && rc.inline && rc.stage === 'rec') {
+    h = `<div class="ed-rc live"><div class="ed-rc-h"><span class="ed-dot"></span><b>Enregistrement…</b><span class="ed-rc-t" id="ed-rc-t">0:00</span></div>
+      ${edWaveBars(edLv.slice(-ED_WAVE_N), 'live')}
+      <button type="button" class="ed-rcb stop" onclick="rcStop()"><i>${RH_STOP_SVG}</i>Arrêter</button></div>`;
+  } else if (p && p.rec) {
+    const d = (p.rec.end - p.rec.start).toFixed(1).replace('.', ',');
+    h = `<div class="ed-rc done"><div class="ed-rc-h"><span class="ed-ok"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span><b>Mon rythme enregistré</b><span class="ed-rc-m">${d} s · boucle</span></div>
+      <div id="ed-pk">${edWaveBars([], 'done')}</div>
+      <div class="ed-rc-r"><button type="button" class="ed-rcb play" id="ed-reco" onclick="recPlayToggle(${i},'draft')"></button>
+        <button type="button" class="ed-rcb sand" onclick="edRecStart()"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 108.5-8.5c-2.4 0-4.6 1-6.2 2.7L3.5 8.5"/><path d="M3.5 3.5v5h5"/></svg></i>Refaire</button></div>
+      <div class="ed-rc-l"><button type="button" onclick="rcOpen(${i},'trim','draft')">Rogner</button><button type="button" onclick="rcDelete(${i},'draft')">Supprimer</button></div></div>`;
+    edPeaks(p.rec.mediaId).then(pk => { const e = $('ed-pk'); if (e && pk && draft && edRp() === i) e.innerHTML = edWaveBars(pk, 'done'); });
+  } else {
+    h = `<button type="button" class="ed-rec" onclick="edRecStart()"><i class="ed-rec-d"></i><span><b>Enregistrer mon rythme</b><small>Gratte 1 ou 2 mesures, l’app s’en souvient</small></span></button>`;
+  }
+  host.innerHTML = pick + h;
+  edBarPlay();
+  $('v-ed').style.setProperty('--dock-h', host.offsetHeight + 'px');
+}
+function edBarPlay() {
+  const b = $('ed-reco'); if (!b) return;
+  const on = recPlay && recPlay.ctx === 'draft' && recPlay.part === edRp();
+  b.innerHTML = `<i>${on ? RH_STOP_SVG : RH_PLAY_SVG}</i>${on ? 'Arrêter' : 'Réécouter'}`;
+}
+async function edPeaks(mediaId) {
+  if (edPkC[mediaId]) return edPkC[mediaId];
+  try {
+    const raw = rcPeaks(await recBuffer(mediaId)), n = ED_WAVE_N;
+    return (edPkC[mediaId] = Array.from({length: n}, (_, k) => Math.max(...raw.slice(Math.floor(k*raw.length/n), Math.floor((k + 1)*raw.length/n)))));
+  } catch (e) { return null; }
+}
+async function edRecStart() {
+  if (!draft) return;
+  const i = edRp(); rcCleanup(); stopPlay(); edLv.length = 0;
+  rc = {ctx: 'draft', part: i, stage: 'idle', start: 0, end: 0, isNew: true, inline: true, count: LS.get('gms_rec_count', true) !== false};
+  await rcStart();
+}
+function edRecCancel() { rcClose(); edBar(); }
+// pendant la prise : chrono + onde (appelé par la boucle de rcStart)
+function edRecTick(sec, level) {
+  const t = $('ed-rc-t'); if (t) t.textContent = Math.floor(sec/60) + ':' + String(sec % 60).padStart(2, '0');
+  edLv.push(level); if (edLv.length > 200) edLv.splice(0, 100);
+  const w = document.querySelector('#ed-recbar .ed-wave.live');
+  if (w) { const v = edLv.slice(-ED_WAVE_N); [...w.children].forEach((b, k) => { b.style.height = Math.round(5 + 34*Math.min(1, v[k] || 0)) + 'px'; }); }
+}
+
 function rmChord(pi, ci) { draft.parts[pi].chords.splice(ci, 1); renderParts(); }
 
 function initDnD(host) {
   host.querySelectorAll('.part-card').forEach(card => {
-    const h = card.querySelector('.drag-handle');
+    const h = card.querySelector('.drag-handle'); if (!h) return;
     h.addEventListener('pointerdown', () => { card.draggable = true; });
     card.addEventListener('dragstart', e => { card.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
     card.addEventListener('dragend', () => {
@@ -6432,9 +6685,10 @@ function initDnD(host) {
 }
 
 /* ═══════ BLOC RYTHME EN LIGNE ═══════
-   En bas de chaque partie : éditeur de fiche (ctx 'draft') et panneau Fiche de l'Atelier (ctx 'at'), sans plein écran.
-   Coup par coup : ↓ ↑ ✕ — posent le coup dans la case suivante (r.pos ; modèle v:2, croches par défaut, la mesure est complétée par
-   des silences et s'allonge à 2 mesures au besoin). Tap sur un coup posé = ↓ ↑ ✕ — en cycle ; appui long = accent.
+   Un seul composant pour l'éditeur de fiche (ctx 'draft') et le panneau Fiche de l'Atelier (ctx 'at'), sans plein écran.
+   Fermé : « Pas encore de rythme — Saisir à la main › », ou le rythme en ruban + ▶ Écouter + Modifier.
+   Ouvert (« Mon rythme ») : une rangée de cases (8 = 1 mesure de croches), un tap sur une case = ↓ → ↑ → ✕ → vide, appui long = accent
+   (modèle v:2, la mesure s'allonge à 2 mesures au besoin) ; ▶ Écouter, Effacer ; rythmes tout faits et mesure/subdivision repliés.
    La boucle d'écoute lit le rythme en direct : modifier une case pendant la lecture est pris au pas suivant. */
 const rbSheet = ctx => ctx === 'at' ? at.s : draft;
 const rbPart = (ctx, i) => { const s = rbSheet(ctx); return s && s.parts[i]; };
@@ -6443,6 +6697,7 @@ const rbKey = (ctx, i) => 'rb' + ctx + i;
 const rbNorm = t => String(t).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const RB_CYCLE = ['D', 'U', 'X', null];
 const rbF = {q: '', lv: ''};
+const rbOpenS = new Set();   // éditeurs de cases ouverts (rbKey)
 let rbLit = null, rbTapS = null;
 function rbR(ctx, i, make) {   // rythme de la partie (créé à la demande, au 1er coup)
   const p = rbPart(ctx, i); if (!p) return null;
@@ -6451,52 +6706,70 @@ function rbR(ctx, i, make) {   // rythme de la partie (créé à la demande, au 
 }
 const rbPos = r => r.pos != null ? Math.min(r.pos, r.cells.length) : r.cells.map(Boolean).lastIndexOf(true) + 1;
 const rbEmpty = () => rhFromPat('', '4/4', 8, 1);
-const rbRN = {8: 'Croches', 12: 'Triolets', 16: 'Doubles croches'};
+const rbRN = {8: 'croches', 12: 'triolets', 16: 'doubles croches'};
+// cases de saisie : une rangée par mesure (16 cases → 2 rangées de 8), comptage dessous
+function rbCellsHTML(r, lit) {
+  const per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res), row = rhRow(r.mes, r.res), pos = rbPos(r);
+  let h = '';
+  for (let b = 0; b < r.bars; b++) for (let a = 0; a < per; a += row) {
+    h += `<div class="rm-row" style="--cols:${row}"><div class="rm-cells">`;
+    for (let j = a; j < a + row; j++) {
+      const k = b*per + j, c = r.cells[k];
+      h += `<button type="button" class="rmc${j % spb === 0 ? ' beat' : ''}${k === lit ? ' lit' : ''}${k === pos && k < r.cells.length ? ' nxt' : ''}" data-k="${k}" aria-label="Case ${k + 1}, ${c ? ({D: 'bas', U: 'haut', X: 'étouffé'})[c.d] : k < pos ? 'silence' : 'vide'}">${c ? rhArrow(c.d, c.a) : k < pos ? '<i class="rgd"></i>' : ''}</button>`;
+    }
+    h += '</div><div class="rm-lbls">';
+    for (let j = a; j < a + row; j++) h += `<span class="rml${j % spb === 0 ? ' b' : ''}">${rhLabel(r.mes, spb, j % spb, Math.floor(j/spb))}</span>`;
+    h += '</div></div>';
+  }
+  return h;
+}
 function rbViewHTML(ctx, i) {
   const r = rbR(ctx, i) || rbEmpty(), l = rbLit && rbLit.ctx === ctx && rbLit.i === i ? rbLit.k : -1;
-  return rhythmSVG(r, false, {edit: true, pos: rbPos(r), cursor: l});
+  return rbOpenS.has(rbKey(ctx, i)) ? rbCellsHTML(r, l) : rhythmSVG(r, false, {cursor: l});
 }
 function rbHTML(ctx, i) {
-  const p = rbPart(ctx, i), r = rbR(ctx, i) || rbEmpty(), id = rbId(ctx, i), a = `'${ctx}',${i}`;
-  const rec = p.rec ? `<div class="rb-take"><b>Ma prise · ${(p.rec.end - p.rec.start).toFixed(1).replace('.', ',')} s</b>
-      <button type="button" class="btn btn-ghost btn-sm rb-takeb" data-ctx="${ctx}" data-i="${i}" onclick="recPlayToggle(${i},'${ctx}')"></button>
-      <button type="button" class="btn btn-ghost btn-sm" onclick="rcOpen(${i},'trim','${ctx}')">Rogner</button>
-      <button type="button" class="btn btn-ghost btn-sm" onclick="rcDelete(${i},'${ctx}')">Supprimer</button></div>` : '';
-  return `<div class="rb" id="${id}">
-    <div class="rb-view" onpointerdown="rbDown(event,${a})" onpointerup="rbUp()" onpointercancel="rbCancel()" onpointerleave="rbCancel()" oncontextmenu="return false">${rbViewHTML(ctx, i)}</div>
-    <div class="rb-hint">Ajoute les coups un par un. Touche un coup posé pour le changer, appui long pour l’accentuer.</div>
-    <div class="rb-pens" role="group" aria-label="Ajouter le coup suivant">
-      <button type="button" class="D" onclick="rbAdd(${a},'D')"><b>↓</b>Bas</button>
-      <button type="button" class="U" onclick="rbAdd(${a},'U')"><b>↑</b>Haut</button>
-      <button type="button" class="X" onclick="rbAdd(${a},'X')"><b>✕</b>Étouffé</button>
-      <button type="button" class="N" onclick="rbAdd(${a},'')"><b>—</b>Silence</button>
-    </div>
-    <div class="rb-act">
-      <div class="rb-mm">${mmBtn('learn')}</div>
-      <button type="button" class="btn btn-ghost" onclick="rbUndo(${a})">Annuler</button>
-      <button type="button" class="btn btn-ghost" onclick="rbClear(${a})">Vider</button>
-      <button type="button" class="btn btn-primary rb-play" data-ctx="${ctx}" data-i="${i}" id="${id}-play" onclick="rbPlay(${a})"></button>
-    </div>
-    <details class="rb-det" ontoggle="if(this.open)rbCards(${a})"><summary>Partir d’un rythme</summary>
-      <div class="rb-pre"><div class="rb-fil"><input type="search" placeholder="Chercher…" autocomplete="off" aria-label="Chercher un rythme" value="${esc(rbF.q)}" oninput="rbF.q=this.value;rbCards(${a})">
-        <select aria-label="Niveau" onchange="rbF.lv=this.value;rbCards(${a})"><option value="">Tous niveaux</option><option value="1" ${rbF.lv == 1 ? 'selected' : ''}>● Facile</option><option value="2" ${rbF.lv == 2 ? 'selected' : ''}>●● Moyen</option><option value="3" ${rbF.lv == 3 ? 'selected' : ''}>●●● Costaud</option></select></div>
-        <div class="rb-cards" id="${id}-cards"></div><div class="rb-tip" id="${id}-tip"></div></div></details>
-    <button type="button" class="rb-recb" onclick="rbRec(${a})"><span class="rb-mic">🎙</span><span><b>Je le joue à la guitare</b><small>Tu grattes, l’app garde ta prise et la rejoue en boucle.</small></span></button>
-    ${rec}
-    <details class="rb-det"><summary id="${id}-sum"></summary>
-      <div class="rb-sels">
-        <label>Mesure<select id="${id}-mes" onchange="rbOpt(${a},'mes',this.value)"><option>4/4</option><option>3/4</option><option>6/8</option></select></label>
-        <label>Subdivision<select id="${id}-res" onchange="rbOpt(${a},'res',+this.value)"><option value="8">Croches</option><option value="12">Triolets</option><option value="16">Doubles croches</option></select></label>
-        <label>Longueur<select id="${id}-bars" onchange="rbOpt(${a},'bars',+this.value)"><option value="1">1 mesure</option><option value="2">2 mesures</option></select></label>
-      </div></details>
-  </div>`;
+  const p = rbPart(ctx, i), r = rbR(ctx, i), id = rbId(ctx, i), a = `'${ctx}',${i}`, open = rbOpenS.has(rbKey(ctx, i)), has = rhHas(r);
+  const play = `<button type="button" class="rb-play" data-ctx="${ctx}" data-i="${i}" id="${id}-play" onclick="rbPlay(${a})"></button>`;
+  let h = `<div class="rb" id="${id}">`;
+  if (open) {
+    h += `<div class="rb-man"><div class="rb-mh"><b>Mon rythme</b>
+        <select class="rb-bars" id="${id}-bars" aria-label="Longueur" onchange="rbOpt(${a},'bars',+this.value)"><option value="1">1 mesure</option><option value="2">2 mesures</option></select>
+        <button type="button" class="rb-x" onclick="rbOpenEd(${a},false)" aria-label="Fermer la saisie du rythme"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="rb-view" onpointerdown="rbDown(event,${a})" onpointerup="rbUp()" onpointercancel="rbCancel()" onpointerleave="rbCancel()" onkeydown="rbKbd(event,${a})" oncontextmenu="return false">${rbViewHTML(ctx, i)}</div>
+      <div class="rb-cyc">Touche une case : <span class="D">${rhArrow('D', 1)}</span>→<span class="U">${rhArrow('U', 1)}</span>→<span class="X">${rhArrow('X', 1)}</span>→<i class="rgd"></i> <small>(silence)</small></div>
+      <div class="rb-mact">${play}<span class="rb-mm">${mmBtn('learn')}</span><button type="button" class="rb-lnk" onclick="rbClear(${a})">Effacer</button></div>
+      <details class="rb-det" ontoggle="if(this.open)rbCards(${a})"><summary>Partir d’un rythme tout fait</summary>
+        <div class="rb-pre"><div class="rb-fil"><input type="search" placeholder="Chercher…" autocomplete="off" aria-label="Chercher un rythme" value="${esc(rbF.q)}" oninput="rbF.q=this.value;rbCards(${a})">
+          <select aria-label="Niveau" onchange="rbF.lv=this.value;rbCards(${a})"><option value="">Tous niveaux</option><option value="1" ${rbF.lv == 1 ? 'selected' : ''}>● Facile</option><option value="2" ${rbF.lv == 2 ? 'selected' : ''}>●● Moyen</option><option value="3" ${rbF.lv == 3 ? 'selected' : ''}>●●● Costaud</option></select></div>
+          <div class="rb-cards" id="${id}-cards"></div><div class="rb-tip" id="${id}-tip"></div></div></details>
+      <details class="rb-det"><summary id="${id}-sum"></summary>
+        <div class="rb-sels">
+          <label>Mesure<select id="${id}-mes" onchange="rbOpt(${a},'mes',this.value)"><option>4/4</option><option>3/4</option><option>6/8</option></select></label>
+          <label>Subdivision<select id="${id}-res" onchange="rbOpt(${a},'res',+this.value)"><option value="8">Croches</option><option value="12">Triolets</option><option value="16">Doubles croches</option></select></label>
+        </div></details></div>`;
+  } else if (has) {
+    h += `<div class="rb-sum"><div class="rb-view">${rbViewHTML(ctx, i)}</div>
+      <div class="rb-mact">${play}<button type="button" class="rb-lnk acc" onclick="rbOpenEd(${a},true)">Modifier ›</button></div></div>`;
+  } else {
+    h += `<button type="button" class="rb-empty" onclick="rbOpenEd(${a},true)"><span>Pas encore de rythme</span><b>Saisir à la main ›</b></button>`;
+  }
+  if (ctx === 'at') {   // l'éditeur de fiche a sa grande barre ⏺ en bas ; l'Atelier garde un accès discret
+    h += p.rec
+      ? `<div class="rb-take"><b>Ma prise · ${(p.rec.end - p.rec.start).toFixed(1).replace('.', ',')} s</b>
+        <button type="button" class="btn btn-ghost btn-sm rb-takeb" data-ctx="${ctx}" data-i="${i}" onclick="recPlayToggle(${i},'${ctx}')"></button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="rcOpen(${i},'trim','${ctx}')">Rogner</button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="rcDelete(${i},'${ctx}')">Supprimer</button></div>`
+      : `<button type="button" class="rb-lnk rb-recl" onclick="rbRec(${a})"><span class="rb-rd"></span>Je le joue à la guitare<small>l’app garde ta prise et la rejoue en boucle</small></button>`;
+  }
+  return h + '</div>';
 }
 // après insertion du HTML (ou changement de réglage) : réglages + boutons ▶ à jour
 function rbSync(ctx, i) {
   const r = rbR(ctx, i) || rbEmpty(), id = rbId(ctx, i);
-  const m = $(id + '-mes'); if (!m) return;
-  m.value = r.mes; $(id + '-res').value = r.res; $(id + '-bars').value = r.bars;
-  $(id + '-sum').textContent = `Plus d’options · ${r.mes} · ${rbRN[r.res]} · ${r.bars} mesure${r.bars > 1 ? 's' : ''}`;
+  const m = $(id + '-mes'); if (m) {
+    m.value = r.mes; $(id + '-res').value = r.res; $(id + '-bars').value = r.bars;
+    $(id + '-sum').textContent = `Mesure et subdivision · ${r.mes} · ${rbRN[r.res]}`;
+  }
   rbSyncPlay();
 }
 function rbSyncAll() {
@@ -6505,9 +6778,9 @@ function rbSyncAll() {
 }
 function rbSyncPlay() {
   document.querySelectorAll('.rb-play').forEach(b => {
-    const on = rhPlaying(rbKey(b.dataset.ctx, b.dataset.i)), s = rbSheet(b.dataset.ctx);
+    const on = rhPlaying(rbKey(b.dataset.ctx, b.dataset.i));
     b.classList.toggle('on', on);
-    b.innerHTML = (on ? RH_STOP_SVG : RH_PLAY_SVG) + (on ? 'Arrêter' : 'Écouter en boucle') + `<small>${(s && s.bpm) || 90} BPM</small>`;
+    b.innerHTML = `<i>${on ? RH_STOP_SVG : RH_PLAY_SVG}</i><span>${on ? 'Arrêter' : 'Écouter'}</span>`;
   });
 }
 function rbSyncRec() {
@@ -6515,29 +6788,23 @@ function rbSyncRec() {
     const on = recPlay && recPlay.part === +b.dataset.i && recPlay.ctx === b.dataset.ctx;
     b.innerHTML = (on ? RH_STOP_SVG : RH_PLAY_SVG) + (on ? 'Stop' : 'Écouter');
   });
+  if (typeof edBarPlay === 'function') edBarPlay();
+}
+function rbOpenEd(ctx, i, open) {
+  const k = rbKey(ctx, i);
+  if (rhPlaying(k)) rhStop();
+  open ? rbOpenS.add(k) : rbOpenS.delete(k);
+  if (ctx === 'draft') edRpSet(i);
+  const el = $(rbId(ctx, i)); if (!el) return;
+  el.outerHTML = rbHTML(ctx, i);
+  rbSync(ctx, i);
 }
 function rbChanged(ctx, i) {
   if (ctx === 'at') atMark();
   const el = $(rbId(ctx, i)); if (!el) return;
-  el.querySelector('.rb-view').innerHTML = rbViewHTML(ctx, i);
+  const v = el.querySelector('.rb-view'); if (!v) { rbOpenEd(ctx, i, true); return; }
+  v.innerHTML = rbViewHTML(ctx, i);
   rbSync(ctx, i);
-}
-function rbAdd(ctx, i, d) {
-  const r = rbR(ctx, i, true); if (!r) return;
-  const pos = rbPos(r);
-  if (pos >= r.cells.length) {
-    if (r.bars >= 2) { toast('Rythme complet (2 mesures) : touche un coup pour le changer, ou « Vider »', true); return; }
-    rhReshape(r, r.mes, r.res, r.bars + 1);
-  }
-  r.cells[pos] = d ? {d, a: 1} : null; r.pos = pos + 1;
-  rbChanged(ctx, i);
-}
-function rbUndo(ctx, i) {
-  const r = rbR(ctx, i); if (!r) return;
-  let pos = rbPos(r); if (pos <= 0) return;
-  pos--; r.cells[pos] = null; r.pos = pos;
-  while (r.bars > 1 && pos <= rhPerBar(r.mes, r.res)*(r.bars - 1)) rhReshape(r, r.mes, r.res, r.bars - 1);
-  rbChanged(ctx, i);
 }
 function rbClear(ctx, i) {
   const p = rbPart(ctx, i), r = rbR(ctx, i); if (!p || !r) return;
@@ -6545,9 +6812,15 @@ function rbClear(ctx, i) {
   p.rhythm = rhFromPat('', r.mes, r.res, 1); p.rhythm.pos = 0;
   rbChanged(ctx, i);
 }
-// tap = cycle ↓ ↑ ✕ —, appui long = accent
+// tap = cycle ↓ ↑ ✕ vide, appui long = accent
+function rbCycle(ctx, i, k) {
+  const r = rbR(ctx, i, true), c = r.cells[k], nx = RB_CYCLE[(RB_CYCLE.indexOf(c ? c.d : null) + 1) % 4];
+  r.cells[k] = nx ? {d: nx, a: c ? c.a : 1} : null;
+  if (k >= rbPos(r)) r.pos = k + 1;
+  rbChanged(ctx, i);
+}
 function rbDown(e, ctx, i) {
-  const c = e.target.closest('.rgc[data-k]'); if (!c) return;
+  const c = e.target.closest('.rmc[data-k]'); if (!c) return;
   rbCancel();
   const S = rbTapS = {ctx, i, k: +c.dataset.k, long: false};
   S.tm = setTimeout(() => {
@@ -6559,11 +6832,13 @@ function rbDown(e, ctx, i) {
 function rbUp() {
   const S = rbTapS; if (!S) return;
   clearTimeout(S.tm); rbTapS = null;
-  if (S.long) return;
-  const r = rbR(S.ctx, S.i, true), c = r.cells[S.k], nx = RB_CYCLE[(RB_CYCLE.indexOf(c ? c.d : null) + 1) % 4];
-  r.cells[S.k] = nx ? {d: nx, a: c ? c.a : 1} : null;
-  if (S.k >= rbPos(r)) r.pos = S.k + 1;
-  rbChanged(S.ctx, S.i);
+  if (!S.long) rbCycle(S.ctx, S.i, S.k);
+}
+function rbKbd(e, ctx, i) {   // clavier : Entrée / Espace = même cycle que le tap
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const c = e.target.closest('.rmc[data-k]'); if (!c) return;
+  e.preventDefault(); rbCycle(ctx, i, +c.dataset.k);
+  const n = document.querySelector(`#${rbId(ctx, i)} .rmc[data-k="${c.dataset.k}"]`); if (n) n.focus();
 }
 function rbCancel() { if (rbTapS) clearTimeout(rbTapS.tm); rbTapS = null; }
 function rbOpt(ctx, i, key, v) {
@@ -6576,9 +6851,9 @@ function rbOpt(ctx, i, key, v) {
 function rbStep(ctx, i) {
   return k => {
     const old = rbLit; rbLit = k == null ? null : {ctx, i, k};
-    if (old) { const e = document.querySelector(`#${rbId(old.ctx, old.i)} .rgc.lit`); if (e) e.classList.remove('lit'); }
+    if (old) { const e = document.querySelector(`#${rbId(old.ctx, old.i)} [data-k].lit`); if (e) e.classList.remove('lit'); }
     if (k == null) { rbSyncPlay(); return; }
-    const e = document.querySelector(`#${rbId(ctx, i)} .rgc[data-k="${k}"]`); if (e) e.classList.add('lit');
+    const e = document.querySelector(`#${rbId(ctx, i)} [data-k="${k}"]`); if (e) e.classList.add('lit');
   };
 }
 function rbPlay(ctx, i) {
@@ -6590,7 +6865,7 @@ function rbPlay(ctx, i) {
   rhStart(r, s.bpm || 90, p.chords[0] || null, s.capo, rbStep(ctx, i), {key, chords: p.chords, mm: 'learn'});
   rbSyncPlay();
 }
-// « Partir d'un rythme » : liste filtrable, un tap pose le rythme et l'écoute tout de suite
+// « Partir d'un rythme tout fait » : liste filtrable, un tap pose le rythme et l'écoute tout de suite
 function rbCards(ctx, i) {
   const el = $(rbId(ctx, i) + '-cards'); if (!el) return;
   const q = rbNorm(rbF.q.trim());
@@ -6610,7 +6885,7 @@ function rbRec(ctx, i) { stopPlay(); rcOpen(i, null, ctx); }
 // mode jeu → « Créer / Changer le rythme » : on ouvre l'éditeur de la fiche, posé sur le bloc rythme de la partie
 function rbEditCur(i) {
   stopPlay(); editSheet(cur.id);
-  if (draft.parts[i]) { draft.parts[i].collapsed = false; renderParts(); }
+  if (draft.parts[i]) { draft.parts[i].collapsed = false; rbOpenS.add(rbKey('draft', i)); renderParts(); }
   setTimeout(() => { const el = $(rbId('draft', i)); if (el) el.scrollIntoView({block: 'center'}); }, 80);
 }
 
@@ -7135,7 +7410,7 @@ function printCahierHTML(s) {
         <div style="display:flex;gap:9px;flex-wrap:wrap">${
           p.chords.length ? p.chords.map(c => `<div class="p-chord"><div class="cn" style="font-size:12px">${esc(c.name)}</div>${chordSVG(c,{size:.6,light:true})}</div>`).join('')
                            : '<span style="font-size:10px;color:#999">—</span>'}</div>
-        ${rhHas(p.rhythm) ? `<div>${rhythmSVG(p.rhythm, true)}</div>` : ''}
+        ${rhHas(p.rhythm) ? `<div>${rhythmSVG(p.rhythm, true, {mini: true})}</div>` : ''}
       </div>
     </div>`).join('')}`;
 }
