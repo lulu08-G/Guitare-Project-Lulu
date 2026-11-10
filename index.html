@@ -843,35 +843,6 @@ input.ed-in-a{color:var(--cream2)}
 .gb.off{border:1.5px dashed var(--border2);color:var(--cream4)}
 .gb.now{box-shadow:0 0 0 3px var(--gold3);transform:translateY(-2px)}
 .big-note{font-family:var(--serif);font-size:64px;font-weight:800;color:var(--gold2);line-height:1;text-align:center}
-.path-intro{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:700px){.path-intro{grid-template-columns:1fr}}
-.session-bar{display:flex;gap:4px;margin:8px 0 6px;height:46px}
-.session-bar div{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink);line-height:1.3;text-align:center;padding:0 4px}
-.path{margin-top:6px}
-.path-step{position:relative;padding:0 0 20px 52px}
-.path-step::before{content:'';position:absolute;left:18px;top:38px;bottom:2px;width:2px;background:var(--border2)}
-.path-step:last-child::before{display:none}
-.path-step.past::before{background:var(--sage)}
-.ps-dot{position:absolute;left:0;top:0;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:14px;background:var(--card2);border:2px solid var(--border2);color:var(--cream3)}
-.path-step.cur .ps-dot{background:var(--gold);border-color:var(--gold);color:var(--ink);box-shadow:0 0 0 6px rgba(200,120,58,.18)}
-.path-step.past .ps-dot{background:var(--sage);border-color:var(--sage);color:var(--ink)}
-.ps-head{cursor:pointer;background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:12px 16px;transition:all .15s}
-.ps-head:hover{border-color:var(--border2);background:var(--card2)}
-.path-step.cur .ps-head{border-color:var(--gold)}
-.ps-t{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap;font-family:var(--serif);font-size:17px;font-weight:700;color:var(--cream)}
-.ps-t small{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--cream3)}
-.ps-d{font-size:12px;color:var(--cream3);margin-top:3px;line-height:1.5}
-.ps-bar{height:5px;border-radius:5px;background:var(--card3);margin-top:9px;overflow:hidden}
-.ps-bar i{display:block;height:100%;background:var(--sage);border-radius:5px}
-.ps-body{margin-top:10px;display:flex;flex-direction:column;gap:7px}
-.ps-tip{font-size:12px;color:var(--cream2);line-height:1.6;padding:9px 12px;background:rgba(200,120,58,.08);border-radius:8px;font-style:italic}
-.path-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;transition:all .15s}
-.path-item.done{opacity:.6}
-.path-item.done .pi-l{text-decoration:line-through;text-decoration-color:var(--cream4)}
-.path-item .chk{cursor:pointer}
-.pi-tag{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:20px;flex-shrink:0;color:var(--ink)}
-.pi-l{flex:1;font-size:13px;font-weight:600;color:var(--cream);line-height:1.4;min-width:0}
-.pi-l small{display:block;font-size:12px;font-weight:400;color:var(--cream3)}
 .practice{margin-top:22px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs)}
 .practice .filters{margin:8px 0 0}
 /* course visuals */
@@ -1317,15 +1288,229 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 .subnav.seg-big button:first-child{border-radius:50px 0 0 50px}.subnav.seg-big button:last-child{border-radius:0 50px 50px 0}
 .subnav.seg-big button.on{background:var(--gold);color:var(--ink)}
 .cl-t{font-size:11px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase;color:var(--cream3);margin:18px 0 8px}
-.ph-card{border-radius:20px;padding:16px;color:#f2e8d5;background:linear-gradient(135deg,#4a2f1a,#2a1b10);position:relative;overflow:hidden;margin:6px 0}
-.ph-card::after{content:"";position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;background:rgba(201,122,63,.35)}
-.ph-card h3{font-family:var(--serif);font-size:22px;font-weight:800;position:relative;z-index:1}
-.ph-s{font-size:13px;opacity:.8;margin:3px 0 12px;position:relative;z-index:1}
-.ph-row{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
-.ph-ring{width:50px;height:50px;border-radius:50%;flex:none;background:conic-gradient(#e8964e calc(var(--p)*1%),rgba(255,255,255,.18) 0);display:flex;align-items:center;justify-content:center}
-.ph-ring span{width:40px;height:40px;border-radius:50%;background:#33220f;font:700 12px/40px var(--sans);text-align:center}
-.ph-nx{flex:1;min-width:0;font-size:12px;opacity:.9}.ph-nx b{display:block;font-size:14px}
-.ph-go{background:#e8964e;color:#2a1b10;font-weight:800;flex:none}
+/* ── Parcours guidé (préfixe pc-) ── */
+.pc-rise{opacity:0;transform:translateY(18px);animation:pc-rise 520ms var(--ease-out) forwards;animation-delay:var(--d,0ms)}
+@keyframes pc-rise{to{opacity:1;transform:none}}
+
+/* carte héro */
+.pc-hero{position:relative;margin:6px 0 0;padding:20px 18px 18px;border-radius:24px 16px 26px 18px;overflow:hidden;
+  background:linear-gradient(155deg,color-mix(in srgb,var(--gold) 26%,var(--card2)) 0%,var(--card) 62%);
+  border:1px solid var(--border2);box-shadow:0 14px 40px var(--shadow)}
+.pc-hero-strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.pc-hero-strings path{fill:none;stroke:var(--gold3);stroke-width:1;stroke-linecap:round;opacity:.3}
+.pc-hero-k{position:relative;font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
+.pc-hero-main{position:relative;display:flex;align-items:center;gap:16px;margin-top:12px}
+.pc-ring{position:relative;width:84px;height:84px;flex-shrink:0}
+.pc-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.pc-ring .pc-tr{fill:none;stroke:var(--border2);stroke-width:6}
+.pc-ring .pc-pg{fill:none;stroke:var(--gold2);stroke-width:6;stroke-linecap:round;stroke-dasharray:226.2;stroke-dashoffset:226.2}
+.pc-ring-n{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.pc-ring-n b{font-family:var(--serif);font-size:27px;color:var(--cream);font-weight:600}
+.pc-ring-n i{font-style:normal;font-size:10px;font-weight:700;color:var(--cream3);margin-top:3px}
+.pc-hero-next{min-width:0;flex:1}
+.pc-hero-next small{display:block;font-size:11px;font-weight:700;color:var(--cream3);letter-spacing:.03em}
+.pc-hero-next h3{font-family:var(--serif);font-size:21px;line-height:1.18;color:var(--cream);font-weight:600;margin:4px 0 8px}
+.pc-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pc-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:50px;background:color-mix(in srgb,var(--cream) 9%,transparent);color:var(--cream2);border:1px solid var(--border)}
+.pc-bars{position:relative;display:flex;gap:5px;margin-top:16px}
+.pc-bars i{flex:1;height:5px;border-radius:5px;background:var(--border2);overflow:hidden;position:relative}
+.pc-bars i::after{content:"";position:absolute;inset:0;background:var(--cc);transform:scaleX(0);transform-origin:left;animation:pc-fillbar 1000ms var(--ease-out) 700ms forwards}
+@keyframes pc-fillbar{to{transform:scaleX(var(--f,0))}}
+.pc-cta{position:relative;overflow:hidden;width:100%;margin-top:16px;padding:14px 20px;border-radius:50px;background:var(--gold);color:var(--ink);font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;
+  box-shadow:0 6px 22px rgba(200,120,58,.38);transition:transform var(--t-fast) var(--ease-out)}
+.pc-cta:active{transform:scale(.97)}
+.pc-cta svg{width:17px;height:17px}
+.pc-cta::after{content:"";position:absolute;top:0;bottom:0;left:0;width:55%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-130%) skewX(-18deg);animation:pc-sheen 1.1s var(--ease-out) 1.7s 1 both}
+@keyframes pc-sheen{to{transform:translateX(280%) skewX(-18deg)}}
+
+/* carte */
+.pc-ptitle{padding:30px 22px 0;display:flex;align-items:baseline;justify-content:space-between}
+.pc-ptitle h3{font-family:var(--serif);font-size:20px;color:var(--cream);font-weight:600}
+.pc-ptitle span{font-size:11px;font-weight:700;color:var(--cream3)}
+.pc-mapw{position:relative;overflow:hidden;margin-top:6px}
+#pc-map{position:absolute;left:0;top:0;width:390px;transform-origin:0 0}
+#pc-map svg.pc-path{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;z-index:1;pointer-events:none}
+.pc-base{fill:none;stroke:var(--cream4);stroke-width:2;stroke-linecap:round;opacity:.6}
+.pc-lit{fill:none;stroke:var(--gold2);stroke-width:3;stroke-linecap:round}
+.pc-glow{fill:none;stroke:var(--gold3);stroke-width:10;stroke-linecap:round;opacity:.15}
+#pc-spark{fill:var(--gold3);opacity:0}
+.pc-par{position:absolute;pointer-events:none;z-index:0;will-change:transform}
+.pc-par.pc-wm{font-size:150px;line-height:1;opacity:.06;filter:grayscale(.3)}
+.pc-par.pc-gl{font-family:var(--serif);color:var(--gold3);opacity:.12;font-size:30px}
+.pc-par.pc-fm{width:7px;height:7px;border-radius:50%;background:var(--cream4);opacity:.4}
+
+.pc-node,.pc-ban{position:absolute;z-index:3;transform:translate(-50%,-50%)}
+.pc-node{width:0;height:0}
+.pc-rv{opacity:0;transform:translateY(16px) scale(.92);transition:opacity 420ms var(--ease-out),transform 520ms var(--ease-out);transition-delay:var(--d,0ms)}
+.pc-rv.pc-in{opacity:1;transform:none}
+.pc-dot{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:19px;font-weight:700;transition:transform var(--t-fast) var(--ease-out)}
+.pc-dot:active{transform:scale(.92)}
+.pc-dot svg{width:22px;height:22px}
+.pc-dot .pc-ic-lock{width:16px;height:16px}
+.pc-st-done .pc-dot{background:var(--cc);color:var(--ink);box-shadow:0 0 0 4px var(--bg),0 4px 14px color-mix(in srgb,var(--cc) 40%,transparent)}
+.pc-st-cur .pc-dot{background:var(--bg);color:var(--cc);border:2.5px solid var(--cc);box-shadow:0 0 0 4px var(--bg)}
+.pc-st-cur .pc-dot::before,.pc-st-cur .pc-dot::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--cc);opacity:0;animation:pc-breathe 2.8s var(--ease-out) infinite}
+.pc-st-cur .pc-dot::after{animation-delay:1.4s}
+.pc-st-cur .pc-dot span{display:block;animation:pc-beat 2.8s ease-in-out infinite}
+@keyframes pc-breathe{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.75);opacity:0}}
+@keyframes pc-beat{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.pc-st-lock .pc-dot{background:var(--card);color:var(--cream4);border:1.5px dashed var(--cream4);box-shadow:0 0 0 4px var(--bg)}
+.pc-st-lock .pc-lab{opacity:.5}
+.pc-st-done .pc-ck path{stroke-dasharray:26;stroke-dashoffset:26}
+.pc-st-done .pc-in .pc-ck path{animation:pc-draw 380ms var(--ease-out) 260ms forwards}
+@keyframes pc-draw{to{stroke-dashoffset:0}}
+.pc-lab{position:absolute;top:-22px;width:168px}
+.pc-lab.pc-r{left:40px;text-align:left}
+.pc-lab.pc-l{right:40px;text-align:right}
+.pc-lab small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cc);margin-bottom:3px}
+.pc-lab b{display:block;font-family:var(--serif);font-size:15.5px;line-height:1.22;color:var(--cream);font-weight:600}
+.pc-lab i{display:block;font-style:normal;font-size:11px;font-weight:600;color:var(--cream3);margin-top:3px}
+.pc-st-lock .pc-lab small{color:var(--cream3)}
+.pc-shake{animation:pc-shake 360ms var(--ease-out)}
+@keyframes pc-shake{0%,100%{transform:none}20%{transform:translateX(-5px)}45%{transform:translateX(4px)}70%{transform:translateX(-2px)}}
+.pc-unlock .pc-dot{animation:pc-unlock 620ms var(--ease-pop) both}
+@keyframes pc-unlock{0%{transform:scale(.7)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.pc-burst{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;border:2px solid var(--cc);pointer-events:none;animation:pc-burst 760ms var(--ease-out) forwards}
+@keyframes pc-burst{from{transform:scale(1);opacity:.8}to{transform:scale(3);opacity:0}}
+
+/* bannières */
+.pc-ban{width:268px}
+.pc-ban-in{display:flex;align-items:center;gap:13px;padding:11px 18px 11px 11px;border-radius:50px;background:var(--card);border:1px solid var(--border2);box-shadow:0 8px 24px var(--shadow)}
+.pc-ban-d{position:relative;width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:25px;background:color-mix(in srgb,var(--cc) 24%,var(--card2));border:2px solid var(--cc)}
+.pc-ban-d em{position:absolute;right:-3px;bottom:-3px;width:20px;height:20px;border-radius:50%;background:var(--cc);color:var(--ink);display:none;align-items:center;justify-content:center}
+.pc-ban small{display:block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--cc)}
+.pc-ban b{display:block;font-family:var(--serif);font-size:17.5px;line-height:1.15;color:var(--cream);font-weight:600;margin:2px 0}
+.pc-ban i{font-style:normal;font-size:11px;font-weight:600;color:var(--cream3)}
+.pc-ban.pc-st-lock .pc-ban-in{opacity:.55;border-style:dashed;box-shadow:none}
+.pc-ban.pc-st-lock .pc-ban-d{background:var(--card);border-color:var(--cream4);filter:grayscale(1)}
+.pc-ban.pc-st-lock small{color:var(--cream4)}
+.pc-ban.pc-st-done .pc-ban-d em{display:flex}
+.pc-ban.pc-unlock .pc-ban-in{animation:pc-unlockB 700ms var(--ease-pop) both}
+@keyframes pc-unlockB{0%{transform:scale(.94)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
+.pc-endcap{text-align:center;padding:10px 30px 120px;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--cream3)}
+
+/* transition partagée + feuille */
+#pc-morph{position:fixed;left:0;top:0;z-index:730;width:52px;height:52px;border-radius:50%;background:var(--cc);pointer-events:none;opacity:0;transform:translate(-50%,-50%);will-change:transform}
+#pc-morph::after{content:"";position:absolute;inset:0;border-radius:50%;background:color-mix(in srgb,var(--cc) 13%,var(--bg2));opacity:0;transition:opacity 320ms var(--ease-out)}
+#pc-morph.pc-full::after{opacity:1}
+#pc-sheet{position:fixed;inset:0;z-index:731;display:none;flex-direction:column;align-items:center;padding:max(16px,env(safe-area-inset-top)) 22px max(22px,env(safe-area-inset-bottom));opacity:0;overscroll-behavior:contain}
+#pc-sheet.pc-on{display:flex}
+.pc-sh-top{display:flex;align-items:center;justify-content:space-between}
+.pc-sh-x{width:38px;height:38px;border-radius:50%;background:color-mix(in srgb,var(--cream) 10%,transparent);display:flex;align-items:center;justify-content:center;color:var(--cream);transition:transform var(--t-fast) var(--ease-out)}
+.pc-sh-x:active{transform:scale(.9)}
+.pc-sh-x svg{width:18px;height:18px}
+.pc-sh-k{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--cc)}
+.pc-sh-body{flex:1;overflow-y:auto;scrollbar-width:none;padding:26px 10px 0 10px;margin:0 -10px}
+.pc-sh-emo{margin-left:8px}
+.pc-sh-body::-webkit-scrollbar{display:none}
+.pc-sh-emo{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;background:color-mix(in srgb,var(--cc) 22%,var(--card2));border:2px solid var(--cc);position:relative}
+.pc-sh-emo svg{position:absolute;left:-8px;top:-8px;width:88px;height:88px;transform:rotate(-90deg)}
+.pc-sh-emo circle{fill:none;stroke:var(--cc);stroke-width:2;stroke-dasharray:276.5;stroke-dashoffset:276.5;opacity:.5}
+.pc-sheet-on .pc-sh-emo circle{animation:pc-draw 800ms var(--ease-out) 300ms forwards}
+.pc-sh-body h1{font-family:var(--serif);font-size:32px;line-height:1.1;font-weight:600;color:var(--cream);letter-spacing:-.015em;margin:22px 0 10px}
+.pc-sh-but{font-size:16px;line-height:1.5;color:var(--cream2);max-width:30ch}
+.pc-sh-chips{margin-top:16px}
+.pc-sh-card{margin-top:24px;display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:18px;background:color-mix(in srgb,var(--cream) 6%,transparent);border:1px solid var(--border2)}
+.pc-sh-ico{width:44px;height:44px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--cc);color:var(--ink)}
+.pc-sh-card small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cream3)}
+.pc-sh-card b{display:block;font-family:var(--serif);font-size:17px;color:var(--cream);font-weight:600;margin-top:2px}
+.pc-sh-win{margin-top:16px;display:flex;gap:12px;align-items:flex-start;padding:2px 4px}
+.pc-sh-win .pc-bx{width:22px;height:22px;border-radius:7px;border:2px solid var(--cc);flex-shrink:0;margin-top:1px;position:relative}
+.pc-sh-win .pc-bx svg{position:absolute;inset:1px;width:16px;height:16px;color:var(--cc)}
+.pc-sh-win .pc-bx path{stroke-dasharray:26;stroke-dashoffset:26}
+.pc-sh-win.pc-ok .pc-bx path{animation:pc-draw 340ms var(--ease-out) forwards}
+.pc-sh-win small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cream3);margin-bottom:3px}
+.pc-sh-win p{font-size:15px;line-height:1.4;color:var(--cream)}
+.pc-sh-gain{margin-top:18px;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--gold2);padding-left:4px}
+.pc-sheet-on .pc-si{opacity:0;animation:pc-rise 480ms var(--ease-out) forwards;animation-delay:calc(260ms + var(--i,0)*70ms)}
+.pc-sh-foot{position:relative;padding-top:12px;min-height:96px}
+.pc-btn-main{width:100%;padding:16px 20px;border-radius:50px;background:var(--cc);color:var(--ink);font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 8px 26px color-mix(in srgb,var(--cc) 40%,transparent);transition:transform var(--t-fast) var(--ease-out)}
+.pc-btn-main:active{transform:scale(.97)}
+.pc-btn-main svg{width:18px;height:18px}
+.pc-btn-ghost{background:none;width:100%;margin-top:6px;padding:10px;border-radius:50px;font-size:13px;font-weight:700;color:var(--cream3)}
+.pc-foot-st{position:absolute;left:0;right:0;top:12px;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity var(--t-slow) var(--ease-out),transform var(--t-slow) var(--ease-out)}
+.pc-foot-st.pc-show{opacity:1;pointer-events:auto;transform:none}
+
+/* validation */
+#pc-okw{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:color-mix(in srgb,var(--cc) 13%,var(--bg2));opacity:0}
+#pc-okw.pc-on{display:flex}
+#pc-okw svg{width:132px;height:132px;overflow:visible}
+#pc-okw .pc-rg{fill:none;stroke:var(--cc);stroke-width:4;stroke-linecap:round;stroke-dasharray:314;stroke-dashoffset:314;transform:rotate(-90deg);transform-origin:66px 66px}
+#pc-okw .pc-ck{fill:none;stroke:var(--cc);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:70;stroke-dashoffset:70}
+#pc-okw .pc-fl{fill:var(--cc);opacity:0;transform-origin:66px 66px}
+#pc-okw.pc-on .pc-rg{animation:pc-draw 620ms var(--ease-out) 60ms forwards}
+#pc-okw.pc-on .pc-fl{animation:pc-flood 700ms var(--ease-out) 560ms forwards}
+#pc-okw.pc-on .pc-ck{animation:pc-draw 420ms var(--ease-out) 520ms forwards}
+#pc-okw.pc-on svg{animation:pc-okpop 520ms var(--ease-pop) 480ms both}
+@keyframes pc-flood{0%{opacity:.35;transform:scale(.7)}100%{opacity:0;transform:scale(1.6)}}
+@keyframes pc-okpop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+#pc-okw h2{font-family:var(--serif);font-size:28px;color:var(--cream);font-weight:600;margin-top:22px;opacity:0}
+#pc-okw p{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--gold2);margin-top:8px;max-width:24ch;opacity:0}
+#pc-okw.pc-on h2{animation:pc-rise 460ms var(--ease-out) 760ms forwards}
+#pc-okw.pc-on p{animation:pc-rise 460ms var(--ease-out) 900ms forwards}
+
+/* jalon */
+#pc-jalon{position:fixed;inset:0;z-index:740;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;
+  background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--cc) 30%,var(--bg)) 0%,var(--bg) 72%);opacity:0;overflow:hidden}
+#pc-jalon.pc-on{display:flex}
+.pc-badge{position:relative;width:190px;height:190px}
+.pc-badge svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pc-badge .pc-ring1{fill:none;stroke:url(#pc-gcu);stroke-width:4;stroke-linecap:round;stroke-dasharray:540;stroke-dashoffset:540;transform:rotate(-90deg);transform-origin:95px 95px}
+.pc-badge .pc-ring2{fill:none;stroke:var(--cc);stroke-width:1.5;opacity:.55;stroke-dasharray:480;stroke-dashoffset:480;transform:rotate(90deg);transform-origin:95px 95px}
+.pc-badge .pc-lau{fill:none;stroke:var(--gold3);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:140;stroke-dashoffset:140}
+.pc-badge .pc-tick{stroke:var(--gold3);stroke-width:2;stroke-linecap:round;opacity:0}
+.pc-badge .pc-core{position:absolute;left:34px;top:34px;width:122px;height:122px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:56px;overflow:hidden;
+  background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--cc) 55%,var(--card3)),color-mix(in srgb,var(--cc) 20%,var(--card)));
+  border:2px solid var(--cc);box-shadow:inset 0 2px 10px rgba(255,255,255,.18),0 10px 40px color-mix(in srgb,var(--cc) 45%,transparent);transform:scale(0);opacity:0}
+.pc-badge .pc-core::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.3) 50%,transparent 65%);transform:translateX(-120%)}
+#pc-jalon.pc-on .pc-ring1{animation:pc-draw 1100ms var(--ease-out) 150ms forwards}
+#pc-jalon.pc-on .pc-ring2{animation:pc-draw 1300ms var(--ease-out) 350ms forwards}
+#pc-jalon.pc-on .pc-lau{animation:pc-draw 900ms var(--ease-out) 700ms forwards}
+#pc-jalon.pc-on .pc-tick{animation:pc-tickin 400ms var(--ease-out) forwards;animation-delay:calc(900ms + var(--i)*28ms)}
+#pc-jalon.pc-on .pc-core{animation:pc-corein 700ms var(--ease-pop) 520ms forwards}
+#pc-jalon.pc-on .pc-core::after{animation:pc-glint 1100ms var(--ease-out) 1250ms forwards}
+@keyframes pc-tickin{to{opacity:.8}}
+@keyframes pc-corein{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes pc-glint{to{transform:translateX(120%)}}
+.pc-j-k{margin-top:34px;font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2)}
+#pc-jalon h2{font-family:var(--serif);font-size:32px;line-height:1.1;color:var(--cream);font-weight:600;margin-top:10px}
+.pc-j-msg{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--cream2);margin-top:14px;max-width:22ch;line-height:1.35}
+.pc-j-stat{display:flex;gap:10px;justify-content:center;margin-top:20px}
+#pc-jalon .pc-j-t{opacity:0}
+#pc-jalon.pc-on .pc-j-t{animation:pc-rise 600ms var(--ease-out) forwards;animation-delay:calc(1300ms + var(--i)*130ms)}
+#pc-jalon .pc-btn-main{width:auto;padding:15px 34px;margin-top:30px;background:var(--gold);color:var(--ink)}
+.pc-conf{position:absolute;left:0;top:0;pointer-events:none;will-change:transform,opacity;opacity:0;line-height:1}
+.pc-ptitle{padding:26px 4px 0}
+.pc-ptitle button{font-size:12px;font-weight:700;color:var(--gold2);background:none;min-height:44px;padding:0 4px}
+.pc-hero.pc-still .pc-bars i::after{animation:none;transform:scaleX(var(--f,0))}
+.pc-hero.pc-still .pc-cta::after{animation:none;display:none}
+.pc-hero .pc-cta{min-height:48px}
+.pc-endcap{padding-bottom:30px}
+.pc-shi{width:min(100%,560px);flex:1;min-height:0;display:flex;flex-direction:column}
+.pc-sh-x:focus-visible,.pc-btn-main:focus-visible,.pc-btn-ghost:focus-visible,.pc-cta:focus-visible,.pc-dot:focus-visible,#pc-pill button:focus-visible{outline:2px solid var(--gold3);outline-offset:3px}
+.pc-btn-main[disabled]{opacity:.5}
+/* pastille de retour : visible tant qu'une action lancée depuis le parcours est en cours */
+#pc-pill{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));z-index:330;width:min(calc(100vw - 24px),520px);transform:translate(-50%,24px);opacity:0;visibility:hidden;
+  display:flex;align-items:center;gap:11px;padding:8px 8px 8px 12px;border-radius:50px;background:var(--card);border:1px solid color-mix(in srgb,var(--cc,var(--gold)) 60%,var(--border2));box-shadow:0 10px 30px var(--shadow);
+  transition:transform var(--t-slow) var(--ease-out),opacity var(--t-slow) var(--ease-out),visibility 0s linear var(--t-slow)}
+#pc-pill.pc-show{transform:translate(-50%,0);opacity:1;visibility:visible;transition-delay:0s}
+#pc-pill .pc-pill-e{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:17px;background:color-mix(in srgb,var(--cc,var(--gold)) 24%,var(--card2));border:1.5px solid var(--cc,var(--gold))}
+#pc-pill .pc-pill-t{min-width:0;flex:1}
+#pc-pill small{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--cc,var(--gold2));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pc-pill b{display:block;font-family:var(--serif);font-size:14.5px;line-height:1.2;color:var(--cream);font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#pc-pill button{flex:none;min-height:44px;padding:0 16px;border-radius:50px;background:var(--cc,var(--gold));color:var(--ink);font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px}
+#pc-pill button svg{width:15px;height:15px}
+body.playing #pc-pill,body:has(#v-ed.on) #pc-pill{bottom:calc(16px + env(safe-area-inset-bottom))}
+body:has(#v-ed.on) #pc-pill{top:auto}
+body:has(#v-exo.fl-solo.on) #pc-pill{bottom:calc(168px + env(safe-area-inset-bottom))}   /* au-dessus du dock « Jouer » du lecteur */
+body.pc-pill-on .view.on{padding-bottom:84px}
+@media(min-width:900px){#pc-pill,body:has(#v-exo.fl-solo.on) #pc-pill,body:has(#v-ed.on) #pc-pill{left:24px;bottom:24px;width:390px;transform:translateY(24px)}#pc-pill.pc-show,body:has(#v-exo.fl-solo.on) #pc-pill.pc-show,body:has(#v-ed.on) #pc-pill.pc-show{transform:none}body.pc-pill-on .view.on{padding-bottom:0}}
+@media (prefers-reduced-motion:reduce){
+  .pc-st-cur .pc-dot::before,.pc-st-cur .pc-dot::after{animation:none!important;opacity:.4;transform:scale(1.25)}
+  .pc-rise{opacity:1;transform:none}
+}
+.pc-bars.pc-repaint i::after{animation-delay:0ms}
 .cl-list{display:flex;flex-direction:column}
 .les{display:flex;align-items:center;gap:12px;min-height:56px;padding:0;background:none;border:0;border-bottom:1px solid var(--border);text-align:left;color:var(--cream);width:100%}
 .les b{font-family:var(--serif);font-size:16px;font-weight:600}.les small{margin-left:auto;font-size:12px;color:var(--cream3)}
@@ -1412,6 +1597,7 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
 /* vues : fondu + glissement léger (opacité seule là où un bloc fixe vit dans la vue) */
 .view.on{animation:viewIn var(--t-mid) var(--ease-out) both}
 #v-sheet.on,#v-ed.on,#v-atelier.on{animation-name:viewFade}
+#v-cours.on{animation:none}   /* la carte du parcours (page haute) a sa propre arrivée : pas de calque géant pour le fondu de la vue */
 @keyframes viewIn{from{opacity:0;transform:translateX(var(--vx,14px))}}
 @keyframes viewFade{from{opacity:0}}
 /* pastille de la barre du bas */
@@ -1868,6 +2054,7 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
 <div class="view" id="v-cours">
   <div class="wrap">
     <div id="cours-hero"></div>
+    <div id="cours-map"></div>
     <div id="cours-list"></div>
     <div class="parts-view" id="cours-body" style="padding-bottom:60px"></div>
   </div>
@@ -3657,33 +3844,559 @@ const COURS = [
 ];
 /* Cours : trois états. 'list' = carte héro + leçons à la carte ; 'lesson' = une leçon ; 'path' = le parcours guidé détaillé */
 let coursView = 'list', coursAll = false;
-const coursDone = () => { const d = new Set(); PATH.forEach((st, si) => st.items.forEach((it, ii) => { if (it[0] === 'cours' && exoProg.path[si + '-' + ii]) d.add(it[1]); })); return d; };
-/* Carte héro « Parcours guidé » : isolée ici pour être remplacée par le futur parcours animé (conteneur #cours-hero) */
-function parcoursHeroHTML() {
-  const total = PATH.reduce((a, st) => a + st.items.length, 0), n = PATH.reduce((a, st, si) => a + st.items.filter((_, ii) => exoProg.path[si + '-' + ii]).length, 0);
-  const cur = PATH.findIndex((st, si) => st.items.some((_, ii) => !exoProg.path[si + '-' + ii])), pct = Math.round(n / total * 100);
-  const fin = cur < 0, st = PATH[fin ? PATH.length - 1 : cur];
-  return `<div class="ph-card"><h3>Parcours guidé</h3><div class="ph-s">De ta première note à ton premier morceau.</div>
-    <div class="ph-row"><div class="ph-ring" style="--p:${pct}" role="img" aria-label="${pct} % du parcours"><span>${pct}%</span></div>
-      <div class="ph-nx">${fin ? 'Parcours terminé' : n ? 'Prochaine étape' : 'Pour commencer'}<b>${fin ? 'Bravo, à toi de jouer' : `Étape ${cur + 1} · ${esc(st.n)}`}</b></div>
-      <button type="button" class="btn ph-go" onclick="coursPath()">${n && !fin ? 'Reprendre' : fin ? 'Revoir' : 'Commencer'}</button></div></div>`;
+/* ═══════ PARCOURS GUIDÉ ═══════
+   6 chapitres, 33 étapes (PATH2). Carte animée, ouverture d’étape (disque → plein écran), vraie action de l’appli
+   (exo / cours / rc / prog / fiche), retour sur l’étape avec « J’ai réussi », jalon de fin de chapitre.
+   Progression : exoProg.path2 = {idÉtape: date}. Tout est préfixé pc-. */
+const PATH2 = [
+ {ch:1, titre:'Premiers sons', emoji:'🎸', couleur:'gold', etapes:[
+  {id:'p1-1', titre:'Accorde ta guitare', but:'Avoir une guitare juste, sinon rien ne sonne.', action:{type:'exo', ref:'tune5'}, reussite:'Plus aucun battement entre les cordes.', min:5, jalon:'Ta guitare est prête.'},
+  {id:'p1-2', titre:'Les notes, en 3 minutes', but:'Savoir nommer les cordes à vide : Mi La Ré Sol Si Mi.', action:{type:'cours', ref:'notes'}, reussite:'Tu nommes les 6 cordes sans hésiter.', min:6, jalon:'Tu parles la langue de la guitare.'},
+  {id:'p1-3', titre:'Réveille tes doigts', but:'Un doigt par case, sans forcer.', action:{type:'exo', ref:'spider'}, reussite:'4 cordes propres à 60 BPM.', min:5, jalon:'Tes doigts commencent à obéir.'},
+  {id:'p1-4', titre:'Ton premier accord qui sonne', but:'Passer de Em à Am (2 accords à 2-3 doigts).', action:{type:'exo', ref:'omc', param:'Em-Am'}, reussite:'10 changements en 1 minute, même sales.', min:5, jalon:'Tu changes d\u2019accord.'},
+  {id:'p1-5', titre:'Un coup par temps', but:'Gratter régulièrement vers le bas.', action:{type:'exo', ref:'down4', param:null}, reussite:'1 minute sur Em puis G, calé sur le clic à 70 BPM.', min:5, jalon:'Tu joues EN RYTHME : première vraie sensation.'}
+ ]},
+ {ch:2, titre:'Les accords magiques', emoji:'✨', couleur:'terra', etapes:[
+  {id:'p2-1', titre:'Construis G, C, D, Em', but:'Comprendre comment un accord se pose, pas le recopier.', action:{type:'cours', ref:'build'}, reussite:'Tu poses G, C, D, Em sans regarder la photo.', min:8, jalon:'Les 4 accords de la moitié des chansons.'},
+  {id:'p2-2', titre:'G vers C', but:'Le changement le plus courant en chanson.', action:{type:'exo', ref:'omc', param:'G-C'}, reussite:'15 changements en 1 minute.', min:5, jalon:null},
+  {id:'p2-3', titre:'Le doigt qui ne bouge pas', but:'Repérer les doigts pivots pour changer plus vite.', action:{type:'exo', ref:'anchor', param:'C-G'}, reussite:'Le pivot ne quitte jamais la corde.', min:5, jalon:'Tu changes plus malin, pas plus vite.'},
+  {id:'p2-4', titre:'C vers D', but:'Le changement qui fait peur, apprivoisé.', action:{type:'exo', ref:'omc', param:'C-D'}, reussite:'15 changements en 1 minute.', min:5, jalon:null},
+  {id:'p2-5', titre:'Ta première suite', but:'Enchaîner G, D, C, G sans t\u2019arrêter, à 4 coups par accord.', action:{type:'prog', ref:'f4', param:'noires'}, reussite:'La boucle 4 fois de suite sans casser le tempo.', min:7, jalon:'Tu joues ta 1re suite d\u2019accords.'}
+ ]},
+ {ch:3, titre:'Le rythme qui groove', emoji:'🔥', couleur:'sage', etapes:[
+  {id:'p3-1', titre:'Le balancier', but:'La main droite ne s\u2019arrête jamais.', action:{type:'rc', ref:'rc2'}, reussite:'8 mesures régulières à 70 BPM.', min:5, jalon:null},
+  {id:'p3-2', titre:'Le rythme feu de camp', but:'Jouer D – DU – UDU, le rythme passe-partout.', action:{type:'rc', ref:'rc7'}, reussite:'8 mesures à 85 BPM sans regarder ta main.', min:8, jalon:'Tu tiens LE rythme du feu de camp.'},
+  {id:'p3-3', titre:'Feu de camp : G Em C D', but:'Marier suite et rythme : ta première chanson-type.', action:{type:'prog', ref:'f1', param:'feucamp'}, reussite:'2 minutes de boucle, tu peux fredonner dessus.', min:10, jalon:'Tu sais jouer ta 1re chanson feu de camp !'},
+  {id:'p3-4', titre:'Le « tchak »', but:'Étouffer sur 2 et 4 pour un son de vraie guitare pop.', action:{type:'rc', ref:'rc6'}, reussite:'Le « tchak » est sec et en place à 85 BPM.', min:6, jalon:null},
+  {id:'p3-5', titre:'Même suite, autre énergie', but:'Sentir qu\u2019un rythme change tout.', action:{type:'prog', ref:'j3', param:'chuck'}, reussite:'Tu joues G C G D en chuck, puis en croches, et tu entends la différence.', min:8, jalon:'Tu changes d\u2019ambiance en changeant de rythme.'}
+ ]},
+ {ch:4, titre:'Selon ton mood', emoji:'🎭', couleur:'mauve', etapes:[
+  {id:'p4-1', titre:'Pourquoi ça sonne triste ou joyeux', but:'Comprendre mineur / majeur et la notion de tonalité.', action:{type:'cours', ref:'key'}, reussite:'Tu distingues un accord joyeux d\u2019un triste à l\u2019oreille.', min:8, jalon:null},
+  {id:'p4-2', titre:'Ambiance triste', but:'Jouer Em, C, G, D doucement.', action:{type:'prog', ref:'t1', param:'ballade'}, reussite:'La suite coule à 75 BPM, doux.', min:8, jalon:'Tu fais pleurer la guitare.'},
+  {id:'p4-3', titre:'Ambiance énergique', but:'Même technique, mais en mode rock.', action:{type:'prog', ref:'e4', param:'rockaere'}, reussite:'A G D A à 110 BPM, énergique et propre.', min:8, jalon:null},
+  {id:'p4-4', titre:'Ambiance rêveuse', but:'Accords « nuages » (add9, maj7), les plus beaux.', action:{type:'prog', ref:'r5', param:'douce'}, reussite:'Gmaj7, Cadd9, Gmaj7, Em7 sans buter.', min:9, jalon:'Tu joues des accords de pro.'},
+  {id:'p4-5', titre:'Les 4 accords des tubes', but:'Reconnaître la grille I – V – vi – IV partout.', action:{type:'cours', ref:'progs'}, reussite:'Tu la joues en C puis en G.', min:8, jalon:null},
+  {id:'p4-6', titre:'Ta fiche « mood »', but:'Garder une suite qui te plaît pour de bon.', action:{type:'fiche', ref:'new', param:'une suite de ton ambiance préférée (nom, accords, rythme)'}, reussite:'Fiche créée et rejouée depuis la fiche.', min:6, jalon:'Ta bibliothèque démarre.'}
+ ]},
+ {ch:5, titre:'Arpèges & effets', emoji:'🌙', couleur:'gold2', etapes:[
+  {id:'p5-1', titre:'Décortiquer un accord', but:'Voir chaque note qui compose l\u2019accord.', action:{type:'cours', ref:'dissect'}, reussite:'Tu nommes les notes de C.', min:8, jalon:null},
+  {id:'p5-2', titre:'Arpège p-i-m-a', but:'Jouer les notes une par une, au doigt.', action:{type:'exo', ref:'pima'}, reussite:'4 notes de même volume à 70 BPM.', min:7, jalon:'Tu fais chanter l\u2019accord.'},
+  {id:'p5-3', titre:'Brume en arpège', but:'Appliquer l\u2019arpège à une vraie suite.', action:{type:'prog', ref:'m3', param:'douce'}, reussite:'Am, Em, Fmaj7, C en arpège, sans rater de corde.', min:9, jalon:'Ton premier morceau d\u2019ambiance.'},
+  {id:'p5-4', titre:'Hammer-on & pull-off', but:'Lier des notes sans les gratter.', action:{type:'exo', ref:'hammer'}, reussite:'Trille régulière à 80 BPM.', min:6, jalon:null},
+  {id:'p5-5', titre:'Les glissés', but:'Ajouter du chant avec la main gauche.', action:{type:'exo', ref:'slide'}, reussite:'La note d\u2019arrivée sonne autant que la 1re.', min:5, jalon:null},
+  {id:'p5-6', titre:'Arpège + hammer', but:'Le détail qui fait « folk ».', action:{type:'exo', ref:'combo'}, reussite:'Le hammer s\u2019entend sans casser le rythme.', min:7, jalon:'Tu joues avec le style.'}
+ ]},
+ {ch:6, titre:'Je joue mes morceaux', emoji:'🏆', couleur:'terra', etapes:[
+  {id:'p6-1', titre:'Le barré en marches', but:'Venir au F, doucement.', action:{type:'exo', ref:'barre'}, reussite:'Chaque corde du F sonne.', min:8, jalon:'Tu attaques le mur du barré.'},
+  {id:'p6-2', titre:'C vers F', but:'Le changement du barré.', action:{type:'exo', ref:'omc', param:'C-F'}, reussite:'8 changements en 1 minute (ça viendra).', min:6, jalon:null},
+  {id:'p6-3', titre:'Do-la-fa-sol', but:'Jouer la grille pop la plus répandue (mini-F ou Fmaj7 si besoin).', action:{type:'prog', ref:'f2', param:'ballade'}, reussite:'La boucle complète, 2 minutes.', min:9, jalon:'Tu joues les hits de la radio.'},
+  {id:'p6-4', titre:'Capo : même grille, autre voix', but:'Adapter un morceau à ta voix.', action:{type:'cours', ref:'capo'}, reussite:'Tu transposes f2 avec le capo.', min:7, jalon:null},
+  {id:'p6-5', titre:'Entends ce que tu joues', but:'Reconnaître majeur et mineur à l\u2019oreille.', action:{type:'exo', ref:'earchords'}, reussite:'9 bonnes réponses sur 10.', min:5, jalon:null},
+  {id:'p6-6', titre:'Crée la fiche de TON morceau', but:'Mettre un vrai morceau dans l\u2019appli.', action:{type:'fiche', ref:'new', param:'un morceau que tu aimes : accords, rythme, paroles repliées'}, reussite:'Fiche créée, jouable à la volée.', min:10, jalon:'Tu joues TES morceaux !'}
+ ]}
+];
+const PC_TYPE = {
+  exo:  {k:'Exercice',      btn:'Lancer l’exercice', ico:'<path d="M4 12h3l2-6 4 12 2-6h5"/>'},
+  cours:{k:'Cours',         btn:'Ouvrir le cours',   ico:'<path d="M4 5.5C7 4 10 4.5 12 6.5c2-2 5-2.5 8-1V19c-3-1.5-6-1-8 1-2-2-5-2.5-8-1z"/><path d="M12 6.5V20"/>'},
+  rc:   {k:'Rythme',        btn:'Lancer le rythme',  ico:'<path d="M6 19V8M12 19V5M18 19V11"/>'},
+  prog: {k:'Suite d’accords', btn:'Jouer la suite',  ico:'<rect x="4" y="5" width="16" height="14" rx="3"/><path d="M9 5v14M15 5v14"/>'},
+  fiche:{k:'Fiche',         btn:'Créer la fiche',    ico:'<path d="M7 3h8l4 4v14H7z"/><path d="M14 3v5h5M10 13h6M10 17h4"/>'}
+};
+const PC_COL = {gold:'--gold', terra:'--terra', sage:'--sage', mauve:'--mauve', gold2:'--gold3'};
+const PC_NS = 'http://www.w3.org/2000/svg';
+const pcI = (p, w = 22) => `<svg viewBox="0 0 24 24" width="${w}" height="${w}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const PC_CLOCK = '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>';
+const PC_CHECK = '<svg class="pc-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const PC_LOCK = '<svg class="pc-ic-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
+const PC_ARROW = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const pcRM = () => mReduced();
+const pcWait = ms => new Promise(r => setTimeout(r, pcRM() ? Math.min(ms, 30) : ms));
+const pcCol = c => `var(${PC_COL[c.couleur]})`;
+const PC_KEEP = new Set(['exo', 'cours', 'ed', 'sheet']);   // vues où une action lancée depuis le parcours reste « en cours »
+
+/* aplati + mise en page (fixe : 390 px de large, la carte est mise à l'échelle sur petit écran) */
+const PC_ITEMS = [], PC_STEPS = []; let PC_H = 0;
+(function () {
+  let gi = 0, y = 78, sn = 0;
+  PATH2.forEach(c => {
+    const start = gi, ban = {kind:'ban', c, start, end:start + c.etapes.length, mins:c.etapes.reduce((n, e) => n + e.min, 0), x:195, y};
+    PC_ITEMS.push(ban); y += 124;
+    c.etapes.forEach((e, n) => {
+      const s = sn++ % 2 ? 1 : -1;
+      const st = {kind:'step', c, e, n, gi:gi++, last:n === c.etapes.length - 1, x:Math.round(195 + s*(58 + 30*Math.abs(Math.sin(sn*1.7)))), y};
+      PC_ITEMS.push(st); PC_STEPS.push(st); y += 116;
+    });
+  });
+  PC_H = y + 20;
+})();
+
+/* progression : exoProg.path2 = {idÉtape: date}. Les étapes se débloquent dans l'ordre. */
+const pcProg = () => exoProg.path2 || (exoProg.path2 = {});
+const pcCur = () => { const i = PC_STEPS.findIndex(s => !pcProg()[s.e.id]); return i < 0 ? PC_STEPS.length : i; };
+function pcState(it) {
+  const d = pcCur();
+  if (it.kind === 'ban') return d >= it.end ? 'done' : d >= it.start ? 'cur' : 'lock';
+  return it.gi < d ? 'done' : it.gi === d ? 'cur' : 'lock';
 }
+const pcReached = it => pcState(it) !== 'lock';
+const coursDone = () => { const d = new Set(); PC_STEPS.forEach(s => { if (s.e.action.type === 'cours' && pcProg()[s.e.id]) d.add(s.e.action.ref); }); return d; };
+
+let pcRet = null;                     // action lancée depuis le parcours : {id}
+let pcM = null;                       // carte montée
+let pcBusy = false, pcCurIt = null, pcSrc = null;
+
+/* ── carte héro ── */
+function pcBarsHTML() {
+  const d = pcCur();
+  return PATH2.map(c => { const s = PC_ITEMS.find(x => x.kind === 'ban' && x.c === c);
+    return `<i style="--cc:${pcCol(c)};--f:${Math.max(0, Math.min(1, (d - s.start)/c.etapes.length))}"></i>`; }).join('');
+}
+function pcNextHTML() {
+  const d = pcCur(), it = PC_STEPS[d];
+  return it ? `<small>${d ? 'Prochaine étape' : 'Pour commencer'} · Chapitre ${it.c.ch}</small><h3>${esc(it.e.titre)}</h3>
+      <div class="pc-chips"><span class="pc-chip">${pcI(PC_CLOCK, 12)}${it.e.min} min</span><span class="pc-chip">${PC_TYPE[it.e.action.type].k}</span></div>`
+    : `<small>Parcours terminé</small><h3>Bravo, tu joues tes morceaux</h3>`;
+}
+const pcCtaLabel = () => { const d = pcCur(); return d >= PC_STEPS.length ? 'Revoir la carte' : d ? 'Continuer' : 'Commencer'; };
+function pcHeroHTML(still) {
+  const d = pcCur(), T = PC_STEPS.length;
+  const strings = [0, 1, 2, 3, 4, 5].map(i => { const yy = 24 + i*34;
+    return `<path d="M-10 ${yy} Q180 ${yy + (i % 2 ? 9 : -9)} 370 ${yy + 4}"${still ? '' : ' style="stroke-dasharray:420;stroke-dashoffset:420"'}/>`; }).join('');
+  return `<section class="pc-hero ${still ? 'pc-still' : 'pc-rise'}" style="--d:120ms" aria-label="Parcours guidé">
+    <svg class="pc-hero-strings" viewBox="0 0 358 220" preserveAspectRatio="none" aria-hidden="true">${strings}</svg>
+    <div class="pc-hero-k">Ton parcours guidé</div>
+    <div class="pc-hero-main">
+      <div class="pc-ring" role="img" aria-label="${d} étapes sur ${T}"><svg viewBox="0 0 84 84" aria-hidden="true"><circle class="pc-tr" cx="42" cy="42" r="36"/><circle class="pc-pg" id="pc-pg" cx="42" cy="42" r="36"/></svg>
+        <div class="pc-ring-n"><b id="pc-hn">${still ? d : 0}</b><i>sur ${T}</i></div></div>
+      <div class="pc-hero-next" id="pc-hnext">${pcNextHTML()}</div></div>
+    <div class="pc-bars" id="pc-bars">${pcBarsHTML()}</div>
+    <button type="button" class="pc-cta" id="pc-go" onclick="pcContinue()"><span>${pcCtaLabel()}</span>${PC_ARROW}</button></section>`;
+}
+function pcHeroAfter(still) {
+  const d = pcCur(), T = PC_STEPS.length, pg = $('pc-pg'), hn = $('pc-hn'); if (!pg) return;
+  const target = 226.2*(1 - d/T);
+  if (still || pcRM()) { pg.style.strokeDashoffset = target; hn.textContent = d; return; }
+  document.querySelectorAll('.pc-hero-strings path').forEach((p, i) => p.animate([{strokeDashoffset:420}, {strokeDashoffset:0}], {duration:1300, delay:300 + i*90, easing:'cubic-bezier(.22,.8,.3,1)', fill:'forwards'}));
+  pg.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(.22,.8,.3,1) .5s';
+  requestAnimationFrame(() => { pg.style.strokeDashoffset = target; });
+  pcCount(hn, 0, d, 500);
+}
+function pcCount(el, from, to, delay) {
+  const t0 = performance.now() + delay, dur = pcRM() ? 1 : 1100;
+  (function tick(t) { const p = Math.max(0, Math.min(1, (t - t0)/dur)); el.textContent = Math.round(from + (to - from)*(1 - Math.pow(1 - p, 3))); if (p < 1 && el.isConnected) requestAnimationFrame(tick); })(performance.now());
+}
+function pcPaintHero(animate) {
+  const d = pcCur(), T = PC_STEPS.length, hero = document.querySelector('.pc-hero'); if (!hero) return;
+  hero.classList.remove('pc-still');
+  $('pc-bars').classList.add('pc-repaint'); $('pc-bars').innerHTML = pcBarsHTML();
+  const ptc = $('pc-ptc'); if (ptc) ptc.textContent = `${d} / ${T} étapes`;
+  const lab = document.querySelector('#pc-go span'); if (lab) lab.textContent = pcCtaLabel();
+  const ring = document.querySelector('.pc-ring'); if (ring) ring.setAttribute('aria-label', `${d} étapes sur ${T}`);
+  const pg = $('pc-pg'), hn = $('pc-hn'), hx = $('pc-hnext'), rm = pcRM();
+  pg.style.transition = rm ? 'none' : 'stroke-dashoffset 1.2s cubic-bezier(.22,.8,.3,1)';
+  requestAnimationFrame(() => { pg.style.strokeDashoffset = 226.2*(1 - d/T); });
+  pcCount(hn, +hn.textContent || 0, d, 0);
+  if (animate && !rm) {
+    hx.animate([{opacity:1, transform:'none'}, {opacity:0, transform:'translateY(-8px)'}], {duration:180, fill:'forwards'}).finished.then(() => {
+      hx.innerHTML = pcNextHTML();
+      hx.animate([{opacity:0, transform:'translateY(8px)'}, {opacity:1, transform:'none'}], {duration:280, easing:'cubic-bezier(.22,.8,.3,1)', fill:'forwards'}); });
+  } else hx.innerHTML = pcNextHTML();
+}
+
+/* ── carte du parcours ── */
+function pcNodeHTML(it) {
+  const st = pcState(it);
+  if (it.kind === 'ban') {
+    return `<div class="pc-rv"><div class="pc-ban-in"><div class="pc-ban-d">${it.c.emoji}<em>${pcI('<path d="M5 12.5l4.5 4.5L19 7.5"/>', 12)}</em></div>
+      <div class="pc-ban-t"><small>Chapitre ${it.c.ch}</small><b>${esc(it.c.titre)}</b><i>${it.c.etapes.length} étapes · ${it.mins} min</i></div></div></div>`;
+  }
+  const e = it.e, left = it.x > 195, inner = st === 'done' ? PC_CHECK : st === 'cur' ? `<span>${it.c.ch}.${it.n + 1}</span>` : PC_LOCK;
+  return `<div class="pc-rv"><button type="button" class="pc-dot" aria-label="Étape ${it.c.ch}.${it.n + 1} : ${esc(e.titre)}${st === 'done' ? ', réussie' : st === 'cur' ? ', à faire' : ', verrouillée'}" ${st === 'lock' ? 'aria-disabled="true"' : ''}>${inner}</button>
+    <div class="pc-lab ${left ? 'pc-l' : 'pc-r'}"><small>Étape ${it.c.ch}.${it.n + 1}</small><b>${esc(e.titre)}</b><i>${e.min} min · ${PC_TYPE[e.action.type].k}</i></div></div>`;
+}
+function pcRenderNode(it, M) {
+  const el = document.createElement('div');
+  el.className = (it.kind === 'ban' ? 'pc-ban' : 'pc-node') + ' pc-st-' + pcState(it);
+  el.style.left = it.x + 'px'; el.style.top = it.y + 'px'; el.style.setProperty('--cc', pcCol(it.c));
+  el.innerHTML = pcNodeHTML(it);
+  M.map.appendChild(el); M.els.set(it, el);
+  if (it.kind === 'step') el.querySelector('.pc-dot').addEventListener('click', () => pcOpenStep(it));
+  return el;
+}
+function pcRebuild(it, extra) {
+  const M = pcM, old = M.els.get(it), wasIn = old.querySelector('.pc-rv').classList.contains('pc-in');
+  old.remove(); const el = pcRenderNode(it, M);
+  const rv = el.querySelector('.pc-rv'); rv.style.transition = 'none'; if (wasIn) rv.classList.add('pc-in');
+  if (extra) el.classList.add(extra);
+  return el;
+}
+function pcBurst(el) { const b = document.createElement('div'); b.className = 'pc-burst'; el.appendChild(b); setTimeout(() => b.remove(), 900); }
+
+function pcFit() {
+  const M = pcM; if (!M) return;
+  const vw = document.documentElement.clientWidth, s = Math.min(1, vw/390);
+  M.s = s;
+  M.mapw.style.width = vw + 'px'; M.mapw.style.marginLeft = `calc(50% - ${vw/2}px)`; M.mapw.style.height = Math.round(PC_H*s) + 'px';
+  M.map.style.transform = `translateX(${(vw - 390*s)/2}px) scale(${s})`;
+  pcParallax();
+}
+function pcParallax() {
+  const M = pcM; if (!M) return; M.tick = false; if (pcRM()) return;
+  const mid = (innerHeight/2 - M.mapw.getBoundingClientRect().top)/M.s;
+  for (const p of M.pars) p.e.style.transform = `translate3d(0,${((mid - p.y)*p.f).toFixed(1)}px,0)`;
+}
+function pcUnmount() {
+  const M = pcM; if (!M) return;
+  removeEventListener('scroll', M.onScroll); removeEventListener('resize', M.onResize); M.io.disconnect();
+  pcM = null;
+}
+function pcMount(still) {
+  pcUnmount();
+  still = still || pcRM();
+  $('cours-hero').innerHTML = pcHeroHTML(still);
+  const host = $('cours-map');
+  host.innerHTML = `<div class="pc-ptitle ${still ? '' : 'pc-rise'}" style="--d:260ms"><h3>La carte</h3><span id="pc-ptc">${pcCur()} / ${PC_STEPS.length} étapes</span></div>
+    <div class="pc-mapw" id="pc-mapw"><div id="pc-map"></div></div>
+    <div class="pc-endcap">Chaque corde que tu fais vibrer<br>t’emmène un peu plus loin.</div>`;
+  const M = pcM = {map:$('pc-map'), mapw:$('pc-mapw'), els:new Map(), segs:[], pars:[], s:1, tick:false};
+  M.map.style.height = PC_H + 'px';
+  const svg = document.createElementNS(PC_NS, 'svg'); svg.setAttribute('class', 'pc-path'); svg.setAttribute('viewBox', `0 0 390 ${PC_H}`); svg.setAttribute('aria-hidden', 'true');
+  M.map.appendChild(svg);
+  const segD = (a, b) => { const dy = (b.y - a.y)*.55; return `C${a.x} ${a.y + dy} ${b.x} ${b.y - dy} ${b.x} ${b.y}`; };
+  let dAll = `M${PC_ITEMS[0].x} ${PC_ITEMS[0].y}`;
+  for (let i = 0; i < PC_ITEMS.length - 1; i++) dAll += segD(PC_ITEMS[i], PC_ITEMS[i + 1]);
+  const mk = (cls, d) => { const p = document.createElementNS(PC_NS, 'path'); p.setAttribute('class', cls); p.setAttribute('d', d); svg.appendChild(p); return p; };
+  M.base = mk('pc-base', dAll);
+  for (let i = 0; i < PC_ITEMS.length - 1; i++) {
+    const d = `M${PC_ITEMS[i].x} ${PC_ITEMS[i].y}` + segD(PC_ITEMS[i], PC_ITEMS[i + 1]);
+    const g = mk('pc-glow', d), l = mk('pc-lit', d), L = l.getTotalLength(), lit = pcReached(PC_ITEMS[i + 1]);
+    [g, l].forEach(p => { p.style.strokeDasharray = L; p.style.strokeDashoffset = (lit && still) ? 0 : L; });
+    M.segs.push({i, l, g, L, lit});
+  }
+  M.spark = document.createElementNS(PC_NS, 'circle'); M.spark.setAttribute('id', 'pc-spark'); M.spark.setAttribute('r', '6'); svg.appendChild(M.spark);
+  /* décor en parallaxe léger */
+  const addPar = (cls, html, x, yy, f) => { const e = document.createElement('div'); e.className = 'pc-par ' + cls; e.setAttribute('aria-hidden', 'true'); e.innerHTML = html; e.style.left = x + 'px'; e.style.top = yy + 'px'; M.map.appendChild(e); M.pars.push({e, y:yy, f}); };
+  PC_ITEMS.forEach(it => { if (it.kind === 'ban') addPar('pc-wm', it.c.emoji, it.c.ch % 2 ? 230 : -30, it.y + 20, .38); });
+  const glyphs = ['♪', '♫', '♩', '♬'];
+  for (let i = 0; i < 14; i++) addPar('pc-gl', glyphs[i % 4], 14 + (i*97) % 330, 120 + i*(PC_H/14), .18 + (i % 3)*.08);
+  for (let i = 0; i < 22; i++) addPar('pc-fm', '', 8 + (i*61) % 370, 60 + i*(PC_H/22), .12 + (i % 4)*.05);
+  PC_ITEMS.forEach(it => pcRenderNode(it, M));
+  /* apparition des nœuds au défilement */
+  let first = !still;
+  M.io = new IntersectionObserver(es => {
+    const vis = es.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    vis.forEach((e, i) => { const rv = e.target.querySelector('.pc-rv'); rv.style.setProperty('--d', (first ? 600 + i*120 : 0) + 'ms'); rv.classList.add('pc-in'); M.io.unobserve(e.target); });
+    if (vis.length) first = false;
+  }, {threshold:.05});
+  if (still) M.els.forEach(el => { const rv = el.querySelector('.pc-rv'); rv.style.transition = 'none'; rv.classList.add('pc-in'); });
+  else M.els.forEach(el => M.io.observe(el));
+  M.onScroll = () => { if (!M.tick) { M.tick = true; requestAnimationFrame(pcParallax); } };
+  M.onResize = () => pcFit();
+  addEventListener('scroll', M.onScroll, {passive:true}); addEventListener('resize', M.onResize);
+  pcFit(); pcHeroAfter(still);
+  if (!still) {   // arrivée : le chemin se dessine, puis le fil cuivre s'allume jusqu'à l'étape courante
+    const L = M.base.getTotalLength(); M.base.style.strokeDasharray = L; M.base.style.strokeDashoffset = L;
+    M.base.animate([{strokeDashoffset:L}, {strokeDashoffset:0}], {duration:2600, delay:350, easing:'cubic-bezier(.35,.1,.2,1)', fill:'forwards'});
+    pcWait(1100).then(() => { if (pcM === M) pcLight(M.segs.filter(s => s.lit), 1100, M); });
+  }
+}
+
+/* allumer des segments, avec étincelle (px/s) */
+function pcLight(list, speed, M) {
+  M = M || pcM;
+  return new Promise(res => {
+    if (!M) return res();
+    let t = 0; const runs = [];
+    list.forEach(s => { const D = pcRM() ? 1 : s.L/speed*1000; runs.push({s, D, t0:t}); t += D; });
+    runs.forEach(r => [r.s.l, r.s.g].forEach(p => p.animate([{strokeDashoffset:r.s.L}, {strokeDashoffset:0}], {duration:r.D, delay:r.t0, easing:'linear', fill:'forwards'})));
+    if (pcRM() || !runs.length) { M.spark.style.opacity = 0; return setTimeout(res, 20); }
+    const start = performance.now(); M.spark.style.opacity = 1;
+    (function fr(now) {
+      if (pcM !== M) return res();
+      const el = now - start;
+      if (el >= t) { M.spark.style.opacity = 0; return res(); }
+      const r = runs.find(r => el < r.t0 + r.D) || runs[runs.length - 1];
+      const p = r.s.l.getPointAtLength(Math.min(r.s.L, Math.max(0, (el - r.t0)/r.D)*r.s.L));
+      M.spark.setAttribute('cx', p.x); M.spark.setAttribute('cy', p.y);
+      requestAnimationFrame(fr);
+    })(start);
+  });
+}
+
+const pcTarget = (it, frac = .45) => { const r = pcM.els.get(it).getBoundingClientRect(); return Math.max(0, scrollY + r.top - innerHeight*frac); };
+const pcScroll = (y, instant) => scrollTo({top:y, behavior:(instant || pcRM()) ? 'auto' : 'smooth'});
+async function pcContinue() {
+  if (pcBusy || !pcM) return;
+  const it = PC_STEPS[pcCur()];
+  if (!it) { pcScroll(Math.max(0, scrollY + $('pc-mapw').getBoundingClientRect().top - 90)); return; }
+  const tgt = pcTarget(it);
+  pcScroll(tgt);
+  await pcWait(Math.min(1500, Math.abs(scrollY - tgt)*.9 + 300));
+  pcOpenStep(it);
+}
+
+/* ── calque (transition disque → plein écran, feuille d'étape, réussite, jalon, pastille) ── */
+function pcLayer() {
+  if ($('pc-layer')) return;
+  const d = document.createElement('div'); d.id = 'pc-layer';
+  d.innerHTML = `<div id="pc-morph" aria-hidden="true"></div>
+    <div id="pc-sheet" role="dialog" aria-modal="true" aria-labelledby="pc-sh-h">
+      <div class="pc-shi">
+        <div class="pc-sh-top"><button type="button" class="pc-sh-x" id="pc-shx" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button><div class="pc-sh-k" id="pc-shk"></div><div style="width:38px"></div></div>
+        <div class="pc-sh-body" id="pc-shb"></div>
+        <div class="pc-sh-foot">
+          <div class="pc-foot-st" id="pc-f-go"><button type="button" class="pc-btn-main" id="pc-b-go"></button></div>
+          <div class="pc-foot-st" id="pc-f-win"><button type="button" class="pc-btn-main" id="pc-b-win"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>J’ai réussi</button><button type="button" class="pc-btn-ghost" id="pc-b-again">Relancer l’action</button></div>
+          <div class="pc-foot-st" id="pc-f-done"><button type="button" class="pc-btn-main" id="pc-b-redo" style="background:color-mix(in srgb,var(--cream) 12%,transparent);color:var(--cream);box-shadow:none">Rejouer cette étape</button></div>
+        </div>
+      </div>
+      <div id="pc-okw"><svg viewBox="0 0 132 132" aria-hidden="true"><circle class="pc-fl" cx="66" cy="66" r="50"/><circle class="pc-rg" cx="66" cy="66" r="50"/><path class="pc-ck" d="M42 68l17 17 32-36"/></svg><h2>Étape validée</h2><p id="pc-okm"></p></div>
+    </div>
+    <div id="pc-jalon" role="dialog" aria-modal="true" aria-label="Chapitre terminé">
+      <div class="pc-badge"><svg viewBox="0 0 190 190" aria-hidden="true"><defs><linearGradient id="pc-gcu" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5b870"/><stop offset="1" stop-color="#c97a3f"/></linearGradient></defs>
+        <circle class="pc-ring1" cx="95" cy="95" r="86"/><circle class="pc-ring2" cx="95" cy="95" r="76"/>
+        <path class="pc-lau" d="M28 118C14 98 16 70 32 50"/><path class="pc-lau" d="M162 118C176 98 174 70 158 50"/><g id="pc-ticks"></g></svg>
+        <div class="pc-core" id="pc-jemo"></div></div>
+      <div class="pc-j-k pc-j-t" style="--i:0" id="pc-jk"></div><h2 class="pc-j-t" style="--i:1" id="pc-jt"></h2>
+      <div class="pc-j-msg pc-j-t" style="--i:2" id="pc-jm"></div><div class="pc-j-stat pc-j-t" style="--i:3" id="pc-js"></div>
+      <button type="button" class="pc-btn-main pc-j-t" style="--i:4" id="pc-jgo">Continuer le parcours</button>
+    </div>
+    <div id="pc-pill" role="region" aria-label="Parcours guidé"></div>`;
+  document.body.appendChild(d);
+  const ticks = $('pc-ticks');
+  for (let i = 0; i < 36; i++) { const a = i/36*Math.PI*2, r2 = i % 3 === 0 ? 97 : 94, l = document.createElementNS(PC_NS, 'line');
+    l.setAttribute('class', 'pc-tick'); l.setAttribute('x1', 95 + Math.cos(a)*91); l.setAttribute('y1', 95 + Math.sin(a)*91); l.setAttribute('x2', 95 + Math.cos(a)*r2); l.setAttribute('y2', 95 + Math.sin(a)*r2); l.style.setProperty('--i', i); ticks.appendChild(l); }
+  $('pc-shx').addEventListener('click', () => { if (!pcBusy) pcCloseSheet(); });
+  $('pc-b-go').addEventListener('click', () => pcLaunch());
+  $('pc-b-again').addEventListener('click', () => pcLaunch());
+  $('pc-b-redo').addEventListener('click', () => pcLaunch());
+  $('pc-b-win').addEventListener('click', () => pcWin());
+  $('pc-jgo').addEventListener('click', () => pcJalonClose());
+  const sh = $('pc-sheet');   // la page derrière ne défile pas pendant que la feuille est ouverte
+  const stop = e => { if (!e.target.closest('.pc-sh-body')) e.preventDefault(); };
+  sh.addEventListener('wheel', stop, {passive:false}); sh.addEventListener('touchmove', stop, {passive:false});
+  addEventListener('keydown', e => { if (e.key === 'Escape' && sh.classList.contains('pc-on') && !pcBusy) pcCloseSheet(); });
+}
+const pcFoot = id => document.querySelectorAll('.pc-foot-st').forEach(f => f.classList.toggle('pc-show', f.id === id));
+
+function pcDetail(a) {
+  if (a.type === 'exo') return (EXO[a.ref] ? EXO[a.ref].n : a.ref) + (a.param ? ' · ' + a.param.replace('-', ' ⇄ ') : '');
+  if (a.type === 'cours') { const i = COURS.findIndex(l => l.k === a.ref); return `Leçon ${i + 1} · ${COURS[i].t}`; }
+  if (a.type === 'rc') { const s = RH_COURSE.find(x => x.id === a.ref), r = RHYTHMS.find(x => x.id === s.rh); return `${r.n} · ${r.mes}`; }
+  if (a.type === 'prog') { const p = FEEL_PROGS.find(x => x.id === a.ref), r = RHYTHMS.find(x => x.id === a.param); return `${p.n} · ${p.ch.join(' ')}${r ? ' · ' + r.n : ''}`; }
+  return a.param;
+}
+function pcFill(it, mode) {
+  const e = it.e, a = e.action, T = PC_TYPE[a.type], done = pcState(it) === 'done', sheet = $('pc-sheet');
+  sheet.style.setProperty('--cc', pcCol(it.c)); $('pc-morph').style.setProperty('--cc', pcCol(it.c));
+  $('pc-shk').textContent = `Chapitre ${it.c.ch} · étape ${it.n + 1}/${it.c.etapes.length}`;
+  $('pc-shb').innerHTML = `
+    <div class="pc-sh-emo pc-si" style="--i:0">${it.c.emoji}<svg viewBox="0 0 88 88" aria-hidden="true"><circle cx="44" cy="44" r="44"/></svg></div>
+    <h1 class="pc-si" id="pc-sh-h" style="--i:1">${esc(e.titre)}</h1>
+    <p class="pc-sh-but pc-si" style="--i:2">${esc(e.but)}</p>
+    <div class="pc-chips pc-sh-chips pc-si" style="--i:3"><span class="pc-chip">${pcI(PC_CLOCK, 12)}${e.min} min</span><span class="pc-chip">${T.k}</span>${done ? '<span class="pc-chip" style="color:var(--cc)">Validée</span>' : ''}</div>
+    <div class="pc-sh-card pc-si" style="--i:4"><div class="pc-sh-ico">${pcI(T.ico)}</div><div><small>L’action</small><b>${esc(pcDetail(a))}</b></div></div>
+    <div class="pc-sh-win pc-si ${done ? 'pc-ok' : ''}" id="pc-win" style="--i:5"><div class="pc-bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><small>Pour réussir</small><p>${esc(e.reussite)}</p></div></div>
+    ${e.jalon ? `<div class="pc-sh-gain pc-si" style="--i:6">« ${esc(e.jalon)} »</div>` : ''}`;
+  $('pc-b-go').innerHTML = pcI(T.ico, 18) + T.btn;
+  pcFoot('');
+  const st = done ? 'pc-f-done' : mode === 'win' ? 'pc-f-win' : 'pc-f-go';
+  setTimeout(() => pcFoot(st), pcRM() ? 0 : 700);
+}
+
+async function pcOpenStep(it, mode) {
+  if (pcBusy || !pcM) return;
+  const el = pcM.els.get(it), st = pcState(it);
+  if (st === 'lock') { const d = el.querySelector('.pc-dot'); d.classList.remove('pc-shake'); void d.offsetWidth; d.classList.add('pc-shake'); return; }
+  pcLayer(); pcBusy = true; pcCurIt = it; pcSrc = el;
+  const sheet = $('pc-sheet'), morph = $('pc-morph'), rm = pcRM();
+  pcFill(it, mode);
+  const r = el.querySelector('.pc-dot').getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2;
+  morph.style.left = cx + 'px'; morph.style.top = cy + 'px'; morph.style.opacity = 1;
+  const s = 2*Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy))/52 + .3;
+  morph.dataset.s = s;
+  morph.animate([{transform:'translate(-50%,-50%) scale(1)'}, {transform:`translate(-50%,-50%) scale(${s})`}], {duration:rm ? 1 : 480, easing:'cubic-bezier(.7,0,.2,1)', fill:'forwards'});
+  el.querySelector('.pc-dot').animate([{transform:'scale(1)'}, {transform:'scale(.82)'}, {transform:'scale(1)'}], {duration:rm ? 1 : 260, easing:'ease-out'});
+  setTimeout(() => morph.classList.add('pc-full'), rm ? 0 : 60);
+  await pcWait(300);
+  sheet.classList.add('pc-on', 'pc-sheet-on'); sheet.style.opacity = 1;
+  sheet.animate([{opacity:0}, {opacity:1}], {duration:rm ? 1 : 240, fill:'forwards'});
+  await pcWait(300);
+  pcBusy = false;
+  const x = $('pc-shx'); if (x) x.focus({preventScroll:true});
+}
+function pcResetMorph() { const m = $('pc-morph'); m.getAnimations().forEach(a => a.cancel()); m.classList.remove('pc-full'); m.style.opacity = 0; }
+async function pcHideSheet() {
+  const sheet = $('pc-sheet');
+  await sheet.animate([{opacity:1}, {opacity:0}], {duration:pcRM() ? 1 : 160, fill:'forwards'}).finished;
+  sheet.classList.remove('pc-on', 'pc-sheet-on'); sheet.getAnimations().forEach(a => a.cancel()); sheet.style.opacity = 0;
+  const okw = $('pc-okw'); okw.classList.remove('pc-on'); okw.getAnimations().forEach(a => a.cancel()); okw.style.opacity = 0;
+}
+async function pcCloseSheet() {
+  pcBusy = true;
+  const el = pcSrc, morph = $('pc-morph'), s = +morph.dataset.s, rm = pcRM();
+  await pcHideSheet();
+  if (el && el.isConnected) { const r = el.querySelector('.pc-dot').getBoundingClientRect(); morph.style.left = (r.left + r.width/2) + 'px'; morph.style.top = (r.top + r.height/2) + 'px'; }
+  morph.classList.remove('pc-full');
+  await morph.animate([{transform:`translate(-50%,-50%) scale(${s})`}, {transform:'translate(-50%,-50%) scale(1)'}], {duration:rm ? 1 : 420, easing:'cubic-bezier(.3,0,.2,1)', fill:'forwards'}).finished;
+  await morph.animate([{opacity:1}, {opacity:0}], {duration:rm ? 1 : 160, fill:'forwards'}).finished;
+  pcResetMorph(); pcBusy = false;
+  if (el && el.isConnected) { const d = el.querySelector('.pc-dot'); if (d) d.focus({preventScroll:true}); }
+}
+
+/* ── lancer la vraie action de l'appli ── */
+function pcGo(a) {
+  rccStop(); feelStop();
+  if (a.type === 'exo') exoOpen(a.ref, a.param);
+  else if (a.type === 'cours') coursOpen(a.ref);
+  else if (a.type === 'rc') {
+    const i = RH_COURSE.findIndex(s => s.id === a.ref);
+    exoCur = null; exoMode = 'rhy'; exoRet = null; rcz.cur = i; rcz.bpm = RH_COURSE[i].bpm[0]; rcz.bars = 0; rcz.fin = false;
+    go('exo');
+  } else if (a.type === 'prog') {
+    const p = FEEL_PROGS.find(x => x.id === a.ref), r = RHYTHMS.find(x => x.id === a.param);
+    exoCur = null; exoMode = 'feel'; exoRet = null; feel.amb = p.amb;
+    go('exo'); feelPickProg(p.id);
+    if (r) { feel.rh = r.id; feel.kind = 'rh'; feel.fx = null; feel.bpm = Math.round((r.bpm[0] + (r.bpm[1] - r.bpm[0])*.35)/5)*5; feelFixBpm(); exoRender(); }
+  } else if (a.type === 'fiche') newSheet();
+}
+async function pcLaunch() {
+  if (pcBusy) return; pcBusy = true;
+  const it = pcCurIt, a = it.e.action, rm = pcRM();
+  pcRet = {id:it.e.id};
+  await pcHideSheet();
+  pcGo(a);
+  pcPill();
+  await pcWait(80);
+  await $('pc-morph').animate([{opacity:1}, {opacity:0}], {duration:rm ? 1 : 260, fill:'forwards'}).finished;
+  pcResetMorph(); pcBusy = false;
+  if (a.type === 'prog' && pcRet && !rhPlaying('feel')) feelPlay();
+  if (a.type === 'rc' && pcRet && !rhPlaying('rc')) rccPlay();
+}
+
+/* ── retour : pastille « en cours » + reprise de l'étape ── */
+function pcPill() {
+  const p = $('pc-pill'); if (!p) return;
+  const it = pcRet && PC_STEPS.find(s => s.e.id === pcRet.id);
+  const on = !!it && (curView === 'exo' || curView === 'ed' || curView === 'sheet' || (curView === 'cours' && coursView === 'lesson'));
+  if (it && p.dataset.id !== it.e.id) {
+    const fiche = it.e.action.type === 'fiche';
+    p.dataset.id = it.e.id; p.style.setProperty('--cc', pcCol(it.c));
+    p.innerHTML = `<span class="pc-pill-e" aria-hidden="true">${it.c.emoji}</span><div class="pc-pill-t"><small>${fiche ? `Étape ${it.c.ch}.${it.n + 1} · ${esc(it.e.titre)}` : `Parcours · étape ${it.c.ch}.${it.n + 1}`}</small><b>${esc(fiche ? it.e.action.param : it.e.titre)}</b></div>
+      <button type="button" onclick="pcPillBack()" aria-label="Retour à l’étape du parcours">${pcI('<path d="M19 12H5M11 6l-6 6 6 6"/>', 15)}Parcours</button>`;
+  }
+  p.classList.toggle('pc-show', on);
+  document.body.classList.toggle('pc-pill-on', on);
+  if (on) p.removeAttribute('aria-hidden'); else p.setAttribute('aria-hidden', 'true');
+}
+function pcPillBack() {
+  if (curView === 'ed') {
+    if (draft && !sheets.some(s => s.id === draft.id) && edOK() && !confirm('Quitter sans enregistrer la fiche ?')) return;
+    rcCleanup(); stopPlay(); edBarReset();
+  }
+  coursList();   // renderCours reprend l'étape (pcResume)
+}
+function pcResume() {
+  const r = pcRet; pcRet = null; pcPill();
+  rccStop(); feelStop(); exoStop(); exoCur = null; exoRet = null; rcz.cur = null; rcz.fin = false; feel.prog = null; feel.amb = null; if (exoMode === 'rhy') exoMode = 'feel';   // l'écran d'action est refermé proprement
+  const it = r && PC_STEPS.find(s => s.e.id === r.id); if (!it || !pcM) return;
+  setTimeout(() => { if (!pcM) return; scrollTo({top:pcTarget(it), behavior:'auto'}); setTimeout(() => pcOpenStep(it, 'win'), 80); }, 60);
+}
+
+/* ── réussite : coche, chemin qui s'allume, déverrouillage, jalon ── */
+async function pcWin() {
+  if (pcBusy) return; pcBusy = true;
+  const it = pcCurIt, rm = pcRM();
+  pcProg()[it.e.id] = Date.now(); exoLog('parcours'); exoSave();
+  $('pc-win').classList.add('pc-ok'); pcFoot('');
+  await pcWait(420);
+  const okw = $('pc-okw'); $('pc-okm').textContent = it.e.jalon || ''; okw.classList.add('pc-on'); okw.style.opacity = 1;
+  okw.animate([{opacity:0}, {opacity:1}], {duration:rm ? 1 : 260, fill:'forwards'});
+  await pcWait(2100);
+  await pcCloseSheet();
+  await pcWait(200);
+  await pcComplete(it);
+}
+async function pcComplete(it) {
+  const M = pcM; if (!M) { pcBusy = false; return; }
+  pcBusy = true;
+  const next = PC_STEPS[it.gi + 1], chapterEnd = it.last;
+  pcScroll(pcTarget(next || it, .5));
+  await pcWait(800);
+  if (pcM !== M) { pcBusy = false; return; }
+  const el = pcRebuild(it);
+  el.querySelector('.pc-dot').animate([{transform:'scale(.7)'}, {transform:'scale(1.18)'}, {transform:'scale(1)'}], {duration:pcRM() ? 1 : 520, easing:'cubic-bezier(.34,1.56,.64,1)'});
+  pcBurst(el);
+  await pcWait(500);
+  const toLight = M.segs.filter(s => !s.lit && pcReached(PC_ITEMS[s.i + 1]));
+  toLight.forEach(s => s.lit = true);
+  const banIt = chapterEnd && next ? PC_ITEMS.find(x => x.kind === 'ban' && x.c.ch === it.c.ch + 1) : null;
+  const lp = pcLight(toLight, 360, M);
+  if (banIt) { await pcWait(480); if (pcM === M) pcRebuild(banIt, 'pc-unlock'); }
+  await lp;
+  if (pcM !== M) { pcBusy = false; return; }
+  if (next) { const ne = pcRebuild(next, 'pc-unlock'); pcBurst(ne); }
+  pcPaintHero(true);
+  await pcWait(900);
+  pcBusy = false;
+  if (chapterEnd) pcJalon(it.c);
+}
+
+/* jalon de fin de chapitre : badge sobre */
+function pcConfetti() {
+  if (pcRM()) return;
+  const jal = $('pc-jalon'), cxm = jal.clientWidth/2, cym = jal.clientHeight*.34, cols = ['#f5b870', '#e8964e', '#c97a3f', '#f2e8d5', '#c2aa88'], kinds = ['♪', '♫', 'pick', '♩', 'pick', '♬', '♪'];
+  for (let i = 0; i < 24; i++) {
+    const e = document.createElement('div'); e.className = 'pc-conf'; e.setAttribute('aria-hidden', 'true'); const k = kinds[i % kinds.length], sz = 14 + Math.random()*12, col = cols[i % cols.length];
+    if (k === 'pick') e.innerHTML = `<svg width="${sz}" height="${sz*1.1}" viewBox="0 0 20 22"><path d="M10 1C4 1 1 5 1.5 10c.5 5 5 10 8.5 11 3.5-1 8-6 8.5-11C19 5 16 1 10 1z" fill="${col}"/></svg>`;
+    else { e.textContent = k; e.style.fontFamily = 'var(--serif)'; e.style.fontSize = (sz + 6) + 'px'; e.style.color = col; }
+    jal.appendChild(e);
+    const ang = -Math.PI/2 + (Math.random() - .5)*2.4, v = 130 + Math.random()*190, dx = Math.cos(ang)*v, dy = Math.sin(ang)*v, fall = 260 + Math.random()*260, rot = (Math.random() - .5)*540, dur = 2400 + Math.random()*1400;
+    e.animate([
+      {transform:`translate(${cxm}px,${cym}px) scale(.4) rotate(0deg)`, opacity:0},
+      {transform:`translate(${cxm + dx*.6}px,${cym + dy*.75}px) scale(1) rotate(${rot*.4}deg)`, opacity:.95, offset:.22},
+      {transform:`translate(${cxm + dx}px,${cym + dy + fall}px) scale(.9) rotate(${rot}deg)`, opacity:0}
+    ], {duration:dur, delay:1000 + Math.random()*350, easing:'cubic-bezier(.2,.7,.4,1)', fill:'both'}).finished.then(() => e.remove(), () => e.remove());
+  }
+}
+function pcJalon(c) {
+  pcLayer();
+  const j = $('pc-jalon'), last = c.etapes[c.etapes.length - 1];
+  j.style.setProperty('--cc', pcCol(c));
+  $('pc-jemo').textContent = c.emoji;
+  $('pc-jk').textContent = `Chapitre ${c.ch} terminé`;
+  $('pc-jt').textContent = c.titre;
+  $('pc-jm').textContent = '« ' + (last.jalon || 'Bien joué.') + ' »';
+  $('pc-js').innerHTML = `<span class="pc-chip">${c.etapes.length} étapes</span><span class="pc-chip">${c.etapes.reduce((n, e) => n + e.min, 0)} min de pratique</span>`;
+  j.classList.remove('pc-on'); void j.offsetWidth; j.classList.add('pc-on');
+  j.animate([{opacity:0}, {opacity:1}], {duration:pcRM() ? 1 : 420, fill:'forwards'}); j.style.opacity = 1;
+  pcConfetti();
+  $('pc-jgo').focus({preventScroll:true});
+}
+async function pcJalonClose() {
+  const j = $('pc-jalon'); await j.animate([{opacity:1}, {opacity:0}], {duration:pcRM() ? 1 : 360, fill:'forwards'}).finished;
+  j.classList.remove('pc-on'); j.getAnimations().forEach(a => a.cancel()); j.style.opacity = 0; j.querySelectorAll('.pc-conf').forEach(x => x.remove());
+  const n = PC_STEPS[pcCur()]; if (n && pcM) pcScroll(pcTarget(n));
+}
+
 function coursListHTML() {
   const done = coursDone(), show = coursAll ? COURS : COURS.slice(0, 7);
   return `<div class="cl-t">Leçons à la carte</div>
     <div class="cl-list">${show.map(l => { const i = COURS.indexOf(l), ok = done.has(l.k);
       return `<button type="button" class="les" onclick="coursOpen('${l.k}')"><span class="les-n ${ok ? 'd' : ''}">${ok ? '✓' : i + 1}</span><b>${l.t}</b><small>${l.m} min</small></button>`; }).join('')}</div>
-    <button type="button" class="cl-more" onclick="coursAll=!coursAll;renderCours()">${coursAll ? 'Voir moins ▴' : `Voir les ${COURS.length} leçons ▾`}</button>`;
+    <button type="button" class="cl-more" onclick="coursAll=!coursAll;$('cours-list').innerHTML=coursListHTML()">${coursAll ? 'Voir moins ▴' : `Voir les ${COURS.length} leçons ▾`}</button>`;
 }
 function coursList() { coursStop(); coursView = 'list'; go('cours'); }
-function coursPath() { coursView = 'path'; renderCours(); window.scrollTo(0, 0); }
 function renderCours() {
-  const list = coursView === 'list';
-  $('cours-hero').innerHTML = list ? parcoursHeroHTML() : '';
-  $('cours-list').innerHTML = list ? coursListHTML() : '';
-  if (list) $('cours-body').innerHTML = '';
-  else if (coursView === 'path') $('cours-body').innerHTML = `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="coursList()">&#8592; Cours</button>` + exoStatsHTML() + pathHTML();
-  else renderCoursLesson();
+  if (coursView === 'list') {
+    $('cours-list').innerHTML = coursListHTML(); $('cours-body').innerHTML = '';
+    pcMount(!!pcRet);   // retour d'une action : la carte est déjà posée, pas d'animation d'arrivée
+    if (pcRet) pcResume();
+  } else {
+    pcUnmount(); $('cours-hero').innerHTML = ''; $('cours-map').innerHTML = ''; $('cours-list').innerHTML = '';
+    renderCoursLesson();
+  }
+  pcPill();
 }
 function renderCoursLesson() {
   const i = COURS.findIndex(l => l.k === coursCur), l = COURS[i];
@@ -3710,7 +4423,7 @@ function coursOpen(k) {
    notes, "@x" puts a label under the column, "h p / \" between two columns
    draw hammer, pull-off and slides, "-" is a rest and "|" a bar line.
    Progress lives in IndexedDB (meta store, key "exo"). */
-let exoProg = {done:{}, best:{}, hist:{}, path:{}, log:[]};
+let exoProg = {done:{}, best:{}, hist:{}, path:{}, path2:{}, log:[]};   // path = ancien parcours (gardé pour la compatibilité), path2 = Parcours guidé v2
 function exoSave() { try { DB.put('meta', {k:'exo', v:exoProg}); } catch (e) {} }
 const dayStr = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const today = () => dayStr(new Date());
@@ -3963,34 +4676,6 @@ const EXOS = [
    v:[{t:'strum', pat:'DUDUDUDU', chords:['C','G']}]},
 ];
 const EXO = Object.fromEntries(EXOS.map(e => [e.id, e]));
-
-/* ── parcours guidé ── */
-const PATH = [
-  {n:'Premiers sons', dur:'1 à 2 semaines', goal:'Accorder, tenir la guitare, jouer Em et Am en rythme.',
-   tip:'Les doigts vont piquer quelques jours : c’est normal, la corne se forme. Joue souvent et court plutôt que longtemps.',
-   items:[['cours','notes'],['exo','tune5'],['exo','spider'],['exo','down4'],['exo','omc','Em-Am'],['song','A Horse with No Name (America)','Em et D6add9/F♯ : deux formes à 2 doigts']]},
-  {n:'Les 4 accords magiques', dur:'2 semaines', goal:'G, C, D, Em : la porte d’entrée de centaines de chansons.',
-   tip:'Les changements sont lents au début pour tout le monde. Le One Minute Changes quotidien fait toute la différence.',
-   items:[['cours','build'],['exo','anchor'],['exo','omc','G-C'],['exo','omc','C-D'],['exo','motion'],['song','Knockin’ on Heaven’s Door (Bob Dylan)','G – D – Am / G – D – C, 4 coups par accord']]},
-  {n:'Le rythme qui groove', dur:'2 semaines', goal:'Un grattage régulier et vivant, sans jamais arrêter la main droite.',
-   tip:'Compte à voix haute. Toujours. C’est ce que font les pros quand ils apprennent un nouveau rythme.',
-   items:[['exo','oldfaithful'],['exo','subdiv'],['exo','silent'],['exo','accent'],['cours','colors'],['song','Zombie (The Cranberries)','Em – C – G – D, rythme D – DU – UDU']]},
-  {n:'Premiers arpèges', dur:'2 à 3 semaines', goal:'Faire chanter les accords note par note.',
-   tip:'En arpège, chaque note s’entend : la propreté de la main gauche devient essentielle. Ralentis.',
-   items:[['cours','dissect'],['exo','pima'],['exo','pickarp'],['exo','travis'],['song','House of the Rising Sun (The Animals)','Am – C – D – F – Am – C – E – E, arpège en 6/8']]},
-  {n:'Arpèges + effets de style', dur:'2 semaines', goal:'Ajouter du relief : liés, glissés, embellissements.',
-   tip:'Un effet doit servir la musique : un seul hammer bien placé vaut mieux que dix approximatifs.',
-   items:[['exo','hammer'],['exo','slide'],['exo','combo'],['cours','key'],['song','Wish You Were Here (Pink Floyd)','Intro avec hammer-ons, puis C – D – Am – G']]},
-  {n:'Le cap des barrés', dur:'3 à 4 semaines', goal:'Débloquer F, Bm et les power chords : tout le manche s’ouvre.',
-   tip:'Le barré demande des semaines, pas des jours. Joue le mini-F dans tes morceaux en attendant : personne ne t’en voudra.',
-   items:[['exo','barre'],['cours','barre'],['exo','omc','C-F'],['exo','pm'],['exo','chuck'],['song','Creep (Radiohead)','G – B – C – Cm : deux barrés, très gratifiant']]},
-  {n:'Pentatonique & impro', dur:'3 semaines', goal:'Se repérer sur le manche et improviser ses premières phrases.',
-   tip:'L’impro, c’est parler : des phrases courtes, des silences, et des fins de phrases sur la fondamentale.',
-   items:[['exo','notefind'],['exo','penta'],['exo','bend'],['exo','vibrato'],['exo','impro'],['cours','progs']]},
-  {n:'Musicalité & oreille', dur:'en continu', goal:'Jouer en place, avec des nuances, en chantant, et entendre ce que tu joues.',
-   tip:'À ce stade, la meilleure progression vient des morceaux : apprends-en un nouveau toutes les 2 semaines.',
-   items:[['exo','gap'],['exo','ladder'],['exo','dyn'],['exo','sing'],['exo','earint'],['exo','earchords'],['cours','tension'],['song','Hallelujah (Leonard Cohen)','C – Am – C – Am – F – G – C – G, en arpège p-i-m-a et en chantant']]},
-];
 
 /* ── state ── */
 let exoMode = 'feel', exoCur = null, exoAxis = 'all';
@@ -4392,8 +5077,6 @@ function exoOpen(id, param) {
 function exoBack() { exoStop(); exoCur = null; if (exoRet) { exoRet = null; go('cours'); return; } exoRender(); window.scrollTo(0, 0); }
 function exoHome() { rccStop(); feelStop(); exoMode = 'feel'; exoRender(); window.scrollTo(0, 0); }
 function coursGo(k) { coursCur = k; coursView = 'lesson'; go('cours'); }
-function pathToggle(key) { exoProg.path[key] = !exoProg.path[key]; exoSave(); trainRefresh(); }
-const trainRefresh = () => $('v-cours').classList.contains('on') ? renderCours() : exoRender();
 let exoRet = null;   // d'où l'on vient quand un exercice s'ouvre depuis le Cours (parcours, leçon)
 
 /* ── rendering ── */
@@ -4409,8 +5092,7 @@ function exoCard(ex) {
 }
 function exoStatsHTML() {
   const done = EXOS.filter(e => exoProg.done[e.id]).length;
-  const total = PATH.reduce((a, s) => a + s.items.length, 0);
-  const pdone = PATH.reduce((a, s, si) => a + s.items.filter((_, ii) => exoProg.path[si + '-' + ii]).length, 0);
+  const total = PC_STEPS.length, pdone = pcCur();
   const days = new Set(exoProg.log.map(l => l.d)).size;
   if (!days && !done && !pdone) return '';   // pas de stats à zéro
   return `<div class="exo-stats">
@@ -4425,40 +5107,6 @@ function axesHTML() {
       `<button type="button" class="filt ${exoAxis===a.k?'on':''}" onclick="exoAxis='${a.k}';exoRender()">${a.n}</button>`).join('')}</div>` +
     list.map(a => `<div class="axis-sec"><div class="axis-t"><i style="background:${a.c}"></i>${a.n}</div><div class="axis-d">${a.d}</div>
       <div class="exo-grid">${EXOS.filter(e => e.ax === a.k).map(exoCard).join('')}</div></div>`).join('');
-}
-function pathItem(it, si, ii) {
-  const key = si + '-' + ii, done = !!exoProg.path[key];
-  let tag, label, sub = '', open = '';
-  if (it[0] === 'exo') { const ex = EXO[it[1]]; tag = `<span class="pi-tag" style="background:${AXIS[ex.ax].c}">Exercice</span>`; label = ex.n + (it[2] ? ' — ' + it[2].replace('-', ' ⇄ ') : ''); sub = AXIS[ex.ax].n + ' · ' + ex.dur; open = `exoOpen('${it[1]}'${it[2] ? `,'${it[2]}'` : ''})`; }
-  else if (it[0] === 'cours') { const l = COURS.find(c => c.k === it[1]), n = COURS.indexOf(l) + 1; tag = '<span class="pi-tag" style="background:var(--cream3)">Leçon</span>'; label = `${n}. ${l.t}`; sub = 'Cours d’accords'; open = `coursGo('${it[1]}')`; }
-  else { tag = '<span class="pi-tag" style="background:var(--mauve)">Morceau</span>'; label = it[1]; sub = it[2] || ''; }
-  return `<div class="path-item ${done ? 'done' : ''}">
-    <div class="chk ${done ? 'on' : ''}" onclick="pathToggle('${key}')" title="Fait"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>
-    ${tag}<span class="pi-l">${esc(label)}<small>${esc(sub)}</small></span>
-    ${open ? `<button type="button" class="btn btn-ghost btn-xs" onclick="${open}">Ouvrir</button>` : ''}</div>`;
-}
-function pathHTML() {
-  const cur = PATH.findIndex((s, si) => s.items.some((_, ii) => !exoProg.path[si + '-' + ii]));
-  const open = exoSt.openStep != null ? exoSt.openStep : (cur < 0 ? PATH.length - 1 : cur);
-  const next = cur >= 0 ? PATH[cur].items.map((it, ii) => ({it, ii})).filter(o => !exoProg.path[cur + '-' + o.ii]).slice(0, 3) : [];
-  return `<div class="fcard path-intro">
-      <div><div class="fcard-t">Comment ça marche</div>
-        <p class="cours-p" style="font-size:13px">8 étapes progressives, de la toute première note à l’impro. Chaque étape mélange <b>leçons</b>, <b>exercices</b> et un <b>morceau</b> pour appliquer. Coche au fur et à mesure : l’appli te propose toujours la suite.</p></div>
-      <div><div class="fcard-t">Une séance type (20 min)</div>
-        <div class="session-bar"><div style="flex:5;background:var(--gold)">Échauffement<br>5 min</div><div style="flex:10;background:var(--sage)">Exercices de l’étape<br>10 min</div><div style="flex:7;background:var(--mauve)">Morceau<br>5-10 min</div></div>
-        <div class="exo-note">Mieux vaut 15 minutes chaque jour qu’une heure le dimanche : c’est la régularité qui fait progresser.</div></div></div>
-    ${cur >= 0 ? `<div class="fcard" style="border-color:var(--gold)"><div class="fcard-t">Ta prochaine séance · étape ${cur + 1}</div>
-        <div class="ps-body" style="margin-top:0">${next.map(o => pathItem(o.it, cur, o.ii)).join('')}</div></div>`
-      : `<div class="fcard" style="text-align:center"><div class="big-note" style="font-size:40px">Bravo !</div><p class="cours-p">Parcours terminé. Continue avec l’entraînement ciblé et de nouveaux morceaux.</p></div>`}
-    <div class="path">${PATH.map((s, si) => {
-      const n = s.items.filter((_, ii) => exoProg.path[si + '-' + ii]).length, pct = Math.round(n / s.items.length * 100);
-      const cls = n === s.items.length ? 'past' : si === cur ? 'cur' : 'fut';
-      return `<div class="path-step ${cls}"><div class="ps-dot">${cls === 'past' ? '✓' : si + 1}</div>
-        <div class="ps-head" onclick="exoSt.openStep=${si === open ? -1 : si};trainRefresh()">
-          <div class="ps-t">Étape ${si + 1} · ${s.n}<small>${s.dur} · ${n}/${s.items.length}</small></div>
-          <div class="ps-d">${s.goal}</div><div class="ps-bar"><i style="width:${pct}%"></i></div></div>
-        ${si === open ? `<div class="ps-body"><div class="ps-tip">${s.tip}</div>${s.items.map((it, ii) => pathItem(it, si, ii)).join('')}</div>` : ''}</div>`;
-    }).join('')}</div>`;
 }
 function exoDetailHTML(ex) {
   const ax = AXIS[ex.ax], best = exoProg.best[ex.id];
@@ -6175,6 +6823,7 @@ async function rcDelete(i, ctx) {
 
 /* ═══════ NAV ═══════ */
 function go(v) {
+  if (pcRet && !PC_KEEP.has(v)) pcRet = null;   // on quitte l'action lancée depuis le parcours
   if (v !== 'atelier' && atOn()) { atFlush(); atPause(); }
   stopPlay();
   if (v !== 'tuner') stopTuner();
@@ -6203,6 +6852,7 @@ function go(v) {
   if (v === 'tuner') renderTunerStrings();
   if (v === 'plus') renderPlus();
   renderSubnav(v);
+  pcPill();
 }
 
 /* ═══════ 5 ESPACES : Fiches · Trouver · Créer · S'entraîner · Plus ═══════ */
@@ -7012,7 +7662,7 @@ function edOpenCoffre(target) {
   $('more-opts').open = true;
   setTimeout(() => { const t = $(target); if (t) { t.scrollIntoView({block: 'center', behavior: 'smooth'}); if (t.tagName === 'INPUT') t.focus(); } }, 60);
 }
-function edClose() { rcCleanup(); stopPlay(); edBarReset(); go('home'); }
+function edClose() { rcCleanup(); stopPlay(); edBarReset(); if (pcRet) { coursList(); return; } go('home'); }
 const edOK = () => !!($('f-title').value.trim() && draft && draft.parts.some(p => p.chords.length));
 function edSyncSave() {
   const b = $('ed-save'); if (!b) return;
