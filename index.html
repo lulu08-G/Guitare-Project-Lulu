@@ -520,6 +520,18 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .fl-fxpat{display:flex;gap:6px}.fl-fxpat span{width:24px}
 .fl-surp{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 14px}.fl-surp .fl-lead{margin:0}.fl-surp span{font-size:12px;color:var(--cream3)}
 .fl-allrh{margin:6px 0 0;border-bottom:1px solid var(--border);padding-bottom:6px}.fl-allrh summary{display:flex;justify-content:space-between;font-size:15px;color:var(--cream2);cursor:pointer;min-height:48px;align-items:center;list-style:none}.fl-allrh summary::-webkit-details-marker{display:none}.fl-allrh[open]>summary span+span{transform:rotate(90deg)}.fl-rf{margin-bottom:8px!important}.filt.sm{padding:5px 11px;font-size:12px}
+.fl-secs{display:grid;grid-template-columns:1fr;gap:12px;margin:22px 0 4px}
+.fl-sec{position:relative;overflow:hidden;text-align:left;display:flex;align-items:center;gap:14px;min-height:96px;padding:16px 16px;border-radius:var(--ra);border:1px solid var(--border);color:var(--cream);background:linear-gradient(135deg,color-mix(in srgb,var(--amb) 20%,var(--card)),var(--card) 70%);transition:transform .18s,box-shadow .18s}
+.fl-sec:nth-child(even){border-radius:var(--rb)}
+.fl-sec::after{content:'';position:absolute;right:-26px;top:-26px;width:90px;height:90px;border-radius:50%;background:var(--amb);opacity:.2}
+.fl-sec:hover{transform:translateY(-3px);box-shadow:0 14px 36px var(--shadow)}
+.fl-sec .fl-em{flex:none}.fl-sec b{display:block;font-family:var(--serif);font-size:19px;line-height:1.2}.fl-sec small{display:block;margin-top:3px;font-size:12px;color:var(--cream2);line-height:1.4}
+.fl-sec i{margin-left:auto;font-style:normal;font-size:22px;color:var(--cream3);position:relative;z-index:1}
+.fl-fill{margin:0 0 4px;padding:10px 12px 8px;border-radius:var(--ra);background:var(--bg2);border:1px solid var(--border)}
+.fl-fh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}.fl-fh b{font-family:var(--serif);font-size:20px;color:var(--gold2)}.fl-fh i{font-style:normal;color:var(--cream3)}.fl-fh small{font-size:12px;color:var(--cream3)}
+.fl-anc{display:flex;flex-direction:column;gap:6px;margin:0 0 14px;padding:10px 12px;border-radius:var(--rs);background:var(--card);border:1px solid var(--border);font-size:13px;line-height:1.5;color:var(--cream2)}
+.fl-anc b{color:var(--cream)}.fl-key{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:baseline}
+.fl-key.a{background:var(--terra)}.fl-key.v{background:var(--sage)}
 .fl-tip{margin-top:8px;font-size:13px;line-height:1.5;color:var(--cream2);padding:8px 12px;border-radius:var(--rs);background:var(--card2);border-left:3px solid var(--gold)}
 .rc-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:12px;color:var(--cream3);font-family:var(--mono)}
 .rc-bar{flex:1;height:8px;border-radius:99px;background:var(--card2);border:1px solid var(--border);overflow:hidden}.rc-bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .3s}
@@ -546,7 +558,7 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 @media(min-width:640px){.rc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.rc-act .btn{width:auto}}
 @media(min-width:1000px){.rc-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:520px){.exo-mode{flex-wrap:wrap}.exo-mode .mode-pill.big{flex:1 1 45%;font-size:12px;padding:10px 8px}}
-@media(min-width:640px){.fl-tiles{grid-template-columns:repeat(4,1fr)}.fl-cards{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:640px){.fl-secs{grid-template-columns:repeat(2,1fr)}.fl-tiles{grid-template-columns:repeat(4,1fr)}.fl-cards{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1000px){.fl-cards{grid-template-columns:repeat(4,1fr)}}
 .tempo-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-top:14px}
 .tc-v{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--gold);min-width:64px;text-align:center;line-height:1}
@@ -2209,6 +2221,16 @@ const LIB = [
   {n:'G#m',   f:[4,6,6,4,4,4],   g:[1,3,4,1,1,1], fam:'min', barre:true},
   {n:'F#',    f:[2,4,4,3,2,2],   g:[1,3,4,2,1,1], fam:'maj', barre:true},
   {n:'Eb',    f:[-1,6,5,3,4,3],  g:[0,4,3,1,2,1], fam:'maj', barre:true},
+  // accords ouverts / riffs (sus, slash, variantes « ancre » : B et e en case 3 fixes)
+  {n:'A7sus4', f:[-1,0,2,0,3,0],   g:[0,0,2,0,3,0],  fam:'sus'},
+  {n:'C/G',    f:[3,3,2,0,1,0],    g:[4,3,2,0,1,0],  fam:'maj'},
+  {n:'Emadd9', f:[0,2,2,0,0,2],    g:[0,1,2,0,0,3],  fam:'add'},
+  {n:'D/F#',   f:[2,0,0,2,3,2],    g:[1,0,0,2,4,3],  fam:'maj'},
+  {n:'Gsus2',  f:[3,0,0,0,3,3],    g:[2,0,0,0,3,4],  fam:'sus'},
+  {n:'G6',     f:[3,2,0,0,0,0],    g:[2,1,0,0,0,0],  fam:'maj'},
+  {n:'Em7 (ancre)',    f:[0,2,2,0,3,3],  g:[0,1,2,0,3,4], fam:'7'},
+  {n:'G (ancre)',      f:[3,2,0,0,3,3],  g:[2,1,0,0,3,4], fam:'maj'},
+  {n:'A7sus4 (ancre)', f:[-1,0,2,2,3,3], g:[0,0,1,2,3,4], fam:'sus'},
 ];
 const MAGIC = ['G','C','D','Em'];
 const ESSENTIAL = ['Am','E','A','Dm','F','B7'];
@@ -2334,6 +2356,7 @@ function legacyRhythm(id, custom, invert) {
 /* ═══════ SVG: CHORD DIAGRAM ═══════ */
 function chordSVG(ch, opt) {
   opt = opt || {};
+  const hl = opt.hl || null;   // {anc:[[corde 0=grave, case]], vides:[corde]} : met en valeur l'ancre et les cordes à vide
   const sz = opt.size || 1, light = !!opt.light;
   const W = 68*sz, H = 82*sz, NF = 5;
   const ml = 13*sz, mt = 22*sz, cw = (W - ml - 8*sz)/5, rh = (H - mt - 8*sz)/NF;
@@ -2365,11 +2388,17 @@ function chordSVG(ch, opt) {
   frets.forEach((fr, i) => {
     const x = ml + i*cw;
     if (fr === -1) { s += `<text x="${x}" y="${mt-6*sz}" text-anchor="middle" font-size="${10*sz}" fill="${mutC}" font-family="JetBrains Mono">x</text>`; return; }
-    if (fr === 0)  { s += `<circle cx="${x}" cy="${mt-7*sz}" r="${3.5*sz}" fill="none" stroke="${mutC}" stroke-width="1.4"/>`; return; }
+    if (fr === 0)  {
+      if (hl && hl.vides && hl.vides.includes(i)) s += `<circle cx="${x}" cy="${mt-7*sz}" r="${5.6*sz}" fill="var(--sage)" opacity=".25"/><circle cx="${x}" cy="${mt-7*sz}" r="${3.9*sz}" fill="var(--sage)" stroke="var(--sage)" stroke-width="1.4"/>`;   // corde à vide qui résonne
+      else s += `<circle cx="${x}" cy="${mt-7*sz}" r="${3.5*sz}" fill="none" stroke="${mutC}" stroke-width="1.4"/>`;
+      return;
+    }
     const d = fr - base + 1;
     if (d < 1 || d > NF) return;
     const y = mt + (d - .5)*rh;
-    s += `<circle cx="${x}" cy="${y}" r="${rh*.36}" fill="${dotC}"/>`;
+    const anc = hl && hl.anc && hl.anc.some(a => a[0] === i && a[1] === fr);   // doigt d'ancre : ne bouge pas
+    if (anc) s += `<circle cx="${x}" cy="${y}" r="${rh*.36 + 3.2*sz}" fill="none" stroke="var(--terra)" stroke-width="${1.8*sz}" opacity=".55"/>`;
+    s += `<circle cx="${x}" cy="${y}" r="${rh*.36}" fill="${anc ? 'var(--terra)' : dotC}"/>`;
     if (fing[i] > 0) s += `<text x="${x}" y="${y+3.2*sz}" text-anchor="middle" font-size="${9*sz}" font-weight="700" fill="${dotT}" font-family="JetBrains Mono">${fing[i]}</text>`;
   });
   return s + '</svg>';
@@ -5432,6 +5461,142 @@ const FEEL_RH = {
 };
 FEEL_PROGS.forEach(p => { if (FEEL_RH[p.id]) p.rh = FEEL_RH[p.id].slice(); });
 
+/* ── Riffs entre les accords + Accords ouverts : deux sections de Exercices, même lecteur que Au feeling ──
+   RIFF_PROGS : 1 accord par mesure (mes:2 = 2 mesures par accord, le fill n'arrive qu'à la 2e) ; fills[i] relie accords[i] à accords[i+1] ;
+   debut = 1re case du rythme remplacée par le fill (res cases par mesure), sub = colonnes de tab par temps (2 croches, 3 triolet, 4 doubles).
+   OPEN_PROGS : comme FEEL_PROGS + ancre (doigt commun, surligné sur les diagrammes) et vides (cordes à vide qui résonnent, 6 = grave). */
+const RIFF_PROGS = [
+ {id:'rf1', nom:'Folk en sol, la basse relie', style:'folk', niveau:1, tonalite:'G', bpm:[90,110], accords:['G','C','G','D'], rythme:'folk2', mes:1, res:8,
+  fills:[
+   {de:'G', vers:'C', temps:'4 et', debut:6, sub:2, tab:'6.3 5.2'},
+   {de:'C', vers:'G', temps:'4 et', debut:6, sub:2, tab:'4.2 3.0'},
+   {de:'G', vers:'D', temps:'4 et', debut:6, sub:2, tab:'5.2 p 5.0'},
+   {de:'D', vers:'G', temps:'4 et', debut:6, sub:2, tab:'3.2 p 3.0'}],
+  conseil:'Garde la forme de l\'accord posée : le fill ne joue que des notes déjà sous tes doigts ou des cordes à vide.'},
+ {id:'rf2', nom:'Pop en sol, la basse qui chante', style:'pop', niveau:1, tonalite:'G', bpm:[85,105], accords:['G','D','Em','C'], rythme:'feucamp', mes:1, res:8,
+  fills:[
+   {de:'G', vers:'D', temps:'4 et', debut:6, sub:2, tab:'6.3 4.0'},
+   {de:'D', vers:'Em', temps:'4 et', debut:6, sub:2, tab:'3.2 p 3.0'},
+   {de:'Em', vers:'C', temps:'4 et', debut:6, sub:2, tab:'2.0 h 2.1'},
+   {de:'C', vers:'G', temps:'4 et', debut:6, sub:2, tab:'4.2 3.0'}],
+  conseil:'Sur Em, le hammer-on de la corde de si pose déjà ton doigt 1 pour le C qui arrive.'},
+ {id:'rf3', nom:'Ballade qui s\'écoule', style:'ballade', niveau:1, tonalite:'C', bpm:[70,88], accords:['C','Am','Dm','G'], rythme:'ballade', mes:1, res:8,
+  fills:[
+   {de:'C', vers:'Am', temps:'4 et', debut:6, sub:2, tab:'5.3 p 5.0'},
+   {de:'Am', vers:'Dm', temps:'4 et', debut:6, sub:2, tab:'4.2 3.2'},
+   {de:'Dm', vers:'G', temps:'4 et', debut:6, sub:2, tab:'3.2 p 3.0'},
+   {de:'G', vers:'C', temps:'4 et', debut:6, sub:2, tab:'6.3 5.2'}],
+  conseil:'Joue le fill très doux, comme une respiration entre deux accords.'},
+ {id:'rf4', nom:'Country en ré', style:'country', niveau:1, tonalite:'D', bpm:[100,120], accords:['D','G','D','A'], rythme:'boomchick', mes:1, res:8,
+  fills:[
+   {de:'D', vers:'G', temps:'4 et', debut:6, sub:2, tab:'3.2 p 3.0'},
+   {de:'G', vers:'D', temps:'4 et', debut:6, sub:2, tab:'5.2 4.0'},
+   {de:'D', vers:'A', temps:'4 et', debut:6, sub:2, tab:'4.0 5.0'},
+   {de:'A', vers:'D', temps:'4 et', debut:6, sub:2, tab:'4.2 p 4.0'}],
+  conseil:'Le « chick » du 4 est remplacé par le fill : la basse reprend la main avant le boom suivant.'},
+ {id:'rf5', nom:'Rock en la', style:'rock', niveau:2, tonalite:'A', bpm:[105,125], accords:['A','D','E','D'], rythme:'rockaere', mes:1, res:8,
+  fills:[
+   {de:'A', vers:'D', temps:'4 et', debut:6, sub:2, tab:'4.2 p 4.0'},
+   {de:'D', vers:'E', temps:'4 et', debut:6, sub:2, tab:'2.3 p 2.0'},
+   {de:'E', vers:'D', temps:'4 et', debut:6, sub:2, tab:'4.2 p 4.0'},
+   {de:'D', vers:'A', temps:'4 et', debut:6, sub:2, tab:'4.0 5.0'}],
+  conseil:'Trois bas carrés, puis le fill remplace le dernier coup : reste sec, pas de grattage dans la transition.'},
+ {id:'rf6', nom:'Blues en mi, shuffle', style:'blues', niveau:2, tonalite:'E', bpm:[70,90], accords:['E7','A7','E7','B7'], rythme:'shuffle', mes:1, res:12,
+  fills:[
+   {de:'E7', vers:'A7', temps:'4', debut:9, sub:3, tab:'4.0 3.1 5.0'},
+   {de:'A7', vers:'E7', temps:'4', debut:9, sub:3, tab:'3.0 4.2 6.0'},
+   {de:'E7', vers:'B7', temps:'4', debut:9, sub:3, tab:'4.0 3.1 5.2'},
+   {de:'B7', vers:'E7', temps:'4', debut:9, sub:3, tab:'3.2 2.0 6.0'}],
+  conseil:'Trois notes en triolet sur le 4e temps (1-tri-ple) : swingue-les comme le shuffle.'},
+ {id:'rf7', nom:'Andalouse avec liaisons', style:'ballade', niveau:3, tonalite:'Am', bpm:[75,95], accords:['Am','G','F','E'], rythme:'feucamp', mes:1, res:8,
+  fills:[
+   {de:'Am', vers:'G', temps:'4 et', debut:6, sub:2, tab:'3.2 p 3.0'},
+   {de:'G', vers:'F', temps:'4 et', debut:6, sub:2, tab:'5.2 p 5.0'},
+   {de:'F', vers:'E', temps:'4 et', debut:6, sub:2, tab:'5.3 \\ 5.2'},
+   {de:'E', vers:'Am', temps:'4 et', debut:6, sub:2, tab:'3.1 4.2'}],
+  conseil:'Sur F, garde le barré en place : le slide 5.3 vers 5.2 se fait avec le doigt 3 sans lâcher l\'accord.'},
+ {id:'rf8', nom:'Pop motown en do', style:'pop', niveau:1, tonalite:'C', bpm:[90,110], accords:['C','G','Am','Em'], rythme:'motown', mes:1, res:8,
+  fills:[
+   {de:'C', vers:'G', temps:'4 et', debut:6, sub:2, tab:'4.2 3.0'},
+   {de:'G', vers:'Am', temps:'4 et', debut:6, sub:2, tab:'5.2 p 5.0'},
+   {de:'Am', vers:'Em', temps:'4 et', debut:6, sub:2, tab:'3.2 p 3.0'},
+   {de:'Em', vers:'C', temps:'4 et', debut:6, sub:2, tab:'4.2 3.0'}],
+  conseil:'Le fill remplace les deux derniers coups : garde le tambourin (hauts légers) sur les temps 1 à 3.'},
+ {id:'rf9', nom:'Folk jazzy, 2 mesures par accord', style:'folk', niveau:2, tonalite:'G', bpm:[70,90], accords:['Am7','D7','Gmaj7','Cmaj7'], rythme:'ballade', mes:2, res:8,
+  fills:[
+   {de:'Am7', vers:'D7', temps:'4 et', debut:6, sub:2, tab:'3.0 4.0'},
+   {de:'D7', vers:'Gmaj7', temps:'4 et', debut:6, sub:2, tab:'1.2 3.0'},
+   {de:'Gmaj7', vers:'Cmaj7', temps:'4 et', debut:6, sub:2, tab:'2.0 3.0'},
+   {de:'Cmaj7', vers:'Am7', temps:'4 et', debut:6, sub:2, tab:'4.2 5.0'}],
+  conseil:'Première mesure : strum complet ; deuxième mesure : strum puis fill. Le fill ne vient qu\'une fois sur deux.'},
+ {id:'rf10', nom:'Rock en mi mineur', style:'rock', niveau:2, tonalite:'Em', bpm:[100,125], accords:['Em','G','D','A'], rythme:'rock8', mes:1, res:8,
+  fills:[
+   {de:'Em', vers:'G', temps:'4 et', debut:6, sub:2, tab:'6.0 5.2'},
+   {de:'G', vers:'D', temps:'4 et', debut:6, sub:2, tab:'5.2 4.0'},
+   {de:'D', vers:'A', temps:'4 et', debut:6, sub:2, tab:'4.0 5.0'},
+   {de:'A', vers:'Em', temps:'4 et', debut:6, sub:2, tab:'4.2 6.0'}],
+  conseil:'Six bas puis deux notes seules de basse : le contraste fait l\'effet.'},
+ {id:'rf11', nom:'Arpège de liaison en sol', style:'ballade', niveau:2, tonalite:'G', bpm:[70,90], accords:['G','Em','C','D'], rythme:'douce', mes:1, res:8,
+  fills:[
+   {de:'G', vers:'Em', temps:'4', debut:6, sub:4, tab:'1.3 p 1.0 2.0 3.0'},
+   {de:'Em', vers:'C', temps:'4', debut:6, sub:4, tab:'1.0 2.0 3.0 4.2'},
+   {de:'C', vers:'D', temps:'4', debut:6, sub:4, tab:'2.1 3.0 4.2 p 4.0'},
+   {de:'D', vers:'G', temps:'4', debut:6, sub:4, tab:'1.2 2.3 3.2 p 3.0'}],
+  conseil:'Quatre notes en doubles croches sur le 4e temps : un petit arpège qui descend ou monte dans l\'accord.'},
+ {id:'rf12', nom:'Folk rock en mi', style:'rock', niveau:2, tonalite:'E', bpm:[95,115], accords:['E','A','D','A'], rythme:'feu2', mes:1, res:8,
+  fills:[
+   {de:'E', vers:'A', temps:'4 et', debut:6, sub:2, tab:'5.2 p 5.0'},
+   {de:'A', vers:'D', temps:'4 et', debut:6, sub:2, tab:'4.2 p 4.0'},
+   {de:'D', vers:'A', temps:'4 et', debut:6, sub:2, tab:'4.0 5.0'},
+   {de:'A', vers:'E', temps:'4 et', debut:6, sub:2, tab:'4.2 6.0'}],
+  conseil:'E-A-D-A : le « I-IV-bVII-IV » du rock ; le pull-off tombe tout seul sur la corde à vide suivante.'},
+];
+const OPEN_PROGS = [
+ {id:'o1',  amb:'joyeux',       n:'Folk lumineux', ton:'G', deg:['I','IVadd9','I','Vsus4'], ch:['G','Cadd9','G','Dsus4'], bpm:[90,115], rh:['folk2','feucamp','croches'], niv:2,
+  ancre:'Le petit doigt reste sur le mi aigu, case 3, pour les quatre accords.', vides:[], conseil:'Ne lève jamais le petit doigt : G, Cadd9 et Dsus4 le partagent.'},
+ {id:'o2',  amb:'feu',          n:'La basse qui descend', ton:'G', deg:['I','V/3','vi add9','IVadd9'], ch:['G','D/F#','Emadd9','Cadd9'], bpm:[80,105], rh:['ballade','feucamp','folk2'], niv:2,
+  ancre:'Pas de doigt commun : suis la basse, sol, fa#, mi, do (corde 6 : 3, 2, 0 puis corde 5 : 3).', vides:[], conseil:'Sur Emadd9 et D/F#, écoute la ligne de basse descendre avant de chanter par-dessus.'},
+ {id:'o3',  amb:'reveur',       n:'Planant en ré', ton:'D', deg:['Isus2','Vsus4(7)','ii7','Vsus4(7)'], ch:['Dsus2','A7sus4','Em7','A7sus4'], bpm:[70,95], rh:['douce','reggae','ballade'], niv:2,
+  ancre:'Le doigt sur la corde de si (2), case 3, ne bouge pas, et le mi aigu (1) reste à vide.', vides:[1], conseil:'Un ou deux doigts bougent à chaque changement : laisse sonner le mi aigu à vide.'},
+ {id:'o4',  amb:'melancolique', n:'Descente en la mineur', ton:'Am', deg:['i7','VII6','VImaj7','v7'], ch:['Am7','G6','Fmaj7','Em7'], bpm:[65,90], rh:['douce','ballade','feucamp'], niv:2,
+  ancre:'La corde de mi aigu reste à vide dans les quatre accords.', vides:[1], conseil:'La basse descend la, sol, fa, mi : fais-la ressortir avec le pouce.'},
+ {id:'o5',  amb:'triste',       n:'Mi mineur ouvert', ton:'Em', deg:['i','VImaj7','iv7','VIIsus2'], ch:['Em','Cmaj7','Am7','Dsus2'], bpm:[65,90], rh:['douce','ballade','noires'], niv:1,
+  ancre:'La corde de mi aigu reste à vide dans les quatre accords.', vides:[1], conseil:'Trois doigts ou moins par accord : laisse sonner, ne gratte pas fort.'},
+ {id:'o6',  amb:'joyeux',       n:'Folk soleil en la', ton:'A', deg:['I','IVsus2','Isus2','Vsus4'], ch:['A','Dsus2','Asus2','Esus4'], bpm:[90,115], rh:['folk2','feu2','croches'], niv:2,
+  ancre:'Un doigt reste sur la corde de sol (3), case 2, et le mi aigu (1) reste à vide, pour les quatre accords.', vides:[1], conseil:'Les accords sus sonnent ouverts : joue sans peur sur toutes les cordes (sauf la corde 6 sur A, Asus2, Dsus2).'},
+ {id:'o7',  amb:'latino',       n:'Bossa douce en do', ton:'C', deg:['Imaj7','iii7','IVmaj7','V6'], ch:['Cmaj7','Em7','Fmaj7','G6'], bpm:[85,110], rh:['bossa','douce','reggae'], niv:2,
+  ancre:'La corde de mi aigu reste à vide dans les quatre accords.', vides:[1], conseil:'Touché léger, sans accent : ces accords n\'ont pas besoin de force pour être jolis.'},
+ {id:'o8',  amb:'energique',    n:'Em7 – G – Dsus4 – A7sus4', ton:'G', deg:['vi7','I','Vsus4','II7sus4'], ch:['Em7 (ancre)','G (ancre)','Dsus4','A7sus4 (ancre)'], bpm:[80,100], rh:['popsync','folk2','chuck'], niv:2,
+  ancre:'Annulaire et petit doigt restent sur la corde 2 et la corde 1, case 3 (si et mi aigus), pendant les quatre accords.', vides:[], ex:['Wonderwall (capo 2)'], conseil:'Deux doigts fixes, les autres bougent : le célèbre mur de son des accords sus.'},
+ {id:'o9',  amb:'romantique',   n:'La basse qui monte en ré', ton:'D', deg:['I','I/3','IV','V'], ch:['D','D/F#','G','A'], bpm:[70,95], rh:['ballade','douce','feu2'], niv:2,
+  ancre:'La corde de ré (4) reste à vide pour D, D/F# et G.', vides:[4], conseil:'Fais monter la basse ré, fa#, sol, la : c\'est elle qui crée l\'élan.'},
+ {id:'o10', amb:'epique',       n:'Grand ciel ouvert', ton:'G', deg:['Isus2','vi7','IVadd9','Vsus4'], ch:['Gsus2','Em7 (ancre)','Cadd9','Dsus4'], bpm:[75,100], rh:['noires','folk2','rock8'], niv:2,
+  ancre:'Deux doigts restent sur les cordes 2 et 1, case 3 (si et mi aigus), pendant les quatre accords.', vides:[], conseil:'Les deux cordes aiguës en case 3 sonnent comme un carillon qui ne bouge pas.'},
+ {id:'o11', amb:'feu',          n:'Pédale de sol', ton:'G', deg:['I','IV/5','vi7','Vsus4'], ch:['G','C/G','Em7','Dsus4'], bpm:[80,105], rh:['feucamp','folk2','ballade'], niv:2,
+  ancre:'Le mi grave, case 3 (sol), reste appuyé de G à C/G : la basse ne bouge pas.', vides:[], conseil:'Garde le sol grave de G à C/G : la basse tient et l\'accord change au-dessus.'},
+ {id:'o12', amb:'joyeux',       n:'Le D qui respire', ton:'D', deg:['I','Isus4','I','Isus2'], ch:['D','Dsus4','D','Dsus2'], bpm:[85,115], rh:['folk2','feucamp','croches'], niv:1,
+  ancre:'Les doigts sur les cordes 3 et 2 (cases 2 et 3) ne bougent pas : seule la corde de mi aigu change (2, puis 3, puis à vide).', vides:[4], conseil:'Un seul doigt travaille : à toi de faire respirer le D.'},
+];
+const FEEL_SECS = [
+  {id:'riffs',   n:'Riffs entre les accords', d:'Une petite phrase de basse qui relie un accord au suivant', em:'🎸'},
+  {id:'ouverts', n:'Accords ouverts',         d:'Sus, slash, add9 : un doigt fixe, des cordes à vide qui sonnent', em:'✨'},
+];
+const STYLE_FR = {folk:'Folk', pop:'Pop', ballade:'Ballade', country:'Country', rock:'Rock', blues:'Blues'};
+RIFF_PROGS.forEach(p => { p.sec = 'riffs'; p.amb = 'riffs'; p.ch = p.accords; p.rh = [p.rythme]; p.deg = []; p.sub = `${STYLE_FR[p.style] || p.style} · en ${p.tonalite}`; });
+OPEN_PROGS.forEach(p => { p.sec = 'ouverts'; });
+OPEN_PROGS.find(p => p.id === 'o11').anc = [[0, 3]];   // pas de doigt commun aux 4 accords : seule la basse sol (corde 6, case 3) reste de G à C/G
+const OPEN_STR = {1:'mi aigu', 2:'si', 3:'sol', 4:'ré', 5:'la', 6:'mi grave'};
+/* ancre d'une suite : positions [corde 0=grave, case] tenues par TOUS les accords (ou p.anc), + cordes à vide `vides` */
+function openHl(p) {
+  if (p.hl) return p.hl;
+  let anc = p.anc;
+  if (!anc) {
+    const cs = p.ch.map(n => findChord(n)).filter(Boolean);
+    anc = cs.length ? cs[0].f.map((f, i) => [i, f]).filter(a => a[1] > 0 && cs.every(c => c.f[a[0]] === a[1])) : [];
+  }
+  return p.hl = {anc, vides: (p.vides || []).map(n => 6 - n)};
+}
+
 const ARPS = [
  {id:'montee',   n:'Montée',                mes:'4/4', sub:2, motif:'B 3 2 1 B 3 2 1',     bpm:[60,100], niv:1, doigts:'p i m a p i m a'},
  {id:'allerret', n:'Aller-retour',          mes:'4/4', sub:2, motif:'B 3 2 1 2 3 2 1',     bpm:[60,100], niv:1, doigts:'p i m a m i m a'},
@@ -5457,11 +5622,14 @@ const EFFECTS = [
 ];
 const AMB_LOOK = {joyeux:['☀️','#e0a030'], triste:['🌧️','#5f86b0'], melancolique:['🍂','#b8743a'], energique:['⚡','#c8503a'],
   feu:['🔥','#d0602a'], reveur:['☁️','#9c86ae'], blues:['🎷','#4f7f9a'], epique:['⛰️','#7c8a5c'],
-  romantique:['🌹','#c4607a'], latino:['💃','#d08a2a'], roadtrip:['🚗','#4f8f8a']};
-const feel = {amb:null, prog:null, easy:{}, kind:'rh', rh:'feucamp', arp:'montee', fx:null, bpm:90, click:true, bar:-1, rf:'all'};
+  romantique:['🌹','#c4607a'], latino:['💃','#d08a2a'], roadtrip:['🚗','#4f8f8a'], riffs:['🎸','#c8783a'], ouverts:['✨','#8a7aaa']};
+const feel = {amb:null, prog:null, easy:{}, kind:'rh', rh:'feucamp', arp:'montee', fx:null, bpm:90, click:true, bar:-1, rf:'all', rm:'both'};
 const feelNames = p => (feel.easy[p.id] && p.facile) ? p.facile : p.ch;
-const feelAmbOf = id => AMBIANCES.find(a => a.id === id);
-const feelProg = () => FEEL_PROGS.find(p => p.id === feel.prog);
+const feelAmbOf = id => AMBIANCES.find(a => a.id === id) || FEEL_SECS.find(a => a.id === id);
+const feelAllProgs = () => FEEL_PROGS.concat(RIFF_PROGS, OPEN_PROGS);
+const feelProg = () => feelAllProgs().find(p => p.id === feel.prog);
+const feelSecList = id => id === 'riffs' ? RIFF_PROGS : id === 'ouverts' ? OPEN_PROGS : FEEL_PROGS.filter(p => p.amb === id);
+const feelHead = p => p.sec ? feelAmbOf(p.sec) : feelAmbOf(p.amb);   // en-tête affiché : section ou ambiance
 const feelRhy = () => RHYTHMS.find(r => r.id === feel.rh);
 const feelArp = () => ARPS.find(a => a.id === feel.arp);
 /* mesure / résolution effectives de la façon de jouer */
@@ -5509,7 +5677,7 @@ function feelPickAmb(id) { feelStop(); feel.amb = id; feel.prog = null; exoRende
 function feelPickProg(id) {
   feelStop(); feel.prog = id; const p = feelProg();
   feel.rh = p.rh[0]; feel.kind = 'rh'; feel.fx = null;
-  feel.bpm = Math.round((p.bpm[0] + p.bpm[1])/2); feelFixBpm();
+  feel.bpm = Math.round((p.bpm[0] + p.bpm[1])/2); feelFixBpm(); feel.rm = 'both';
   exoLog('feel'); exoSave(); exoRender(); window.scrollTo(0, 0);
 }
 /* 🎲 une suite au hasard + un de ses rythmes conseillés, tempo dans la fourchette, et c'est parti */
@@ -5547,29 +5715,31 @@ function feelClick() {
   const b = $('fl-click'); if (b) { b.classList.toggle('on', feel.click); b.textContent = feel.click ? 'Métronome : oui' : 'Métronome : non'; }
 }
 
-const feelDia = (n, sz) => chordSVG(newChord(n), {size:sz});
+const feelDia = (n, sz, p) => chordSVG(newChord(n), {size:sz, hl: p && p.sec === 'ouverts' ? openHl(p) : null});
 function feelCard(p) {
-  const amb = feelAmbOf(p.amb), names = feelNames(p), easy = !!feel.easy[p.id];
+  const names = feelNames(p), easy = !!feel.easy[p.id];
   return `<div class="fl-card" style="--amb:${AMB_LOOK[p.amb][1]}" onclick="feelPickProg('${p.id}')">
     <div class="fl-ct">${esc(p.n)}</div>
-    <div class="fl-deg">${p.deg.slice(0, 4).map(esc).join(' · ')}${p.deg.length > 4 ? ' …' : ''}</div>
-    <div class="fl-dias">${[...new Set(names)].map(n => `<div class="chord-cell"><div class="cn" style="font-size:13px">${esc(n)}</div>${feelDia(n, .62)}</div>`).join('')}</div>
+    <div class="fl-deg">${p.sub ? esc(p.sub) : p.deg.slice(0, 4).map(esc).join(' · ') + (p.deg.length > 4 ? ' …' : '')}</div>
+    <div class="fl-dias">${[...new Set(names)].map(n => `<div class="chord-cell"><div class="cn" style="font-size:13px">${esc(n)}</div>${feelDia(n, .62, p)}</div>`).join('')}</div>
     <div class="ec-meta"><span class="lvl" title="Niveau">${lvlDots(p.niv)}</span><span>${p.bpm[0]} → ${p.bpm[1]} BPM</span>
       ${p.facile ? `<button type="button" class="filt ${easy ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div></div>`;
 }
 function feelTiles() {
   return `<div class="fl-surp"><div class="fl-lead">Ton envie du jour ?</div><button type="button" class="btn btn-primary" onclick="feelSurprise()" title="Une suite et un rythme au hasard">🎲 Surprends-moi</button></div>
     <div class="fl-tiles">${AMBIANCES.map(a => `<button type="button" class="fl-tile" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
-      <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>`;
+      <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>
+    <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
+      <span class="fl-em">${a.em}</span><span><b>${esc(a.n)}</b><small>${esc(a.d)} · ${feelSecList(a.id).length} suites</small></span><i>›</i></button>`).join('')}</div>`;
 }
 function feelList() {
-  const a = feelAmbOf(feel.amb), list = FEEL_PROGS.filter(p => p.amb === a.id);
-  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; Ambiances</button>
+  const a = feelAmbOf(feel.amb), list = feelSecList(a.id);
+  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; ${a.em ? 'Exercices' : 'Ambiances'}</button>
     <div class="fl-ambh" style="--amb:${AMB_LOOK[a.id][1]}"><span class="fl-em">${AMB_LOOK[a.id][0]}</span><div><div class="fl-tn">${esc(a.n)}</div><div class="fl-td">${esc(a.d)}</div></div></div>
     <div class="fl-cards">${list.map(feelCard).join('')}</div>`;
 }
 function feelPlayerHTML() {
-  const p = feelProg(), a = feelAmbOf(p.amb), names = feelNames(p), m = feelMeter();
+  const p = feelProg(), a = feelHead(p), names = feelNames(p), m = feelMeter(), isR = p.sec === 'riffs', isO = p.sec === 'ouverts';
   const fxs = EFFECTS.map(f => ({f, ok: fxApplies(f, names)}));
   const fx = EFFECTS.find(f => f.id === feel.fx);
   const chip = (on, ok, click, label, rec) => `<button type="button" class="filt ${on ? 'on' : ''} ${ok === false ? 'off' : ''}" ${ok === false ? 'disabled title="Ne s’applique pas à cette suite"' : `onclick="${click}"`}>${label}${rec ? ' <i class="fl-rec">★</i>' : ''}</button>`;
@@ -5587,9 +5757,9 @@ function feelPlayerHTML() {
   return `<div class="fl-top"><button type="button" class="fl-back" onclick="feelBack()" aria-label="Retour : ${esc(a.n)}">&#8249;</button>
       <div class="fl-ttl"><small>${esc(a.n)}</small><h2>${esc(p.n)}</h2></div>
       <button type="button" class="btn btn-ghost btn-sm" onclick="feelSurprise()">🎲 Surprends-moi</button></div>
-    <div class="fl-sub"><span>${p.deg.map(esc).join(' · ')} · un accord par mesure</span>${p.facile ? `<button type="button" class="filt sm ${feel.easy[p.id] ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div>
-    <div class="fl-chs" style="--n:${Math.min(names.length, 4)}">${names.map((n, i) => `<div class="fl-ch" id="fl-ch${i}"><div class="cn">${esc(n)}</div>${feelDia(n, names.length > 4 ? .8 : .95)}</div>`).join('')}</div>
-    <div class="fl-lbl fl-lblr"><span>Rythme</span><span>★ conseillés pour cette suite</span></div>
+    <div class="fl-sub"><span>${isR ? `${p.sub ? esc(p.sub) + ' · ' : ''}${p.mes > 1 ? p.mes + ' mesures par accord' : 'un accord par mesure'}` : p.deg.map(esc).join(' · ') + ' · un accord par mesure'}</span>${p.facile ? `<button type="button" class="filt sm ${feel.easy[p.id] ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div>
+    <div class="fl-chs" style="--n:${Math.min(names.length, 4)}">${names.map((n, i) => `<div class="fl-ch" id="fl-ch${i}"><div class="cn">${esc(n)}</div>${feelDia(n, names.length > 4 ? .8 : .95, p)}</div>`).join('')}</div>
+    ${isO ? feelOpenInfo(p) : ''}${isR ? feelRiffMid(p) : `<div class="fl-lbl fl-lblr"><span>Rythme</span><span>★ conseillés pour cette suite</span></div>
     ${arpOn ? `<div class="fl-rh on"><div class="fl-rhh"><i class="fl-dot"></i><b>Arpège : ${esc(feelArp().n)}</b></div><div class="fl-rhb"><div class="fl-pat" id="fl-pat"></div></div></div>` : ''}
     <div class="fl-rhs" role="radiogroup" aria-label="Rythme">${ids.map(id => RHYTHMS.find(r => r.id === id)).filter(Boolean).map(rcard).join('')}</div>
     <details class="fl-allrh"${feel.rf !== 'all' || arpOn || feel.fx || (feel.kind === 'rh' && !p.rh.includes(feel.rh)) ? ' open' : ''}><summary><span>Tous les rythmes, arpèges, effets</span><span>${RHYTHMS.length} ›</span></summary>
@@ -5603,10 +5773,10 @@ function feelPlayerHTML() {
       ${fx ? feelFxHTML(fx) : ''}
       <div class="fl-lbl">Métronome</div>
       <div class="filters"><button type="button" class="filt ${feel.click ? 'on' : ''}" id="fl-click" onclick="feelClick()">${feel.click ? 'Métronome : oui' : 'Métronome : non'}</button></div>
-      <div class="exo-note">★ = conseillé pour cette suite · ${m.mes} · tout se combine, même en pleine lecture.</div></details>
-    ${arpOn ? '' : `<div class="fl-lbl fl-lblr"><span>Son</span><span>${mmOn('feel') ? 'étouffé = on travaille juste la main droite' : 'le rythme sonne sur les accords'}</span></div>
+      <div class="exo-note">★ = conseillé pour cette suite · ${m.mes} · tout se combine, même en pleine lecture.</div></details>`}
+    ${isR ? feelRiffSon(p) : arpOn ? '' : `<div class="fl-lbl fl-lblr"><span>Son</span><span>${mmOn('feel') ? 'étouffé = on travaille juste la main droite' : 'le rythme sonne sur les accords'}</span></div>
     <div class="fl-seg" id="fl-seg" role="radiogroup" aria-label="Son"><button type="button" role="radio" aria-checked="${mmOn('feel')}" class="${mmOn('feel') ? 'on' : ''}" onclick="feelSon(true)">Étouffé</button><button type="button" role="radio" aria-checked="${!mmOn('feel')}" class="${mmOn('feel') ? '' : 'on'}" onclick="feelSon(false)">Accords</button></div>`}
-    <div class="fl-mk"><button type="button" class="btn btn-ghost btn-sm" onclick="feelMakeSheet()">Créer une fiche avec cette suite ›</button></div>
+    ${isR ? '' : `<div class="fl-mk"><button type="button" class="btn btn-ghost btn-sm" onclick="feelMakeSheet()">Créer une fiche avec cette suite ›</button></div>`}
     <div class="fl-dock"><div class="fl-dk"><div class="fl-bpm"><button type="button" onclick="feelTempo(-4)" aria-label="−4 BPM">−</button><div class="fl-bpmv" id="fl-bpm">${feel.bpm}</div><button type="button" onclick="feelTempo(4)" aria-label="+4 BPM">+</button></div><small>BPM</small></div>
       <div class="fl-dk"><button type="button" class="fl-play" id="fl-playbtn" onclick="feelPlay()" aria-label="Jouer en boucle"></button><small id="fl-playlbl">Jouer</small></div></div>`;
 }
@@ -5615,6 +5785,32 @@ function feelSon(mute) {
   const g = $('fl-seg'); if (!g) return;
   [...g.children].forEach((b, i) => { const on = (i === 0) === mute; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
 }
+/* Accords ouverts : ancre (doigt commun), cordes à vide, conseil, légende des couleurs des diagrammes */
+function feelOpenInfo(p) {
+  const hl = openHl(p), vi = (p.vides || []).map(n => OPEN_STR[n]);
+  return `<div class="fl-anc"><div><b>⚓ Ancre</b> · ${esc(p.ancre)}</div>
+    ${vi.length ? `<div><b>○ Cordes à vide</b> · ${vi.map(esc).join(', ')} : laisse-les sonner.</div>` : ''}
+    <div><span class="fl-key a"></span>${hl.anc.length ? 'doigt qui ne bouge pas' : 'pas de doigt commun'}${hl.anc.length && vi.length ? '' : ''}${vi.length ? ' <span class="fl-key v" style="margin-left:10px"></span>corde à vide qui résonne' : ''}</div></div>
+    <div class="fl-tip">${esc(p.conseil)}${p.ex ? ' <i>(' + p.ex.map(esc).join(', ') + ')</i>' : ''}</div>`;
+}
+/* Riffs : tab du fill en cours + rythme (cases du fill vides) + conseil ; « fills seuls » ne montre pas le rythme */
+function feelRiffMid(p) {
+  const r = RHYTHMS.find(x => x.id === p.rythme), d = p.fills[0].debut, pat = r.pat.slice(0, d) + '-'.repeat(p.res - d), both = feel.rm !== 'fills';
+  return `<div class="fl-lbl fl-lblr"><span>Le fill</span><span>remplace la fin du rythme</span></div>
+    <div class="fl-fill" id="fl-fill"></div>
+    ${both ? `<div class="fl-lbl fl-lblr"><span>Rythme</span><span>★ conseillé pour cette suite</span></div>
+    <div class="fl-rh on"><div class="fl-rhh"><i class="fl-dot"></i><b>${esc(r.n)}</b><i class="fl-rec">★</i></div>
+      <div class="fl-rhb">${rhythmSVG(rhFromPat(pat, r.mes, r.res, 1), false, {idp: 'fl-c'})}<div class="exo-note">Les cases vides : le fill prend la place.</div></div></div>` : ''}
+    <div class="fl-tip">${esc(p.conseil)}</div>`;
+}
+function feelRiffSon(p) {
+  const both = feel.rm !== 'fills';
+  return `<div class="fl-lbl fl-lblr"><span>Je travaille</span><span>${both ? 'le rythme et le fill, en boucle' : 'seulement les notes de liaison'}</span></div>
+    <div class="fl-seg" role="radiogroup" aria-label="Je travaille"><button type="button" role="radio" aria-checked="${both}" class="${both ? 'on' : ''}" onclick="feelRm('both')">Rythme + fills</button><button type="button" role="radio" aria-checked="${!both}" class="${both ? '' : 'on'}" onclick="feelRm('fills')">Fills seuls</button></div>
+    ${both ? `<div class="fl-lbl fl-lblr"><span>Son</span><span>${mmOn('feel') ? 'rythme étouffé, fills en vraies notes' : 'le rythme sonne sur les accords'}</span></div>
+    <div class="fl-seg" id="fl-seg" role="radiogroup" aria-label="Son"><button type="button" role="radio" aria-checked="${mmOn('feel')}" class="${mmOn('feel') ? 'on' : ''}" onclick="feelSon(true)">Étouffé</button><button type="button" role="radio" aria-checked="${!mmOn('feel')}" class="${mmOn('feel') ? '' : 'on'}" onclick="feelSon(false)">Accords</button></div>` : ''}`;
+}
+function feelRm(v) { const was = rhPlaying('feel'); feelStop(); feel.rm = v; exoRender(); if (was) feelPlay(); }
 function feelFxHTML(fx) {
   const tab = fx.tab ? `<div class="scroll-x">${tabSVG('fl-fx', tabParse(fx.tab)).svg}</div>` : `<div class="fl-fxpat">${fx.pat.split('').map((c, i) => `<span>${strumGlyph(c, i)}</span>`).join('')}</div>`;
   return `<div class="fl-fx"><div class="fl-fxn">${esc(fx.n)}</div>${tab}<div class="exo-note">${esc(fx.expl)} <b>Quand :</b> ${esc(fx.ou)}.</div></div>`;
@@ -5622,15 +5818,45 @@ function feelFxHTML(fx) {
 /* affichage de la mesure `bar` : accord courant en cuivre dans la suite, tablature de l'arpège */
 function feelShowBar(bar) {
   const p = feelProg(); if (!p || !$('fl-ch0')) return;
-  const names = feelNames(p), n = names.length, cur = names[bar % n];
+  const names = feelNames(p), n = names.length, mes = p.mes || 1, ci = Math.floor(bar/mes) % n, cur = names[ci];
   feel.bar = bar;
-  names.forEach((c, i) => { const e = $('fl-ch' + i); if (e) e.classList.toggle('cur', i === bar % n); });
+  names.forEach((c, i) => { const e = $('fl-ch' + i); if (e) e.classList.toggle('cur', i === ci); });
+  if (p.sec === 'riffs') feelFillShow(p, ci, bar);
   if (feel.kind === 'arp' && $('fl-pat')) {
     const r = tabSVG('fl-tab', tabParse(arpTabStr(feelArp(), newChord(cur))));
     FEEL_TAB = r.pos; $('fl-pat').innerHTML = `<div class="scroll-x">${r.svg}</div><div class="exo-note">${esc(feelArp().n)} sur ${esc(cur)}${feelArp().note ? ' · ' + esc(feelArp().note) : ''}</div>`;
   }
 }
-let FEEL_TAB = [];
+let FEEL_TAB = [], FILL_POS = [], FILLQ = [], FILL_RAF = 0;
+/* Riffs — colonnes du fill (comptage sous la tab : 4, et / 4, e, et, a / 4, tri, ple), affichage, notes planifiées */
+const FILL_CNT = {2:['', 'et'], 3:['', 'tri', 'ple'], 4:['', 'e', 'et', 'a']};
+function riffCols(p, f) {
+  const cols = tabParse(f.tab).filter(c => !c.bar), b0 = Math.floor(f.debut/(p.res/4)) + 1;
+  cols.forEach((c, j) => { c.lbl = j % f.sub === 0 ? String(b0 + j/f.sub) : (FILL_CNT[f.sub] || [])[j % f.sub] || ''; });
+  return cols;
+}
+function feelFillShow(p, ci, bar) {
+  const el = $('fl-fill'); if (!el) return;
+  const f = p.fills[ci], mes = p.mes || 1, r = tabSVG('fl-fill', riffCols(p, f)); FILL_POS = r.pos;
+  const note = mes > 1 ? (bar % mes === mes - 1 ? 'mesure ' + mes + ' sur ' + mes + ' : le fill arrive' : 'mesure ' + (bar % mes + 1) + ' sur ' + mes + ' : strum complet') : 'sur le ' + f.temps;
+  el.innerHTML = `<div class="fl-fh"><span><b>${esc(f.de)}</b> <i>→</i> <b>${esc(f.vers)}</b></span><small>${esc(note)}</small></div><div class="scroll-x">${r.svg}</div>`;
+}
+/* notes d'un fill [{t, j, freq, vol, dur}] : colonne j à t0 + j × pas (les cases restantes de la mesure sont réparties sur les colonnes) ; la 2e note d'une liaison (h, p, \) est plus douce */
+function riffFillNotes(f, t0, cd, per) {
+  const cols = tabParse(f.tab).filter(c => !c.bar), step = (per - f.debut)/cols.length*cd, out = [];
+  cols.forEach((c, j) => c.notes.forEach(n => {
+    const fr = parseInt(n.txt); if (isNaN(fr)) return;
+    out.push({t: t0 + j*step, j, freq: fretFreq(6 - n.s, fr, 0), vol: c.conn ? .1 : .14, dur: j === cols.length - 1 ? 1.1 : .55});
+  }));
+  return out;
+}
+function feelFillLoop() {
+  if (!rhPlaying('feel')) { FILLQ.length = 0; return; }
+  const now = audio().currentTime; let cur = null;
+  while (FILLQ.length && FILLQ[0].t <= now) cur = FILLQ.shift();
+  if (cur) { const e = $('fl-fill-cur'); if (e && FILL_POS[cur.j] != null) { e.setAttribute('x', FILL_POS[cur.j] - 12); e.setAttribute('opacity', '.4'); } }   // la note jouée s'allume
+  FILL_RAF = requestAnimationFrame(feelFillLoop);
+}
 function feelBtn() {
   const b = $('fl-playbtn'); if (!b) return;
   const on = rhPlaying('feel'); b.classList.toggle('on', on);
@@ -5641,18 +5867,27 @@ function feelPlay() {
   if (rhPlaying('feel')) { rhStop(); return; }
   const p = feelProg(); if (!p) return;
   if (metroPlaying) stopMetro();
-  const names = feelNames(p), chs = names.map(n => newChord(n)), m = feelMeter();
+  const names = feelNames(p), m = feelMeter(), riff = p.sec === 'riffs', mes = p.mes || 1, fOnly = riff && feel.rm === 'fills';
+  const chs = names.flatMap(n => { const c = newChord(n); return Array(riff ? mes : 1).fill(c); });   // mes:2 → chaque accord dure 2 mesures
   const per = rhPerBar(m.mes, m.res), arp = feel.kind === 'arp' ? feelArp() : null, fxId = feel.fx;
   const rh = arp ? {v:2, mes:m.mes, res:m.res, bars:1, swing:0, cells:Array.from({length:per}, () => ({d:'D', a:1}))}
                  : rhFromPat(feelPat(), m.mes, m.res, 1);
   const toks = arp ? arp.motif.split(' ') : null;
   const cellFn = (c, t, ch, i, k, P) => {
     const bar = Math.floor(k/per), pos = i % per, cur = chs[bar % chs.length];
+    if (riff) {
+      const F = p.fills[Math.floor(bar/mes) % p.fills.length];
+      if (bar % mes === mes - 1 && pos >= F.debut) {   // dernière mesure de l'accord : le fill remplace la fin du rythme
+        if (pos === F.debut) riffFillNotes(F, t, rhCellDur(P.rh, P.bpm), per).forEach(o => { pluck(o.freq, o.t, o.dur, o.vol); FILLQ.push({t: o.t, j: o.j}); });
+      } else if (!fOnly) rhPlayCell(c, t, cur, 0, false, mmOn('feel'));
+      return;
+    }
     if (arp) arpNotes(toks[pos], cur).forEach((o, j) => pluck(fretFreq(o.si, o.fret, 0), t + j*.012, 1.1, .13));
     else rhPlayCell(c, t, cur, 0, fxId === 'palm', mmOn('feel'));
     if (fxId) fxNotes(fxId, names, bar).forEach(([back, si, fret]) => { if (pos === per - back) pluck(fretFreq(si, fret, 0), t, .5, .12); });
   };
   let lastBar = -1, lastPos = -1;
+  FILLQ.length = 0; cancelAnimationFrame(FILL_RAF);
   rhStart(rh, feel.bpm, null, 0, (i, k) => {
     const prev = lastPos >= 0 ? $('fl-c-' + lastPos) : null; if (prev) prev.classList.remove('exo-now');
     const tc = $('fl-tab-cur');
@@ -5662,15 +5897,16 @@ function feelPlay() {
     lastPos = pos; const el = $('fl-c-' + pos); if (el) el.classList.add('exo-now');
     const tc2 = $('fl-tab-cur'); if (tc2 && FEEL_TAB[pos] != null) { tc2.setAttribute('x', FEEL_TAB[pos] - 12); tc2.setAttribute('opacity', '.25'); }
   }, {key:'feel', chords:chs, cellFn, mute:!feel.click});
+  if (riff) FILL_RAF = requestAnimationFrame(feelFillLoop);
   feelBtn();
 }
 function feelMakeSheet() {
-  const p = feelProg(), a = feelAmbOf(p.amb); if (!p) return;
+  const p = feelProg(), a = feelHead(p); if (!p) return;
   feelStop();
   const names = feelNames(p), rhy = feel.kind === 'rh' ? feelRhy() : RHYTHMS.find(r => r.id === p.rh[0]);
   draft = newSheet_();
   draft.color = COLORS[sheets.length % COLORS.length][0];
-  let title = `Suite ${a.n} ${FEEL_PROGS.filter(x => x.amb === a.id).indexOf(p) + 1}`;
+  let title = `Suite ${a.n} ${feelSecList(p.sec || p.amb).indexOf(p) + 1}`;
   if (titleTaken(title)) title = uniqueTitle(title);
   draft.title = title; draft.artist = '';
   draft.bpm = feel.bpm; draft.difficulty = ['Debutant', 'Intermediaire', 'Avance'][p.niv - 1] || ''; draft.blocks.diff = true;
