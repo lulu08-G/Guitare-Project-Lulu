@@ -475,21 +475,36 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .fl-ct{font-family:var(--serif);font-size:17px;font-weight:700}
 .fl-deg{font-family:var(--mono);font-size:11px;color:var(--cream3)}
 .fl-dias{display:flex;gap:8px;flex-wrap:wrap}
-.fl-stage{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:16px;border-radius:var(--ra);border:1px solid var(--border);background:linear-gradient(150deg,color-mix(in srgb,var(--amb) 24%,var(--card)),var(--card))}
-.fl-cur{display:flex;align-items:center;gap:14px}
-.fl-name{font-family:var(--serif);font-size:56px;font-weight:700;line-height:1;color:var(--gold2);min-width:84px}
-.fl-side{display:flex;flex-direction:column;gap:10px;flex:1;min-width:150px}
-.fl-next{font-size:13px;color:var(--cream2)}.fl-next b{font-family:var(--serif);font-size:22px;color:var(--cream);margin-left:6px}
-.fl-bars{display:flex;gap:5px;flex-wrap:wrap}
-.fl-bars i{font-style:normal;font-family:var(--mono);font-size:11px;font-weight:700;min-width:30px;text-align:center;padding:6px 8px;border-radius:8px;background:var(--card2);color:var(--cream3);border:1px solid var(--border)}
-.fl-bars i.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.fl-pat{margin-top:12px}
-.fl-cells{display:flex;gap:4px;flex-wrap:wrap}
-.fl-cell{width:34px;height:66px;border-radius:9px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:20px;font-weight:800;transition:background .06s}
-.fl-cell.beat{background:var(--card2)}
-.fl-cell.exo-now{background:var(--gold);border-color:var(--gold)}.fl-cell.exo-now .sg-c{color:var(--ink)!important}
-.fl-cell .sg-c{font-size:10px;font-family:var(--mono);font-weight:400;color:var(--cream3)}
-.fl-cell.beat .sg-c{font-size:12px;font-weight:800;color:var(--cream)}
+.fl-pat{margin-top:4px}
+.fl-solo .hero,.fl-solo .exo-mode{display:none}
+.fl-rhb .rg{max-width:520px}
+.fl-top{display:flex;align-items:center;gap:10px;margin:2px 0 6px}
+.fl-back{width:40px;height:40px;border-radius:50%;background:none;font-size:30px;line-height:1;color:var(--cream2);flex:none}
+.fl-ttl{flex:1;min-width:0}.fl-ttl small{display:block;font-size:12px;color:var(--cream3)}.fl-ttl h2{font-family:var(--serif);font-size:24px;line-height:1.15;margin:0}
+.fl-sub{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--cream3);padding-bottom:10px;border-bottom:1px solid var(--border)}
+.fl-chs{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:6px 4px;margin:0 0 18px}
+.fl-ch{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 2px 6px;border-top:3px solid transparent;border-radius:6px;transition:background .1s}
+.fl-ch .cn{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--cream);line-height:1.1}
+.fl-ch.cur{border-top-color:var(--gold2);background:color-mix(in srgb,var(--gold2) 8%,transparent)}.fl-ch.cur .cn{color:var(--gold2)}
+.fl-lblr{display:flex;justify-content:space-between;gap:10px;margin:14px 0 8px}.fl-lblr span+span{text-transform:none;letter-spacing:0;font-weight:400;font-size:12px;text-align:right}
+.fl-rhs{display:flex;flex-direction:column;gap:10px}
+.fl-rh{border:1px solid var(--border);border-radius:var(--ra);background:var(--card)}
+.fl-rh.on{border:2px solid var(--gold2);background:var(--bg2)}
+.fl-rhh{width:100%;display:flex;align-items:center;gap:12px;min-height:56px;padding:12px 14px;background:none;text-align:left;font-size:15px;color:var(--cream)}
+.fl-rhh b{font-weight:700}
+.fl-dot{width:22px;height:22px;flex:none;border-radius:50%;border:2px solid var(--border2);box-sizing:border-box}
+.fl-rh.on .fl-dot{border-color:var(--gold2);background:radial-gradient(var(--gold2) 0 45%,transparent 50%)}
+.fl-mini{margin-left:auto;display:flex;gap:1px}.fl-mini .sgl{display:block;width:16px}
+.fl-rhb{padding:0 12px 12px}
+.fl-seg{display:flex;padding:4px;border-radius:99px;background:var(--card2);border:1px solid var(--border)}
+.fl-seg button{flex:1;min-height:44px;border-radius:99px;background:none;font-size:15px;font-weight:700;color:var(--cream2)}
+.fl-seg button.on{background:var(--gold);color:var(--ink)}
+.fl-mk{text-align:center;margin:14px 0 8px}
+.fl-dock{position:sticky;bottom:0;z-index:20;display:flex;align-items:flex-start;justify-content:center;gap:28px;margin:10px -4px 0;padding:12px 8px calc(10px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--border)}
+.fl-dk{display:flex;flex-direction:column;align-items:center;gap:4px}.fl-dk small{font-size:12px;color:var(--cream3)}
+.fl-bpm{display:flex;align-items:center;gap:6px;height:68px;padding:0 8px;border-radius:99px;border:1px solid var(--border2);background:var(--card)}
+.fl-bpm button{width:48px;height:48px;border-radius:50%;background:var(--card2);font-size:24px;color:var(--cream)}
+.fl-bpmv{min-width:58px;text-align:center;font-family:var(--serif);font-size:32px;font-weight:700}
 .fl-trans{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0;padding:12px 14px;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs)}
 .fl-play{width:68px;height:68px;border-radius:50%;border:0;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(200,120,58,.4)}
 .fl-play svg{width:30px;height:30px}.fl-play.on{background:var(--terra);color:#fff}
@@ -501,8 +516,7 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .fl-fxn{font-weight:700;margin-bottom:6px}
 .fl-fxpat{display:flex;gap:6px}.fl-fxpat span{width:24px}
 .fl-surp{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}.fl-surp span{font-size:12px;color:var(--cream3)}
-.fl-free{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--cream2);line-height:1.5;padding:10px 12px;margin-bottom:10px;border-radius:var(--rs);background:var(--bg2);border:1px dashed var(--border2)}
-.fl-allrh summary{font-size:12px;color:var(--cream3);cursor:pointer;padding:8px 0}.fl-rf{margin-bottom:8px!important}.filt.sm{padding:5px 11px;font-size:11px}
+.fl-allrh{margin:6px 0 0;border-bottom:1px solid var(--border);padding-bottom:6px}.fl-allrh summary{display:flex;justify-content:space-between;font-size:15px;color:var(--cream2);cursor:pointer;min-height:48px;align-items:center;list-style:none}.fl-allrh summary::-webkit-details-marker{display:none}.fl-allrh[open]>summary span+span{transform:rotate(90deg)}.fl-rf{margin-bottom:8px!important}.filt.sm{padding:5px 11px;font-size:11px}
 .fl-tip{margin-top:8px;font-size:13px;line-height:1.5;color:var(--cream2);padding:8px 12px;border-radius:var(--rs);background:var(--card2);border-left:3px solid var(--gold)}
 .rc-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;font-size:12px;color:var(--cream3);font-family:var(--mono)}
 .rc-bar{flex:1;height:8px;border-radius:99px;background:var(--card2);border:1px solid var(--border);overflow:hidden}.rc-bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .3s}
@@ -530,7 +544,7 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 @media(min-width:1000px){.rc-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:520px){.exo-mode{flex-wrap:wrap}.exo-mode .mode-pill.big{flex:1 1 45%;font-size:12px;padding:10px 8px}}
 @media(min-width:640px){.fl-tiles{grid-template-columns:repeat(4,1fr)}.fl-cards{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1000px){.fl-cards{grid-template-columns:repeat(4,1fr)}.fl-name{font-size:72px}.fl-cell{width:44px;height:68px}}
+@media(min-width:1000px){.fl-cards{grid-template-columns:repeat(4,1fr)}}
 .tempo-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;margin-top:14px}
 .tc-v{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--gold);min-width:64px;text-align:center;line-height:1}
 .tc-v small{display:block;font-size:9px;color:var(--cream3);letter-spacing:1px;margin-top:3px}
@@ -4107,8 +4121,9 @@ function exoDetailHTML(ex) {
 }
 function exoRender() {
   const body = $('exo-body'); if (!body) return;
+  $('v-exo').classList.toggle('fl-solo', !exoCur && exoMode === 'feel' && !!feel.prog);   // lecteur d'une suite : écran épuré
   if (exoCur && EXO[exoCur]) { body.innerHTML = exoDetailHTML(EXO[exoCur]); return; }
-  body.innerHTML = exoStatsHTML() +
+  body.innerHTML = (exoMode === 'feel' && feel.prog ? '' : exoStatsHTML()) +
     `<div class="mode-toggle exo-mode">
       <button type="button" class="mode-pill big ${exoMode==='feel'?'on':''}" onclick="rccStop();feelStop();exoMode='feel';exoRender()">Au feeling</button>
       <button type="button" class="mode-pill big ${exoMode==='rhy'?'on':''}" onclick="rccStop();feelStop();exoMode='rhy';exoRender()">Apprendre les rythmes</button>
@@ -4534,68 +4549,65 @@ function feelPlayerHTML() {
   const rfOk = r => feel.rf === 'all' || r.id === feel.rh || p.rh.includes(r.id) && feel.rf === 'rec' || feel.rf === 'amb' && (r.amb || []).includes(p.amb) || feel.rf === r.niv;
   const rhs = RHYTHMS.filter(rfOk).sort((x, y) => (p.rh.includes(y.id) ? 1 : 0) - (p.rh.includes(x.id) ? 1 : 0));
   const rfs = [['all', 'Tous (' + RHYTHMS.length + ')'], ['rec', '★ Conseillés'], ['amb', a.n], [1, '● Facile'], [2, '●● Moyen'], [3, '●●● Costaud']];
-  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; ${esc(a.n)}</button>
-    <div class="fl-ambh" style="--amb:${AMB_LOOK[a.id][1]}"><span class="fl-em">${AMB_LOOK[a.id][0]}</span>
-      <div><div class="fl-tn">${esc(p.n)}</div><div class="fl-td">${p.deg.slice(0, 4).map(esc).join(' · ')}${p.deg.length > 4 ? ' …' : ''}${p.ex ? ' · comme « ' + esc(p.ex[0]) + ' »' : ''}</div></div>
-      ${p.facile ? `<button type="button" class="filt ${feel.easy[p.id] ? 'on' : ''}" style="margin-left:auto" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div>
-    <div class="fl-stage" style="--amb:${AMB_LOOK[a.id][1]}">
-      <div class="fl-cur"><div class="fl-name" id="fl-name"></div><div id="fl-dia"></div></div>
-      <div class="fl-side"><div class="fl-next">Ensuite <b id="fl-next"></b></div><div class="fl-bars" id="fl-bars"></div></div></div>
-    <div class="fl-pat" id="fl-pat"></div>
-    <div class="fl-trans">
-      <button type="button" class="btn-icon" onclick="feelTempo(-4)" title="−4 BPM">−</button>
-      <div class="tc-v" id="fl-bpm">${feel.bpm}<small>BPM</small></div>
-      <button type="button" class="btn-icon" onclick="feelTempo(4)" title="+4 BPM">+</button>
-      <button type="button" class="fl-play" id="fl-playbtn" onclick="feelPlay()" aria-label="Jouer en boucle"></button>
-      <button type="button" class="filt ${feel.click ? 'on' : ''}" id="fl-click" onclick="feelClick()">${feel.click ? 'Métronome : oui' : 'Métronome : non'}</button>
-      ${feel.kind === 'arp' ? '' : mmBtn('feel')}</div>
-    <div class="fcard fl-ways">
-      <div class="fcard-t">Comment la jouer ?</div>
-      <div class="fl-free"><span>Change de rythme quand tu veux, même en pleine lecture : tout est permis, les <b>${RHYTHMS.length} rythmes</b> sont à toi.</span>
-        <button type="button" class="btn btn-ghost btn-sm" onclick="feelSurprise()">🎲 Surprends-moi</button></div>
+  // rythmes ★ de la suite (+ le rythme choisi dans le repli s'il n'en fait pas partie) : un choix simple, le choisi est déplié
+  const ids = p.rh.slice(); if (feel.kind === 'rh' && !ids.includes(feel.rh)) ids.push(feel.rh);
+  const rcard = r => {
+    const on = feel.kind === 'rh' && feel.rh === r.id, rec = p.rh.includes(r.id);
+    return `<div class="fl-rh ${on ? 'on' : ''}"><button type="button" class="fl-rhh" role="radio" aria-checked="${on}" onclick="feelWay('rh','${r.id}')"><i class="fl-dot"></i><b>${esc(r.n)}</b>${rec ? '<i class="fl-rec">★</i>' : ''}${on ? '' : `<span class="fl-mini">${r.pat.slice(0, 8).split('').map(strumGlyph).join('')}</span>`}</button>
+      ${on ? `<div class="fl-rhb">${rhythmSVG(rhFromPat(feelPat(), r.mes, r.res, 1), false, {idp: 'fl-c'})}${r.tip ? `<div class="fl-tip">${esc(r.tip)}</div>` : ''}${feel.fx === 'palm' ? '<div class="exo-note">Coups étouffés à la paume.</div>' : ''}</div>` : ''}</div>`;
+  };
+  const arpOn = feel.kind === 'arp';
+  return `<div class="fl-top"><button type="button" class="fl-back" onclick="feelBack()" aria-label="Retour : ${esc(a.n)}">&#8249;</button>
+      <div class="fl-ttl"><small>${esc(a.n)}</small><h2>${esc(p.n)}</h2></div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="feelSurprise()">🎲 Surprends-moi</button></div>
+    <div class="fl-sub"><span>${p.deg.map(esc).join(' · ')} · un accord par mesure</span>${p.facile ? `<button type="button" class="filt sm ${feel.easy[p.id] ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div>
+    <div class="fl-chs" style="--n:${Math.min(names.length, 4)}">${names.map((n, i) => `<div class="fl-ch" id="fl-ch${i}"><div class="cn">${esc(n)}</div>${feelDia(n, names.length > 4 ? .8 : .95)}</div>`).join('')}</div>
+    <div class="fl-lbl fl-lblr"><span>Rythme</span><span>★ conseillés pour cette suite</span></div>
+    ${arpOn ? `<div class="fl-rh on"><div class="fl-rhh"><i class="fl-dot"></i><b>Arpège : ${esc(feelArp().n)}</b></div><div class="fl-rhb"><div class="fl-pat" id="fl-pat"></div></div></div>` : ''}
+    <div class="fl-rhs" role="radiogroup" aria-label="Rythme">${ids.map(id => RHYTHMS.find(r => r.id === id)).filter(Boolean).map(rcard).join('')}</div>
+    <details class="fl-allrh"${feel.rf !== 'all' || arpOn || feel.fx || (feel.kind === 'rh' && !p.rh.includes(feel.rh)) ? ' open' : ''}><summary><span>Tous les rythmes, arpèges, effets</span><span>${RHYTHMS.length} ›</span></summary>
       <div class="fl-lbl">Rythme (main droite)</div>
-      <div class="filters">${p.rh.map(id => RHYTHMS.find(r => r.id === id)).filter(Boolean).map(r => chip(feel.kind === 'rh' && feel.rh === r.id, true, `feelWay('rh','${r.id}')`, esc(r.n), true)).join('')}</div>
-      <details class="fl-allrh"${feel.rf !== 'all' || (feel.kind === 'rh' && !p.rh.includes(feel.rh)) ? ' open' : ''}><summary>Voir tous les rythmes (${RHYTHMS.length})</summary>
       <div class="filters fl-rf">${rfs.map(([v, l]) => `<button type="button" class="filt sm ${feel.rf === v ? 'on' : ''}" onclick="feelRf(${typeof v === 'number' ? v : `'${v}'`})">${esc(l)}</button>`).join('')}</div>
-      <div class="filters">${rhs.map(r => chip(feel.kind === 'rh' && feel.rh === r.id, true, `feelWay('rh','${r.id}')`, esc(r.n), p.rh.includes(r.id))).join('')}</div></details>
+      <div class="filters">${rhs.map(r => chip(feel.kind === 'rh' && feel.rh === r.id, true, `feelWay('rh','${r.id}')`, esc(r.n), p.rh.includes(r.id))).join('')}</div>
       <div class="fl-lbl">Ou arpège (une note après l’autre)</div>
       <div class="filters">${ARPS.map(r => chip(feel.kind === 'arp' && feel.arp === r.id, true, `feelWay('arp','${r.id}')`, esc(r.n))).join('')}</div>
       <div class="fl-lbl">Un effet en plus (facultatif)</div>
       <div class="filters">${fxs.map(o => chip(feel.fx === o.f.id, o.ok, `feelFx('${o.f.id}')`, esc(o.f.n.split(':')[0]))).join('')}</div>
       ${fx ? feelFxHTML(fx) : ''}
-      <div class="exo-note">★ = conseillé pour cette suite · ${m.mes} · tout se combine.</div></div>
-    <div style="margin-top:16px"><button type="button" class="btn btn-primary" onclick="feelMakeSheet()">Créer une fiche avec cette suite</button></div>`;
+      <div class="fl-lbl">Métronome</div>
+      <div class="filters"><button type="button" class="filt ${feel.click ? 'on' : ''}" id="fl-click" onclick="feelClick()">${feel.click ? 'Métronome : oui' : 'Métronome : non'}</button></div>
+      <div class="exo-note">★ = conseillé pour cette suite · ${m.mes} · tout se combine, même en pleine lecture.</div></details>
+    ${arpOn ? '' : `<div class="fl-lbl fl-lblr"><span>Son</span><span>${mmOn('feel') ? 'étouffé = on travaille juste la main droite' : 'le rythme sonne sur les accords'}</span></div>
+    <div class="fl-seg" id="fl-seg" role="radiogroup" aria-label="Son"><button type="button" role="radio" aria-checked="${mmOn('feel')}" class="${mmOn('feel') ? 'on' : ''}" onclick="feelSon(true)">Étouffé</button><button type="button" role="radio" aria-checked="${!mmOn('feel')}" class="${mmOn('feel') ? '' : 'on'}" onclick="feelSon(false)">Accords</button></div>`}
+    <div class="fl-mk"><button type="button" class="btn btn-ghost btn-sm" onclick="feelMakeSheet()">Créer une fiche avec cette suite ›</button></div>
+    <div class="fl-dock"><div class="fl-dk"><div class="fl-bpm"><button type="button" onclick="feelTempo(-4)" aria-label="−4 BPM">−</button><div class="fl-bpmv" id="fl-bpm">${feel.bpm}</div><button type="button" onclick="feelTempo(4)" aria-label="+4 BPM">+</button></div><small>BPM</small></div>
+      <div class="fl-dk"><button type="button" class="fl-play" id="fl-playbtn" onclick="feelPlay()" aria-label="Jouer en boucle"></button><small id="fl-playlbl">Jouer</small></div></div>`;
+}
+function feelSon(mute) {
+  if (mmOn('feel') !== mute) mmToggle('feel');
+  const g = $('fl-seg'); if (!g) return;
+  [...g.children].forEach((b, i) => { const on = (i === 0) === mute; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
 }
 function feelFxHTML(fx) {
   const tab = fx.tab ? `<div class="scroll-x">${tabSVG('fl-fx', tabParse(fx.tab)).svg}</div>` : `<div class="fl-fxpat">${fx.pat.split('').map((c, i) => `<span>${strumGlyph(c, i)}</span>`).join('')}</div>`;
   return `<div class="fl-fx"><div class="fl-fxn">${esc(fx.n)}</div>${tab}<div class="exo-note">${esc(fx.expl)} <b>Quand :</b> ${esc(fx.ou)}.</div></div>`;
 }
-/* affichage de la mesure `bar` : gros accord, suivant, pastilles, motif */
+/* affichage de la mesure `bar` : accord courant en cuivre dans la suite, tablature de l'arpège */
 function feelShowBar(bar) {
-  const p = feelProg(); if (!p || !$('fl-name')) return;
-  const names = feelNames(p), n = names.length, cur = names[bar % n], nxt = names[(bar + 1) % n];
+  const p = feelProg(); if (!p || !$('fl-ch0')) return;
+  const names = feelNames(p), n = names.length, cur = names[bar % n];
   feel.bar = bar;
-  $('fl-name').textContent = cur; $('fl-dia').innerHTML = feelDia(cur, 1.7); $('fl-next').textContent = nxt;
-  $('fl-bars').innerHTML = names.map((c, i) => `<i class="${i === bar % n ? 'on' : ''}">${n > 6 ? i + 1 : esc(c)}</i>`).join('');
-  if (feel.kind === 'arp') {
+  names.forEach((c, i) => { const e = $('fl-ch' + i); if (e) e.classList.toggle('cur', i === bar % n); });
+  if (feel.kind === 'arp' && $('fl-pat')) {
     const r = tabSVG('fl-tab', tabParse(arpTabStr(feelArp(), newChord(cur))));
     FEEL_TAB = r.pos; $('fl-pat').innerHTML = `<div class="scroll-x">${r.svg}</div><div class="exo-note">${esc(feelArp().n)} sur ${esc(cur)}${feelArp().note ? ' · ' + esc(feelArp().note) : ''}</div>`;
   }
 }
 let FEEL_TAB = [];
-function feelPatHTML() {
-  if (feel.kind === 'arp') return '';
-  const r = feelRhy(), pat = feelPat(), per = rhPerBar(r.mes, r.res), spb = rhSpb(r.mes, r.res);
-  const cnt = i => rhCnt(r, i);
-  return `<div class="fl-cells">${Array.from({length:per}, (_, i) => `<div class="fl-cell ${i % spb === 0 ? 'beat' : ''}" id="fl-c${i}"><div class="sg-ar">${strumGlyph(pat[i] || '-', i)}</div><div class="sg-c">${cnt(i)}</div></div>`).join('')}</div>
-    <div class="exo-note">${esc(r.n)} · ${r.mes}${feel.fx === 'palm' ? ' · coups étouffés à la paume' : ''}${r.bpm ? ` · ${r.bpm[0]}–${r.bpm[1]} BPM` : ''}${r.niv ? ` · ${lvlDots(r.niv)}` : ''}</div>
-    ${r.tip ? `<div class="fl-tip">💡 ${esc(r.tip)}</div>` : ''}`;
-}
-/* comptage sous une case (même texte que la grille de rythme) */
-function rhCnt(r, i) { const spb = rhSpb(r.mes, r.res); return rhLabel(r.mes, spb, i % spb, Math.floor(i/spb)); }
 function feelBtn() {
   const b = $('fl-playbtn'); if (!b) return;
   const on = rhPlaying('feel'); b.classList.toggle('on', on);
+  const lb = $('fl-playlbl'); if (lb) lb.textContent = on ? 'Stop' : 'Jouer';
   b.innerHTML = on ? '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20"/></svg>';
 }
 function feelPlay() {
@@ -4615,12 +4627,12 @@ function feelPlay() {
   };
   let lastBar = -1, lastPos = -1;
   rhStart(rh, feel.bpm, null, 0, (i, k) => {
-    const prev = lastPos >= 0 ? $('fl-c' + lastPos) : null; if (prev) prev.classList.remove('exo-now');
+    const prev = lastPos >= 0 ? $('fl-c-' + lastPos) : null; if (prev) prev.classList.remove('exo-now');
     const tc = $('fl-tab-cur');
     if (i == null) { lastBar = -1; lastPos = -1; feelBtn(); if (feelProg()) { feelShowBar(0); if (tc) tc.setAttribute('opacity', '0'); } return; }
     const pos = i % per, bar = Math.floor(k/per) % chs.length;
     if (bar !== lastBar) { lastBar = bar; feelShowBar(bar); }
-    lastPos = pos; const el = $('fl-c' + pos); if (el) el.classList.add('exo-now');
+    lastPos = pos; const el = $('fl-c-' + pos); if (el) el.classList.add('exo-now');
     const tc2 = $('fl-tab-cur'); if (tc2 && FEEL_TAB[pos] != null) { tc2.setAttribute('x', FEEL_TAB[pos] - 12); tc2.setAttribute('opacity', '.25'); }
   }, {key:'feel', chords:chs, cellFn, mute:!feel.click});
   feelBtn();
@@ -4646,7 +4658,7 @@ function feelHTML() {
 /* après rendu : remplit la scène du lecteur */
 function feelAfter() {
   if (!feel.prog) return;
-  feelBtn(); feelShowBar(0); if (feel.kind === 'rh') $('fl-pat').innerHTML = feelPatHTML();
+  feelBtn(); feelShowBar(0);
 }
 
 /* ═══════ APPRENDRE LES RYTHMES — 12 étapes, un seul accord facile, la main droite d'abord ═══════
