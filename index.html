@@ -707,14 +707,15 @@ input.ed-in-a{color:var(--cream2)}
 .ed-more>summary{min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-weight:700;font-size:14px;color:var(--cream2);text-align:center}
 .ed-more>summary span{font-size:12px;font-weight:500;color:var(--cream3)}
 .ed-more-b{padding:8px 0 10px;border-top:1px dashed var(--border2);margin-top:6px}
-.ed-dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:22px 0 calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,var(--bg) 26%);pointer-events:none}
+.ed-dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:0;background:none;pointer-events:none}
+#ed-recbar.wrap-narrow{padding:0!important}
 .ed-dock .wrap-narrow>*{pointer-events:auto}
-.ed-rec{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:78px;padding:10px 18px;border-radius:26px;background:linear-gradient(180deg,#c9573b,#a8472e);color:#fff;text-align:left;box-shadow:0 8px 22px rgba(168,71,46,.38);transition:transform .12s}
+.ed-rec{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin:0;min-height:52px;padding:6px 18px calc(6px + env(safe-area-inset-bottom));border-radius:18px 18px 0 0;background:var(--terra);color:#fff;text-align:left;box-shadow:none;transition:transform .12s}
 .ed-rec:active{transform:scale(.985)}
-.ed-rec-d{width:34px;height:34px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.28);flex:none}
-.ed-rec b{display:block;font-size:18px;font-weight:800}
-.ed-rec small{display:block;font-size:12px;font-weight:600;opacity:.9;margin-top:2px}
-.ed-rc{background:var(--card);border:2px solid var(--terra);border-radius:26px;padding:12px 16px 14px;box-shadow:0 8px 24px var(--shadow)}
+.ed-rec-d{width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.25);flex:none}
+.ed-rec b{display:block;font-size:15px;font-weight:700}
+.ed-rec small{display:none}
+.ed-rc{background:var(--card);border:1.5px solid var(--terra);border-bottom:0;border-radius:18px 18px 0 0;padding:10px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 14px var(--shadow)}
 .ed-rc.done{border-color:var(--sage)}
 .ed-rc-h{display:flex;align-items:center;gap:10px;min-height:34px}
 .ed-rc-h b{font-size:17px;font-weight:800;color:var(--terra)}.ed-rc.done .ed-rc-h b{color:var(--cream)}
