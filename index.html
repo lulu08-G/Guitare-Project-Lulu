@@ -246,9 +246,6 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .arp-panel{background:rgba(200,120,58,.06);border:1px solid rgba(200,120,58,.25);border-radius:var(--rs);padding:12px;margin-top:4px}
 
 .metro-visual{display:flex;justify-content:center;margin-bottom:2px}
-#metro-pendulum-g{transition:transform .08s linear}
-#metro-pendulum-weight{transition:fill .12s}
-#metro-pendulum-weight.accent{fill:var(--terra)}
 .metro-lights{display:flex;gap:8px;justify-content:center;margin-top:8px}
 .metro-light{width:13px;height:13px;border-radius:50%;background:var(--card3);border:1px solid var(--border);transition:all .1s}
 .metro-light.on{background:var(--gold2);box-shadow:0 0 10px rgba(232,150,78,.55)}
@@ -1736,6 +1733,60 @@ input[type=text],input[type=number],input[type=url],select,textarea{border-color
 .hm-top h1 small{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--cream3);letter-spacing:0}
 .filt{min-height:36px;padding:0 16px;font-size:13px;background:rgba(245,234,212,.06);border-color:var(--border2);color:var(--cream2)}
 .filt.on{background:linear-gradient(180deg,#e2924f,#c57136);border-color:transparent;color:var(--ink)}
+
+/* ═══════ MÉTRONOME : un cadran lumineux sur le bois ═══════ */
+.mt{padding-top:14px;padding-bottom:40px}
+.mt-stage{position:relative;display:flex;flex-direction:column;align-items:center;padding:8px 0 6px}
+.mt-dial{position:relative;width:min(78vw,330px);aspect-ratio:1;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:50%;outline-offset:6px}
+.mt-dial svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.mt-arc{fill:none;stroke:rgba(245,234,212,.11);stroke-width:11;stroke-linecap:round;transition:stroke .18s,filter .18s,stroke-width .18s}
+.mt-arc.done{stroke:rgba(235,154,84,.38)}
+.mt-arc.on{stroke:var(--gold2);stroke-width:13;filter:drop-shadow(0 0 9px rgba(235,154,84,.75))}
+.mt-arc.first.on{stroke:var(--gold3);filter:drop-shadow(0 0 13px rgba(246,189,120,.95))}
+.mt-tick{fill:rgba(245,234,212,.2)}.mt-tick.b{fill:rgba(245,234,212,.5)}
+.mt-num{font:600 15px var(--serif);fill:var(--cream3);text-anchor:middle;dominant-baseline:central;transition:fill .15s}
+.mt-num.on{fill:var(--gold3)}
+#mt-orb{transform-origin:150px 150px;will-change:transform}
+#mt-orb circle{fill:var(--cream);filter:drop-shadow(0 0 8px rgba(246,189,120,.95))}
+.mt-stage:not(.playing) #mt-orb{opacity:.35}
+.mt-core{position:absolute;inset:19%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+  background:radial-gradient(circle at 50% 32%,#3a2a1b,#1c130b 72%);border:1px solid rgba(245,234,212,.14);
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 18px 40px rgba(0,0,0,.55);will-change:transform}
+.mt-name{font:600 italic 15px var(--serif);color:var(--gold2);letter-spacing:.01em}
+.mt-bpm{font:600 clamp(58px,19vw,84px)/1 var(--serif);color:var(--cream);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.mt-unit{font:700 11px var(--sans);letter-spacing:.24em;color:var(--cream3)}
+.mt-hint{margin:12px 0 2px;font-size:12px;color:var(--cream3);text-align:center}
+.mt-tempo{display:flex;align-items:center;gap:12px;width:min(100%,420px);margin-top:8px}
+.mt-step{flex:none;width:52px;height:52px;border-radius:50%;background:rgba(245,234,212,.07);border:1px solid var(--border2);color:var(--gold2);font:600 28px/1 var(--sans);touch-action:manipulation;transition:background var(--t-fast),transform var(--t-fast)}
+.mt-step:active{background:rgba(245,234,212,.14);transform:scale(.94)}
+.mt-tempo input[type=range]{flex:1;min-width:0;height:44px;background:none;border:0;padding:0;-webkit-appearance:none;appearance:none}
+.mt-tempo input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:9px;background:linear-gradient(90deg,var(--gold2) var(--p,30%),rgba(245,234,212,.14) var(--p,30%))}
+.mt-tempo input[type=range]::-moz-range-track{height:6px;border-radius:9px;background:rgba(245,234,212,.14)}
+.mt-tempo input[type=range]::-moz-range-progress{height:6px;border-radius:9px;background:var(--gold2)}
+.mt-tempo input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-10px;border-radius:50%;background:var(--cream);border:0;box-shadow:0 2px 10px rgba(0,0,0,.5),0 0 0 5px rgba(235,154,84,.25)}
+.mt-tempo input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--cream);border:0;box-shadow:0 2px 10px rgba(0,0,0,.5),0 0 0 5px rgba(235,154,84,.25)}
+.mt-play{margin:18px 0 8px;width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);
+  background:linear-gradient(180deg,#e2924f,#c57136);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 10px 26px rgba(207,123,60,.4);transition:transform var(--t-fast)}
+.mt-play svg{width:34px;height:34px}
+.mt-play:active{transform:scale(.94)}
+.mt-play.on{background:linear-gradient(180deg,#d4674a,#b24a30);color:#fff;animation:idHalo 1.6s ease-out infinite}
+.mt-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border)}
+.mt-lbl{flex:none;width:92px;font:700 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--cream3)}
+.mt-chips{display:flex;gap:8px;flex-wrap:wrap;flex:1;min-width:0}
+.mt-chips button{min-height:44px;padding:0 16px;border-radius:99px;background:rgba(245,234,212,.06);border:1px solid var(--border2);color:var(--cream2);font:700 14px var(--sans);transition:background var(--t-fast),color var(--t-fast)}
+.mt-chips button.on{background:linear-gradient(180deg,#e2924f,#c57136);border-color:transparent;color:var(--ink)}
+#mt-sigs button{font:600 18px var(--serif);min-width:58px}
+.mt-seg{display:flex;flex:1;min-width:0;padding:4px;border-radius:99px;background:rgba(245,234,212,.06);border:1px solid var(--border)}
+.mt-seg button{flex:1;min-height:40px;border-radius:99px;background:none;color:var(--cream3);font:700 14px var(--sans)}
+.mt-seg button.on{background:linear-gradient(180deg,#e2924f,#c57136);color:var(--ink)}
+.mt-row select{flex:1;min-height:44px}
+.mt-pat{border-top:1px solid var(--border);padding:4px 0 6px}
+.mt-pat>summary{list-style:none;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 14px var(--sans);color:var(--cream2);cursor:pointer}
+.mt-pat>summary::-webkit-details-marker{display:none}
+.mt-pat>summary small{font-weight:500;font-size:12px;color:var(--cream3);text-align:right}
+.mt .metro-cell{width:26px;height:30px;border-radius:7px}
+@media(max-width:480px){.mt-row{flex-wrap:wrap;gap:8px;padding:10px 0 12px}.mt-lbl{width:100%}.mt .metro-row-lbl{width:78px}.mt-pat>summary small{display:none}#mt-sigs button{flex:1;min-width:0;padding:0 6px}}
+@media(min-width:900px){.mt-dial{width:360px}}
 </style>
 </head>
 <body>
@@ -1951,67 +2002,41 @@ input[type=text],input[type=number],input[type=url],select,textarea{border-color
 
 <!-- ══ METRONOME ══ -->
 <div class="view" id="v-metro">
-  <div class="wrap-narrow">
-    <div class="hero"><div><h1>Le <em>métronome</em></h1><p>Travaille ton timing seul, ou lance le groupe complet et improvise par-dessus</p></div></div>
-
-    <div class="fcard" style="text-align:center">
-      <div class="metro-visual">
-        <svg id="metro-pendulum" width="150" height="118" viewBox="0 0 150 118">
-          <line x1="20" y1="112" x2="130" y2="112" stroke="var(--border2)" stroke-width="2"/>
-          <g id="metro-pendulum-g" style="transform-origin:75px 108px">
-            <line x1="75" y1="108" x2="75" y2="24" stroke="var(--gold2)" stroke-width="3"/>
-            <circle id="metro-pendulum-weight" cx="75" cy="24" r="9" fill="var(--gold)"/>
-          </g>
-          <circle cx="75" cy="108" r="4" fill="var(--cream3)"/>
-        </svg>
-      </div>
-      <div class="metro-lights" id="metro-lights"></div>
-      <div style="margin-top:16px">
-        <button class="btn btn-primary" id="metro-toggle" onclick="toggleMetro()">
-          <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Demarrer
-        </button>
-      </div>
-    </div>
-
-    <div class="fcard">
-      <div class="fcard-t">Tempo</div>
-      <div class="frow" style="align-items:flex-end">
-        <div class="fg" style="flex:2">
-          <label>BPM</label>
-          <input type="range" id="metro-bpm-range" min="30" max="280" value="100" oninput="metroSetBpmFromRange(this.value)" style="width:100%;accent-color:var(--gold);height:34px">
+  <div class="wrap-narrow mt">
+    <div class="mt-stage" id="mt-stage">
+      <div class="mt-dial" id="mt-dial" role="button" tabindex="0" aria-label="Cadran du métronome : touche-le en rythme pour donner le tempo" onclick="metroTapTempo()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();metroTapTempo()}">
+        <svg id="mt-svg" viewBox="0 0 300 300" aria-hidden="true"></svg>
+        <div class="mt-core" id="mt-core">
+          <span class="mt-name" id="mt-name">Andante</span>
+          <b class="mt-bpm" id="mt-bpm">100</b>
+          <span class="mt-unit">BPM</span>
         </div>
-        <div class="fg" style="max-width:86px">
-          <input type="number" id="metro-bpm-num" min="30" max="280" value="100" oninput="metroSetBpmFromNum(this.value)">
-        </div>
-        <div class="fg"><button class="btn btn-ghost btn-sm" onclick="metroTapTempo()">Tap tempo</button></div>
       </div>
+      <p class="mt-hint">Touche le cadran en rythme pour donner le tempo</p>
+      <div class="mt-tempo">
+        <button type="button" class="mt-step" onpointerdown="metroHold(-1)" onkeydown="if(event.key==='Enter')metroBpmStep(-1)" aria-label="Moins vite">−</button>
+        <input type="range" id="metro-bpm-range" min="30" max="280" value="100" oninput="metroSetBpmFromRange(this.value)" aria-label="Tempo en battements par minute">
+        <button type="button" class="mt-step" onpointerdown="metroHold(1)" onkeydown="if(event.key==='Enter')metroBpmStep(1)" aria-label="Plus vite">+</button>
+      </div>
+      <button type="button" class="mt-play" id="metro-toggle" onclick="toggleMetro()" aria-label="Démarrer le métronome"></button>
     </div>
 
-    <div class="fcard">
-      <div class="fcard-t">Rythme</div>
-      <div class="frow">
-        <div class="fg"><label>Mesure</label>
-          <select id="metro-sig" onchange="metroChangeSig(this.value)">
-            <option value="4/4">4/4</option><option value="3/4">3/4</option><option value="2/4">2/4</option><option value="6/8">6/8</option>
-          </select></div>
-        <div class="fg"><label>Style</label>
-          <select id="metro-preset" onchange="metroSelectPreset(this.value)"></select></div>
+    <div class="mt-row"><span class="mt-lbl">Mesure</span><div class="mt-chips" id="mt-sigs"></div></div>
+    <div class="mt-row"><span class="mt-lbl">Son</span>
+      <div class="mt-seg">
+        <button type="button" id="metro-mode-simple" onclick="metroSetImpro(false)">Clic seul</button>
+        <button type="button" id="metro-mode-impro" onclick="metroSetImpro(true)">Le groupe joue</button>
       </div>
-      <p style="font-size:11px;color:var(--cream4);margin-bottom:6px">Clique une case pour modifier le motif — c’est ton rythme, pas seulement le modèle.</p>
-      <div id="metro-grid-host"></div>
     </div>
-
-    <div class="fcard">
-      <div class="fcard-t">Instruments</div>
-      <div class="mode-toggle" style="margin-bottom:14px">
-        <button type="button" class="mode-pill big" id="metro-mode-simple" onclick="metroSetImpro(false)">Métronome simple</button>
-        <button type="button" class="mode-pill big" id="metro-mode-impro" onclick="metroSetImpro(true)">Mode impro — le groupe joue</button>
-      </div>
-      <div class="opt-blocks" id="metro-layers"></div>
-      <div class="fg" id="metro-bass-row" style="margin-top:14px;margin-bottom:0;display:none">
-        <label>Note de basse (fondamentale, suit la grosse caisse)</label>
-        <select id="metro-bass-note" onchange="metroChangeBassString(this.value)"></select>
-      </div>
+    <div id="mt-band">
+      <div class="mt-row"><span class="mt-lbl">Style</span><div class="mt-chips" id="mt-styles"></div></div>
+      <div class="mt-row"><span class="mt-lbl">Instruments</span><div class="mt-chips" id="metro-layers"></div></div>
+      <div class="mt-row" id="metro-bass-row" style="display:none"><span class="mt-lbl">Basse</span>
+        <select id="metro-bass-note" onchange="metroChangeBassString(this.value)" aria-label="Note de basse"></select></div>
+      <details class="mt-pat">
+        <summary>Modifier le motif<small>touche une case pour l’allumer ou l’éteindre</small></summary>
+        <div id="metro-grid-host"></div>
+      </details>
     </div>
   </div>
 </div>
@@ -3121,9 +3146,13 @@ function stopMetro() {
 function metroRenderToggleBtn() {
   const b = $('metro-toggle'); if (!b) return;
   b.innerHTML = metroPlaying
-    ? '<svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg> Arrêter'
-    : '<svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Démarrer';
-  b.classList.toggle('btn-primary', metroPlaying);
+    ? '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M8 5.2v13.6a.6.6 0 00.92.5l10.6-6.8a.6.6 0 000-1L8.92 4.7A.6.6 0 008 5.2z" fill="currentColor"/></svg>';
+  b.classList.toggle('on', metroPlaying);
+  b.setAttribute('aria-label', metroPlaying ? 'Arrêter le métronome' : 'Démarrer le métronome');
+  const st = $('mt-stage'); if (st) st.classList.toggle('playing', metroPlaying);
+  if (metroPlaying) { if (!metroRaf) metroRaf = requestAnimationFrame(metroVisLoop); }
+  else { metroVis = []; metroDialReset(); }
 }
 function metroSchedulerTick() {
   if (!metroPlaying) return;
@@ -3142,6 +3171,7 @@ function scheduleMetroStep(step, time, total) {
   const accent = isBeatStart && beatIdx === 0;
   // gap click: the metronome falls silent for some bars so you keep time alone
   const bar = Math.floor((total || 0) / st.pattern.length);
+  metroVis.push({t: time, step, d: (60 / st.bpm) / sig.sub}); if (metroVis.length > 64) metroVis.shift();
   const muted = !!st.gap && (bar % (st.gap.on + st.gap.off)) >= st.gap.on;
   if (st.gap && step === 0) setTimeout(() => {
     document.querySelectorAll('#gap-bars .gb').forEach((e, i) => e.classList.toggle('now', i === bar % (st.gap.on + st.gap.off)));
@@ -3165,27 +3195,63 @@ function flashMetroStep(step) {
   });
 }
 function flashMetroBeat(beatIdx, accent, beatDurSec) {
-  const g = $('metro-pendulum-g');
-  if (g) { g.style.transition = `transform ${beatDurSec}s linear`; g.style.transform = `rotate(${(beatIdx%2===0?-1:1)*24}deg)`; }
-  const w = $('metro-pendulum-weight'); if (w) w.classList.toggle('accent', accent);
-  document.querySelectorAll('.metro-light').forEach((l,i) => l.classList.toggle('on', i === beatIdx));
+  document.querySelectorAll('#mt-svg .mt-arc').forEach((a, i) => { a.classList.toggle('on', i === beatIdx); a.classList.toggle('done', i < beatIdx); });
+  document.querySelectorAll('#mt-svg .mt-num').forEach((n, i) => n.classList.toggle('on', i === beatIdx));
+  const core = $('mt-core');
+  if (core && core.animate && !mReduced()) core.animate(
+    [{transform: `scale(${accent ? 1.075 : 1.04})`}, {transform: 'scale(1)'}],
+    {duration: Math.min(320, beatDurSec * 700), easing: 'cubic-bezier(.22,.8,.3,1)'});
 }
-
+/* le point lumineux fait le tour du cadran en une mesure, calé sur l'horloge audio */
+let metroVis = [], metroRaf = null;
+function metroVisLoop() {
+  metroRaf = null;
+  if (!metroPlaying || !metroCtxRef) return;
+  const orb = $('mt-orb');
+  if (orb && $('v-metro').classList.contains('on')) {
+    const now = metroCtxRef.currentTime;
+    while (metroVis.length > 1 && metroVis[1].t <= now) metroVis.shift();
+    const cur = metroVis[0];
+    if (cur && cur.t <= now) {
+      const nx = metroVis[1], dur = nx ? nx.t - cur.t : cur.d, f = Math.min(1, (now - cur.t) / (dur || 1));
+      orb.style.transform = `rotate(${((cur.step + f) / metroState.pattern.length) * 360}deg)`;
+    }
+  }
+  metroRaf = requestAnimationFrame(metroVisLoop);
+}
+function metroDialReset() {
+  document.querySelectorAll('#mt-svg .mt-arc,#mt-svg .mt-num').forEach(a => a.classList.remove('on', 'done'));
+  const orb = $('mt-orb'); if (orb) orb.style.transform = 'rotate(0deg)';
+}
 /* ── controls ── */
-function metroSetBpmFromRange(v) { metroState.bpm = +v; $('metro-bpm-num').value = v; }
-function metroSetBpmFromNum(v) { metroState.bpm = Math.max(30, Math.min(280, +v || 100)); $('metro-bpm-range').value = metroState.bpm; }
+const METRO_TEMPI = [[60,'Largo'],[76,'Adagio'],[108,'Andante'],[120,'Moderato'],[156,'Allegro'],[176,'Vivace'],[999,'Presto']];
+function metroPaintBpm() {
+  const v = metroState.bpm, r = $('metro-bpm-range');
+  if ($('mt-bpm')) $('mt-bpm').textContent = v;
+  if ($('mt-name')) $('mt-name').textContent = METRO_TEMPI.find(([m]) => v < m)[1];
+  if (r) { r.value = v; r.style.setProperty('--p', ((v - 30) / 250 * 100) + '%'); r.setAttribute('aria-valuetext', v + ' battements par minute'); }
+}
+function metroSetBpm(v) { metroState.bpm = Math.max(30, Math.min(280, Math.round(+v) || 100)); metroPaintBpm(); }
+function metroSetBpmFromRange(v) { metroSetBpm(v); }
+function metroSetBpmFromNum(v) { metroSetBpm(v); }
+function metroBpmStep(d) { metroSetBpm(metroState.bpm + d); }
+function metroHold(d) {   // appui long sur − / + : répétition accélérée (relâcher = clearBpmHold, écouté sur window)
+  clearBpmHold(); metroBpmStep(d);
+  let n = 0;
+  bpmHT = setTimeout(function rep() { metroBpmStep(d * (++n > 12 ? 5 : 1)); bpmHT = setTimeout(rep, n > 12 ? 90 : 110); }, 450);
+}
 function metroTapTempo() {
   const now = performance.now();
   metroTapTimes = metroTapTimes.filter(t => now - t < 3000); metroTapTimes.push(now);
+  const core = $('mt-core');
+  if (core && core.animate && !mReduced()) core.animate([{transform: 'scale(.965)'}, {transform: 'scale(1)'}], {duration: 180, easing: 'cubic-bezier(.22,.8,.3,1)'});
   if (metroTapTimes.length >= 2) {
     const gaps = metroTapTimes.slice(1).map((t,i) => t - metroTapTimes[i]);
-    const avg = gaps.reduce((a,b) => a+b, 0) / gaps.length;
-    metroState.bpm = Math.max(30, Math.min(280, Math.round(60000/avg)));
-    $('metro-bpm-range').value = metroState.bpm; $('metro-bpm-num').value = metroState.bpm;
+    metroSetBpm(60000 / (gaps.reduce((a,b) => a+b, 0) / gaps.length));
   }
 }
-function metroChangeSig(sig) { metroState.sig = sig; buildMetroPattern(); renderMetroLights(); renderMetroGrid(); }
-function metroSelectPreset(key) { metroState.preset = key; buildMetroPattern(); renderMetroGrid(); }
+function metroChangeSig(sig) { metroState.sig = sig; buildMetroPattern(); metroVis = []; renderMetroLights(); renderMetroGrid(); }
+function metroSelectPreset(key) { metroState.preset = key; buildMetroPattern(); renderMetroPresetSelect(); renderMetroGrid(); }
 function metroToggleCell(i, key) { metroState.pattern[i][key] = !metroState.pattern[i][key]; renderMetroGrid(); }
 function metroToggleLayer(key) { metroState.layers[key] = !metroState.layers[key]; renderMetroLayerButtons(); renderMetroGrid(); }
 function metroSetImpro(on) {
@@ -3198,9 +3264,21 @@ function metroSetImpro(on) {
 function metroChangeBassString(i) { metroState.bassString = +i; }
 
 /* ── rendering ── */
-function renderMetroLights() {
-  $('metro-lights').innerHTML = Array.from({length: metroState.sigCfg.beats}, (_,i) =>
-    `<div class="metro-light ${i===0?'accent':''}"></div>`).join('');
+function renderMetroLights() {   // le cadran : un arc par temps, des repères par subdivision, un point qui tourne
+  const svg = $('mt-svg'); if (!svg) return;
+  const N = metroState.sigCfg.beats, total = metroState.pattern.length, R = 134, gap = N > 4 ? 5 : 7;
+  const pt = (deg, r) => { const a = (deg - 90) * Math.PI / 180; return [150 + r * Math.cos(a), 150 + r * Math.sin(a)]; };
+  let h = '';
+  for (let i = 0; i < N; i++) {
+    const a0 = i * 360 / N + gap / 2, a1 = (i + 1) * 360 / N - gap / 2, [x0, y0] = pt(a0, R), [x1, y1] = pt(a1, R);
+    h += `<path class="mt-arc${i === 0 ? ' first' : ''}" d="M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}"/>`;
+    const [nx, ny] = pt(i * 360 / N + 180 / N, R - 22);
+    h += `<text class="mt-num" x="${nx.toFixed(1)}" y="${ny.toFixed(1)}">${i + 1}</text>`;
+  }
+  for (let k = 0; k < total; k++) { const b = k % metroState.sigCfg.sub === 0, [x, y] = pt(k * 360 / total, R + 13); h += `<circle class="mt-tick${b ? ' b' : ''}" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${b ? 2.6 : 1.5}"/>`; }
+  h += `<g id="mt-orb"><circle cx="150" cy="${150 - R}" r="7"/></g>`;
+  svg.innerHTML = h;
+  const sg = $('mt-sigs'); if (sg) sg.innerHTML = Object.keys(METRO_SIGS).sort().map(k => `<button type="button" class="${metroState.sig === k ? 'on' : ''}" aria-pressed="${metroState.sig === k}" onclick="metroChangeSig('${k}')">${k}</button>`).join('');
 }
 function renderMetroGrid() {
   const total = metroState.pattern.length;
@@ -3222,15 +3300,17 @@ function renderMetroGrid() {
   $('metro-grid-host').innerHTML = h + `</div></div>`;
 }
 function renderMetroPresetSelect() {
-  $('metro-preset').innerHTML = Object.entries(METRO_PRESETS).map(([k,v]) =>
-    `<option value="${k}" ${metroState.preset===k?'selected':''}>${v.name}</option>`).join('');
+  const h = $('mt-styles'); if (!h) return;
+  h.innerHTML = Object.entries(METRO_PRESETS).map(([k,v]) =>
+    `<button type="button" class="${metroState.preset===k?'on':''}" aria-pressed="${metroState.preset===k}" onclick="metroSelectPreset('${k}')">${v.name.replace(/ \(.*\)/, '')}</button>`).join('');
 }
 function renderMetroLayerButtons() {
   const defs = [['click','Clic'],['kick','Grosse caisse'],['snare','Caisse claire'],['hihat','Charleston'],['bass','Basse']];
   $('metro-layers').innerHTML = defs.map(([k,l]) =>
-    `<button type="button" class="layer-btn ${metroState.layers[k]?'on':''}" onclick="metroToggleLayer('${k}')">${l}</button>`).join('');
+    `<button type="button" class="${metroState.layers[k]?'on':''}" aria-pressed="${!!metroState.layers[k]}" onclick="metroToggleLayer('${k}')">${l}</button>`).join('');
   $('metro-mode-simple').classList.toggle('on', !metroState.improMode);
   $('metro-mode-impro').classList.toggle('on', metroState.improMode);
+  $('mt-band').style.display = metroState.improMode ? '' : 'none';
   $('metro-bass-row').style.display = metroState.layers.bass ? '' : 'none';
 }
 function renderMetroBassSelect() {
@@ -3240,12 +3320,8 @@ function renderMetroBassSelect() {
 function renderMetroAll() {
   if (!metroState.pattern) buildMetroPattern();
   renderMetroPresetSelect(); renderMetroLights(); renderMetroGrid();
-  renderMetroLayerButtons(); renderMetroBassSelect(); metroRenderToggleBtn();
-  $('metro-sig').value = metroState.sig;
-  $('metro-bpm-range').value = metroState.bpm;
-  $('metro-bpm-num').value = metroState.bpm;
+  renderMetroLayerButtons(); renderMetroBassSelect(); metroRenderToggleBtn(); metroPaintBpm();
 }
-
 /* ═══════ TUNER — mic input, autocorrelation pitch detection ═══════
    Senior note: FFT peak-picking is too coarse for a single plucked string
    (harmonics fool it easily). Time-domain autocorrelation with parabolic
