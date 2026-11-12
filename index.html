@@ -4,33 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guitar Memory Sheets</title>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,500..650,60;1,9..144,500..650,60&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* ── nuit (par defaut) ── */
-  --bg:#1a120b; --bg2:#1f160f; --card:#241a11; --card2:#2f2318; --card3:#3a2c1a;
-  --border:rgba(242,232,213,.10); --border2:rgba(242,232,213,.18);
-  --cream:#f2e8d5; --cream2:#c2aa88; --cream3:#a8916e; --cream4:#5a4530;
-  --gold:#c97a3f; --gold2:#e8964e; --gold3:#f5b870;
-  --sage:#7c8a5c; --terra:#b8543a; --mauve:#9c86ae;
-  --ink:#241a11; --shadow:rgba(10,6,2,.45); --nav-bg:rgba(26,18,11,.88); --grain:rgba(242,232,213,.025);
-  --r:18px; --rs:11px; --rx:7px;
-  --ra:18px 12px 20px 14px; --rb:12px 20px 14px 18px; --rc:20px 10px 18px 12px;
-  --serif:'Spectral',Georgia,serif; --sans:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  /* ── IDENTITÉ : bureau en bois sombre (fond) + fiches en papier ivoire (contenu) ── */
+  --bg:#150e08; --bg2:#1c130b; --card:#231810; --card2:#2d2015; --card3:#3a2a1b;
+  --border:rgba(245,234,212,.10); --border2:rgba(245,234,212,.20);
+  --cream:#f5ead4; --cream2:#cbb593; --cream3:#a8916f; --cream4:#5f4a34;
+  --gold:#cf7b3c; --gold2:#eb9a54; --gold3:#f6bd78;
+  --sage:#8d9d66; --terra:#c65b3d; --mauve:#a48fb8;
+  --ink:#231810; --shadow:rgba(6,3,1,.5); --nav-bg:rgba(21,14,8,.86); --grain:rgba(245,234,212,.022);
+  --paper:#fbf5e7; --paper-ink:#2b1d10; --on-accent:var(--ink);
+  --r:20px; --rs:13px; --rx:8px;
+  --ra:20px; --rb:20px; --rc:20px;
+  --serif:'Fraunces','Spectral',Georgia,serif; --sans:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   color-scheme: dark;
   /* ── mouvement ── */
   --ease-out:cubic-bezier(.22,.8,.3,1); --ease-pop:cubic-bezier(.34,1.56,.64,1);
   --t-fast:120ms; --t-mid:200ms; --t-slow:300ms;
 }
-:root[data-theme="light"]{
-  /* ── jour ── */
-  --bg:#f7efdc; --bg2:#f0e4c8; --card:#fff; --card2:#eee0c1; --card3:#e4d2a0;
-  --border:rgba(58,42,26,.10); --border2:rgba(58,42,26,.18);
-  --cream:#3a2a1a; --cream2:#5f4a2e; --cream3:#7a6444; --cream4:#c9b48a;
-  --gold:#b5602f; --gold2:#9c5a2a; --gold3:#d9924f;
-  --sage:#6d7b47; --terra:#a8472e; --mauve:#7a678f;
-  --ink:#241a11; --shadow:rgba(90,60,25,.18); --nav-bg:rgba(247,239,220,.86); --grain:rgba(120,80,30,.02);
-  color-scheme: light;
+/* Tout ce qui se pose sur le bureau comme une fiche : mêmes composants, jetons « papier » */
+:is(.pinned-card,.card,.pv-block,.fcard,.qc-sugg button,.qc-parts button,.lib-card,.modal,.coffre-block,.exo-card,.fl-card,.fl-rh,.fl-bpm,.fl-anc,.rc-card,.sg-cell,.rb-take,.nb,.we-card,.we-tool,.we-motif,.wpc,.part-card.pc,.ed-ct,.ed-rc,.sub-cell,.tool-card,.tt-plat,.tt-site,.tt-yt,.at-fld,.at-mic,.at-links,.at-card,.at-banner,.at-ptools input,.at-ch,.cp-panel,.at-roots button,.at-txt input,.at-rh,.at-in input,.at-pinrow,.at-lyr textarea,#v-sheet .chord-cell,.sv-reccard,.sv-bpm2,#v-sheet.all.compact .chord-cell,.sv-pop,#pc-pill,.hm-menu .pop){
+  --bg:#f4ead3; --bg2:#f1e6cc; --card:#fbf5e7; --card2:#f0e4c9; --card3:#e5d4ac;
+  --border:rgba(58,40,22,.11); --border2:rgba(58,40,22,.2);
+  --cream:#2b1d10; --cream2:#55412a; --cream3:#77613f; --cream4:#bfa97f;
+  --gold:#b25c2b; --gold2:#9a5424; --gold3:#d48a48;
+  --sage:#5f7039; --terra:#a8452c; --mauve:#75618b;
+  --shadow:rgba(8,4,1,.28); --grain:rgba(120,80,30,.02);
+  --on-accent:#fff;
+  --rg-ink:var(--cream);--rg-mut:var(--cream3);--rg-base:var(--cream4);--rg-cu:var(--gold);--rg-line:var(--border2);--rg-d:var(--gold2);--rg-u:var(--sage);--rg-x:var(--terra);
+  color:var(--cream2); color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:var(--bg);color:var(--cream2);min-height:100vh;overflow-x:hidden;transition:background .25s,color .25s;background-image:repeating-linear-gradient(100deg,var(--grain) 0 2px,transparent 2px 30px)}
@@ -573,7 +576,6 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .sg-ar{line-height:0;width:100%;display:flex;justify-content:center}
 /* rythme : ruban dans des blocs par temps (rhythmSVG). Les flèches droites .rga ne servent plus qu'aux cases de saisie et au guide « Touche une case » */
 :root{--rg-ink:var(--cream);--rg-mut:var(--cream3);--rg-base:var(--cream4);--rg-cu:var(--gold2);--rg-line:var(--border2);--rg-d:var(--gold2);--rg-u:var(--sage);--rg-x:var(--terra)}
-:root[data-theme="light"]{--rg-cu:var(--gold)}
 .rg.light{--rg-ink:#2a2118;--rg-mut:#8a7a5c;--rg-base:#cfc3a6;--rg-cu:#b5602f;--rg-line:#d8cdb4;max-width:340px}
 .rg{display:flex;flex-direction:column;gap:8px;width:100%;max-width:640px;color:var(--rg-ink)}
 .rg-row{display:flex;gap:8px}
@@ -608,7 +610,7 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .rb-seg{display:flex;gap:2px;background:var(--card2);border-radius:50px;padding:4px}
 .rb-seg button{flex:1;min-height:44px;border-radius:50px;background:none;font-weight:800;font-size:15px;color:var(--cream3);transition:background .15s,color .15s,box-shadow .15s}
 .rb-seg button.on{background:var(--gold);color:var(--ink);box-shadow:0 2px 8px rgba(200,120,58,.35)}
-:root[data-theme="light"] .rb-seg button.on{color:#fff}
+.rb-seg button.on{color:var(--on-accent)}
 .rb-seg.sm{flex:1}.rb-seg.sm button{min-height:40px;font-size:14px}
 .rb-lane{display:flex;align-items:center;gap:8px}
 .rb-rib{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:60px;padding:8px;border:1.5px dashed var(--gold);border-radius:16px;background:var(--bg2);cursor:pointer;transition:background .15s}
@@ -622,7 +624,7 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .rb-same{align-self:flex-start;min-height:44px;padding:0 18px;border-radius:50px;background:var(--card2);color:var(--cream2);font-weight:700;font-size:14px}
 .rb-same:hover{background:var(--card3)}
 .rb-play{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:50px;background:var(--gold);color:var(--ink);font-weight:800;font-size:16px;flex:none}
-:root[data-theme="light"] .rb-play{color:#fff}
+.rb-play{color:var(--on-accent)}
 .rb-play i{display:flex}.rb-play i svg{width:16px;height:16px}
 .rb-play.on{background:var(--terra);color:#fff}
 .rb-pl-r{width:46px;height:46px;min-height:0;padding:0;border-radius:50%}.rb-pl-r span{display:none}.rb-pl-r i svg{width:17px;height:17px}
@@ -651,7 +653,7 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .pv-wl{flex:none;width:46px;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--cream3);line-height:1.2}
 .pv-way .sv-rh{flex:1;min-width:0;margin:0}
 .pv-pl{flex:none;width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s}
-:root[data-theme="light"] .pv-pl{color:#fff}
+.pv-pl{color:var(--on-accent)}
 .pv-pl svg{width:16px;height:16px}.pv-pl.on{background:var(--terra);color:#fff}
 .pv-pl:active{transform:scale(.94)}
 .pv-capo{font-size:12px;font-weight:700;background:var(--card2);color:var(--gold2);border-radius:50px;padding:4px 10px;white-space:nowrap}
@@ -669,7 +671,7 @@ body.we-open{overflow:hidden}
 .we-top h2{flex:1;min-width:0;text-align:center;font-family:var(--serif);font-size:22px;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .we-x,.we-ok{flex:none;min-width:48px;height:48px;border-radius:50px;background:var(--card2);color:var(--cream2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;padding:0 14px}
 .we-ok{background:var(--gold);color:var(--ink);font-weight:800;padding:0 20px}
-:root[data-theme="light"] .we-ok{color:#fff}
+.we-ok{color:var(--on-accent)}
 .we-x svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
 .we-chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}.we-chips::-webkit-scrollbar{display:none}
 .we-chip{flex:none;min-height:44px;padding:0 18px;border-radius:50px;background:var(--card2);color:var(--cream2);font-weight:700;font-size:14px;white-space:nowrap}
@@ -737,7 +739,7 @@ body.we-open{overflow:hidden}
 .ed-x{width:44px;height:44px;border-radius:50%;background:none;color:var(--cream2);display:flex;align-items:center;justify-content:center;flex:none}
 .ed-x svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
 .ed-save{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:50px;background:var(--gold);color:var(--ink);font-weight:800;font-size:15px;flex:none;box-shadow:0 4px 14px rgba(200,120,58,.3);transition:background .15s}
-:root[data-theme="light"] .ed-save{color:#fff}
+.ed-save{color:var(--on-accent)}
 .ed-save svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .ed-save.off{background:var(--card2);color:var(--cream4);box-shadow:none}
 .ed-ta{display:grid;grid-template-columns:1.45fr 1fr;gap:10px;margin:2px 0 16px}
@@ -764,7 +766,7 @@ input.ed-in-a{color:var(--cream2)}
 .pc-names{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}.pc-names::-webkit-scrollbar{display:none}
 .pc-chip{flex:none;min-height:44px;padding:0 16px;border-radius:50px;background:var(--card2);color:var(--cream2);font-weight:700;font-size:14px;white-space:nowrap;transition:background .15s,color .15s}
 .pc-chip.on{background:var(--gold);color:var(--ink)}
-:root[data-theme="light"] .pc-chip.on{color:#fff}
+.pc-chip.on{color:var(--on-accent)}
 .pc-opt{font-size:12px;color:var(--cream3)}
 .part-card.collapsed .pc-names,.part-card.collapsed .pc-name{display:none}
 .pc .pc-name{margin-bottom:8px;width:100%}
@@ -1656,6 +1658,84 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
   .ed-dot,.rec-dot,.cap-blob-ring,.tt-live{animation:none!important}
   details::details-content{transition:none!important}
 }
+
+/* ═══════ IDENTITÉ VISUELLE — thème unique : bureau en bois sombre, fiches en papier ═══════ */
+html{background:#150e08}
+body{background:transparent;background-image:none;transition:none;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(120% 55% at 50% -12%,rgba(207,123,60,.22),transparent 62%),
+  radial-gradient(80% 45% at 105% 105%,rgba(141,157,102,.08),transparent 60%),
+  repeating-linear-gradient(96deg,rgba(245,234,212,.016) 0 1px,transparent 1px 27px),
+  linear-gradient(180deg,#1c130b,#120c07)}
+::selection{background:rgba(207,123,60,.45);color:#fff}
+:focus-visible{outline:2px solid var(--gold3);outline-offset:2px}
+h1,h2,h3,h4{letter-spacing:-.012em;font-optical-sizing:auto}
+/* barres */
+nav{background:linear-gradient(180deg,rgba(21,14,8,.96),rgba(21,14,8,.78));border-bottom:1px solid rgba(245,234,212,.07);transition:none}
+.subnav.seg-big{background:linear-gradient(180deg,rgba(21,14,8,.96),rgba(21,14,8,.86));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.subnav.seg-big button{background:rgba(245,234,212,.06)}
+.subnav.seg-big button.on,.subnav button.on{background:linear-gradient(180deg,#e2924f,#c57136);color:var(--ink);box-shadow:0 1px 0 rgba(255,255,255,.25) inset}
+#v-sheet .sv-tabs{background:linear-gradient(180deg,rgba(21,14,8,.96),rgba(21,14,8,.86));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+/* boutons */
+.btn{min-height:40px;font-weight:700}
+.btn-sm{min-height:36px}.btn-xs{min-height:0}
+.btn-primary{background:linear-gradient(180deg,#e2924f,#c57136);color:#231810;box-shadow:0 1px 0 rgba(255,255,255,.28) inset,0 6px 18px rgba(207,123,60,.26)}
+.btn-primary:hover{background:linear-gradient(180deg,#eb9d5b,#cf7a3d)}
+.btn-ghost{border-color:var(--border2)}
+/* le papier : relief doux, bord net */
+:is(.card,.fcard,.fl-card,.exo-card,.lib-card,.part-card.pc,.pv-block,.rc-card,.tool-card,.at-card,.tt-site,.tt-yt,.coffre-block,.we-card,.cp-panel,.pinned-card){border-color:rgba(58,40,22,.14);box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 10px 24px rgba(6,3,1,.34);background-image:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 46%)}
+.modal{box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 30px 80px rgba(0,0,0,.6)}
+.card:hover{background-color:var(--card);transform:translateY(-3px)}
+.card:nth-child(even),.fl-tile:nth-child(even){border-radius:var(--r)}
+.pinned-card:nth-child(odd),.pinned-card:nth-child(even){transform:none;border-radius:var(--r)}
+/* champs posés sur le bois */
+input[type=text],input[type=number],input[type=url],select,textarea{border-color:var(--border2)}
+.search-bar input{min-height:46px;background:rgba(245,234,212,.06)}
+/* titres d'écran */
+.hero h1{font-weight:600}
+.sec-lbl{color:var(--gold2);letter-spacing:1.6px}
+/* mode jeu : chaque partie est une fiche */
+#v-sheet .parts-view .pv-block{background:var(--card);background-image:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 46%);border:1px solid rgba(58,40,22,.14);border-radius:var(--r);padding:16px 14px 14px;box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 10px 24px rgba(6,3,1,.34)}
+#v-sheet.all .parts-view .pv-block{padding:14px 14px 14px;margin-bottom:12px;border-bottom:1px solid rgba(58,40,22,.14);overflow:hidden}
+#v-sheet.all .parts-view .pv-block.on{box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 0 0 2px var(--gold3),0 12px 28px rgba(6,3,1,.4)}
+#v-sheet.all .parts-view .pv-block.on::before{left:0;top:18px;bottom:18px;width:5px}
+#v-sheet .chord-cell{background:rgba(255,255,255,.55);border-color:var(--border2)}
+#v-sheet.all .chord-cell{background:none}
+#v-sheet.all.compact .chord-cell{background:rgba(255,255,255,.55)}
+.sv-bar{background:linear-gradient(180deg,rgba(28,19,11,.9),rgba(18,12,7,.97));border-top-color:rgba(245,234,212,.12)}
+.sv-play{background:linear-gradient(180deg,#e2924f,#c57136);box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 8px 22px rgba(207,123,60,.35)}
+.sv-play.create{background:rgba(245,234,212,.06);box-shadow:none}
+.sv-cancel{background:rgba(245,234,212,.08)}
+.sv-bar.playing .sv-play{animation:idHalo 1.6s ease-out infinite}
+@keyframes idHalo{0%{box-shadow:0 0 0 0 rgba(235,154,84,.55),0 8px 22px rgba(207,123,60,.35)}100%{box-shadow:0 0 0 18px rgba(235,154,84,0),0 8px 22px rgba(207,123,60,.35)}}
+/* menus sombres */
+.more-grid button{background:rgba(245,234,212,.05);border-color:var(--border);min-height:68px;border-radius:var(--r)}
+.more-grid button:hover{background:rgba(245,234,212,.09)}
+.toolbar,.row-go{background:rgba(245,234,212,.05)}
+/* entrée d'un écran : les cartes se posent l'une après l'autre */
+@keyframes idRise{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block){animation:idRise .42s var(--ease-out) both}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(2){animation-delay:40ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(3){animation-delay:80ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(4){animation-delay:120ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(5){animation-delay:160ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(6){animation-delay:200ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(n+7){animation-delay:240ms}
+:is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.rc-card):active{transform:scale(.985)}
+
+/* tableaux des leçons : bouton d'écoute en tête, compact */
+.ctable td.pl{width:44px;padding-left:0}
+.ctable td.pl .btn{min-width:40px;min-height:40px;padding:0;justify-content:center;border-radius:50%;font-size:0;gap:0}
+@media(max-width:600px){.ctable td,.ctable th{padding:7px 5px}.ctable td.n{white-space:normal}.ctable{font-size:12.5px}}
+/* étapes verrouillées : discrètes, sur le bois */
+.rc-card.lock{opacity:1;background:rgba(245,234,212,.04);background-image:none;box-shadow:none;border:1px dashed rgba(245,234,212,.2);color:#a8916f;
+  --cream:#cbb593;--cream2:#a8916f;--cream3:#8a7556;--rg-ink:#8a7556;--rg-d:#8a7556;--rg-u:#8a7556;--rg-x:#8a7556;--rg-mut:#5f4a34}
+/* accueil Fiches */
+.hm-top{padding:22px 0 12px}
+.hm-top h1{font-weight:600;font-size:clamp(30px,5vw,40px);display:flex;align-items:baseline;gap:12px}
+.hm-top h1 small{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--cream3);letter-spacing:0}
+.filt{min-height:36px;padding:0 16px;font-size:13px;background:rgba(245,234,212,.06);border-color:var(--border2);color:var(--cream2)}
+.filt.on{background:linear-gradient(180deg,#e2924f,#c57136);border-color:transparent;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1687,7 +1767,7 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
       <button class="nav-link" id="nl-train" onclick="goTrain()">S’entraîner</button>
       <button class="nav-link" id="nl-plus" onclick="go('plus')">Plus</button>
     </div>
-    <button class="btn-icon" id="theme-toggle" onclick="toggleTheme()" title="Basculer jour / nuit" aria-label="Basculer jour / nuit"></button>
+    
   </div>
 </nav>
 
@@ -1872,7 +1952,7 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
 <!-- ══ METRONOME ══ -->
 <div class="view" id="v-metro">
   <div class="wrap-narrow">
-    <div class="hero"><div><h1>Le <em>metronome</em></h1><p>Travaille ton timing seul, ou lance le groupe complet et improvise par dessus</p></div></div>
+    <div class="hero"><div><h1>Le <em>métronome</em></h1><p>Travaille ton timing seul, ou lance le groupe complet et improvise par-dessus</p></div></div>
 
     <div class="fcard" style="text-align:center">
       <div class="metro-visual">
@@ -1917,7 +1997,7 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
         <div class="fg"><label>Style</label>
           <select id="metro-preset" onchange="metroSelectPreset(this.value)"></select></div>
       </div>
-      <p style="font-size:11px;color:var(--cream4);margin-bottom:6px">Clique une case pour modifier le motif — c est ton rythme, pas juste le preset.</p>
+      <p style="font-size:11px;color:var(--cream4);margin-bottom:6px">Clique une case pour modifier le motif — c’est ton rythme, pas seulement le modèle.</p>
       <div id="metro-grid-host"></div>
     </div>
 
@@ -1950,7 +2030,7 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
     </div>
 
     <div class="fcard">
-      <div class="fcard-t">Cordes a vide (reference)</div>
+      <div class="fcard-t">Cordes à vide (référence)</div>
       <p style="font-size:12px;color:var(--cream4);margin-bottom:14px">Pas de micro sous la main ? Clique une corde pour entendre la note juste.</p>
       <div class="lib-grid" id="tuner-strings"></div>
     </div>
@@ -1960,24 +2040,24 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
 <!-- ══ IMPORT ══ -->
 <div class="view" id="v-import">
   <div class="wrap-narrow">
-    <div class="hero"><div><h1>Importer une <em>tab</em></h1><p>Colle une tablature texte, ou garde une image en reference</p></div></div>
+    <div class="hero"><div><h1>Importer une <em>tab</em></h1><p>Colle une tablature texte, ou garde une image en référence</p></div></div>
     <div class="fcard">
-      <div class="fcard-t">Coller du texte (tab ASCII ou grille d accords)</div>
+      <div class="fcard-t">Coller du texte (tab ou grille d’accords)</div>
       <div class="fg">
         <textarea id="imp-text" rows="9" class="mono" placeholder="[Intro]&#10;Em  G  D  A7&#10;&#10;[Verse]&#10;e|---0---3---|&#10;B|---0---0---|&#10;..."></textarea>
       </div>
       <div style="display:flex;gap:9px;flex-wrap:wrap">
-        <button class="btn btn-primary btn-sm" onclick="parseImport()">Analyser et pre-remplir</button>
+        <button class="btn btn-primary btn-sm" onclick="parseImport()">Analyser et pré-remplir</button>
         <button class="btn btn-ghost btn-sm" onclick="document.getElementById('imp-file').click()">Charger un .txt</button>
         <input type="file" id="imp-file" accept=".txt,text/plain" style="display:none" onchange="loadTxt(this)">
       </div>
       <div id="imp-preview" style="margin-top:14px"></div>
     </div>
     <div class="fcard">
-      <div class="fcard-t">Image de reference (split-screen)</div>
-      <p style="font-size:12px;color:var(--cream4);margin-bottom:12px">Pas d OCR approximatif : l image reste affichee a cote de l editeur pour recopier tranquillement, et est gardee dans la fiche.</p>
+      <div class="fcard-t">Image de référence</div>
+      <p style="font-size:12px;color:var(--cream4);margin-bottom:12px">Pas de lecture automatique approximative : l’image reste affichée à côté de l’éditeur pour recopier tranquillement, et elle est gardée dans la fiche.</p>
       <div class="drop-zone" id="img-drop" onclick="document.getElementById('imp-img').click()">
-        Deposer une image de tab, ou cliquer pour choisir
+        Déposer une image de tab, ou cliquer pour choisir
       </div>
       <input type="file" id="imp-img" accept="image/*" style="display:none" onchange="loadTabImg(this)">
       <div id="img-preview" style="margin-top:12px"></div>
@@ -1985,7 +2065,7 @@ details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
 
     <div class="fcard">
       <div class="fcard-t">Test<span class="test-badge">Beta</span></div>
-      <p style="font-size:12px;color:var(--cream4);margin-bottom:6px">Capture éclair — le micro écoute quelques secondes et propose des accords probables. Experimental, pas fiable à 100 % : a prendre comme point de depart, pas comme verite.</p>
+      <p style="font-size:12px;color:var(--cream4);margin-bottom:6px">Capture éclair — le micro écoute quelques secondes et propose des accords probables. Expérimental, pas fiable à 100 % : à prendre comme point de départ, pas comme vérité.</p>
       <div class="cap-wrap">
         <button class="btn btn-primary btn-sm" id="cap-toggle" onclick="toggleCapture()">Écouter 5 secondes</button>
         <div class="cap-blob" id="cap-blob" style="display:none">
@@ -2127,21 +2207,9 @@ function toast(msg, err) {
 /* ── THEME (jour / nuit) ── */
 const SUN_ICO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>';
 const MOON_ICO = '<svg viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z" fill="currentColor" stroke="none"/></svg>';
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('gms_theme', t);
-  const b = $('theme-toggle'); if (b) b.innerHTML = t === 'light' ? MOON_ICO : SUN_ICO;
-}
-function toggleTheme() {
-  const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-  applyTheme(cur);
-}
-function initTheme() {
-  const saved = localStorage.getItem('gms_theme');
-  const preferLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-  applyTheme(saved || (preferLight ? 'light' : 'dark'));
-}
-initTheme();
+function applyTheme() {}
+function toggleTheme() {}
+document.documentElement.removeAttribute('data-theme');
 
 /* ── INDEXEDDB ── */
 const DB = {
@@ -3053,8 +3121,8 @@ function stopMetro() {
 function metroRenderToggleBtn() {
   const b = $('metro-toggle'); if (!b) return;
   b.innerHTML = metroPlaying
-    ? '<svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg> Arreter'
-    : '<svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Demarrer';
+    ? '<svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg> Arrêter'
+    : '<svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Démarrer';
   b.classList.toggle('btn-primary', metroPlaying);
 }
 function metroSchedulerTick() {
@@ -3183,7 +3251,7 @@ function renderMetroAll() {
    (harmonics fool it easily). Time-domain autocorrelation with parabolic
    interpolation is the standard choice for monophonic guitar tuners and is
    cheap enough to run several times a second in plain JS. */
-const STRING_LABELS_FULL = ['Mi grave (6e)','La (5e)','Re (4e)','Sol (3e)','Si (2e)','Mi aigu (1re)'];
+const STRING_LABELS_FULL = ['Mi grave (6e)','La (5e)','Ré (4e)','Sol (3e)','Si (2e)','Mi aigu (1re)'];
 const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 let tunerStream = null, tunerAnalyser = null, tunerBuf = null, tunerRAF = null, tunerLastRun = 0;
 
@@ -3203,7 +3271,7 @@ async function toggleTuner() {
   src.connect(tunerAnalyser);
   tunerBuf = new Float32Array(tunerAnalyser.fftSize);
   const btn = $('tuner-toggle');
-  btn.innerHTML = '<svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Arreter le micro';
+  btn.innerHTML = '<svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Arrêter le micro';
   $('tuner-display').style.display = '';
   tunerLastRun = 0;
   tunerRAF = requestAnimationFrame(tunerLoop);
@@ -3329,7 +3397,7 @@ async function toggleCapture() {
   capAnalyser.fftSize = 8192;
   src.connect(capAnalyser);
   capChroma = new Array(12).fill(0);
-  $('cap-toggle').textContent = 'Arreter';
+  $('cap-toggle').textContent = 'Arrêter';
   $('cap-blob').style.display = '';
   $('cap-chips').innerHTML = '';
   let elapsed = 0;
@@ -3525,7 +3593,7 @@ const keyChips = (sel, fn) => `<div class="filters" style="margin-bottom:10px">$
   `<button type="button" class="filt ${sel===k?'on':''}" onclick="${fn}('${k}')">${k} (${frNote(k)})</button>`).join('')}</div>`;
 const P = t => `<p class="cours-p">${t}</p>`;
 const H = t => `<div class="cours-h">${t}</div>`;
-const KEY = t => `<div class="cours-key"><div class="kt">A retenir</div>${t}</div>`;
+const KEY = t => `<div class="cours-key"><div class="kt">À retenir</div>${t}</div>`;
 
 /* ── 1. notes ── */
 function lessonNotes() {
@@ -3540,7 +3608,7 @@ function lessonNotes() {
     P('Entre la plupart des notes, il existe une note intermédiaire. <b>C♯</b> (Do dièse) = un cran au-dessus de C. <b>D♭</b> (Ré bémol) = un cran en dessous de D. C♯ et D♭ sont <b>exactement le même son</b>, seul le nom change selon le contexte.') +
     P('<b>Exception :</b> entre <b>E–F</b> et entre <b>B–C</b>, il n’y a rien. Ces notes sont collées. Retiens-le, ça sert tout le temps.') +
     H('Sur la guitare : 1 case = 1 demi-ton') +
-    P('Avancer d <b>une case</b> monte d’un <b>demi-ton</b> (la note suivante dans la liste). Deux cases = un <b>ton</b>. Douze cases = une octave : à la case 12, tu retrouves les notes des cordes à vide, d’où le double repère. Clique n’importe quelle note du manche :') +
+    P('Avancer d’<b>une case</b> monte d’un <b>demi-ton</b> (la note suivante dans la liste). Deux cases = un <b>ton</b>. Douze cases = une octave : à la case 12, tu retrouves les notes des cordes à vide, d’où le double repère. Clique n’importe quelle note du manche :') +
     fretboardSVG([], null, {all:true}) +
     P('Cordes à vide, de la plus grave à la plus aiguë : <b>E A D G B E</b> (Mi La Ré Sol Si Mi). Les notes naturelles sont en clair, les dièses en grisé.') +
     P('Astuce : la <b>case 5</b> d’une corde donne la note de la corde à vide suivante (sauf sur la corde de G, où c’est la <b>case 4</b>). C’est le principe de l’accordage « à la 5e case ».') +
@@ -3568,8 +3636,8 @@ function lessonIntervals() {
     P('Un <b>intervalle</b> = l’écart entre deux notes, compté en demi-tons (donc en cases). C’est LA notion qui explique tout : <b>un accord n’est rien d’autre qu’un empilement d’intervalles</b>. Et chaque intervalle a sa propre couleur émotionnelle.') +
     P('Visualise-les comme une règle graduée en cases, en partant de E. Clique une case pour l’entendre :') + intervalRuler() +
     P('Chaque bouton joue les deux notes l’une après l’autre, puis ensemble.') +
-    `<div class="table-wrap"><table class="ctable"><tr><th>Cases</th><th>Nom</th><th>Sensation</th><th></th></tr>${INTERVALS.map(([s, n, fx]) =>
-      `<tr><td style="font-family:var(--mono);color:var(--gold2)">${s}</td><td class="n">${n}${DEG[s % 12] && s < 12 ? ' ' + degBadge(DEG[s]) : ''}</td><td>${fx}</td><td>${playBtn(`onclick="playInterval(${s})"`, '')}</td></tr>`).join('')}</table></div>` +
+    `<div class="table-wrap"><table class="ctable"><tr><th></th><th>Cases</th><th>Nom</th><th>Sensation</th></tr>${INTERVALS.map(([s, n, fx]) =>
+      `<tr><td class="pl">${playBtn(`onclick="playInterval(${s})"`, '')}</td><td style="font-family:var(--mono);color:var(--gold2)">${s}</td><td class="n">${n}${s < 12 ? ' ' + degBadge(['R','♭2','2','♭3','3','4','♭5','5','♭6','6','♭7','7'][s]) : ''}</td><td>${fx}</td></tr>`).join('')}</table></div>` +
     H('Les deux tierces qui changent tout') +
     P('<b>Tierce majeure</b> (4 cases) = joyeux. <b>Tierce mineure</b> (3 cases) = triste. Un seul demi-ton d’écart et l’humeur s’inverse. Écoute-les à la suite :') +
     `<div style="display:flex;gap:8px;flex-wrap:wrap">${playBtn('onclick="playInterval(3)"', 'Tierce mineure (3)')}${playBtn('onclick="playInterval(4)"', 'Tierce majeure (4)')}</div>` +
@@ -3605,7 +3673,7 @@ function lessonBuild() {
 /* ── 4. couleurs ── */
 function lessonColors() {
   const r = coursSt.root;
-  return H('D où vient l’émotion d’un accord ?') +
+  return H('D’où vient l’émotion d’un accord ?') +
     P('Chaque type d’accord a sa couleur, et elle vient des <b>intervalles</b> qu’il contient :') +
     P('• <b>La tierce</b> décide majeur ou mineur — joie ou tristesse.<br>• <b>La quinte</b> donne la solidité ; on la remarque à peine.<br>• <b>La septième</b> ajoute de la tension (♭7, bluesy) ou de la douceur (7, jazzy).<br>• <b>Les sus</b> remplacent la tierce par une 2 ou une 4 : ni joyeux ni triste, suspendu.<br>• <b>Les extensions</b> (6, 9, add9) ajoutent du scintillement.') +
     `<div class="cours-ctrl"><div class="fg"><label>Sur la fondamentale</label><select onchange="coursSt.root=+this.value;renderCoursLesson()">${rootOptions(r)}</select></div></div>` +
@@ -3741,9 +3809,9 @@ function lessonCapo() {
     H('Calculateur : forme → son réel') +
     `<div class="cours-ctrl"><div class="fg"><label>Capo</label><select onchange="coursSt.capo=+this.value;renderCoursLesson()">${[0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${c===i?'selected':''}>${i ? 'Case ' + i : 'Sans capo'}</option>`).join('')}</select></div></div>` +
     capoSVG(c) +
-    `<div class="table-wrap"><table class="ctable"><tr><th>Tu joues la forme</th><th>Ça sonne comme</th><th></th></tr>${CAPO_SHAPES.map(s => {
+    `<div class="table-wrap"><table class="ctable"><tr><th></th><th>Tu joues la forme</th><th>Ça sonne comme</th></tr>${CAPO_SHAPES.map(s => {
       const p = parseName(s), real = pcName(p.pc + c) + p.q;
-      return `<tr><td class="n">${s}</td><td class="n" style="color:var(--gold2)">${real}</td><td>${playBtn(`onclick="playChord(newChord('${s}'),${c})"`, '')}</td></tr>`; }).join('')}</table></div>` +
+      return `<tr><td class="pl">${playBtn(`onclick="playChord(newChord('${s}'),${c})"`, '')}</td><td class="n">${s}</td><td class="n" style="color:var(--gold2)">${real}</td></tr>`; }).join('')}</table></div>` +
     H('Quel capo pour jouer dans la bonne tonalité ?') +
     P('Le morceau est en A mais tu veux jouer avec tes formes de G ? Compte les demi-tons de G jusqu’à A : G → G♯ → A = 2. Donc <b>capo 2</b>.') +
     `<div class="cours-ctrl">
@@ -7071,6 +7139,7 @@ function go(v) {
   document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
   $('v-' + v).style.setProperty('--vx', vx);
   $('v-' + v).classList.add('on');
+  { const el = $('v-' + v); el.classList.add('enter'); clearTimeout(el._et); el._et = setTimeout(() => el.classList.remove('enter'), 750); }
   document.body.classList.toggle('playing', v === 'sheet'); // mode jeu : navigation masquée
   v === 'sheet' ? wakeOn() : wakeOff();
   const t = $('toast'); if (t && Date.now() - (t._ts || 0) > 500) { t.classList.remove('show'); clearTimeout(t._t); }   // un toast ne suit pas à l'écran suivant
@@ -7136,9 +7205,7 @@ function renderPlus() {
     ['import','Importer','Depuis une tab ou un texte',ic('<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>')],
     ['tools','Outils','Sites de guitare utiles',ic('<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>')],
     ['tuto','Tutos','Trouver le tuto d’un morceau',ic('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>')]];
-  const light = document.documentElement.getAttribute('data-theme') === 'light';
-  $('plus-body').innerHTML = '<div class="more-grid">' + items.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') +
-    `<button type="button" onclick="toggleTheme();renderPlus()">${light ? MOON_ICO : SUN_ICO}<span><b>Thème ${light ? 'nuit' : 'jour'}</b><small>Passer en mode ${light ? 'nuit' : 'jour'}</small></span></button></div>`;
+  $('plus-body').innerHTML = '<div class="more-grid">' + items.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') + '</div>';
 }
 
 /* ═══════ HOME / CAHIER ═══════ */
@@ -7161,7 +7228,7 @@ function renderGreeting() {
   $('greet-count').textContent = `${sheets.length} fiche${sheets.length>1?'s':''}`;
 }
 function renameUser() {
-  const v = prompt('Comment veux-tu qu on t appelle ?', localStorage.getItem('gms_name') || '');
+  const v = prompt('Comment veux-tu qu’on t’appelle ?', localStorage.getItem('gms_name') || '');
   if (v == null) return;
   localStorage.setItem('gms_name', v.trim());
   renderGreeting();
@@ -7538,7 +7605,7 @@ function coffreViewHTML(s) {
   if (s.memo) h += `<div class="pv-note" style="margin-top:0;margin-bottom:18px">${esc(s.memo)}</div>`;
 
   h += `<div class="coffre-sec"><div class="coffre-sec-t">Nos videos</div>`;
-  h += videos.length ? `<div class="media-list" data-media-host="video"></div>` : `<div class="coffre-empty">Aucune video pour l instant.</div>`;
+  h += videos.length ? `<div class="media-list" data-media-host="video"></div>` : `<div class="coffre-empty">Aucune vidéo pour l’instant.</div>`;
   h += `</div>`;
 
   h += `<div class="coffre-sec"><div class="coffre-sec-t">Tutos utiles</div>`;
@@ -7719,13 +7786,13 @@ function renderOptBlocks() {
     <input type="file" id="media-in-video" accept="video/*" style="display:none" onchange="addMediaFile(this,'video')">
 
     <div class="part-sub" style="margin-top:18px"><span class="part-sub-t">Variations de rythme</span></div>
-    <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Chante ou joue une variante — parfois 3 secondes de voix valent mieux qu un schema.</p>
+    <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Chante ou joue une variante — parfois 3 secondes de voix valent mieux qu’un schéma.</p>
     <div class="media-list" id="draft-media-audio" style="margin-bottom:8px"></div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <button class="btn btn-ghost btn-sm" id="rec-btn" onclick="toggleRec()">
         <svg class="ico" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
         Enregistrer</button>
-      <button class="add-btn" onclick="document.getElementById('media-in-audio').click()">+ Deposer un fichier audio</button>
+      <button class="add-btn" onclick="document.getElementById('media-in-audio').click()">+ Déposer un fichier audio</button>
       <input type="file" id="media-in-audio" accept="audio/*" style="display:none" onchange="addMediaFile(this,'audio')">
       <span id="rec-state" style="font-size:12px;color:var(--cream4)"></span>
     </div>
@@ -7830,7 +7897,7 @@ async function toggleRec() {
       renderDraftMedia(); toast('Prise enregistrée');
     };
     mr.start();
-    btn.innerHTML = 'Arreter'; btn.classList.add('btn-primary');
+    btn.innerHTML = 'Arrêter'; btn.classList.add('btn-primary');
     const t0 = Date.now();
     st.innerHTML = '<span class="rec-dot" style="display:inline-block;margin-right:6px"></span><span id="rec-time">0s</span>';
     const iv = setInterval(() => {
@@ -8382,7 +8449,7 @@ function weBass(v) { const a = wePart().arp; a.bass = v === 'auto' ? 'auto' : +v
 function lyricsEditorHTML(i, p) {
   const chords = p.chords;
   return `<div class="rh-wrap" style="padding:10px">
-    <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Clique un accord pour l inserer au curseur — relie les paroles au bon moment. Optionnel : ecris juste le texte si tu preferes.</p>
+    <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Clique un accord pour l’insérer au curseur : il relie les paroles au bon moment. Facultatif : écris juste le texte si tu préfères.</p>
     <div class="chord-chips" style="margin-bottom:8px">
       ${chords.map(c => `<button type="button" class="lib-hit" onclick="insertLyricTag(${i},'[${esc(c.name)}]')">${esc(c.name)}</button>`).join('')
         || '<span style="font-size:11px;color:var(--cream4)">Ajoute d abord des accords a cette partie.</span>'}
@@ -8424,7 +8491,7 @@ function closeCE() { $('m-chord').classList.add('hide'); ceState = null; }
 function renderCE() {
   const c = ceState.chord;
   $('m-chord-body').innerHTML = `
-    <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l accord' : 'Ajouter un accord'}</div>
+    <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l’accord' : 'Ajouter un accord'}</div>
     <div class="fg">
       <label>Nom — tape un accord connu, le diagramme se remplit</label>
       <input type="text" id="ce-name" value="${esc(c.name)}" placeholder="Am, F#m, Cmaj7..." autocomplete="off"
@@ -8691,7 +8758,7 @@ function renderLib() {
       <div class="lib-sec-t">Le reste</div>
       <div class="lib-sec-d">${rest.length} accords — filtre par famille.</div>
       <div class="filters">
-        ${[['all','Tous'],['maj','Majeurs'],['min','Mineurs'],['7','Septiemes'],['sus','Sus'],['add','Add9'],['barre','Barres']]
+        ${[['all','Tous'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9'],['barre','Barrés']]
           .map(([k,l]) => `<button class="filt ${libFilter===k?'on':''}" onclick="libFilter='${k}';renderLib()">${l}</button>`).join('')}
       </div>
       <div class="lib-grid">${filtered.map(c => card(c)).join('') || '<p style="color:var(--cream4);font-size:13px">Rien dans cette famille.</p>'}</div>
@@ -8701,7 +8768,7 @@ function renderLib() {
 /* ═══════ IMPORT: ASCII TAB / CHORD SHEET PARSER ═══════ */
 const SECT_RE = /^\s*[\[\(]?\s*(intro|verse|couplet|chorus|refrain|bridge|pont|solo|outro|pre-?chorus|interlude|riff)\s*\d*\s*[\]\)]?\s*:?\s*$/i;
 const TAB_RE  = /^\s*[eEBGDAa]\s*[\|:]/;
-const CHORD_TOK = /^[A-G](#|b)?(m|maj|min|dim|aug|sus|add)?\d*(\/[A-G](#|b)?)?$/;
+const CHORD_TOK = /^[A-G](#|b)?(m|maj|min|dim|aug|sus|add|M)?\d*((sus|add|maj|dim|aug|b|#)\d*)*(\/[A-G](#|b)?)?$/;
 function isChordLine(l) {
   const t = l.trim().split(/\s+/).filter(Boolean);
   return t.length > 0 && t.length <= 12 && t.every(x => CHORD_TOK.test(x));
@@ -8738,15 +8805,15 @@ function loadTxt(inp) {
 let impParts = null;
 function parseImport() {
   const txt = $('imp-text').value;
-  if (!txt.trim()) { toast('Colle une tab d abord', true); return; }
+  if (!txt.trim()) { toast('Colle une tab d’abord', true); return; }
   impParts = parseTab(txt);
   const prev = $('imp-preview');
   if (!impParts.length) {
-    prev.innerHTML = `<p style="font-size:12px;color:var(--terra)">Rien de reconnu. Attendu : des lignes d accords (Em G D) et/ou des lignes de tab (e|---0---).</p>`;
+    prev.innerHTML = `<p style="font-size:12px;color:var(--terra)">Rien de reconnu. Attendu : des lignes d’accords (Em G D) et/ou des lignes de tab (e|---0---).</p>`;
     return;
   }
   prev.innerHTML = `<div style="font-size:12px;color:var(--sage);font-weight:600;margin-bottom:10px">
-      ${impParts.length} partie${impParts.length>1?'s':''} detectee${impParts.length>1?'s':''} — verifie puis cree la fiche.</div>
+      ${impParts.length} partie${impParts.length>1?'s':''} détectée${impParts.length>1?'s':''} — vérifie puis crée la fiche.</div>
     ${impParts.map(p => `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:7px">
       ${p.name ? `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:5px">${esc(p.name)}</div>` : ''}
       ${p.chords.length ? `<div style="font-size:12px;color:var(--cream2)">${p.chords.map(c => esc(c.name)).join(' · ')}</div>` : ''}
@@ -8777,7 +8844,7 @@ async function loadTabImg(inp) {
   $('img-preview').innerHTML = `<div class="split">
     <div class="split-pane"><img src="${url}"></div>
     <div class="split-pane"><p style="font-size:12px;color:var(--cream3);line-height:1.7">
-      L image est gardee comme reference. Ouvre l editeur : elle restera consultable dans la fiche pendant que tu recopies les accords.
+      L’image est gardée comme référence. Ouvre l’éditeur : elle restera consultable dans la fiche pendant que tu recopies les accords.
       </p><button class="btn btn-primary btn-sm" style="margin-top:10px" onclick="startFromImage()">Créer une fiche avec cette image</button></div>
   </div>`;
   inp.value = '';
@@ -8787,7 +8854,7 @@ function startFromImage() {
   draft.tabImage = pendingTabImg;
   draft.blocks.coffre = true;
   pendingTabImg = null;
-  openEditor('Nouvelle fiche (image de reference)');
+  openEditor('Nouvelle fiche (image de référence)');
 }
 
 /* ═══════ PRINT ═══════ */
@@ -8987,7 +9054,7 @@ document.addEventListener('keydown', e => {
     const p1 = newPart('Couplet');
     p1.chords = [newChord('Em'), newChord('G'), newChord('D'), newChord('A7')];
     p1.rhythm = rhFromPat('DuDuDuDu');
-    p1.note = 'x2 — leger';
+    p1.note = 'x2 — léger';
     const p2 = newPart('Refrain');
     p2.chords = [newChord('C'), newChord('Em'), newChord('G'), newChord('Asus4')];
     p2.rhythm = rhFromPat('D-DU-UDU');
