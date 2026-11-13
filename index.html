@@ -1889,14 +1889,16 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
 .ml-line{stroke:var(--gold);stroke-width:7;stroke-linecap:round;fill:none}
 .ml-loop{stroke:var(--sage);stroke-width:2.2;stroke-dasharray:5 4;fill:none;stroke-linecap:round}
 .ml-st{fill:var(--card);stroke:var(--cream);stroke-width:3.4}.ml-st.on{fill:var(--gold);stroke:var(--gold)}
-.ml-n{font:800 15px var(--sans);text-anchor:middle;fill:var(--cream)}
-.ml-t{font:700 14px var(--sans);text-anchor:middle;fill:var(--cream3)}
-.ml-a{font:800 22px var(--sans);text-anchor:middle;letter-spacing:.06em}.ml-a .d{fill:var(--gold2)}.ml-a .u{fill:var(--sage)}
-.ml-b{font:700 12px var(--sans);text-anchor:middle;fill:var(--sage)}
+.ml-ar{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}.ml-ar.d{stroke:var(--gold)}.ml-ar.u{stroke:var(--sage)}.ml-ar.on{stroke-width:6.5}
+.ml-n{font:800 14px var(--sans);text-anchor:middle;fill:var(--cream)}
+.ml-t{font:700 13px var(--sans);text-anchor:middle;fill:var(--cream2)}
+.ml-b{font:700 11px var(--sans);text-anchor:middle;fill:var(--sage)}
+.ml-key{display:flex;gap:14px;flex-wrap:wrap;font:700 12px var(--sans);color:var(--cream3);margin-top:2px}.ml-key .d{color:var(--gold2)}.ml-key .u{color:var(--sage)}
 .ml-tg{margin:4px 0 0;min-height:36px;padding:0 14px;border-radius:99px;border:1.5px solid var(--border2);background:none;color:var(--cream);font:700 12px var(--sans)}
 .ml-tg.on{background:var(--cream);color:var(--card)}
 .ml-time{margin-top:8px}
-#v-sheet.all .ml{max-height:132px}
+#v-sheet.all .ml{max-height:150px}
+#v-sheet.all .ml-key{display:none}
 #v-sheet.all .pv-way .pv-wl{display:none}
 </style>
 </head>
@@ -7599,20 +7601,21 @@ function rhGroupName(h) {
 }
 function metroLineHTML(rh, cursor) {
   rh = rhNorm(rh); const gs = rhGroups(rh), n = gs.length; if (!n) return '';
-  const sw = Math.max(70, Math.min(96, 270 / n)), W = n * sw + 36, y = 46;
+  const sw = Math.max(78, Math.min(104, 300 / n)), W = n * sw + 30, y = 74;
   const act = cursor == null ? -1 : gs.findIndex(g => cursor >= g.k0 && cursor <= g.k1 + 1);
-  let svg = `<svg viewBox="0 0 ${W} 112" class="ml" role="img" aria-label="Rythme en ${n} groupe${n > 1 ? 's' : ''}">`;
-  const xs = gs.map((g, i) => 18 + sw / 2 + i * sw);
-  svg += `<path d="M${xs[0]} ${y}H${xs[n - 1]}" class="ml-line"/>`;
-  svg += `<path d="M${xs[n - 1]} ${y}H${W - 8}q8 0 8 14v14q0 14 -8 14H${xs[0] - 8}q-8 0 -8 -14v-14q0 -14 8 -14" class="ml-loop"/><path d="M${xs[0] - 3} ${y - 6}l6 6l-6 6" class="ml-loop"/>`;
+  let svg = `<svg viewBox="0 0 ${W} 160" class="ml" role="img" aria-label="Rythme en ${n} groupe${n > 1 ? 's' : ''}">`;
+  const xs = gs.map((g, i) => 15 + sw / 2 + i * sw);
+  svg += `<path d="M${xs[0] - 10} ${y}H${xs[n - 1] + 10}" class="ml-line"/>`;
+  svg += `<path d="M${xs[n - 1] + 10} ${y}H${W - 8}q8 0 8 8V${y + 52}q0 8 -8 8H${xs[0] - 14}q-8 0 -8 -8V${y + 8}q0 -8 8 -8h5" class="ml-loop"/>`;
   gs.forEach((g, i) => {
-    const x = xs[i], arrows = g.hits.map(d => d === 'D' ? '↓' : '↑');
-    svg += `<circle cx="${x}" cy="${y}" r="15" class="ml-st${i === act ? ' on' : ''}"/><text x="${x}" y="${y + 5}" class="ml-n">${i + 1}</text>`;
-    svg += `<text x="${x}" y="${y - 24}" class="ml-t">${rhGroupName(g.hits)}</text>`;
-    svg += `<text x="${x}" y="${y + 40}" class="ml-a">${g.hits.map(d => `<tspan class="${d === 'D' ? 'd' : 'u'}">${d === 'D' ? '↓' : '↑'}</tspan>`).join('')}</text>`;
+    const x = xs[i], on = i === act;
+    const m = g.hits.length, step = Math.min(24, (sw - 14) / m), x0 = x - step * (m - 1) / 2;
+    g.hits.forEach((d, j) => { const ax = x0 + j * step; svg += `<path class="ml-ar ${d === 'D' ? 'd' : 'u'}${on ? ' on' : ''}" d="${d === 'D' ? `M${ax} 18v28m-8 -9l8 10l8 -10` : `M${ax} 46v-28m-8 9l8 -10l8 10`}"/>`; });
+    svg += `<circle cx="${x}" cy="${y}" r="13" class="ml-st${on ? ' on' : ''}"/><text x="${x}" y="${y + 5}" class="ml-n">${i + 1}</text>`;
+    svg += `<text x="${x}" y="${y + 33}" class="ml-t">${rhGroupName(g.hits)}</text>`;
   });
-  svg += `<text x="${W / 2}" y="108" class="ml-b">↻ ça repart de la station 1</text></svg>`;
-  return svg;
+  svg += `<text x="${W / 2}" y="${y + 80}" class="ml-b">↻ puis on recommence au 1</text></svg>`;
+  return svg + `<div class="ml-key"><span class="d">↓ bas</span><span class="u">↑ haut</span></div>`;
 }
 function svTimeToggle() { svTime = !svTime; cur.parts.forEach((q, j) => { const el = $('rh-view-' + j); if (el) el.innerHTML = svWayHTML(q, {chord: q.chords[0]}); }); }
 const svWayHTML = (p, opt) => {
