@@ -1859,6 +1859,31 @@ input[type=text],input[type=number],input[type=url],select,textarea{border-color
 .ad-it{padding:14px 0;border-top:1px solid var(--border)}.ad-it.off{opacity:.5}
 .ad-t{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
 .ad-t b{font:600 18px var(--serif);color:var(--cream)}.ad-t small{font-size:12px;color:var(--cream3)}
+/* ═══ CONSULTATION : les schémas d'accords d'abord, le nom en petit dessous ═══ */
+#v-sheet .chord-cell svg{order:1;width:min(100%,150px)}
+#v-sheet .chord-cell .cn{order:2;font-size:15px;font-weight:700;line-height:1.2;margin-top:4px;color:var(--cream2)}
+#v-sheet .chord-cell{padding:10px 6px 8px}
+@media(min-width:900px){#v-sheet .chord-cell .cn{font-size:17px}#v-sheet .chord-cell svg{width:min(100%,190px)}}
+#v-sheet.all .chords-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 6px;margin-top:4px}
+#v-sheet.all .chord-cell{padding:2px 0 0}
+#v-sheet.all .chord-cell svg{width:100%;max-width:96px}
+#v-sheet.all .chord-cell .cn{font-size:13px;margin-top:2px}
+#v-sheet.all.compact .chords-row{grid-template-columns:repeat(6,minmax(0,1fr));gap:2px 4px}
+#v-sheet.all.compact .chord-cell{border:0;border-top:3px solid transparent;border-radius:0;background:none;padding:2px 0 0;cursor:default}
+#v-sheet.all.compact .chord-cell svg{display:block;max-width:62px}
+#v-sheet.all.compact .chord-cell .cn{font-size:11px}
+#v-sheet.all.compact .chord-cell.now{border-color:transparent;border-top-color:var(--gold);box-shadow:none}
+#v-sheet.all.compact .sv-hint{display:none}
+#v-sheet.all .parts-view .pv-block{padding:10px 12px 10px;margin-bottom:8px}
+#v-sheet.all .pv-name{font-size:15px;letter-spacing:.02em}
+#v-sheet.all .parts-view .pv-block{padding:8px 10px 8px;margin-bottom:6px}
+#v-sheet.all .parts-view .pv-block>.pv-hdr{padding:0 0 2px}
+#v-sheet.all .chord-cell svg{max-width:66px}
+#v-sheet.all.compact .chord-cell svg{max-width:50px}
+body.names-off #v-sheet .chord-cell .cn{display:none}
+.btn-icon.aa{font:800 15px var(--serif);letter-spacing:-.02em}
+.btn-icon.aa.off{opacity:.5;text-decoration:line-through}
+@media(min-width:900px){#v-sheet.all .chord-cell svg{max-width:110px!important}#v-sheet.all.compact .chord-cell svg{max-width:80px!important}}
 </style>
 </head>
 <body>
@@ -1950,6 +1975,7 @@ input[type=text],input[type=number],input[type=url],select,textarea{border-color
       <div class="sv-capo" id="sv-capo"></div>
       <div class="sv-btns">
         <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+        <button type="button" class="btn-icon aa" id="sv-aa" onclick="toggleNames()" title="Afficher ou masquer les noms des accords" aria-label="Noms des accords">Aa</button>
         <button type="button" class="btn-icon" id="sv-edit" title="Modifier la fiche"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button>
       </div>
     </div>
@@ -7563,14 +7589,14 @@ async function viewSheet(id, keepPart) {
   $('v-sheet').classList.toggle('one', nPts < 2);             // une seule partie : pas d'onglets
   $('v-sheet').classList.toggle('all', svAll);
   $('v-sheet').classList.toggle('compact', nCh > SV_COMPACT);
-  $('sv-hint').textContent = `${nCh} accords : noms seuls · appuie sur un accord pour voir son diagramme`;
+  { const b = $('sv-aa'); if (b) b.classList.toggle('off', document.body.classList.contains('names-off')); }
   tabsHost.innerHTML = nPts < 2 ? '' : `<button type="button" class="sv-tab ${svAll?'on':''}" data-idx="-1" onclick="svShowPart(-1)">Tout</button>` + (s.parts||[]).map((p, i) =>
     `<button type="button" class="sv-tab ${!svAll && i===svPart?'on':''}" data-idx="${i}" onclick="svShowPart(${i})">${esc(p.name || 'Partie ' + (i+1))}</button>`).join('');
   partsHost.innerHTML = (s.parts||[]).map((p, i) => {
     let body = '';
     if (p.chords.length) {
       body += `<div class="chords-row">` +
-        p.chords.map((c, j) => `<div class="chord-cell" onclick="svChordTap(${i},${j},this,event)"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size:2.2})}</div>`).join('') + `</div>`;
+        p.chords.map((c, j) => `<div class="chord-cell">${chordSVG(c, {size:2.2})}<div class="cn">${esc(c.name)}</div></div>`).join('') + `</div>`;
     }
     const way = pWay(p);   // rythme OU arpège : une ligne « Rythme » / « Arpège » avec son ▶
     if (way !== 'none') body += `<div class="pv-way"><span class="pv-wl">${way === 'arp' ? 'Arpège' : 'Rythme'}</span><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div>
@@ -7638,14 +7664,6 @@ function svPop(show, i, j, el) {
   pop.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width/2 - w/2)) + 'px';
   pop.style.top = Math.max(8, r.top - h - 8 < 8 ? r.bottom + 8 : r.top - h - 8) + 'px';
 }
-function svChordTap(i, j, el, e) {
-  if (!svAll || !$('v-sheet').classList.contains('compact')) return;
-  e.stopPropagation();
-  const pop = $('sv-pop');
-  if (pop.classList.contains('on') && pop.dataset.k === i + '-' + j) { svPop(false); return; }
-  pop.dataset.k = i + '-' + j;
-  svPick(i); svPop(true, i, j, el);
-}
 document.addEventListener('click', e => { if (!e.target.closest('.chord-cell')) svPop(false); });
 const REC_DOT_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="7"/></svg>';
 // état des boutons de la barre du bas selon la partie affichée
@@ -7677,6 +7695,8 @@ function svSync() {
   $('rh-bpm-bar').textContent = cur.bpm || 90;
 }
 if (LS.get('gms_lefty', false)) document.body.classList.add('lefty');
+if (LS.get('gms_names_off', false)) document.body.classList.add('names-off');
+function toggleNames() { const off = document.body.classList.toggle('names-off'); LS.set('gms_names_off', off); const b = $('sv-aa'); if (b) b.classList.toggle('off', off); }
 function setLefty(v) { document.body.classList.toggle('lefty', !!v); LS.set('gms_lefty', !!v); }
 // appui long sur − / + : répétition accélérée
 let bpmHT = null;
