@@ -1538,6 +1538,12 @@ body.pc-pill-on .view.on{padding-bottom:84px}
 .more-grid button:hover{background:var(--card2)}
 .more-grid b{display:block;font-size:16px;font-family:var(--serif)}
 .more-grid small{display:block;font-size:13px;color:var(--cream3);margin-top:1px}
+.more-grid:first-child{padding-bottom:8px}
+.more-beta{margin:18px 0 6px}
+.more-beta h2{font-family:var(--serif);font-size:18px;color:var(--cream2);display:flex;align-items:center;gap:8px}
+.more-beta h2 span{font-family:var(--sans,inherit);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid var(--border);color:var(--gold2)}
+.more-beta p{font-size:13px;color:var(--cream3);margin-top:2px}
+.more-beta+.more-grid button{opacity:.82}
 .more-grid svg{width:26px;height:26px;flex-shrink:0;stroke:var(--gold2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:899px){
   .nav-links{display:none}
@@ -1880,7 +1886,7 @@ input[type=text],input[type=number],input[type=url],select,textarea{border-color
   <div class="nav-right">
     <div class="nav-links">
       <button class="nav-link" id="nl-fiches" onclick="go('home')">Fiches</button>
-      <button class="nav-link" id="nl-trouver" onclick="go('atelier')">Trouver</button>
+      <button class="nav-link" id="nl-tuner" onclick="go('tuner')">Accordeur</button>
       <button class="nav-link nl-create" id="nl-creer" onclick="newSheet()">+ Créer</button>
       <button class="nav-link" id="nl-train" onclick="goTrain()">S’entraîner</button>
       <button class="nav-link" id="nl-plus" onclick="go('plus')">Plus</button>
@@ -1892,7 +1898,7 @@ input[type=text],input[type=number],input[type=url],select,textarea{border-color
 <div id="tabbar" role="navigation" aria-label="Navigation principale">
   <i id="tb-pill" aria-hidden="true"></i>
   <button id="tb-fiches" onclick="go('home')"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 015.5 4H19v15H5.5A1.5 1.5 0 004 20.5z"/><path d="M4 20.5A1.5 1.5 0 005.5 22H19v-3"/><path d="M9 8h6"/></svg><span>Fiches</span></button>
-  <button id="tb-trouver" onclick="go('atelier')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><span>Trouver</span></button>
+  <button id="tb-tuner" onclick="go('tuner')"><svg viewBox="0 0 24 24"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg><span>Accordeur</span></button>
   <button id="tb-creer" class="tb-create" onclick="newSheet()" aria-label="Créer une fiche"><span class="tb-circle"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span class="tb-l">Créer</span></button>
   <button id="tb-train" onclick="goTrain()"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg><span>S’entraîner</span></button>
   <button id="tb-plus" onclick="go('plus')"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg><span>Plus</span></button>
@@ -7362,7 +7368,7 @@ function go(v) {
   coursStop();
   exoStop();
   lvStop();
-  const sOrd = ['fiches','trouver','creer','train','plus'], spOf = x => x === 'ed' ? 'creer' : (SPACE_OF[x] || 'fiches');
+  const sOrd = ['fiches','tuner','creer','train','plus'], spOf = x => x === 'ed' ? 'creer' : (SPACE_OF[x] || 'fiches');
   const vx = (sOrd.indexOf(spOf(v)) >= sOrd.indexOf(spOf(curView)) ? 14 : -14) + 'px';   // sens du glissement de la vue
   document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
   $('v-' + v).style.setProperty('--vx', vx);
@@ -7390,13 +7396,13 @@ function go(v) {
 }
 
 /* ═══════ 5 ESPACES : Fiches · Trouver · Créer · S'entraîner · Plus ═══════ */
-const SPACE_OF = {home:'fiches', sheet:'fiches', atelier:'trouver', tuto:'trouver', tools:'trouver', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
-const SPACE_TITLE = {fiches:'Fiches', trouver:'Trouver', creer:'Créer', train:'S’entraîner', plus:'Plus'};
-const VIEW_TITLE = {admin:'Admin', lib:'Accords', metro:'Métronome', tuner:'Accordeur', import:'Importer', ed:'Fiche'};
+const SPACE_OF = {home:'fiches', sheet:'fiches', atelier:'plus', tuto:'plus', tools:'plus', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'tuner', import:'plus', plus:'plus', admin:'plus'};
+const SPACE_TITLE = {fiches:'Fiches', tuner:'Accordeur', creer:'Créer', train:'S’entraîner', plus:'Plus'};
+const VIEW_TITLE = {atelier:'Un morceau', tuto:'Tutos', tools:'Sites utiles', admin:'Admin', lib:'Accords', metro:'Métronome', tuner:'Accordeur', import:'Importer', ed:'Fiche'};
 function navMark(v) {
   let sp = SPACE_OF[v] || 'fiches';
   if (v === 'ed') sp = (typeof draft !== 'undefined' && draft && sheets.some(x => x.id === draft.id)) ? 'fiches' : 'creer';
-  ['fiches','trouver','creer','train','plus'].forEach(k => ['nl-','tb-'].forEach(p => { const b = $(p + k); if (b) { b.classList.toggle('on', k === sp); if (k === sp) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); } }));
+  ['fiches','tuner','creer','train','plus'].forEach(k => ['nl-','tb-'].forEach(p => { const b = $(p + k); if (b) { b.classList.toggle('on', k === sp); if (k === sp) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); } }));
   $('nav-title').textContent = VIEW_TITLE[v] || SPACE_TITLE[sp];
   tbPill(sp);
 }
@@ -7413,7 +7419,6 @@ addEventListener('resize', () => { tbPillOn = false; const on = document.querySe
 function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'exo'); }
 let curView = 'home';
 const SUBNAV = {
-  trouver: [['atelier','Un morceau'],['tuto','Tutos'],['tools','Sites']],
   train: [['exo','Exercices'],['cours','Cours']]
 };
 function renderSubnav(v) {
@@ -7429,13 +7434,16 @@ function renderPlus() {
   const ic = d => `<svg viewBox="0 0 24 24">${d}</svg>`;
   const items = [
     ['lib','Accords','Bibliothèque de diagrammes',ic('<path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/>')],
-    ['tuner','Accordeur','Accorder avec le micro',ic('<path d="M12 3v10"/><circle cx="12" cy="17" r="4"/><path d="M5 8l2 2M19 8l-2 2"/>')],
     ['metro','Métronome','Tempo et rythmes',ic('<path d="M8 21h8l-2-17h-4z"/><path d="M12 15l5-8"/>')],
-    ['import','Importer','Depuis une tab ou un texte',ic('<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>')],
-    ['tools','Outils','Sites de guitare utiles',ic('<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>')],
-    ['tuto','Tutos','Trouver le tuto d’un morceau',ic('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>')],
     ['admin','Admin','Les vidéos des cours',ic('<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8M12 17v4"/>')]];
-  $('plus-body').innerHTML = '<div class="more-grid">' + items.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') + '</div>';
+  // écrans pas encore au niveau du cœur de l'appli : rangés ici, hors de la navigation principale
+  const beta = [
+    ['atelier','Un morceau','Tutos et fiche côte à côte',ic('<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>')],
+    ['tuto','Tutos','Trouver le tuto d’un morceau',ic('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>')],
+    ['import','Importer','Depuis une tab ou un texte',ic('<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>')],
+    ['tools','Sites utiles','Les bons sites de guitare',ic('<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>')]];
+  const grid = l => '<div class="more-grid">' + l.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') + '</div>';
+  $('plus-body').innerHTML = grid(items) + '<div class="more-beta"><h2>En rodage <span>bêta</span></h2><p>Ces écrans fonctionnent, mais ne sont pas encore finis.</p></div>' + grid(beta);
 }
 
 /* ═══════ HOME / CAHIER ═══════ */

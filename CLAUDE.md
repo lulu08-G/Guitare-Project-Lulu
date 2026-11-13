@@ -2,6 +2,12 @@
 
 Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 
+## Gel des nouveautés (décision de Lucas, 13/11/2026)
+- **Plus aucune nouvelle fonction** tant que le cœur n'est pas validé par Lucas. Le cœur : **créer une fiche, puis la jouer** (accueil, création, fiche, mode jeu).
+- Le travail autorisé : polir ce parcours d'après ses retours en conditions réelles, cohérence visuelle, corrections de bugs.
+- Navigation principale : Fiches · Accordeur · Créer · S'entraîner · Plus. Les écrans pas au niveau (Un morceau/Atelier, Tutos, Importer, Sites utiles) sont rangés dans « Plus », section « bêta » : ne pas les remettre en avant ni les supprimer sans son accord.
+- Une demande de nouveauté pendant le gel : la noter, rappeler le gel, et laisser Lucas trancher.
+
 ## Le code
 - App web en **un seul fichier** : `index.html` (HTML + CSS + JS vanilla, sans dépendance ni build). C'est la **source de vérité**.
 - `a supprimer/` : fichiers obsolètes en attente de suppression (validée par Lucas en fin de projet). Ne pas les modifier ni les synchroniser.
