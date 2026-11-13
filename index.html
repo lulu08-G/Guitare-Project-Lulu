@@ -1787,6 +1787,14 @@ input[type=text],input[type=number],input[type=url],select,textarea{border-color
 .mt .metro-cell{width:26px;height:30px;border-radius:7px}
 @media(max-width:480px){.mt-row{flex-wrap:wrap;gap:8px;padding:10px 0 12px}.mt-lbl{width:100%}.mt .metro-row-lbl{width:78px}.mt-pat>summary small{display:none}#mt-sigs button{flex:1;min-width:0;padding:0 6px}}
 @media(min-width:900px){.mt-dial{width:360px}}
+
+/* le temps est un instant : repère net à l'entrée de chaque temps, flash bref au passage */
+.mt-arc{stroke-width:5}.mt-arc.done{stroke:rgba(235,154,84,.3)}
+.mt-mark{fill:#2d2015;stroke:var(--cream3);stroke-width:2;transform-box:fill-box;transform-origin:center}
+.mt-mark.first{stroke:var(--gold2)}
+.mt-mark.hit{animation:mtHit .28s var(--ease-out) both}
+@keyframes mtHit{0%{fill:#fff;stroke:#fff;transform:scale(1.9);filter:drop-shadow(0 0 14px rgba(246,189,120,1))}100%{fill:var(--gold2);stroke:var(--gold3);transform:scale(1);filter:drop-shadow(0 0 3px rgba(235,154,84,.5))}}
+.mt-num.on{fill:var(--gold3)}
 </style>
 </head>
 <body>
@@ -3195,7 +3203,8 @@ function flashMetroStep(step) {
   });
 }
 function flashMetroBeat(beatIdx, accent, beatDurSec) {
-  document.querySelectorAll('#mt-svg .mt-arc').forEach((a, i) => { a.classList.toggle('on', i === beatIdx); a.classList.toggle('done', i < beatIdx); });
+  document.querySelectorAll('#mt-svg .mt-arc').forEach((a, i) => a.classList.toggle('done', i < beatIdx));
+  document.querySelectorAll('#mt-svg .mt-mark').forEach((m, i) => { m.classList.remove('hit'); if (i === beatIdx) { void m.getBoundingClientRect(); m.classList.add('hit'); } });
   document.querySelectorAll('#mt-svg .mt-num').forEach((n, i) => n.classList.toggle('on', i === beatIdx));
   const core = $('mt-core');
   if (core && core.animate && !mReduced()) core.animate(
@@ -3220,7 +3229,7 @@ function metroVisLoop() {
   metroRaf = requestAnimationFrame(metroVisLoop);
 }
 function metroDialReset() {
-  document.querySelectorAll('#mt-svg .mt-arc,#mt-svg .mt-num').forEach(a => a.classList.remove('on', 'done'));
+  document.querySelectorAll('#mt-svg .mt-arc,#mt-svg .mt-num,#mt-svg .mt-mark').forEach(a => a.classList.remove('on', 'done', 'hit'));
   const orb = $('mt-orb'); if (orb) orb.style.transform = 'rotate(0deg)';
 }
 /* ── controls ── */
@@ -3268,15 +3277,16 @@ function renderMetroLights() {   // le cadran : un arc par temps, des repères p
   const svg = $('mt-svg'); if (!svg) return;
   const N = metroState.sigCfg.beats, total = metroState.pattern.length, R = 134, gap = N > 4 ? 5 : 7;
   const pt = (deg, r) => { const a = (deg - 90) * Math.PI / 180; return [150 + r * Math.cos(a), 150 + r * Math.sin(a)]; };
-  let h = '';
+  let h = '', marks = '';
   for (let i = 0; i < N; i++) {
     const a0 = i * 360 / N + gap / 2, a1 = (i + 1) * 360 / N - gap / 2, [x0, y0] = pt(a0, R), [x1, y1] = pt(a1, R);
     h += `<path class="mt-arc${i === 0 ? ' first' : ''}" d="M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 0 1 ${x1.toFixed(2)} ${y1.toFixed(2)}"/>`;
-    const [nx, ny] = pt(i * 360 / N + 180 / N, R - 22);
+    const [mx, my] = pt(i * 360 / N, R), [nx, ny] = pt(i * 360 / N, R - 26);
+    marks += `<circle class="mt-mark${i === 0 ? ' first' : ''}" cx="${mx.toFixed(2)}" cy="${my.toFixed(2)}" r="${i === 0 ? 8 : 6.5}"/>`;
     h += `<text class="mt-num" x="${nx.toFixed(1)}" y="${ny.toFixed(1)}">${i + 1}</text>`;
   }
   for (let k = 0; k < total; k++) { const b = k % metroState.sigCfg.sub === 0, [x, y] = pt(k * 360 / total, R + 13); h += `<circle class="mt-tick${b ? ' b' : ''}" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${b ? 2.6 : 1.5}"/>`; }
-  h += `<g id="mt-orb"><circle cx="150" cy="${150 - R}" r="7"/></g>`;
+  h += marks + `<g id="mt-orb"><circle cx="150" cy="${150 - R}" r="5"/></g>`;
   svg.innerHTML = h;
   const sg = $('mt-sigs'); if (sg) sg.innerHTML = Object.keys(METRO_SIGS).sort().map(k => `<button type="button" class="${metroState.sig === k ? 'on' : ''}" aria-pressed="${metroState.sig === k}" onclick="metroChangeSig('${k}')">${k}</button>`).join('');
 }
@@ -6087,7 +6097,7 @@ const RH_COURSE = [
 ];
 const rcz = {cur:null, bpm:70, click:true, bars:0};
 const rccRh = st => RHYTHMS.find(r => r.id === st.rh);
-const rccUnlocked = i => i === 0 || !!exoProg.done[RH_COURSE[i - 1].id];
+const rccUnlocked = () => true;   // tout est libre : on choisit le rythme qu'on veut
 const rccBpmOf = st => Math.max(st.bpm[0], Math.min(st.bpm[1], exoProg.best[st.id] ? exoProg.best[st.id] : st.bpm[0]));
 const rccChord = () => newChord('Em');
 const rccArrows = pat => [...pat].map(ch => ch === '-' ? '·' : ch.toLowerCase() === 'x' ? '✕' : ch.toLowerCase() === 'u' ? '↑' : '↓').join('');
