@@ -1884,6 +1884,20 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
 .btn-icon.aa{font:800 15px var(--serif);letter-spacing:-.02em}
 .btn-icon.aa.off{opacity:.5;text-decoration:line-through}
 @media(min-width:900px){#v-sheet.all .chord-cell svg{max-width:110px!important}#v-sheet.all.compact .chord-cell svg{max-width:80px!important}}
+/* ═══ Rythme : ligne de métro ═══ */
+.ml{display:block;width:100%;height:auto;max-height:150px;overflow:visible}
+.ml-line{stroke:var(--gold);stroke-width:7;stroke-linecap:round;fill:none}
+.ml-loop{stroke:var(--sage);stroke-width:2.2;stroke-dasharray:5 4;fill:none;stroke-linecap:round}
+.ml-st{fill:var(--card);stroke:var(--cream);stroke-width:3.4}.ml-st.on{fill:var(--gold);stroke:var(--gold)}
+.ml-n{font:800 15px var(--sans);text-anchor:middle;fill:var(--cream)}
+.ml-t{font:700 14px var(--sans);text-anchor:middle;fill:var(--cream3)}
+.ml-a{font:800 22px var(--sans);text-anchor:middle;letter-spacing:.06em}.ml-a .d{fill:var(--gold2)}.ml-a .u{fill:var(--sage)}
+.ml-b{font:700 12px var(--sans);text-anchor:middle;fill:var(--sage)}
+.ml-tg{margin:4px 0 0;min-height:36px;padding:0 14px;border-radius:99px;border:1.5px solid var(--border2);background:none;color:var(--cream);font:700 12px var(--sans)}
+.ml-tg.on{background:var(--cream);color:var(--card)}
+.ml-time{margin-top:8px}
+#v-sheet.all .ml{max-height:132px}
+#v-sheet.all .pv-way .pv-wl{display:none}
 </style>
 </head>
 <body>
@@ -7564,7 +7578,48 @@ let svAll = false; // vue « Tout » : le morceau entier, parties empilées
 const SV_COMPACT = 12; // au-delà, accords en noms seuls
 // rythme d'une partie dans la fiche (en vue « Tout » la taille mini est réglée par le CSS) : seul point d'appel de l'affichage du rythme
 const svRhHTML = (rh, opt) => rhythmSVG(rh, false, Object.assign({mini: svAll}, opt));
-const svWayHTML = (p, opt) => pWayHTML(p, false, Object.assign({mini: svAll}, opt));
+/* ═══ RYTHME EN « LIGNE DE MÉTRO » : un groupe de coups = une station ═══ */
+let svTime = false;   // vue « en temps » dépliée (la grille 1 + 2 + 3 + 4)
+function rhGroups(rh) {   // coupe la suite de coups aux silences (2 cases vides d'affilée ou plus)
+  const cells = rh.cells, gs = []; let cur = null, gap = 0;
+  cells.forEach((c, k) => {
+    if (!c) { gap++; return; }
+    if (!cur || gap >= 2) { cur = {k0: k, k1: k, hits: []}; gs.push(cur); }
+    cur.hits.push(c.d === 'U' ? 'U' : 'D'); cur.k1 = k; gap = 0;
+  });
+  return gs;
+}
+function rhGroupName(h) {
+  const n = h.length, dn = h.filter(x => x === 'D').length;
+  if (dn === n) return n === 1 ? '1 bas' : n + ' × bas';
+  if (dn === 0) return n === 1 ? '1 haut' : n + ' × haut';
+  const alt = h.every((x, i) => i === 0 || x !== h[i - 1]);
+  if (alt && n % 2 === 0 && h[0] === 'D') return 'bas-haut' + (n > 2 ? ' ×' + n / 2 : '');
+  return n <= 4 ? h.map(x => x === 'D' ? 'bas' : 'haut').join('-') : 'mélange';
+}
+function metroLineHTML(rh, cursor) {
+  rh = rhNorm(rh); const gs = rhGroups(rh), n = gs.length; if (!n) return '';
+  const sw = Math.max(70, Math.min(96, 270 / n)), W = n * sw + 36, y = 46;
+  const act = cursor == null ? -1 : gs.findIndex(g => cursor >= g.k0 && cursor <= g.k1 + 1);
+  let svg = `<svg viewBox="0 0 ${W} 112" class="ml" role="img" aria-label="Rythme en ${n} groupe${n > 1 ? 's' : ''}">`;
+  const xs = gs.map((g, i) => 18 + sw / 2 + i * sw);
+  svg += `<path d="M${xs[0]} ${y}H${xs[n - 1]}" class="ml-line"/>`;
+  svg += `<path d="M${xs[n - 1]} ${y}H${W - 8}q8 0 8 14v14q0 14 -8 14H${xs[0] - 8}q-8 0 -8 -14v-14q0 -14 8 -14" class="ml-loop"/><path d="M${xs[0] - 3} ${y - 6}l6 6l-6 6" class="ml-loop"/>`;
+  gs.forEach((g, i) => {
+    const x = xs[i], arrows = g.hits.map(d => d === 'D' ? '↓' : '↑');
+    svg += `<circle cx="${x}" cy="${y}" r="15" class="ml-st${i === act ? ' on' : ''}"/><text x="${x}" y="${y + 5}" class="ml-n">${i + 1}</text>`;
+    svg += `<text x="${x}" y="${y - 24}" class="ml-t">${rhGroupName(g.hits)}</text>`;
+    svg += `<text x="${x}" y="${y + 40}" class="ml-a">${g.hits.map(d => `<tspan class="${d === 'D' ? 'd' : 'u'}">${d === 'D' ? '↓' : '↑'}</tspan>`).join('')}</text>`;
+  });
+  svg += `<text x="${W / 2}" y="108" class="ml-b">↻ ça repart de la station 1</text></svg>`;
+  return svg;
+}
+function svTimeToggle() { svTime = !svTime; cur.parts.forEach((q, j) => { const el = $('rh-view-' + j); if (el) el.innerHTML = svWayHTML(q, {chord: q.chords[0]}); }); }
+const svWayHTML = (p, opt) => {
+  const o = Object.assign({mini: svAll}, opt);
+  if (pWay(p) !== 'rh') return pWayHTML(p, false, o);
+  return metroLineHTML(p.rhythm, o.cursor) + `<button type="button" class="ml-tg${svTime ? ' on' : ''}" onclick="event.stopPropagation();svTimeToggle()">En temps ${svTime ? '▴' : '▾'}</button>` + (svTime ? `<div class="ml-time">${pWayHTML(p, false, o)}</div>` : '');
+};
 const hasLyr = p => !!(p && typeof p.lyrics === 'string' && p.lyrics.trim());
 async function viewSheet(id, keepPart) {
   const s = sheets.find(x => x.id === id); if (!s) return;
