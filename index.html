@@ -4759,6 +4759,17 @@ function rtAnalyse(buf) {
   });
   return {hits, unit, dur: buf.duration};
 }
+// Fausse prise (pour voir le rendu sans guitare) : 3 coups vers le bas, une pause, puis bas-haut ×2, puis une transition
+function rtSim() {
+  rtStopAll();
+  const sr = 44100, pat = [['d',0],['d',.5],['d',1],['d',1.9],['u',2.17],['d',2.42],['u',2.7],['d',3.5],['d',3.78],['u',4.05]], F = [82,110,147,196,247,330];
+  const buf = new AudioBuffer({length: sr*5, sampleRate: sr, numberOfChannels: 1}), d = buf.getChannelData(0);
+  pat.forEach(([c, t]) => (c === 'd' ? [0,1,2,3,4,5] : [5,4,3,2]).forEach((si, k) => {
+    const st = Math.round((.3 + t + k*.008)*sr);
+    for (let j = 0; j < sr*.6 && st + j < d.length; j++) { const x = j/sr; let v = 0; for (let h = 1; h <= 6; h++) v += Math.sin(2*Math.PI*F[si]*h*x)/h; d[st + j] += .08*Math.exp(-x*5)*Math.min(1, j/40)*v + (j < 120 ? (Math.random() - .5)*.08 : 0); }
+  }));
+  rt = Object.assign({buf, stage: 'done', sim: true}, rtAnalyse(buf)); rtRender();
+}
 function rtStopAll() { if (!rt) return; clearInterval(rt.iv); clearTimeout(rt.tm); if (rt.mr && rt.mr.state !== 'inactive') { rt.mr.onstop = null; try { rt.mr.stop(); } catch (e) {} } if (rt.stream) rt.stream.getTracks().forEach(t => t.stop()); if (rt.src) { try { rt.src.stop(); } catch (e) {} rt.src = null; } if (rt.stage !== 'done') rt = null; }
 async function rtRec() {
   if (rt && rt.stage === 'rec') { rt.mr.stop(); return; }
@@ -4791,7 +4802,7 @@ function rtCut(i) { rt.hits[i].cut = !rt.hits[i].cut; rtRender(); }
 function rtRender() {
   const el = $('rt'); if (!el) return;
   const head = `<div class="ad-t"><b>Test rythme</b><small>banc d’essai</small></div>`;
-  if (!rt) { el.innerHTML = head + `<p class="rt-p">Joue 1 ou 2 mesures de ton rythme à la guitare (20 s max). L’appli repère chaque coup, devine son sens et propose un découpage en groupes.</p><button type="button" class="btn btn-primary rt-b" onclick="rtRec()">${REC_DOT_SVG.replace('<svg','<svg width="18" height="18"')} Enregistrer mon rythme</button>`; return; }
+  if (!rt) { el.innerHTML = head + `<p class="rt-p">Joue 1 ou 2 mesures de ton rythme à la guitare (20 s max). L’appli repère chaque coup, devine son sens et propose un découpage en groupes.</p><button type="button" class="btn btn-primary rt-b" onclick="rtRec()">${REC_DOT_SVG.replace('<svg','<svg width="18" height="18"')} Enregistrer mon rythme</button><button type="button" class="btn btn-ghost rt-b" style="margin-top:10px" onclick="rtSim()">Simuler une prise (sans guitare)</button>`; return; }
   if (rt.stage === 'rec') { el.innerHTML = head + `<div class="rt-live"><span class="rec-dot"></span><b id="rt-t">0,0 s</b></div><button type="button" class="btn btn-primary rt-b" onclick="rtRec()">${RH_STOP_SVG.replace('<svg','<svg width="18" height="18"')} Arrêter</button>`; return; }
   const hs = rt.hits, u = rt.unit || .3;
   let row = '';
@@ -4803,7 +4814,7 @@ function rtRender() {
   el.innerHTML = head + (hs.length
     ? `<p class="rt-p"><b>${hs.length} coup${hs.length > 1 ? 's' : ''} repéré${hs.length > 1 ? 's' : ''}</b>${unsure ? ` · ${unsure} dont le sens est incertain (en pointillés)` : ''}. Touche une flèche pour l’inverser, touche entre deux flèches pour couper un groupe, « + » pour recoller.</p><div class="rt-row"><div class="rt-g">${row}</div></div>`
     : `<p class="rt-p">Aucun coup repéré : joue plus près du micro, ou plus fort.</p>`) +
-    `<div class="rt-acts"><button type="button" class="btn btn-ghost" onclick="rtPlay()">${rt.src ? 'Arrêter' : 'Réécouter'}</button><button type="button" class="btn btn-primary" onclick="rtRec()">Refaire</button></div>` +
+    `<div class="rt-acts"><button type="button" class="btn btn-ghost" onclick="rtPlay()">${rt.src ? 'Arrêter' : 'Réécouter'}</button><button type="button" class="btn btn-primary" onclick="rtRec()">Refaire</button></div>` + (rt.sim ? `<p class="rt-p">Prise simulée : le sens des flèches est approximatif, c’est surtout le rendu qu’on regarde.</p>` : '') +
     (hs.length ? `<details class="rt-d"><summary>Mesures (à m’envoyer si le sens est faux)</summary><pre>${hs.map((h, i) => `${String(i + 1).padStart(2)} ${h.t.toFixed(2)}s ${h.dir === 'd' ? 'bas ' : 'haut'} écart ${String(h.lag).padStart(4)} grave ${h.low.toFixed(2)} force ${h.amp.toFixed(2)}`).join('\n')}</pre></details>` : '');
 }
 function renderAdmin() {
