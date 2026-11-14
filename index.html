@@ -1900,6 +1900,16 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
 #v-sheet.all .ml{max-height:150px}
 #v-sheet.all .ml-key{display:none}
 #v-sheet.all .pv-way .pv-wl{display:none}
+/* ═══ Volume ═══ */
+.vol-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border2);background:none;color:var(--cream2);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
+.vol-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.vol-btn.off{color:var(--cream4)}
+.btn-icon.vol-btn{border:0}
+#vol-pop{position:fixed;z-index:400;display:none;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:99px;background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--border2);box-shadow:0 10px 30px var(--shadow);color:var(--cream)}
+#vol-pop.on{display:flex}
+#vol-pop .vol-mute{width:36px;height:36px;border-color:transparent}
+@media(max-width:480px){.sv-head .btn-icon{width:35px!important;height:35px!important}.sv-head .sv-btns{gap:4px}.sv-head .vol-btn svg{width:18px;height:18px}}
+#vol-range{width:140px;height:28px;accent-color:var(--gold);background:none}
 </style>
 </head>
 <body>
@@ -1931,7 +1941,7 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
       <button class="nav-link" id="nl-train" onclick="goTrain()">S’entraîner</button>
       <button class="nav-link" id="nl-plus" onclick="go('plus')">Plus</button>
     </div>
-    
+    <button type="button" class="vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
   </div>
 </nav>
 
@@ -1991,6 +2001,7 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
       <div class="sv-capo" id="sv-capo"></div>
       <div class="sv-btns">
         <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+        <button type="button" class="btn-icon vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
         <button type="button" class="btn-icon aa" id="sv-aa" onclick="toggleNames()" title="Afficher ou masquer les noms des accords" aria-label="Noms des accords">Aa</button>
         <button type="button" class="btn-icon" id="sv-edit" title="Modifier la fiche"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button>
       </div>
@@ -2882,6 +2893,33 @@ function pWayHTML(p, light, opt) {
    amortissement des cordes qui sonnent quand le coup suivant arrive. Karplus-Strong = secours (avant chargement / si le
    décodage échoue). Tout est embarqué : hors ligne OK. */
 let AC = null;
+/* Volume général : un gain maître entre tous les sons et les haut-parleurs (réglage mémorisé) */
+let masterG = null, VOL = 1, VOL_MUTE = false;
+try { const sv = localStorage.getItem('gms_vol'); if (sv != null && !isNaN(+JSON.parse(sv))) VOL = Math.min(1, Math.max(0, +JSON.parse(sv))); VOL_MUTE = localStorage.getItem('gms_mute') === 'true'; } catch (e) {}
+const volGain = () => VOL_MUTE ? 0 : VOL * VOL;   // courbe douce : le milieu du curseur est déjà confortable
+const OUT = ac => { if (!masterG || masterG.context !== ac) { masterG = ac.createGain(); masterG.gain.value = volGain(); masterG.connect(ac.destination); } return masterG; };
+function volApply() { if (masterG) masterG.gain.setTargetAtTime(volGain(), masterG.context.currentTime, .015); volIcons(); }
+const VOL_ICON = (m, v) => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h4l5 4v-13l-5 4z"/>${m || v === 0 ? '<path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/>' : v < .5 ? '<path d="M16.5 9.5a3.5 3.5 0 010 5"/>' : '<path d="M16.5 9a4.5 4.5 0 010 6M19 6.5a8 8 0 010 11"/>'}</svg>`;
+function volIcons() { document.querySelectorAll('.vol-btn').forEach(b => { b.innerHTML = VOL_ICON(VOL_MUTE, VOL); b.classList.toggle('off', VOL_MUTE || VOL === 0); }); }
+function volSave() { try { localStorage.setItem('gms_vol', JSON.stringify(VOL)); localStorage.setItem('gms_mute', String(VOL_MUTE)); } catch (e) {} }
+function volSet(v) { VOL = Math.min(1, Math.max(0, v / 100)); if (VOL > 0) VOL_MUTE = false; volSave(); volApply(); const r = document.getElementById('vol-range'); if (r && +r.value !== Math.round(VOL * 100)) r.value = Math.round(VOL * 100); }
+function volMuteToggle() { VOL_MUTE = !VOL_MUTE; if (!VOL_MUTE && VOL === 0) VOL = .6; volSave(); volApply(); const r = document.getElementById('vol-range'); if (r) r.value = Math.round(VOL * 100); }
+function volPop(btn, e) {
+  if (e) e.stopPropagation();
+  let pop = document.getElementById('vol-pop');
+  if (pop && pop.classList.contains('on') && pop._for === btn) { pop.classList.remove('on'); return; }
+  if (!pop) {
+    pop = document.createElement('div'); pop.id = 'vol-pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Volume');
+    pop.innerHTML = '<button type="button" class="vol-btn vol-mute" onclick="volMuteToggle()" aria-label="Couper le son"></button><input type="range" id="vol-range" min="0" max="100" step="1" aria-label="Volume" oninput="volSet(+this.value)"><output id="vol-out"></output>';
+    pop.addEventListener('click', ev => ev.stopPropagation()); document.body.appendChild(pop);
+  }
+  pop._for = btn; document.getElementById('vol-range').value = Math.round(VOL * 100);
+  const r = btn.getBoundingClientRect(); pop.style.top = Math.round(r.bottom + 8) + 'px'; pop.style.right = Math.max(8, Math.round(innerWidth - r.right)) + 'px';
+  pop.classList.add('on'); volIcons();
+}
+document.addEventListener('click', () => { const p = document.getElementById('vol-pop'); if (p) p.classList.remove('on'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { const p = document.getElementById('vol-pop'); if (p) p.classList.remove('on'); } });
+document.addEventListener('DOMContentLoaded', volIcons);
 const audio = () => { if (!AC) { AC = new (window.AudioContext || window.webkitAudioContext)(); gtrLoad(AC); } return AC; };
 document.addEventListener('pointerdown', () => { try { audio(); } catch (e) {} }, {once: true});   // précharge les samples dès le 1er toucher
 // samples : MIDI -> AudioBuffer (une note sur deux de 40 à 88 ; les autres par playbackRate ±1 demi-ton)
@@ -2944,7 +2982,7 @@ function audioBus(ac) {
   conv.buffer = ir; dry.gain.value = 1; wet.gain.value = .1;
   const last = chain[chain.length - 1]; last.connect(dry); last.connect(conv); conv.connect(wet);
   comp.threshold.value = -14; comp.ratio.value = 3; comp.attack.value = .004; comp.release.value = .2;
-  dry.connect(comp); wet.connect(comp); comp.connect(ac.destination);
+  dry.connect(comp); wet.connect(comp); comp.connect(OUT(ac));
   B = {inp, voices: []}; AUD.set(ac, B); return B;
 }
 // amortit (≈ main qui étouffe) les voix encore actives à l'instant t ; tau = vitesse d'extinction
@@ -3067,7 +3105,7 @@ function click(t, hi) {
   const o = ac.createOscillator(), g = ac.createGain();
   o.frequency.value = hi ? 1500 : 900;
   g.gain.setValueAtTime(.09, t); g.gain.exponentialRampToValueAtTime(.0001, t+0.04);
-  o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+0.05);
+  o.connect(g); g.connect(OUT(ac)); o.start(t); o.stop(t+0.05);
 }
 let rhP = null; // lecture en cours : {key, ctx, rh, bpm, chord, capo, k, k0, t0, timer, raf, q, onStep, click}
 function stopPlay() {
@@ -3211,7 +3249,7 @@ function metroClick(t, accent) {
   o.frequency.value = accent ? 1600 : 1000;
   g.gain.setValueAtTime(accent ? .17 : .09, t);
   g.gain.exponentialRampToValueAtTime(.0001, t + 0.045);
-  o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + 0.05);
+  o.connect(g); g.connect(OUT(ac)); o.start(t); o.stop(t + 0.05);
 }
 function metroKick(t) {
   const ac = audio(), o = ac.createOscillator(), g = ac.createGain();
@@ -3220,7 +3258,7 @@ function metroKick(t) {
   o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
   g.gain.setValueAtTime(.9, t);
   g.gain.exponentialRampToValueAtTime(.001, t + 0.28);
-  o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + 0.3);
+  o.connect(g); g.connect(OUT(ac)); o.start(t); o.stop(t + 0.3);
 }
 function metroSnare(t) {
   const ac = audio(), n = Math.floor(ac.sampleRate * 0.18);
@@ -3229,11 +3267,11 @@ function metroSnare(t) {
   const src = ac.createBufferSource(); src.buffer = buf;
   const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1800; bp.Q.value = .7;
   const g = ac.createGain(); g.gain.setValueAtTime(.5, t); g.gain.exponentialRampToValueAtTime(.001, t + .18);
-  src.connect(bp); bp.connect(g); g.connect(ac.destination); src.start(t); src.stop(t + .2);
+  src.connect(bp); bp.connect(g); g.connect(OUT(ac)); src.start(t); src.stop(t + .2);
   const o = ac.createOscillator(), g2 = ac.createGain();
   o.type = 'triangle'; o.frequency.value = 180;
   g2.gain.setValueAtTime(.22, t); g2.gain.exponentialRampToValueAtTime(.001, t + .08);
-  o.connect(g2); g2.connect(ac.destination); o.start(t); o.stop(t + .09);
+  o.connect(g2); g2.connect(OUT(ac)); o.start(t); o.stop(t + .09);
 }
 function metroHihat(t) {
   const ac = audio(), dur = 0.05, n = Math.floor(ac.sampleRate * dur);
@@ -3242,7 +3280,7 @@ function metroHihat(t) {
   const src = ac.createBufferSource(); src.buffer = buf;
   const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 7000;
   const g = ac.createGain(); g.gain.setValueAtTime(.26, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
-  src.connect(hp); hp.connect(g); g.connect(ac.destination); src.start(t); src.stop(t + dur + .02);
+  src.connect(hp); hp.connect(g); g.connect(OUT(ac)); src.start(t); src.stop(t + dur + .02);
 }
 function metroBass(t) { pluck(fretFreq(metroState.bassString, 0, 0)/2, t, 0.7, .16); }
 
@@ -7178,7 +7216,7 @@ async function recBuffer(mediaId) {
 function recLoopSrc(buf, start, end) {
   const ac = audio(), src = ac.createBufferSource();
   src.buffer = buf; src.loop = true; src.loopStart = start; src.loopEnd = Math.min(end, buf.duration);
-  src.connect(ac.destination); src.start(0, start);
+  src.connect(OUT(ac)); src.start(0, start);
   return src;
 }
 function recStopPlay() {
