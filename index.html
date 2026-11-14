@@ -9384,28 +9384,35 @@ document.addEventListener('keydown', e => {
   }
   // Morceaux à essayer (variété française + Renaud) : ajoutés une seule fois. Grilles simplifiées : seuls les accords vérifiés, à confirmer à l'oreille.
   try {
+    const NOTE = ' Grille simplifiée : à vérifier à l’oreille avec l’original.';
+    const SEED_FR = [
+      {t:'Mistral gagnant', a:'Renaud', capo:2, bpm:80, d:'Intermediaire', ch:['Am','Dm','G','C','F','E','Am'], pat:'D-DUD-DU', m:'Joué avec capo 2 (le morceau est en si mineur) : formes Am Dm G C F E.'},
+      {t:'Dès que le vent soufflera', a:'Renaud', capo:0, bpm:80, d:'Debutant', ch:['Em','D','G','B7'], pat:'D-DU-UDU', m:'Quatre accords qui tournent.'},
+      {t:'Morgane de toi', a:'Renaud', capo:0, bpm:90, d:'Debutant', ch:['Em','G','D','Am','Em','G'], pat:'D-DU-UDU', m:'Début du couplet.'},
+      {t:'Les Champs-Élysées', a:'Joe Dassin', capo:4, bpm:120, d:'Debutant', ch:['G','B7','Em','G7','C','A7','D','D7'], pat:'DuDuDuDu', m:'Capo 4 : on joue des formes simples.'},
+      {t:'Foule sentimentale', a:'Alain Souchon', capo:0, bpm:96, d:'Intermediaire', ch:['Em','Am','D7','B7','Em','C','Am','B7'], pat:'D-DU-UDU', m:'Introduction et couplet.'},
+      {t:'Je l’aime à mourir', a:'Francis Cabrel', capo:5, bpm:76, d:'Intermediaire', ch:['C','Cmaj7','Am','Dm','F','G','C'], pat:'D-DUD-DU', m:'Capo 5. Le Cmaj7 remplace le Do avec si à la basse.'}
+    ];
+    const linksFor = x => { const q = encodeURIComponent(x.t + ' ' + x.a);
+      return [{id:uid(), url:'https://www.youtube.com/results?search_query=' + q + '+tuto+guitare', title:'Tutos guitare : ' + x.t},
+              {id:uid(), url:'https://www.google.com/search?q=' + q + '+accords+guitare', title:'Autres grilles d’accords : ' + x.t}]; };
     if (!(await DB.get('meta', 'seed_fr_v1'))) {
-      const NOTE = ' Grille simplifiée : à vérifier à l’oreille avec l’original.';
-      const SEED_FR = [
-        {t:'Mistral gagnant', a:'Renaud', capo:2, bpm:80, d:'Intermediaire', ch:['Am','Dm','G','C','F','E','Am'], pat:'D-DUD-DU', m:'Joué avec capo 2 (le morceau est en si mineur) : formes Am Dm G C F E.'},
-        {t:'Dès que le vent soufflera', a:'Renaud', capo:0, bpm:80, d:'Debutant', ch:['Em','D','G','B7'], pat:'D-DU-UDU', m:'Quatre accords qui tournent.'},
-        {t:'Morgane de toi', a:'Renaud', capo:0, bpm:90, d:'Debutant', ch:['Em','G','D','Am','Em','G'], pat:'D-DU-UDU', m:'Début du couplet.'},
-        {t:'Les Champs-Élysées', a:'Joe Dassin', capo:4, bpm:120, d:'Debutant', ch:['G','B7','Em','G7','C','A7','D','D7'], pat:'DuDuDuDu', m:'Capo 4 : on joue des formes simples.'},
-        {t:'Foule sentimentale', a:'Alain Souchon', capo:0, bpm:96, d:'Intermediaire', ch:['Em','Am','D7','B7','Em','C','Am','B7'], pat:'D-DU-UDU', m:'Introduction et couplet.'},
-        {t:'Je l’aime à mourir', a:'Francis Cabrel', capo:5, bpm:76, d:'Intermediaire', ch:['C','Cmaj7','Am','Dm','F','G','C'], pat:'D-DUD-DU', m:'Capo 5. Le Cmaj7 remplace le Do avec si à la basse.'}
-      ];
       for (const x of SEED_FR) {
         if (sheets.some(z => z.title.trim().toLowerCase() === x.t.toLowerCase())) continue;
         const sh = newSheet_();
         sh.title = x.t; sh.artist = x.a; sh.capo = x.capo; sh.bpm = x.bpm; sh.difficulty = x.d; sh.color = 'gold';
         sh.blocks = {capo: x.capo > 0, tempo:true, diff:true, coffre:true};
-        sh.memo = x.m + NOTE;
+        sh.memo = x.m + NOTE; sh.links = linksFor(x);
         const pt = newPart('');
         pt.chords = x.ch.map(newChord); pt.rhythm = rhFromPat(x.pat);
         sh.parts = [pt];
         sheets.push(sh); await DB.put('sheets', sh);
       }
       await DB.put('meta', {k:'seed_fr_v1', v:true});
+    }
+    if (!(await DB.get('meta', 'seed_fr_v2'))) {   // fiches déjà ajoutées sans lien : on leur donne leurs tutos
+      for (const x of SEED_FR) { const sh = sheets.find(z => z.title.trim().toLowerCase() === x.t.toLowerCase()); if (sh && !(sh.links && sh.links.length)) { sh.links = linksFor(x); await DB.put('sheets', sh); } }
+      await DB.put('meta', {k:'seed_fr_v2', v:true});
     }
   } catch (e) { console.warn('seed', e); }
   renderHome(); go('home'); // l'app s'ouvre sur Fiches (le cahier vide propose « + Créer »)
