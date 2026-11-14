@@ -2002,7 +2002,7 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
       <div class="sv-hint" id="sv-hint"></div>
     </div>
     <div class="sv-pop" id="sv-pop" role="dialog" aria-label="Diagramme de l’accord"></div>
-    <details class="sv-more"><summary>Plus : Médias, ressources, impression</summary>
+    <details class="sv-more" id="sv-more"><summary id="sv-more-t">Coffre : médias, tutos, impression</summary>
       <div id="sv-coffre"></div>
       <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;color:var(--cream)"><input type="checkbox" id="opt-lefty" onchange="setLefty(this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Mode gaucher : bouton Play à droite</label>
       <button type="button" class="btn btn-ghost" style="margin:6px 0 20px" onclick="printOne()">Imprimer cette fiche</button>
@@ -7582,11 +7582,11 @@ const SV_COMPACT = 12; // au-delà, accords en noms seuls
 const svRhHTML = (rh, opt) => rhythmSVG(rh, false, Object.assign({mini: svAll}, opt));
 /* ═══ RYTHME EN « LIGNE DE MÉTRO » : un groupe de coups = une station ═══ */
 let svTime = false;   // vue « en temps » dépliée (la grille 1 + 2 + 3 + 4)
-function rhGroups(rh) {   // coupe la suite de coups aux silences (2 cases vides d'affilée ou plus)
+function rhGroups(rh) {   // coupe la suite de coups à chaque silence, et tous les 4 coups
   const cells = rh.cells, gs = []; let cur = null, gap = 0;
   cells.forEach((c, k) => {
     if (!c) { gap++; return; }
-    if (!cur || gap >= 2) { cur = {k0: k, k1: k, hits: []}; gs.push(cur); }
+    if (!cur || gap >= 1 || cur.hits.length >= 4) { cur = {k0: k, k1: k, hits: []}; gs.push(cur); }
     cur.hits.push(c.d === 'U' ? 'U' : 'D'); cur.k1 = k; gap = 0;
   });
   return gs;
@@ -7684,6 +7684,7 @@ async function viewSheet(id, keepPart) {
   $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s) + resourcesHTML(s);
+  { const n = (s.links || []).length + (s.media || []).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Coffre · ${n} élément${n > 1 ? 's' : ''} (tutos, médias)` : 'Coffre : médias, tutos, impression'; }
   svSync();
   if (!$('v-sheet').classList.contains('on')) go('sheet');
   await hydrateMedia(s, $('sv-coffre'));
