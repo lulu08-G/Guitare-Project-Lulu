@@ -9415,6 +9415,22 @@ document.addEventListener('keydown', e => {
       for (const x of SEED_FR) { const sh = sheets.find(z => z.title.trim().toLowerCase() === x.t.toLowerCase()); if (sh && !(sh.links && sh.links.length)) { sh.links = linksFor(x); await DB.put('sheets', sh); } }
       await DB.put('meta', {k:'seed_fr_v2', v:true});
     }
+    // Fiche « Coffee » créée vide : on la remplit une fois (beabadoobee, 4 accords). Une fiche qui a déjà des accords n'est jamais touchée.
+    if (!(await DB.get('meta', 'fill_coffee_v1'))) {
+      const cf = sheets.find(z => z.title.trim().toLowerCase() === 'coffee' && (z.parts || []).every(q => !(q.chords || []).length));
+      if (cf) {
+        const x = {t:'Coffee', a:'beabadoobee'};
+        if (!cf.artist || cf.artist === '—') cf.artist = x.a;
+        cf.capo = cf.capo || 0; cf.difficulty = cf.difficulty || 'Debutant'; cf.blocks = Object.assign({capo:false, tempo:true, diff:true, coffre:true}, cf.blocks || {});
+        cf.memo = (cf.memo ? cf.memo + ' ' : '') + 'Quatre accords qui tournent, tempo tranquille. Grille simplifiée : à vérifier à l’oreille avec l’original.';
+        if (!(cf.links && cf.links.length)) cf.links = linksFor(x);
+        const pt = (cf.parts && cf.parts[0]) || newPart('');
+        pt.chords = ['A','Amaj7','Dmaj7','D7'].map(newChord); if (!rhHas(pt.rhythm)) pt.rhythm = rhFromPat('D-DUD-DU');
+        cf.parts = [pt, ...(cf.parts || []).slice(1)];
+        await DB.put('sheets', cf);
+        await DB.put('meta', {k:'fill_coffee_v1', v:true});
+      }
+    }
   } catch (e) { console.warn('seed', e); }
   renderHome(); go('home'); // l'app s'ouvre sur Fiches (le cahier vide propose « + Créer »)
 })();
