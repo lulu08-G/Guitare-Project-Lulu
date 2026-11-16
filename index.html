@@ -2173,6 +2173,55 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
 @media(max-width:480px){.rs-n{visibility:hidden}}
 #bpm-pop button.tap{white-space:nowrap}
 #v-sheet.solo .chords-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+/* ── Création : titre compact, capo et tempo à part, « Enregistrer mon rythme » dans la page ── */
+.ed-ta{grid-template-columns:1.5fr 1fr;gap:8px;margin:2px 0 10px}
+.ed-ta .ed-in{min-height:46px;font-family:var(--sans);border-radius:12px;border:0;background:var(--card2)}
+.ed-ta .ed-in-t{font-size:17px;font-weight:700;letter-spacing:-.01em}.ed-ta .ed-in-a{font-size:15px}
+.ed-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ed-meta small{font-size:12px;color:var(--cream3)}
+.ed-meta .ed-capo{margin:0}
+.ed-tempo{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 6px 0 14px;border-radius:99px;background:var(--card2);font-size:14px;font-weight:600;color:var(--cream);text-transform:none;letter-spacing:0;margin:0}
+.ed-tempo input{width:58px;min-height:30px;padding:2px 6px;border:0;background:none;color:var(--gold);font-size:15px;font-weight:700;text-align:center}
+.ed-lab{margin:20px 0 8px}.ed-lab b{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
+#v-ed .ed-chords{margin:0 0 8px}
+#v-ed .part-card.pc.solo{background:none;border:0;padding:0;box-shadow:none}
+.ed-dock{position:static;left:auto;pointer-events:auto}
+.ed-rec{position:relative;overflow:hidden;width:100%;min-width:0;min-height:64px;margin:0;padding:10px 16px;border-radius:16px;background:var(--card2);color:var(--cream);border:1px solid var(--border2);justify-content:flex-start;gap:14px}
+.ed-rec:hover{border-color:var(--gold)}
+.ed-rec-str{position:absolute;inset:0;width:100%;height:100%;opacity:.5}.ed-rec-str path{stroke:var(--cream4);fill:none}
+.ed-rec>*:not(.ed-rec-str){position:relative}
+.ed-rec-d{width:18px;height:18px;background:#e5484d;box-shadow:0 0 0 5px rgba(229,72,77,.22)}
+.ed-rec span{flex:1;min-width:0}
+.ed-rec b{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.ed-rec small{display:block;font-size:12.5px;font-weight:500;color:var(--cream2);margin-top:1px}
+.ed-rec-ar{width:54px;height:30px;flex:none;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ed-rec-ar .d{stroke:var(--cream)}.ed-rec-ar .u{stroke:var(--gold)}
+.ed-alt{display:flex;gap:8px;margin-top:8px}
+.ed-alt button{flex:1;min-height:44px;border-radius:12px;background:var(--card2);color:var(--cream);font-size:13.5px;font-weight:600}
+.ed-rp{background:none;padding:0 0 6px}
+body:has(#v-ed.on) .toast{bottom:90px}
+/* le « + » : deux choix */
+#create-ask{position:fixed;inset:0;z-index:600;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.6)}
+#create-ask.on{display:flex}
+.ca-box{width:min(100%,460px);background:var(--card);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+.ca-grab{width:38px;height:5px;border-radius:5px;background:var(--card3);margin:0 auto 8px}
+.ca-box h3{font-size:20px;font-weight:800;color:var(--cream);margin:0 4px 6px}
+.ca-box button{display:flex;align-items:center;gap:14px;min-height:68px;padding:10px 14px;border-radius:16px;background:var(--card2);color:var(--cream);text-align:left}
+.ca-box button svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--gold);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ca-box button b{display:block;font-size:16px;font-weight:700}.ca-box button small{display:block;font-size:13px;color:var(--cream2);margin-top:2px}
+.ca-box button.ca-x{min-height:46px;justify-content:center;background:none;color:var(--cream2);font-weight:600}
+@media(min-width:900px){#create-ask{align-items:center}.ca-box{border-radius:24px}.ca-grab{display:none}}
+#ed-recbar{display:flex;flex-direction:column;align-items:stretch}
+@media(max-width:899px){body:has(#v-ed.on) nav{display:none}#v-ed .ed-top{top:0}}
+/* ── S'entraîner : sobre, sans emoji ── */
+.fl-em{display:none}
+.fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
+.fl-tile{min-height:0;padding:14px;border-radius:14px;background:var(--card);gap:2px}
+.fl-tile::before,.fl-tile::after{display:none}
+.fl-tile b,.fl-tile strong{font-family:var(--sans);font-size:16px;font-weight:700;letter-spacing:-.01em}
+.fl-tile:hover{background:var(--card2);transform:none;box-shadow:none}
+.fl-surp .btn{background:var(--card2);color:var(--cream)}
+.cl-t{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
 </style>
 </head>
 <body>
@@ -2190,7 +2239,7 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
       <button class="nav-link" id="nl-trouver" onclick="go('atelier')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/></svg>Tutos</button>
       <button class="nav-link" id="nl-train" onclick="goTrain()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>S’entraîner</button>
       <button class="nav-link" id="nl-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>Plus</button>
-      <button class="nav-link nl-create" id="nl-creer" onclick="newSheet()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nouvelle fiche</button>
+      <button class="nav-link nl-create" id="nl-creer" onclick="createAsk(event)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nouvelle fiche</button>
     </div>
     <button type="button" class="vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
   </div>
@@ -2200,7 +2249,7 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
   <i id="tb-pill" aria-hidden="true"></i>
   <button id="tb-fiches" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg><span>Fiches</span></button>
   <button id="tb-trouver" onclick="go('atelier')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/></svg><span>Tutos</span></button>
-  <button id="tb-creer" class="tb-create" onclick="newSheet()" aria-label="Créer une fiche"><span class="tb-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="tb-l">Créer</span></button>
+  <button id="tb-creer" class="tb-create" onclick="createAsk(event)" aria-label="Créer une fiche"><span class="tb-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="tb-l">Créer</span></button>
   <button id="tb-train" onclick="goTrain()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span>S’entraîner</span></button>
   <button id="tb-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span>Plus</span></button>
 </div>
@@ -2325,8 +2374,8 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
       <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done">
     </div>
 
-    <div id="parts-ed"></div>
-    <div class="qc-parts" id="qc-parts"></div>
+    <div class="ed-meta" id="ed-meta"></div>
+    <div class="ed-lab"><b>Accords</b></div>
     <div class="ed-chords">
       <div class="qc-row">
         <input type="text" id="f-chords" placeholder="Taper les accords (Em G D…)" aria-label="Taper les accords, séparés par des espaces" autocomplete="off" autocapitalize="off" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();addChordLine()}">
@@ -2334,9 +2383,13 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
       </div>
       <div class="qc-sugg" id="qc-sugg"></div>
     </div>
+    <div id="parts-ed"></div>
+    <div class="ed-lab" id="ed-rh-lab"><b>Rythme</b></div>
+    <div class="ed-dock"><div id="ed-recbar"></div></div>
+    <div class="qc-parts" id="qc-parts"></div>
     <div id="ed-solo-rh"></div>
 
-    <div class="ed-lab"><b>Liens et enregistrements</b><small>facultatif</small></div>
+    <div class="ed-lab"><b>Tutos et liens</b><small>facultatif</small></div>
     <details class="ed-row">
       <summary><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg>Ajouter un lien<small>original, tuto…</small></summary>
       <div class="ed-row-b">
@@ -2371,7 +2424,6 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
       </div>
     </details>
   </div>
-  <div class="ed-dock"><div class="wrap-narrow" id="ed-recbar"></div></div>
 </div>
 
 <!-- ══ CHORD LIBRARY ══ -->
@@ -5825,7 +5877,7 @@ function exoDetailHTML(ex) {
 /* « Aller plus loin » : deux entrées, sous la grille des ambiances */
 function exoMoreHTML() {
   const row = (ic, t, d, mode) => `<button type="button" class="row-go" onclick="rccStop();feelStop();exoMode='${mode}';exoRender();window.scrollTo(0,0)"><span class="rg-ic">${ic}</span><span><b>${t}</b><small>${d}</small></span><i>›</i></button>`;
-  return `<div class="cl-t">Aller plus loin</div>` + row('↓↑', 'Apprendre les rythmes', RH_COURSE.length + ' rythmes, un par un', 'rhy') + row('◎', 'Entraînement ciblé', 'Accords, passages, effets, arpèges', 'axes');
+  return `<div class="cl-t">Rythmes et exercices</div>` + row('↓↑', 'Apprendre les rythmes', RH_COURSE.length + ' rythmes, un par un', 'rhy') + row('◎', 'Entraînement ciblé', 'Accords, passages, effets, arpèges', 'axes');
 }
 function exoRender() {
   const body = $('exo-body'); if (!body) return;
@@ -6373,7 +6425,7 @@ function feelCard(p) {
       ${p.facile ? `<button type="button" class="filt ${easy ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div></div>`;
 }
 function feelTiles() {
-  return `<div class="fl-surp"><div class="fl-lead">Ton envie du jour ?</div><button type="button" class="btn btn-primary" onclick="feelSurprise()" title="Une suite et un rythme au hasard">🎲 Surprends-moi</button></div>
+  return `<div class="fl-surp"><div class="fl-lead">Suites d’accords</div><button type="button" class="btn btn-primary" onclick="feelSurprise()" title="Une suite et un rythme au hasard">Au hasard</button></div>
     <div class="fl-tiles">${AMBIANCES.map(a => `<button type="button" class="fl-tile" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
       <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>
     <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
@@ -8372,6 +8424,22 @@ const OPT_DEFS = [
 const REQUIRE_ARTIST = false;
 const QUICK_CHORDS = ['Am','C','G','D','Em','F','E','A7','Dm','A'];
 const QUICK_PARTS = ['Intro','Couplet','Refrain','Pont','Fin'];
+// le « + » : deux façons de créer une fiche
+function createAsk(e) {
+  if (e) e.stopPropagation();
+  let m = $('create-ask');
+  if (!m) {
+    m = document.createElement('div'); m.id = 'create-ask'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Créer une fiche');
+    m.innerHTML = `<div class="ca-box" onclick="event.stopPropagation()"><div class="ca-grab"></div><h3>Nouvelle fiche</h3>
+      <button type="button" onclick="createAskClose();newSheet()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span><b>Fiche seule</b><small>Titre, accords, rythme : je la remplis moi-même</small></span></button>
+      <button type="button" onclick="createAskClose();go('atelier')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/></svg><span><b>Fiche avec un tuto</b><small>Je cherche un morceau, je regarde et je note</small></span></button>
+      <button type="button" class="ca-x" onclick="createAskClose()">Annuler</button></div>`;
+    m.addEventListener('click', createAskClose); document.body.appendChild(m);
+    document.addEventListener('keydown', ev => { if (ev.key === 'Escape') createAskClose(); });
+  }
+  m.classList.add('on');
+}
+function createAskClose() { const m = $('create-ask'); if (m) m.classList.remove('on'); }
 function newSheet() {
   draft = newSheet_();
   draft.color = COLORS[sheets.length % COLORS.length][0]; // couleur automatique
@@ -8705,8 +8773,9 @@ function renderParts() {
     const nameInp = `<input class="pc-name" value="${esc(p.name)}" oninput="draft.parts[${i}].name=this.value" onchange="renderParts()" placeholder="Nom de la partie" aria-label="Nom de la partie">`;
     const chips = `<div class="pc-names" role="group" aria-label="Nom de la partie">${PC_NAMES.map(n => `<button type="button" class="pc-chip${p.name === n ? ' on' : ''}" aria-pressed="${p.name === n}" onclick="edPartName(${i},'${n}')">${n}</button>`).join('')}<button type="button" class="pc-chip${nameOn ? ' on' : ''}" aria-pressed="${nameOn}" onclick="edNameStart(${i})">${custom ? esc(p.name) : 'Autre…'}</button></div>${nameOn ? nameInp : ''}`;
     const title = esc(p.name || (solo ? 'Partie du morceau' : 'Partie ' + (i + 1)));
+    const bare = wayOf(p) === 'rh' && !rhHas(p.rhythm);   // pas encore de rythme : le gros bouton « Enregistrer mon rythme » suffit
     const head = solo
-      ? `<div class="pc-h"><b class="pc-t">${title}</b>${p.name ? '' : '<small class="pc-opt">nom facultatif</small>'}</div>${chips}`
+      ? (p.name ? `<div class="pc-h"><b class="pc-t">${title}</b></div>${chips}` : '')
       : `<div class="pc-h"><span class="drag-handle" title="Glisser pour réordonner"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1.4" fill="currentColor" stroke="none"/></svg></span>
         <b class="pc-t">${title}</b>${summary}
         <div class="part-tools">
@@ -8716,13 +8785,13 @@ function renderParts() {
         </div></div>${chips}`;
     return `<div class="part-card pc ${p.collapsed ? 'collapsed' : ''} ${solo ? 'solo' : ''}" data-i="${i}">${head}
       <div class="pc-b">
-        ${i === 0 ? `<div class="ed-capo-row">${edCapoHTML()}</div>` : ''}
         ${edChordsHTML(p, i)}
-        <div class="ed-lab in"><b>Façon de jouer</b><small>facultatif</small></div>${rbHTML('draft', i)}
+        ${bare ? '' : `<div class="ed-lab in"><b>Rythme</b></div>${rbHTML('draft', i)}`}
         ${edMoreHTML(p, i)}
       </div></div>`;
   }).join('');
   $('ed-solo-rh').innerHTML = '';
+  $('ed-meta').innerHTML = edCapoHTML() + `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="—" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label><small>pour tout le morceau</small>`;
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
   // un accord ajouté se pose (les accords déjà vus ne rejouent rien)
@@ -8761,7 +8830,11 @@ function edBar() {
       <div class="ed-rc-l"><button type="button" onclick="rcOpen(${i},'trim','draft')">Rogner</button><button type="button" onclick="rcDelete(${i},'draft')">Supprimer</button></div></div>`;
     edPeaks(p.rec.mediaId).then(pk => { const e = $('ed-pk'); if (e && pk && draft && edRp() === i) e.innerHTML = edWaveBars(pk, 'done'); });
   } else {
-    h = `<button type="button" class="ed-rec" onclick="edRecStart()"><i class="ed-rec-d"></i><span><b>Enregistrer mon rythme</b><small>Gratte 1 ou 2 mesures, l’app s’en souvient</small></span></button>`;
+    const bareP = p && wayOf(p) === 'rh' && !rhHas(p.rhythm);
+    h = `<button type="button" class="ed-rec" onclick="edRecStart()"><svg class="ed-rec-str" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true">${[9, 18, 26.5, 34.5, 42.5, 51].map((y, k) => `<path d="M0 ${y}H300" stroke-width="${2.4 - k * .32}"/>`).join('')}</svg>
+      <i class="ed-rec-d"></i><span><b>Enregistrer mon rythme</b><small>Gratte une ou deux mesures</small></span>
+      <svg class="ed-rec-ar" viewBox="0 0 54 30" aria-hidden="true"><path class="d" d="M8 4v20m-5 -6l5 7l5 -7"/><path class="d" d="M27 4v20m-5 -6l5 7l5 -7"/><path class="u" d="M46 26v-20m-5 6l5 -7l5 7"/></svg></button>
+      ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Le saisir à la main</button><button type="button" onclick="rbWay('draft',${i},'arp')">Arpège</button></div>` : ''}`;
   }
   host.innerHTML = pick + h;
   const st = rc && rc.inline && (rc.stage === 'count' || rc.stage === 'rec') ? rc.stage : (p && p.rec ? 'done' : 'idle');
