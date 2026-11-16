@@ -5,7 +5,7 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 ## Gel des nouveautés (décision de Lucas, 13/11/2026)
 - **Plus aucune nouvelle fonction** tant que le cœur n'est pas validé par Lucas. Le cœur : **créer une fiche, puis la jouer** (accueil, création, fiche, mode jeu).
 - Le travail autorisé : polir ce parcours d'après ses retours en conditions réelles, cohérence visuelle, corrections de bugs.
-- Navigation principale : Fiches · Accordeur · Créer · S'entraîner · Plus. Les écrans pas au niveau (Un morceau/Atelier, Tutos, Importer, Sites utiles) sont rangés dans « Plus », section « bêta » : ne pas les remettre en avant ni les supprimer sans son accord.
+- Navigation principale (16/11/2026) : Fiches · Tutos · Créer · S'entraîner · Plus. « Tutos » ouvre l'écran « titre → tutos → fiche » (vue `atelier`) : c'est la force de l'app selon Lucas (chercher un tuto et créer la fiche en même temps). L'accordeur, les accords et le métronome sont dans « Plus ». Les écrans pas au niveau (Recherche de tutos, Importer, Sites utiles) restent dans « Plus », section « bêta » : ne pas les remettre en avant ni les supprimer sans son accord.
 - Une demande de nouveauté pendant le gel : la noter, rappeler le gel, et laisser Lucas trancher.
 
 ## Le code
@@ -14,7 +14,7 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 - Le fichier fait ~9 000 lignes : **ne jamais le lire en entier**. Repérer avec `grep -n` les sections (`/* ═══════ NOM ═══════ */`), puis lire par plages.
 - Fin de fichier : bloc `SAMPLES GUITARE` (~570 Ko de base64 sur quelques lignes très longues) : ne jamais l’afficher ; utiliser `grep -n ... | cut -c1-200` ou exclure ce bloc.
 - Données : IndexedDB (`gms_v2` : stores `sheets`, `media`, `meta`) + quelques préférences en localStorage.
-- **Identité visuelle (thème unique, plus de jour/nuit)** : fond « bureau en bois sombre » (jetons de `:root`) et contenu en « fiches papier ivoire ». Tout élément listé dans la règle `:is(…)` juste après `:root` reçoit les jetons papier (`--card`, `--cream`… redéfinis) : pour qu'un nouveau bloc soit une fiche, l'ajouter à cette liste ; sinon il reste sombre. Ne jamais coder de couleur en dur : utiliser les jetons. Couche de finition : bloc `IDENTITÉ VISUELLE` en fin de `<style>`. Police d'affichage : Fraunces ; interface : Manrope.
+- **Identité visuelle « Studio » (validée par Lucas le 16/11/2026, thème unique)** : fond sombre neutre, surfaces à peine relevées, **un seul accent orange** (`--gold`), une seule police (Inter, `--sans` ; `--serif` et `--mono` pointent dessus). Pas de dégradés, pas de textures, pas de bande colorée sur les cartes, pas d'emoji décoratif dans les nouveaux écrans. Jetons dans `:root` ; la règle `:is(…)` juste après redéfinit les jetons pour ce qui est posé comme une surface. Ne jamais coder de couleur en dur : utiliser les jetons. Couche de finition : bloc `STUDIO — couche finale` en fin de `<style>` (barres, liste des fiches, fiche, PC). PC : menu à gauche (≥ 900 px), liste + fiche côte à côte (≥ 1200 px). L'impression reste sur papier blanc (bloc `PRINT`).
 - Interface **en français, avec accents** (les vieux textes sans accents sont à corriger au passage).
 
 ## Vérifier avant de livrer
