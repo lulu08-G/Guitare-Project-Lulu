@@ -125,14 +125,22 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .tag.mauve{background:rgba(138,122,170,.1);color:var(--mauve);border-color:rgba(138,122,170,.2)}
 .chk{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border2);background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
 .chk.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
-.chk svg{width:12px;height:12px;stroke-width:3}
+.chk svg{width:12px;height:12px;stroke-width:3;opacity:0}.chk.on svg{opacity:1}
 .empty{grid-column:1/-1;text-align:center;padding:70px 24px}
 .empty h3{font-family:var(--serif);color:var(--cream3);font-size:21px;margin:16px 0 8px}
 .empty p{font-size:13px;color:var(--cream4);margin-bottom:22px}
 
 .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--rs)}
 .toolbar .spacer{flex:1}
-.toolbar-count{font-size:12px;color:var(--cream3);font-weight:600}
+.toolbar-count{font-size:13px;color:var(--cream);font-weight:700}
+#cahier-bar{position:sticky;top:70px;z-index:30;background:var(--bg2);border-color:var(--border2);box-shadow:0 10px 28px var(--shadow)}
+@media(max-width:600px){#cahier-bar{padding:10px 12px;gap:8px}#cahier-bar .toolbar-count{flex:1 1 100%}#cahier-bar .spacer{display:none}#cahier-bar .btn{flex:1;justify-content:center;padding-left:8px;padding-right:8px}#cahier-bar #btn-print{flex:1 1 100%;min-height:46px}}
+#cahier-bar .btn svg,.sv-foot .btn svg,.hm-print svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#cahier-bar .btn{display:inline-flex;align-items:center;gap:7px}
+#cahier-bar .btn:disabled{opacity:.45;pointer-events:none}
+.hm-print{width:44px;height:44px;margin-left:auto}
+.sv-foot{display:flex;justify-content:center;padding:6px 0 22px}
+.sv-foot .btn{display:inline-flex;align-items:center;gap:8px}
 
 /* ── SHEET VIEW ── */
 .sv-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:28px 0 22px}
@@ -1111,7 +1119,7 @@ body:has(#v-ed.on) .toast{bottom:150px}
   .pg:last-child{page-break-after:auto}
 }
 #print-root{font-family:var(--sans);color:#111;background:#fff}
-.pg{background:#fff;padding:4mm}
+.pg{background:#fff;padding:4mm 4mm 16mm}
 .p-head{display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2.5px solid #c8783a;padding-bottom:10px;margin-bottom:16px;gap:12px}
 .p-title{font-family:var(--serif);font-size:26px;font-weight:800;color:#111;line-height:1.1}
 .p-artist{font-size:13px;color:#666;margin-top:2px}
@@ -1126,6 +1134,9 @@ body:has(#v-ed.on) .toast{bottom:150px}
 .p-chord{text-align:center}
 .p-chord .cn{font-family:var(--serif);font-size:14px;font-weight:700;color:#111;margin-bottom:3px}
 .p-note{padding:8px 12px;background:#faf6ef;border-left:3px solid #c8783a;border-radius:6px;font-size:12px;color:#444;line-height:1.6;white-space:pre-wrap;margin-top:8px}
+.p-rh{--gold:#c8783a;--gold2:#a85f24;--sage:#55784a;--cream:#111;--cream2:#333;--cream3:#666;--card:#fff;margin:2px 0 6px}
+.p-rh{display:flex;align-items:center;gap:12px}
+.p-rh .ml{height:100%;width:auto;max-height:none;flex:none}.p-rh-k{font-size:9px;color:#777;font-weight:600}
 .p-foot{position:absolute;bottom:4mm;left:4mm;right:4mm;display:flex;justify-content:space-between;font-size:12px;color:#bbb;border-top:1px solid #eee;padding-top:5px}
 .p-half{padding-bottom:10mm;margin-bottom:10mm;border-bottom:1px dashed #ddd}
 .p-half:last-child{border-bottom:none}
@@ -1962,11 +1973,12 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
   <div class="wrap">
     <div class="hm-top">
       <h1><span class="hm-w">Fiches</span><small id="greet-count"></small></h1>
+      <button type="button" class="btn-icon hm-print" onclick="startPrintPick()" aria-label="Imprimer des fiches" title="Imprimer des fiches"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg></button>
       <div class="hm-menu" id="hm-menu">
         <button class="btn-icon" onclick="toggleHomeMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
         <div class="pop">
-          <button onclick="closeHomeMenu();toggleSelectMode()" id="sel-menu-btn">Sélectionner</button>
-          <button onclick="closeHomeMenu();document.getElementById('json-in').click()">Import JSON</button>
+          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Imprimer ou exporter des fiches</button>
+          <button onclick="closeHomeMenu();document.getElementById('json-in').click()">Importer un fichier de fiches</button>
         </div>
         <input type="file" id="json-in" accept="application/json" style="display:none" onchange="importJSON(this)">
       </div>
@@ -1981,11 +1993,12 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
       <button type="button" class="filt" data-f="recent" onclick="setHomeFilter('recent')">Récents</button>
     </div>
     <div class="toolbar" id="cahier-bar" style="display:none">
-      <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Annuler la sélection</button>
       <span class="toolbar-count" id="sel-count"></span>
+      <button class="btn btn-ghost btn-sm" onclick="selAll()" id="sel-all-btn">Tout cocher</button>
       <div class="spacer"></div>
-      <button class="btn btn-ghost btn-sm" onclick="openPrintModal()" id="btn-print" style="display:none">Imprimer la sélection</button>
-      <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" style="display:none">Export JSON</button>
+      <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Annuler</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" title="Enregistrer ces fiches dans un fichier">Exporter</button>
+      <button class="btn btn-primary btn-sm" onclick="openPrintModal()" id="btn-print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg><span id="btn-print-t">Imprimer</span></button>
     </div>
     <div id="pinned-wrap" style="display:none"><div class="pinned-row" id="pinned-row"></div></div>
     <div class="grid" id="home-grid"></div>
@@ -2013,11 +2026,11 @@ body.names-off #v-sheet .chord-cell .cn{display:none}
       <div class="sv-hint" id="sv-hint"></div>
     </div>
     <div class="sv-pop" id="sv-pop" role="dialog" aria-label="Diagramme de l’accord"></div>
-    <details class="sv-more" id="sv-more"><summary id="sv-more-t">Coffre : médias, tutos, impression</summary>
+    <details class="sv-more" id="sv-more"><summary id="sv-more-t">Coffre : médias, tutos</summary>
       <div id="sv-coffre"></div>
       <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;color:var(--cream)"><input type="checkbox" id="opt-lefty" onchange="setLefty(this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Mode gaucher : bouton Play à droite</label>
-      <button type="button" class="btn btn-ghost" style="margin:6px 0 20px" onclick="printOne()">Imprimer cette fiche</button>
     </details>
+    <div class="sv-foot"><button type="button" class="btn btn-ghost btn-sm" onclick="printOne()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg>Imprimer cette fiche</button></div>
   </div>
   <div class="sv-bar" id="sv-bar"><div class="sv-bar-in">
     <div class="sv-live" id="sv-live">Rythme en boucle</div>
@@ -7535,6 +7548,10 @@ function toggleSelectMode() {
   if (!selMode) selIds.clear();
   renderHome();
 }
+function startPrintPick() { if (!selMode) { selMode = true; selIds.clear(); } renderHome(); const b = $('cahier-bar'); if (b && b.scrollIntoView) b.scrollIntoView({block: 'nearest'}); }
+function selAll() { const all = sheets.every(s => selIds.has(s.id)); selIds.clear(); if (!all) sheets.forEach(s => selIds.add(s.id)); renderHome(); }
+function printSheet(id) { selIds = new Set([id]); openPrintModal(); }
+function closePrintModal() { $('m-print').classList.add('hide'); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }
 function toggleSel(id, e) {
   e.stopPropagation();
   selIds.has(id) ? selIds.delete(id) : selIds.add(id);
@@ -7569,10 +7586,13 @@ function renderHome() {
     .filter(s => !q || s.title.toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
     .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : recentIds.has(s.id))
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-  $('sel-count').textContent = selMode ? `${selIds.size} sélectionnée${selIds.size>1?'s':''}` : '';
-  $('cahier-bar').style.display = selMode ? '' : 'none';
-  $('btn-print').style.display = selMode && selIds.size ? '' : 'none';
-  $('btn-export').style.display = selMode && selIds.size ? '' : 'none';
+  { const k = selIds.size;
+    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches à imprimer';
+    $('cahier-bar').style.display = selMode ? '' : 'none';
+    $('btn-print').disabled = !k; $('btn-export').disabled = !k;
+    $('btn-print-t').textContent = k ? `Imprimer (${k})` : 'Imprimer';
+    $('sel-all-btn').textContent = sheets.length && sheets.every(x => selIds.has(x.id)) ? 'Tout décocher' : 'Tout cocher';
+    document.body.classList.toggle('sel-on', selMode); }
   const g = $('home-grid');
   if (!list.length) {
     g.innerHTML = `<div class="empty">
@@ -7606,6 +7626,7 @@ function renderHome() {
       <div class="card-acts">
         <button onclick="event.stopPropagation();editSheet('${s.id}')">Modifier</button>
         <button onclick="event.stopPropagation();dupSheet('${s.id}')">Dupliquer</button>
+        <button onclick="event.stopPropagation();printSheet('${s.id}')">Imprimer</button>
         <button class="danger" onclick="event.stopPropagation();delSheet('${s.id}')">Supprimer</button>
       </div>
     </div>`;
@@ -7637,11 +7658,11 @@ function rhGroupName(h) {
   if (alt && n % 2 === 0 && h[0] === 'D') return 'bas-haut' + (n > 2 ? ' ×' + n / 2 : '');
   return n <= 4 ? h.map(x => x === 'D' ? 'bas' : 'haut').join('-') : 'mélange';
 }
-function metroLineHTML(rh, cursor) {
+function metroLineHTML(rh, cursor, print) {
   rh = rhNorm(rh); const gs = rhGroups(rh), n = gs.length; if (!n) return '';
   const sw = Math.max(78, Math.min(104, 300 / n)), W = n * sw + 30, y = 74;
   const act = cursor == null ? -1 : gs.findIndex(g => cursor >= g.k0 && cursor <= g.k1 + 1);
-  let svg = `<svg viewBox="0 0 ${W} 160" class="ml" role="img" aria-label="Rythme en ${n} groupe${n > 1 ? 's' : ''}">`;
+  let svg = `<svg viewBox="0 0 ${W} ${print ? 140 : 160}" class="ml" role="img" aria-label="Rythme en ${n} groupe${n > 1 ? 's' : ''}">`;
   const xs = gs.map((g, i) => 15 + sw / 2 + i * sw);
   svg += `<path d="M${xs[0] - 10} ${y}H${xs[n - 1] + 10}" class="ml-line"/>`;
   svg += `<path d="M${xs[n - 1] + 10} ${y}H${W - 8}q8 0 8 8V${y + 52}q0 8 -8 8H${xs[0] - 14}q-8 0 -8 -8V${y + 8}q0 -8 8 -8h5" class="ml-loop"/>`;
@@ -7652,6 +7673,7 @@ function metroLineHTML(rh, cursor) {
     svg += `<circle cx="${x}" cy="${y}" r="13" class="ml-st${on ? ' on' : ''}"/><text x="${x}" y="${y + 5}" class="ml-n">${i + 1}</text>`;
     svg += `<text x="${x}" y="${y + 33}" class="ml-t">${rhGroupName(g.hits)}</text>`;
   });
+  if (print) return svg + '</svg>';
   svg += `<text x="${W / 2}" y="${y + 80}" class="ml-b">↻ puis on recommence au 1</text></svg>`;
   return svg + `<div class="ml-key"><span class="d">↓ bas</span><span class="u">↑ haut</span></div>`;
 }
@@ -9212,7 +9234,7 @@ function startFromImage() {
 }
 
 /* ═══════ PRINT ═══════ */
-function printOne() { selIds = new Set([cur.id]); openPrintModal(); }
+function printOne() { printSheet(cur.id); }
 let printOpts = null;
 function openPrintModal() {
   printOpts = printOpts || {};
@@ -9227,12 +9249,12 @@ function openPrintModal() {
 function renderPrintModal() {
   const n = selIds.size;
   $('m-print-body').innerHTML = `
-    <div class="modal-t">Apercu d impression — ${n} fiche${n>1?'s':''}</div>
+    <div class="modal-t">Aperçu avant impression · ${n} fiche${n>1?'s':''}</div>
     <div class="frow">
       <div class="fg"><label>Style</label>
         <select id="pp-style" onchange="printOpts.style=this.value;refreshPrintPreview()">
-          <option value="fiche" ${printOpts.style==='fiche'?'selected':''}>Fiche detaillee</option>
-          <option value="cahier" ${printOpts.style==='cahier'?'selected':''}>Cahier compact — accords en ligne + rythme</option>
+          <option value="fiche" ${printOpts.style==='fiche'?'selected':''}>Fiche détaillée</option>
+          <option value="cahier" ${printOpts.style==='cahier'?'selected':''}>Cahier compact : accords et rythme sur une ligne</option>
         </select></div>
       <div class="fg"><label>Mise en page</label>
         <select id="pp-mode" onchange="printOpts.mode=+this.value;refreshPrintPreview()">
@@ -9242,15 +9264,15 @@ function renderPrintModal() {
     </div>
     <div class="frow">
       <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
-        <input type="checkbox" id="pp-toc" style="width:auto" ${printOpts.toc?'checked':''} onchange="printOpts.toc=this.checked;refreshPrintPreview()"> Sommaire en premiere page</label>
+        <input type="checkbox" id="pp-toc" style="width:auto" ${printOpts.toc?'checked':''} onchange="printOpts.toc=this.checked;refreshPrintPreview()"> Sommaire en première page</label>
       <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
-        <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numeroter les pages</label>
+        <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numéroter les pages</label>
     </div>
     <div style="background:#5a5a5a;border-radius:10px;padding:14px;overflow:auto;max-height:52vh;margin-top:8px">
       <div id="pp-preview" style="zoom:.42"></div>
     </div>
     <div class="modal-f">
-      <button class="btn btn-ghost btn-sm" onclick="$('m-print').classList.add('hide')">Fermer</button>
+      <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
       <button class="btn btn-primary btn-sm" onclick="doPrint()">Imprimer / PDF</button>
     </div>`;
   refreshPrintPreview();
@@ -9278,7 +9300,12 @@ function buildPrintPages() {
 function doPrint() {
   $('print-root').innerHTML = buildPrintPages();
   $('m-print').classList.add('hide');
-  setTimeout(() => window.print(), 150);
+  setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
+}
+// façon de jouer imprimée : la ligne de groupes de la fiche, volontairement plus petite que les accords
+function pPrintWay(p, h, mini) {
+  if (pWay(p) !== 'rh') return pWayHTML(p, true, mini ? {mini: true} : undefined);
+  return `<div class="p-rh" style="height:${h}px">${metroLineHTML(p.rhythm, null, true)}<span class="p-rh-k">↓ bas · ↑ haut · en boucle</span></div>`;
 }
 function printSheetHTML(s, compact) {
   return `<div class="p-head">
@@ -9294,10 +9321,10 @@ function printSheetHTML(s, compact) {
       const staff = tabStaffSVG(p.chords, true);
       return `<div class="p-part">
         <div class="p-part-t">${p.name ? `<span class="d"></span>${esc(p.name)}` : ''}${p.note && compact ? `<span class="c">${esc(p.note)}</span>` : ''}</div>
-        ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.78:.92, light:true})}</div>`).join('')}</div>` : ''}
+        ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.9:1.15, light:true})}</div>`).join('')}</div>` : ''}
         ${staff ? `<div style="margin-bottom:6px">${staff}</div>` : ''}
         ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
-        ${pWayHTML(p, true)}
+        ${pPrintWay(p, compact ? 74 : 88)}
         ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? `<div class="p-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
         ${p.note && !compact ? `<div class="p-note">${esc(p.note)}</div>` : ''}
       </div>`;
@@ -9320,7 +9347,7 @@ function printCahierHTML(s) {
         <div style="display:flex;gap:9px;flex-wrap:wrap">${
           p.chords.length ? p.chords.map(c => `<div class="p-chord"><div class="cn" style="font-size:12px">${esc(c.name)}</div>${chordSVG(c,{size:.6,light:true})}</div>`).join('')
                            : '<span style="font-size:10px;color:#999">—</span>'}</div>
-        ${pHas(p) ? `<div>${pWayHTML(p, true, {mini: true})}</div>` : ''}
+        ${pHas(p) ? `<div>${pPrintWay(p, 62, true)}</div>` : ''}
       </div>
     </div>`).join('')}`;
 }
