@@ -2222,21 +2222,44 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .fl-tile:hover{background:var(--card2);transform:none;box-shadow:none}
 .fl-surp .btn{background:var(--card2);color:var(--cream)}
 .cl-t{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
+/* ── cases de rythme en flèches droites ── */
+.rgc.U .rgp{stroke:var(--rg-u)}
+.rgs .rgdot{stroke-dasharray:none;opacity:.28}
+/* ── bouton « Enregistrer mon rythme » : médiator + coups qui tombent ── */
+.ed-rec-pick{width:38px;height:38px;flex:none}.ed-rec-pick path{fill:#e5484d}.ed-rec-pick circle{fill:#fff}
+.ed-rec-ar{width:66px;height:34px;stroke:none}
+.ed-rec-ar .l{stroke:var(--cream4);stroke-width:1.5;fill:none}.ed-rec-ar .d{fill:var(--cream);stroke:none}.ed-rec-ar .u{fill:var(--gold);stroke:none}
+/* ── Découvrir ── */
+@media(max-width:899px){body:has(#v-disc.on) nav{display:none}}
+.hrow{display:flex;gap:10px;overflow-x:auto;padding:2px 0 6px;margin:0;scrollbar-width:none;scroll-snap-type:x proximity}
+.hrow::-webkit-scrollbar{display:none}
+.hcard{flex:0 0 138px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:none;color:var(--cream);padding:0}
+.hc-art{width:138px;height:138px;border-radius:16px;background:var(--card2);color:var(--cream3);display:grid;place-items:center;font-size:44px;font-weight:800;letter-spacing:-.03em;margin-bottom:9px}
+.hc-art.a{background:var(--acc-soft);color:var(--gold)}
+.hcard b{font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hcard small{font-size:12.5px;color:var(--cream2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.hcard i{font-style:normal;font-size:11.500px;font-weight:600;color:var(--cream3);margin-top:4px}
+.disc-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.disc-2 button{display:flex;flex-direction:column;gap:3px;text-align:left;padding:14px;border-radius:14px;background:var(--card);border:1px solid var(--border);color:var(--cream)}
+.disc-2 b{font-size:15px;font-weight:700}.disc-2 small{font-size:12.5px;color:var(--cream2)}
+.disc-soon{display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:14px;border:1px dashed var(--border2);margin-bottom:40px}
+.disc-soon b{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}.disc-soon span{font-size:13.500px;color:var(--cream2)}
+@media(min-width:900px){#v-disc .wrap{max-width:1040px;padding:0 36px}.hrow{margin:0;padding:2px 0 6px;flex-wrap:wrap}.hcard{flex-basis:150px}.hc-art{width:150px;height:150px}}
 </style>
 </head>
 <body>
 
 <div id="app-shell">
 <nav>
-  <div class="logo" onclick="go('home')">
+  <div class="logo" onclick="go('disc')">
     <svg class="logo-mark" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="11" fill="var(--gold)"/><path d="M19 9.5c5.2 0 9 1.9 9 5.8 0 4.9-4.7 10.4-9 13.200-4.300-2.800-9-8.300-9-13.200 0-3.900 3.800-5.800 9-5.800z" fill="var(--ink)"/></svg>
     <span class="logo-text">Guitar Memory</span>
   </div>
   <span id="nav-title"></span>
   <div class="nav-right">
     <div class="nav-links">
+      <button class="nav-link" id="nl-trouver" onclick="go('disc')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.500 8.500l-2 5-5 2 2-5z"/></svg>Découvrir</button>
       <button class="nav-link" id="nl-fiches" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>Fiches</button>
-      <button class="nav-link" id="nl-trouver" onclick="go('atelier')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/></svg>Tutos</button>
       <button class="nav-link" id="nl-train" onclick="goTrain()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>S’entraîner</button>
       <button class="nav-link" id="nl-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>Plus</button>
       <button class="nav-link nl-create" id="nl-creer" onclick="createAsk(event)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nouvelle fiche</button>
@@ -2247,8 +2270,8 @@ body:has(#v-ed.on) .toast{bottom:90px}
 
 <div id="tabbar" role="navigation" aria-label="Navigation principale">
   <i id="tb-pill" aria-hidden="true"></i>
+  <button id="tb-trouver" onclick="go('disc')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.500 8.500l-2 5-5 2 2-5z"/></svg><span>Découvrir</span></button>
   <button id="tb-fiches" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg><span>Fiches</span></button>
-  <button id="tb-trouver" onclick="go('atelier')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/></svg><span>Tutos</span></button>
   <button id="tb-creer" class="tb-create" onclick="createAsk(event)" aria-label="Créer une fiche"><span class="tb-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="tb-l">Créer</span></button>
   <button id="tb-train" onclick="goTrain()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span>S’entraîner</span></button>
   <button id="tb-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span>Plus</span></button>
@@ -2586,6 +2609,14 @@ body:has(#v-ed.on) .toast{bottom:90px}
   <div class="wrap-narrow" style="padding-bottom:60px">
     <div class="hero"><div><h1>Les <em>vidéos</em></h1><p>Toutes les animations des cours, au même endroit.</p></div></div>
     <div id="admin-body"></div>
+  </div>
+</div>
+<div class="view" id="v-disc">
+  <div class="wrap">
+    <div class="hm-top"><h1>Découvrir</h1><button type="button" class="btn-icon vol-btn hm-vol" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button></div>
+    <div class="search-bar"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.350-4.350"/></svg>
+      <input type="text" id="disc-q" placeholder="Un morceau, un artiste" autocomplete="off" enterkeyhint="search" aria-label="Chercher un morceau" onkeydown="if(event.key==='Enter')discSearch()"></div>
+    <div id="disc-body"></div>
   </div>
 </div>
 <div class="view" id="v-plus">
@@ -3094,19 +3125,34 @@ const rhLerp = (a, b, t) => [a[0] + (b[0] - a[0])*t, a[1] + (b[1] - a[1])*t];
 const rhBez = (p, t) => { const m = 1 - t; return [0, 1].map(i => m*m*m*p[0][i] + 3*m*m*t*p[1][i] + 3*m*t*t*p[2][i] + t*t*t*p[3][i]); };
 function rhSplit(p, t) { const a = rhLerp(p[0], p[1], t), b = rhLerp(p[1], p[2], t), c = rhLerp(p[2], p[3], t), d = rhLerp(a, b, t), e = rhLerp(b, c, t); return [p[0], a, d, rhLerp(d, e, t)]; }
 const rhCub = p => `M${rhN(p[0][0])} ${rhN(p[0][1])}C${rhN(p[1][0])} ${rhN(p[1][1])} ${rhN(p[2][0])} ${rhN(p[2][1])} ${rhN(p[3][0])} ${rhN(p[3][1])}`;
-function rhCellSVG(c, dir, g) {
-  const {W, yT, yB} = g;
-  const p = dir === 'D' ? [[0, yT], [W/2, yT], [W/2, yB], [W, yB]] : dir === 'U' ? [[0, yB], [W/2, yB], [W/2, yT], [W, yT]] : [[0, yB], [W/3, yB], [2*W/3, yB], [W, yB]];
-  let s = `<svg class="rgs" viewBox="0 0 ${W} ${g.H}" aria-hidden="true">`;
-  if (!c) return s + `<path class="rgdot" d="${rhCub(p)}"/></svg>`;
-  const a = c.a === 2 ? 2 : c.a === 0 ? 0 : 1, w = g.w[a], T = .74, e = rhBez(p, T), e2 = rhBez(p, T - .03);
-  s += `<path class="rgbase" d="${rhCub(p)}"/><path class="rgp${a === 0 ? ' soft' : ''}" stroke-width="${w}" d="${rhCub(rhSplit(p, T))}"/>`;
-  if (c.d === 'X') { const m = g.x; s += `<path class="rgp" stroke-width="${w}" d="M${rhN(e[0] - m)} ${rhN(e[1] - m)}l${rhN(2*m)} ${rhN(2*m)}m0 ${rhN(-2*m)}l${rhN(-2*m)} ${rhN(2*m)}"/>`; }
-  else {
-    const ang = Math.atan2(e[1] - e2[1], e[0] - e2[0]), q = d => [e[0] - g.l*Math.cos(ang + d), e[1] - g.l*Math.sin(ang + d)], A = q(.62), B = q(-.62);
-    s += `<path class="rgp${a === 0 ? ' soft' : ''}" stroke-width="${w}" d="M${rhN(A[0])} ${rhN(A[1])}L${rhN(e[0])} ${rhN(e[1])}L${rhN(B[0])} ${rhN(B[1])}"/>`;
-  }
+function rhCellSVG(c, dir, g) {   // une flèche droite par case : ↓ bas, ↑ haut, ✕ étouffé ; case vide = petit repère
+  const {W, H, yT, yB} = g, x = W/2, hd = Math.min(W*.24, 7);
+  let s = `<svg class="rgs" viewBox="0 0 ${W} ${H}" aria-hidden="true">`;
+  const arrow = (d, cls, w) => d === 'U' ? `<path class="${cls}" stroke-width="${w}" d="M${x} ${yB}V${yT}m${-hd} ${hd*1.1}l${hd} ${-hd*1.1}l${hd} ${hd*1.1}"/>` : `<path class="${cls}" stroke-width="${w}" d="M${x} ${yT}V${yB}m${-hd} ${-hd*1.1}l${hd} ${hd*1.1}l${hd} ${-hd*1.1}"/>`;
+  if (!c) return s + (dir === 'F' ? `<path class="rgdot" d="M${x - 3} ${(yT + yB)/2}h6"/>` : arrow(dir, 'rgdot', 1.6)) + '</svg>';
+  const a = c.a === 2 ? 2 : c.a === 0 ? 0 : 1, w = g.w[a], m = g.x;
+  if (c.d === 'X') s += `<path class="rgp" stroke-width="${w}" d="M${x - m} ${(yT + yB)/2 - m}l${2*m} ${2*m}m0 ${-2*m}l${-2*m} ${2*m}"/>`;
+  else s += arrow(c.d === 'U' ? 'U' : 'D', 'rgp' + (a === 0 ? ' soft' : ''), w);
   return s + '</svg>';
+}
+/* Retrouver le rythme d'une prise : on repère les attaques, on les cale sur une grille de croches (tempo de la fiche,
+   sinon estimé d'après l'écart le plus courant), et on applique la règle du grattage : ↓ sur le temps, ↑ entre les temps.
+   C'est une proposition : chaque flèche se corrige ensuite à la main. Renvoie {rhythm, bpm} ou null. */
+function rhFromTake(buf, bpm) {
+  const d = buf.getChannelData(0), sr = buf.sampleRate, hop = Math.round(sr*.006), n = Math.floor(d.length/hop);
+  if (n < 20) return null;
+  const en = new Float32Array(n); for (let i = 0; i < n; i++) { let e = 0; for (let k = i*hop, m = k + hop; k < m; k++) e += d[k]*d[k]; en[i] = Math.sqrt(e/hop); }
+  const fl = new Float32Array(n); let mx = 0; for (let i = 2; i < n; i++) { fl[i] = Math.max(0, en[i] - Math.max(en[i-1], en[i-2])); if (fl[i] > mx) mx = fl[i]; }
+  if (mx < .004) return null;
+  const on = [], gap = Math.round(.09/.006); let last = -gap;
+  for (let i = 2; i < n - 1; i++) if (fl[i] > mx*.16 && fl[i] >= fl[i-1] && fl[i] >= fl[i+1] && i - last >= gap) { on.push(i*hop/sr); last = i; }
+  if (on.length < 2) return null;
+  let cell = bpm ? 30/bpm : 0;
+  if (!cell) { const io = on.slice(1).map((t, i) => t - on[i]).sort((a, b) => a - b); cell = Math.max(.17, Math.min(.5, io[Math.floor(io.length*.25)])); bpm = Math.round(30/cell); }
+  const ks = [...new Set(on.map(t => Math.round((t - on[0])/cell)))].filter(k => k < 16);
+  const bars = Math.max(1, Math.min(2, Math.ceil((Math.max(...ks) + 1)/8))), cells = Array(bars*8).fill(null);
+  ks.forEach(k => { cells[k] = {d: k % 2 ? 'U' : 'D', a: k === 0 ? 2 : 1}; });
+  return {rhythm: {v:2, mes:'4/4', res:8, bars, swing:0, cells}, bpm};
 }
 // direction d'un coup « automatique » : ↓ sur le temps, ↑ entre les temps (triolets : ↓ puis ↑)
 const rhAutoDir = (spb, j) => spb === 3 ? (j ? 'U' : 'D') : (j % 2 ? 'U' : 'D');
@@ -7682,7 +7728,9 @@ async function rcStopped(me) {
   if (rc !== me) return;
   if (me.buf.duration < .4) { toast('Trop court, réessaie', true); if (me.inline) { rcClose(); edBar(); return; } me.stage = 'idle'; rcRender(); return; }
   me.start = 0; me.end = me.buf.duration; me.isNew = true; me.peaks = rcPeaks(me.buf); me.stage = 'trim';
-  if (me.inline) { rcSave(); return; }   // éditeur : la prise entière est gardée tout de suite
+  if (me.inline) {   // éditeur : la prise entière est gardée tout de suite, et le rythme est proposé en flèches s'il n'y en a pas encore
+    try { const pp = rbPart(me.ctx, me.part); if (pp && wayOf(pp) === 'rh' && !rhHas(pp.rhythm)) { const r = rhFromTake(me.buf, draft && draft.bpm); if (r) { pp.rhythm = r.rhythm; if (draft && !draft.bpm) draft.bpm = r.bpm; toast('Rythme retrouvé : touche-le pour corriger une flèche'); } } } catch (e) {}
+    rcSave(); return; }
   rcRender();
 }
 function rcAgain() { if (!rc) return; rcPreviewStop(); Object.assign(rc, {stage: 'idle', isNew: true, blob: null, buf: null}); rcRender(); }
@@ -7766,7 +7814,7 @@ function go(v) {
   coursStop();
   exoStop();
   lvStop();
-  const sOrd = ['fiches','trouver','creer','train','plus'], spOf = x => x === 'ed' ? 'creer' : (SPACE_OF[x] || 'fiches');
+  const sOrd = ['trouver','fiches','creer','train','plus'], spOf = x => x === 'ed' ? 'creer' : (SPACE_OF[x] || 'fiches');
   const vx = (sOrd.indexOf(spOf(v)) >= sOrd.indexOf(spOf(curView)) ? 14 : -14) + 'px';   // sens du glissement de la vue
   document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
   $('v-' + v).style.setProperty('--vx', vx);
@@ -7778,6 +7826,7 @@ function go(v) {
   navMark(v);
   window.scrollTo(0,0);
   if (v === 'home') renderHome();
+  if (v === 'disc') renderDisc();
   if (v === 'lib') renderLib();
   if (v === 'cours') renderCours();
   if (v === 'exo' && !exoCur) exoRet = null;
@@ -7794,8 +7843,8 @@ function go(v) {
 }
 
 /* ═══════ 5 ESPACES : Fiches · Trouver · Créer · S'entraîner · Plus ═══════ */
-const SPACE_OF = {home:'fiches', sheet:'fiches', atelier:'trouver', tuto:'plus', tools:'plus', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
-const SPACE_TITLE = {fiches:'Fiches', trouver:'Tutos', creer:'Créer', train:'S’entraîner', plus:'Plus'};
+const SPACE_OF = {disc:'trouver', home:'fiches', sheet:'fiches', atelier:'plus', tuto:'plus', tools:'plus', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
+const SPACE_TITLE = {fiches:'Fiches', trouver:'Découvrir', creer:'Créer', train:'S’entraîner', plus:'Plus'};
 const VIEW_TITLE = {atelier:'Tutos', tuto:'Recherche de tutos', tools:'Sites utiles', admin:'Admin', lib:'Accords', metro:'Métronome', tuner:'Accordeur', import:'Importer', ed:'Fiche'};
 function navMark(v) {
   let sp = SPACE_OF[v] || 'fiches';
@@ -7831,6 +7880,7 @@ function renderSubnav(v) {
 function renderPlus() {
   const ic = d => `<svg viewBox="0 0 24 24">${d}</svg>`;
   const items = [
+    ['atelier','Tutos','Chercher un tuto et faire la fiche',ic('<rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/>')],
     ['tuner','Accordeur','Accorder la guitare au micro',ic('<path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/>')],
     ['lib','Accords','Bibliothèque de diagrammes',ic('<path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/>')],
     ['metro','Métronome','Tempo et rythmes',ic('<path d="M8 21h8l-2-17h-4z"/><path d="M12 15l5-8"/>')],
@@ -7842,6 +7892,51 @@ function renderPlus() {
     ['tools','Sites utiles','Les bons sites de guitare',ic('<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>')]];
   const grid = l => '<div class="more-grid">' + l.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') + '</div>';
   $('plus-body').innerHTML = grid(items) + '<div class="more-beta"><h2>En rodage <span>bêta</span></h2><p>Ces écrans fonctionnent, mais ne sont pas encore finis.</p></div>' + grid(beta);
+}
+
+/* ═══════ DÉCOUVRIR : l'accueil — du tout fait (fiches prêtes, morceaux populaires, entraînement) ═══════ */
+const CAT_NOTE = ' Grille simplifiée : à vérifier à l’oreille avec l’original.';
+const CATALOG = [
+  {t:'Mistral gagnant', a:'Renaud', capo:2, bpm:80, d:'Intermediaire', ch:['Am','Dm','G','C','F','E','Am'], pat:'D-DUD-DU', m:'Joué avec capo 2 (le morceau est en si mineur) : formes Am Dm G C F E.'},
+  {t:'Dès que le vent soufflera', a:'Renaud', capo:0, bpm:80, d:'Debutant', ch:['Em','D','G','B7'], pat:'D-DU-UDU', m:'Quatre accords qui tournent.'},
+  {t:'Morgane de toi', a:'Renaud', capo:0, bpm:90, d:'Debutant', ch:['Em','G','D','Am','Em','G'], pat:'D-DU-UDU', m:'Début du couplet.'},
+  {t:'Les Champs-Élysées', a:'Joe Dassin', capo:4, bpm:120, d:'Debutant', ch:['G','B7','Em','G7','C','A7','D','D7'], pat:'DuDuDuDu', m:'Capo 4 : on joue des formes simples.'},
+  {t:'Foule sentimentale', a:'Alain Souchon', capo:0, bpm:96, d:'Intermediaire', ch:['Em','Am','D7','B7','Em','C','Am','B7'], pat:'D-DU-UDU', m:'Introduction et couplet.'},
+  {t:'Je l’aime à mourir', a:'Francis Cabrel', capo:5, bpm:76, d:'Intermediaire', ch:['C','Cmaj7','Am','Dm','F','G','C'], pat:'D-DUD-DU', m:'Capo 5. Le Cmaj7 remplace le Do avec si à la basse.'}
+];
+const catLinks = x => { const q = encodeURIComponent(x.t + ' ' + x.a);
+  return [{id:uid(), url:'https://www.youtube.com/results?search_query=' + q + '+tuto+guitare', title:'Tutos guitare : ' + x.t},
+          {id:uid(), url:'https://www.google.com/search?q=' + q + '+accords+guitare', title:'Autres grilles d’accords : ' + x.t}]; };
+const catFind = x => sheets.find(z => z.title.trim().toLowerCase() === x.t.toLowerCase());
+async function catOpen(k) {   // ouvre la fiche prête ; l'ajoute d'abord à mes fiches si elle n'y est pas
+  const x = CATALOG[k]; if (!x) return;
+  let sh = catFind(x);
+  if (!sh) {
+    sh = newSheet_(); sh.title = x.t; sh.artist = x.a; sh.capo = x.capo; sh.bpm = x.bpm; sh.difficulty = x.d; sh.color = 'gold';
+    sh.blocks = {capo: x.capo > 0, tempo:true, diff:true, coffre:true}; sh.memo = x.m + CAT_NOTE; sh.links = catLinks(x);
+    const pt = newPart(''); pt.chords = x.ch.map(newChord); pt.rhythm = rhFromPat(x.pat); sh.parts = [pt];
+    sheets.push(sh); await DB.put('sheets', sh); toast('Ajoutée à tes fiches');
+  }
+  viewSheet(sh.id);
+}
+const POPULAR = [['Wonderwall','Oasis'],['Knockin’ on Heaven’s Door','Bob Dylan'],['Let It Be','The Beatles'],['Stand by Me','Ben E. King'],['Hallelujah','Leonard Cohen'],['Zombie','The Cranberries'],['Riptide','Vance Joy'],['Hotel California','Eagles'],['Je te promets','Johnny Hallyday'],['Formidable','Stromae']];
+function discGo(t, a) {   // un morceau : ses tutos, et la fiche qui se remplit à côté
+  t = (t || '').trim(); if (!t) { toast('Écris un titre de morceau', true); return; }
+  tuto.title = t; tuto.artist = a || ''; if (typeof at !== 'undefined') at.s = null;
+  go('atelier'); $('at-title').value = t; $('at-artist').value = a || ''; atCommitNow();
+}
+function discSearch() { const q = $('disc-q').value; const m = sheets.find(z => z.title.trim().toLowerCase() === q.trim().toLowerCase()); if (m) viewSheet(m.id); else discGo(q, ''); }
+function renderDisc() {
+  const ini = t => (t || '?').trim().replace(/^(le|la|les|l’|l'|un|une|des|the)\s+/i, '').charAt(0).toUpperCase();
+  const card = (on, t, a, sub, acc) => `<button type="button" class="hcard" onclick="${on}"><span class="hc-art${acc ? ' a' : ''}">${esc(ini(t))}</span><b>${esc(t)}</b><small>${esc(a)}</small><i>${sub}</i></button>`;
+  const last = sheets.length ? sheets.find(x => x.id === LS.get('gms_last')) : null;
+  let h = '';
+  if (last) h += `<div class="sec-lbl">Reprendre</div><div class="resume" role="button" tabindex="0" onclick="viewSheet('${last.id}')"><div class="resume-tx"><b>${esc(last.title)}</b><span>${esc([last.artist && last.artist !== '—' ? last.artist : '', last.capo > 0 ? 'Capo ' + last.capo : ''].filter(Boolean).join(' · ') || 'Ma fiche')}</span></div><span class="resume-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>`;
+  h += `<div class="sec-lbl">Fiches prêtes à jouer</div><div class="hrow">${CATALOG.map((x, k) => card(`catOpen(${k})`, x.t, x.a, catFind(x) ? 'Dans mes fiches' : [...new Set(x.ch)].length + ' accords', true)).join('')}</div>`;
+  h += `<div class="sec-lbl">Populaires à apprendre</div><div class="hrow">${POPULAR.map(([t, a]) => card(`discGo('${t.replace(/'/g, "\\'")}','${a.replace(/'/g, "\\'")}')`, t, a, 'Tutos + fiche')).join('')}</div>`;
+  h += `<div class="sec-lbl">S’entraîner</div><div class="disc-2"><button type="button" onclick="go('exo')"><b>Suites d’accords et rythmes</b><small>Par ambiance, à ton tempo</small></button><button type="button" onclick="coursList()"><b>Cours</b><small>Notes, accords, effets</small></button></div>`;
+  h += `<div class="sec-lbl">Communauté</div><div class="disc-soon"><b>Bientôt</b><span>Les fiches partagées par d’autres guitaristes arriveront ici.</span></div>`;
+  $('disc-body').innerHTML = h;
 }
 
 /* ═══════ HOME / CAHIER ═══════ */
@@ -8831,9 +8926,9 @@ function edBar() {
     edPeaks(p.rec.mediaId).then(pk => { const e = $('ed-pk'); if (e && pk && draft && edRp() === i) e.innerHTML = edWaveBars(pk, 'done'); });
   } else {
     const bareP = p && wayOf(p) === 'rh' && !rhHas(p.rhythm);
-    h = `<button type="button" class="ed-rec" onclick="edRecStart()"><svg class="ed-rec-str" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true">${[9, 18, 26.5, 34.5, 42.5, 51].map((y, k) => `<path d="M0 ${y}H300" stroke-width="${2.4 - k * .32}"/>`).join('')}</svg>
-      <i class="ed-rec-d"></i><span><b>Enregistrer mon rythme</b><small>Gratte une ou deux mesures</small></span>
-      <svg class="ed-rec-ar" viewBox="0 0 54 30" aria-hidden="true"><path class="d" d="M8 4v20m-5 -6l5 7l5 -7"/><path class="d" d="M27 4v20m-5 -6l5 7l5 -7"/><path class="u" d="M46 26v-20m-5 6l5 -7l5 7"/></svg></button>
+    h = `<button type="button" class="ed-rec" onclick="edRecStart()"><svg class="ed-rec-pick" viewBox="0 0 38 38" aria-hidden="true"><path d="M19 5c7.5 0 13 2.800 13 8.400 0 7-6.800 15-13 19.100-6.200-4.100-13-12.100-13-19.100C6 7.800 11.500 5 19 5z"/><circle cx="19" cy="15.5" r="4.200"/></svg>
+      <span><b>Enregistrer mon rythme</b><small>Gratte une ou deux mesures</small></span>
+      <svg class="ed-rec-ar" viewBox="0 0 66 34" aria-hidden="true"><path class="l" d="M2 31H64"/>${[[8, 24, 'd'], [20, 15, 'd'], [29, 11, 'u'], [41, 13, 'u'], [50, 22, 'd'], [59, 10, 'u']].map(([x, h, c]) => `<rect class="${c}" x="${x - 2.5}" y="${31 - h}" width="5" height="${h}" rx="2.5"/>`).join('')}</svg></button>
       ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Le saisir à la main</button><button type="button" onclick="rbWay('draft',${i},'arp')">Arpège</button></div>` : ''}`;
   }
   host.innerHTML = pick + h;
@@ -9835,18 +9930,7 @@ document.addEventListener('keydown', e => {
   }
   // Morceaux à essayer (variété française + Renaud) : ajoutés une seule fois. Grilles simplifiées : seuls les accords vérifiés, à confirmer à l'oreille.
   try {
-    const NOTE = ' Grille simplifiée : à vérifier à l’oreille avec l’original.';
-    const SEED_FR = [
-      {t:'Mistral gagnant', a:'Renaud', capo:2, bpm:80, d:'Intermediaire', ch:['Am','Dm','G','C','F','E','Am'], pat:'D-DUD-DU', m:'Joué avec capo 2 (le morceau est en si mineur) : formes Am Dm G C F E.'},
-      {t:'Dès que le vent soufflera', a:'Renaud', capo:0, bpm:80, d:'Debutant', ch:['Em','D','G','B7'], pat:'D-DU-UDU', m:'Quatre accords qui tournent.'},
-      {t:'Morgane de toi', a:'Renaud', capo:0, bpm:90, d:'Debutant', ch:['Em','G','D','Am','Em','G'], pat:'D-DU-UDU', m:'Début du couplet.'},
-      {t:'Les Champs-Élysées', a:'Joe Dassin', capo:4, bpm:120, d:'Debutant', ch:['G','B7','Em','G7','C','A7','D','D7'], pat:'DuDuDuDu', m:'Capo 4 : on joue des formes simples.'},
-      {t:'Foule sentimentale', a:'Alain Souchon', capo:0, bpm:96, d:'Intermediaire', ch:['Em','Am','D7','B7','Em','C','Am','B7'], pat:'D-DU-UDU', m:'Introduction et couplet.'},
-      {t:'Je l’aime à mourir', a:'Francis Cabrel', capo:5, bpm:76, d:'Intermediaire', ch:['C','Cmaj7','Am','Dm','F','G','C'], pat:'D-DUD-DU', m:'Capo 5. Le Cmaj7 remplace le Do avec si à la basse.'}
-    ];
-    const linksFor = x => { const q = encodeURIComponent(x.t + ' ' + x.a);
-      return [{id:uid(), url:'https://www.youtube.com/results?search_query=' + q + '+tuto+guitare', title:'Tutos guitare : ' + x.t},
-              {id:uid(), url:'https://www.google.com/search?q=' + q + '+accords+guitare', title:'Autres grilles d’accords : ' + x.t}]; };
+    const NOTE = CAT_NOTE, SEED_FR = CATALOG, linksFor = catLinks;
     if (!(await DB.get('meta', 'seed_fr_v1'))) {
       for (const x of SEED_FR) {
         if (sheets.some(z => z.title.trim().toLowerCase() === x.t.toLowerCase())) continue;
@@ -9882,7 +9966,7 @@ document.addEventListener('keydown', e => {
       }
     }
   } catch (e) { console.warn('seed', e); }
-  renderHome(); go('home'); // l'app s'ouvre sur Fiches (le cahier vide propose « + Créer »)
+  renderHome(); go('disc'); // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
 })();
 </script>
 <script>
