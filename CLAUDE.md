@@ -39,3 +39,13 @@ Claude principal = bras droit de Lucas : il découpe, délègue, vérifie et ren
 **Validation de Lucas** : pour toute tâche longue (gros changement d'écran, refonte, nouveau parcours), présenter d'abord le plan court et/ou une maquette, et attendre son accord avant de lancer le code. Rien n'est committé sans vérification ; un rendu qui ne lui plaît pas est annulé.
 
 Règles d'économie : briefs courts et précis ; chaque agent rend un **rapport court** (pas de copie de code ni de fichier) ; ne lancer que les agents utiles à la tâche.
+
+## Décisions de Lucas du 16/11/2026 (validées sur maquettes, pas encore codées)
+Maquettes de référence : scratchpad `m2/` (peuvent avoir disparu ; les points ci-dessous suffisent).
+1. **Fiche = piste 3 « une carte par partie »** : accords puis rythme dans la même carte, un seul ▶ sur le rythme (ma prise si elle existe, sinon la guitare de l'app). Plus de barre du bas Jouer / BPM / Enregistrer. Chaque carte a un **bouton discret « modifier »** (changer les accords, enregistrer un rythme), **distinct** de ce qui complète le coffre (mes audios/vidéos, tutos = « Perso », en bas).
+2. **Création** : maquette validée. À ajuster : titre + artiste prennent trop de place (les compacter, une ligne) ; le bouton « Enregistrer mon rythme » garde sa place et son rôle mais doit avoir un **dessin moins générique** (proposer 2-3 variantes). Une seule partie sans nom, capo/tempo pour tout le morceau, « saisir à la main » et « arpège » en options, enregistreur « coups qui tombent » puis flèches corrigibles au toucher.
+3. **S'entraîner** : maquette validée (sans emoji). Ajouter les **suites d'accords** au même niveau que les rythmes (le contenu existe déjà : juste les lister).
+4. **Le « + »** propose deux choix : **fiche seule** ou **fiche avec tuto** (vidéo en haut, fiche dessous). L'écran Tutos seul retourne dans « Plus » et disparaîtra si « création + tuto » convient.
+5. **Onglet « Tutos » remplacé par « Découvrir »** (nom à confirmer), et Lucas veut que ce soit **l'accueil de l'app** : du contenu tout fait (musiques populaires, fiches prêtes, tutos, communauté), avec les codes des grosses apps (rangées horizontales, « populaire », « pour toi », recherche en haut). Attention : fiches prêtes = catalogue intégré faisable hors ligne ; **communauté = comptes + serveur**, reporté (voir hébergement en fin de projet). À maquetter avant de coder.
+Ordre prévu : fiche (1) → création (2) et « + » (4) → Découvrir (5, maquette d'abord) → S'entraîner (3).
+Lucas a peu de quota : réponses courtes, pas de maquette ni d'agent sans nécessité.
