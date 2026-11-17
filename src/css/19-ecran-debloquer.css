@@ -1,0 +1,52 @@
+/* ── écran Débloquer ── */
+.bk-hero{padding:6px 0 14px}.bk-hero small{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--gold)}
+.bk-hero h2{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--cream);margin-top:2px}.bk-hero p{font-size:14px;color:var(--cream2);margin-top:4px}
+.bk-list{display:flex;flex-direction:column;gap:8px;padding-bottom:40px}
+.bk-it{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--border);color:var(--cream);text-align:left}
+.bk-it:hover{background:var(--card2)}.bk-it.soon{opacity:.5;cursor:default}
+.bk-n{width:34px;height:34px;border-radius:10px;background:var(--acc-soft);color:var(--gold);display:grid;place-items:center;font-size:14px;font-weight:800;flex:none}
+.bk-tx{flex:1;min-width:0}.bk-tx b{display:block;font-size:16px;font-weight:700}.bk-tx i{display:block;font-size:13px;color:var(--cream2);margin-top:2px}
+.bk-st{font-size:12.5px;font-weight:700;color:var(--cream3);flex:none}
+.bk-back{display:flex;align-items:center;gap:2px;background:none;color:var(--gold);font-size:16px;font-weight:500;padding:8px 0;margin-left:-6px}
+.bk-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.bk-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:14px}
+.bk-card.done{border-color:rgba(111,207,151,.4)}
+.bk-ch{display:flex;gap:12px;margin-bottom:12px}.bk-ch b{font-size:17px;font-weight:700;color:var(--cream)}.bk-ch p{font-size:13.5px;line-height:1.45;color:var(--cream2);margin-top:3px}
+.bk-card .lv-wrap{margin:0 0 12px}
+.bk-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bk-done{margin-left:auto;background:none;color:var(--cream3);font-size:13px;font-weight:600;padding:8px 4px}
+.bk-card.done .bk-done{color:var(--sage)}
+@media(max-width:480px){.bk-acts .btn{flex:1 1 100%;min-height:44px}.bk-done{margin:0 auto}}
+/* ── vidéos riches : arpèges et manche ── */
+.lv-mo-g .fd.bar rect{fill:#f4f3f1}.lv-mo-g .fd.bar text{font:800 15px var(--sans);text-anchor:middle;fill:#151517}
+.lv-mo-g .st.hs{stroke-linecap:round}
+@keyframes lvStr{0%{stroke:#ff8a2a;stroke-width:5}100%{stroke:#5c5a57;stroke-width:1.6}}
+.lv-arp{display:flex;flex-direction:column;align-items:center;gap:3cqh;margin:1cqh 0 2cqh;flex:1;min-height:0}
+.lv-ads{position:relative;height:min(46cqh,52cqw);aspect-ratio:226/310}
+.lv-ad{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center}
+.lv-ad.hid{opacity:0}
+.lv-ad .lv-mo-g{height:88%}.lv-ad b{font:800 5cqmin var(--sans);color:var(--lc)}
+.lv-arp .lv-bt-bar{width:100%;max-width:90cqw}
+.lv-ac{justify-content:center;min-height:7cqh}.lv-ac b{font:700 2.6cqmin var(--sans);color:var(--lc)}
+.lv-nk{width:100%;max-height:52cqh;margin:3cqh 0 2cqh;overflow:visible}
+.lv-nk .wood{fill:#1d1d20}.lv-nk .fr{stroke:#3a3a40;stroke-width:2}.lv-nk .nut{stroke:#f4f3f1;stroke-width:5}
+.lv-nk .st{stroke:#94928d}.lv-nk .inl{fill:#2e2e33}.lv-nk .sh{fill:rgba(255,255,255,.12)}
+.lv-nk .nd circle{fill:#f4f3f1}.lv-nk .nd.hp circle,.lv-nk .nd.sl circle{fill:#ff8a2a}
+.lv-nk .lb{font:800 15px var(--sans);text-anchor:middle;fill:#ff9d4d}
+.lv-nk .cn{font:800 26px var(--sans);text-anchor:middle;fill:#f4f3f1}
+@keyframes lvPop{from{opacity:0;transform-box:fill-box;transform-origin:center;scale:.4}to{opacity:1;scale:1}}
+@keyframes lvFlash{0%{opacity:0}15%{opacity:1}75%{opacity:1}100%{opacity:0}}
+@container (max-aspect-ratio:1/1){.lv-ads{height:40cqh}.lv-ad b{font-size:6cqw}.lv-ac b{font-size:3cqw}.lv-nk{margin:6cqh 0 4cqh}}
+@container (max-aspect-ratio:1/1){.lv-mo-r{flex-direction:column;align-items:center;gap:1.4cqh}.lv-mo-n{min-width:0;width:100%;text-align:center}.lv-mo-n span{left:0;right:0}.lv-mo-l{flex-direction:row;gap:5cqw}}
+.lv-ac b{font-size:3.2cqmin}
+.nav-tools{display:flex;gap:4px;align-items:center}
+.tun-btn{width:40px;height:40px;border-radius:50%;background:none;color:var(--cream2);display:grid;place-items:center}
+.tun-btn svg,.hm-top .tun-btn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tun-btn circle{fill:currentColor}
+.hm-vol2{display:none}@media(max-width:899px){.hm-vol2{display:flex}}
+.hm-top .hm-vol + .hm-vol2{margin-left:0}
+@media(min-width:900px){.nav-tools{margin-top:auto;align-self:flex-start}nav .nav-right>.vol-btn{margin-top:0}}
+.ad-h{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin:22px 0 4px}
+.hm-top .tun-btn{background:var(--card2);margin-left:auto}@media(min-width:900px){.hm-top .tun-btn{display:none}}
+.bk-nag{display:flex;align-items:center;gap:12px;padding:12px 14px;margin:4px 0 6px;border-radius:14px;background:var(--acc-soft);border:1px solid rgba(255,138,42,.35)}
+.bk-nag span{flex:1;min-width:0;font-size:13px;color:var(--cream2)}.bk-nag b{display:block;font-size:14px;color:var(--cream)}

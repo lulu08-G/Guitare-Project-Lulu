@@ -1,0 +1,22 @@
+<!-- ══ PLUS ══ -->
+<div class="view" id="v-admin">
+  <div class="wrap-narrow" style="padding-bottom:60px">
+    <div class="hero"><div><h1>Les <em>vidéos</em></h1><p>Toutes les animations des cours, au même endroit.</p></div></div>
+    <div id="admin-body"></div>
+  </div>
+</div>
+<div class="view" id="v-disc">
+  <div class="wrap">
+    <div class="hm-top"><h1>Découvrir</h1><button type="button" class="btn-icon tun-btn hm-vol" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="btn-icon vol-btn hm-vol2" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button></div>
+    <div class="search-bar"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.350-4.350"/></svg>
+      <input type="text" id="disc-q" placeholder="Un morceau, un artiste" autocomplete="off" enterkeyhint="search" aria-label="Chercher un morceau" onkeydown="if(event.key==='Enter')discSearch()"></div>
+    <div id="disc-body"></div>
+  </div>
+</div>
+<div class="view" id="v-plus">
+  <div class="wrap">
+    <div class="hm-top hide-m"><h1>Plus</h1></div>
+    <div id="plus-body"></div>
+  </div>
+</div>
+

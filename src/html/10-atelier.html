@@ -1,0 +1,31 @@
+<!-- ══ ATELIER ══ -->
+<div class="view" id="v-atelier">
+  <div class="at">
+    <div class="at-top" id="at-top">
+      <div class="at-song">
+        <div class="at-fld">
+          <input type="text" id="at-title" class="at-t" list="at-dl" placeholder="Quel morceau ?" autocomplete="off" enterkeyhint="next" aria-label="Titre du morceau" oninput="atTitleInput()" onblur="atCommitNow()" onkeydown="if(event.key==='Enter'){event.preventDefault();atCommitNow();$('at-artist').focus()}">
+          <input type="text" id="at-artist" class="at-a" placeholder="Artiste (facultatif)" autocomplete="off" enterkeyhint="done" aria-label="Artiste" oninput="atTitleInput()" onblur="atCommitNow()" onkeydown="if(event.key==='Enter'){event.preventDefault();atCommitNow();this.blur()}">
+          <datalist id="at-dl"></datalist>
+          <span class="at-stat" id="at-stat" aria-live="polite"></span>
+        </div>
+        <button type="button" class="at-mic" id="at-mic" onclick="atMic()" aria-label="Reconnaître le morceau au micro"></button>
+      </div>
+      <div class="at-bar">
+        <div class="at-seg" role="tablist" aria-label="Panneau de l’Atelier">
+          <button type="button" role="tab" id="at-sg-tutos" onclick="atTab('tutos')">Tutos</button>
+          <button type="button" role="tab" id="at-sg-fiche" onclick="atTab('fiche')">Fiche</button>
+        </div>
+        <button type="button" class="btn btn-ghost at-done" onclick="atDone()">Terminer</button>
+      </div>
+    </div>
+    <div id="at-banner"></div>
+    <div class="at-grid" id="at-grid" data-tab="tutos">
+      <div id="at-player"></div>
+      <div id="at-copy"></div>
+      <div id="at-pan-t" class="at-pan"></div>
+      <div id="at-pan-f" class="at-pan"></div>
+    </div>
+  </div>
+</div>
+

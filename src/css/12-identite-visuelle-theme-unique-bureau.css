@@ -1,0 +1,78 @@
+/* ═══════ IDENTITÉ VISUELLE — thème unique : bureau en bois sombre, fiches en papier ═══════ */
+html{background:#0f0f11}
+body{background:transparent;background-image:none;transition:none;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(120% 55% at 50% -12%,rgba(255,138,42,.22),transparent 62%),
+  radial-gradient(80% 45% at 105% 105%,rgba(111,207,151,.08),transparent 60%),
+  repeating-linear-gradient(96deg,rgba(255,255,255,.016) 0 1px,transparent 1px 27px),
+  linear-gradient(180deg,#151517,#0f0f11)}
+::selection{background:rgba(255,138,42,.45);color:#fff}
+:focus-visible{outline:2px solid var(--gold3);outline-offset:2px}
+h1,h2,h3,h4{letter-spacing:-.012em;font-optical-sizing:auto}
+/* barres */
+nav{background:linear-gradient(180deg,rgba(15,15,17,.96),rgba(15,15,17,.78));border-bottom:1px solid rgba(255,255,255,.07);transition:none}
+.subnav.seg-big{background:linear-gradient(180deg,rgba(15,15,17,.96),rgba(15,15,17,.86));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.subnav.seg-big button{background:rgba(255,255,255,.06)}
+.subnav.seg-big button.on,.subnav button.on{background:var(--gold);color:var(--ink);box-shadow:none}
+#v-sheet .sv-tabs{background:linear-gradient(180deg,rgba(15,15,17,.96),rgba(15,15,17,.86));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+/* boutons */
+.btn{min-height:40px;font-weight:700}
+.btn-sm{min-height:36px}.btn-xs{min-height:0}
+.btn-primary{background:var(--gold);color:var(--ink);box-shadow:0 6px 18px rgba(255,138,42,.26)}
+.btn-primary:hover{background:var(--gold2)}
+.btn-ghost{border-color:var(--border2)}
+/* le papier : relief doux, bord net */
+:is(.card,.fcard,.fl-card,.exo-card,.lib-card,.part-card.pc,.pv-block,.rc-card,.tool-card,.at-card,.tt-site,.tt-yt,.coffre-block,.we-card,.cp-panel,.pinned-card){border-color:rgba(255,255,255,.14);box-shadow:0 10px 24px rgba(0,0,0,.34);background-image:none}
+.modal{box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.card:hover{background-color:var(--card);transform:translateY(-3px)}
+.card:nth-child(even),.fl-tile:nth-child(even){border-radius:var(--r)}
+.pinned-card:nth-child(odd),.pinned-card:nth-child(even){transform:none;border-radius:var(--r)}
+/* champs posés sur le bois */
+input[type=text],input[type=number],input[type=url],select,textarea{border-color:var(--border2)}
+.search-bar input{min-height:46px;background:rgba(255,255,255,.06)}
+/* titres d'écran */
+.hero h1{font-weight:600}
+.sec-lbl{color:var(--gold2);letter-spacing:1.6px}
+/* mode jeu : chaque partie est une fiche */
+#v-sheet .parts-view .pv-block{background:var(--card);background-image:none;border:1px solid rgba(255,255,255,.14);border-radius:var(--r);padding:16px 14px 14px;box-shadow:0 10px 24px rgba(0,0,0,.34)}
+#v-sheet.all .parts-view .pv-block{padding:14px 14px 14px;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,.14);overflow:hidden}
+#v-sheet.all .parts-view .pv-block.on{box-shadow:0 0 0 2px var(--gold3),0 12px 28px rgba(0,0,0,.4)}
+#v-sheet.all .parts-view .pv-block.on::before{left:0;top:18px;bottom:18px;width:5px}
+#v-sheet .chord-cell{background:var(--card2);border-color:var(--border2)}
+#v-sheet.all .chord-cell{background:none}
+#v-sheet.all.compact .chord-cell{background:var(--card2)}
+.sv-bar{background:linear-gradient(180deg,rgba(15,15,17,.9),rgba(15,15,17,.97));border-top-color:rgba(255,255,255,.12)}
+.sv-play{background:var(--gold);box-shadow:0 8px 22px rgba(255,138,42,.35)}
+.sv-play.create{background:rgba(255,255,255,.06);box-shadow:none}
+.sv-cancel{background:rgba(255,255,255,.08)}
+.sv-bar.playing .sv-play{animation:idHalo 1.6s ease-out infinite}
+@keyframes idHalo{0%{box-shadow:0 0 0 0 rgba(255,138,42,.55),0 8px 22px rgba(255,138,42,.35)}100%{box-shadow:0 0 0 18px rgba(255,138,42,0),0 8px 22px rgba(255,138,42,.35)}}
+/* menus sombres */
+.more-grid button{background:rgba(255,255,255,.05);border-color:var(--border);min-height:68px;border-radius:var(--r)}
+.more-grid button:hover{background:rgba(255,255,255,.09)}
+.toolbar,.row-go{background:rgba(255,255,255,.05)}
+/* entrée d'un écran : les cartes se posent l'une après l'autre */
+@keyframes idRise{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block){animation:idRise .42s var(--ease-out) both}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(2){animation-delay:40ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(3){animation-delay:80ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(4){animation-delay:120ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(5){animation-delay:160ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(6){animation-delay:200ms}
+.view.enter :is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.more-grid>button,.tool-card,.rc-card,.les,.tt-site,.row-go,#v-sheet .pv-block):nth-child(n+7){animation-delay:240ms}
+:is(.card,.fl-tile,.fl-card,.exo-card,.lib-card,.rc-card):active{transform:scale(.985)}
+
+/* tableaux des leçons : bouton d'écoute en tête, compact */
+.ctable td.pl{width:44px;padding-left:0}
+.ctable td.pl .btn{min-width:40px;min-height:40px;padding:0;justify-content:center;border-radius:50%;font-size:0;gap:0}
+@media(max-width:600px){.ctable td,.ctable th{padding:7px 5px}.ctable td.n{white-space:normal}.ctable{font-size:12.5px}}
+/* étapes verrouillées : discrètes, sur le bois */
+.rc-card.lock{opacity:1;background:rgba(255,255,255,.04);background-image:none;box-shadow:none;border:1px dashed rgba(255,255,255,.2);color:#94928d;
+  --cream:#bdbbb6;--cream2:#94928d;--cream3:#77756f;--rg-ink:#77756f;--rg-d:#77756f;--rg-u:#77756f;--rg-x:#77756f;--rg-mut:#5c5a57}
+/* accueil Fiches */
+.hm-top{padding:22px 0 12px}
+.hm-top h1{font-weight:600;font-size:clamp(30px,5vw,40px);display:flex;align-items:baseline;gap:12px}
+.hm-top h1 small{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--cream3);letter-spacing:0}
+.filt{min-height:36px;padding:0 16px;font-size:13px;background:rgba(255,255,255,.06);border-color:var(--border2);color:var(--cream2)}
+.filt.on{background:var(--gold);border-color:transparent;color:var(--ink)}
+

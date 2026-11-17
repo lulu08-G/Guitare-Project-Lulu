@@ -1,0 +1,96 @@
+/* ── FICHES : lignes compactes ── */
+.hm-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 0 10px}
+.hm-top h1{font-family:var(--serif);font-size:clamp(24px,3.4vw,32px);font-weight:800;color:var(--cream);line-height:1.1}
+.hm-top h1 small{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--cream3);margin-left:8px}
+.hm-menu{position:relative}
+.hm-menu .pop{display:none;position:absolute;right:0;top:48px;z-index:50;min-width:210px;background:var(--card);border:1px solid var(--border2);border-radius:var(--rs);box-shadow:0 14px 40px var(--shadow);padding:6px}
+.hm-menu.open .pop{display:block}
+.hm-menu .pop button{display:block;width:100%;min-height:44px;text-align:left;padding:0 14px;border-radius:8px;background:none;color:var(--cream);font-size:14px;font-weight:600}
+.hm-menu .pop button:hover{background:var(--card2)}
+.hm-menu .btn-icon{width:44px;height:44px}
+.search-bar{margin-bottom:12px}
+.search-bar input{min-height:44px}
+.filt{min-height:36px;padding:0 16px;font-size:13px}
+.filters{margin-bottom:12px}
+.grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px;padding-bottom:40px}
+.card{padding:0;border-radius:var(--rs)}
+.card:nth-child(even){border-radius:var(--rs)}
+.card:hover{transform:none}
+.card::before{width:4px;height:auto;right:auto;bottom:0}
+.card-row{display:flex;align-items:center;gap:10px;padding:10px 8px 10px 16px;min-height:72px}
+.card-txt{flex:1;min-width:0}
+.card h3{font-size:17px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .sub{font-size:13px;margin-bottom:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .card-ch{font-family:var(--mono);font-size:12px;color:var(--gold2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .fav-btn,.card .card-more{width:40px;height:40px}
+.card-more{background:none;color:var(--cream3);font-size:22px;font-weight:800;border-radius:50%;line-height:1;display:flex;align-items:center;justify-content:center}
+.card-more:hover{background:var(--card3);color:var(--cream)}
+.card-play{width:48px;height:48px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-play:hover{background:var(--gold2)}
+.card-play svg{width:20px;height:20px;fill:currentColor;margin-left:2px}
+.card-acts{display:none;gap:8px;padding:0 12px 10px 16px}
+.card.acts .card-acts{display:flex}
+.card-acts button{flex:1;min-height:44px;border-radius:50px;background:var(--card2);border:1px solid var(--border);color:var(--cream);font-size:13px;font-weight:700}
+.card-acts button.danger{color:var(--terra)}
+.card .chk{margin-right:2px}
+.ed-chords{margin:10px 0 4px}.ed-chords input{min-height:46px;font-size:16px}
+.at-card{flex-wrap:wrap}.at-card .at-create{flex:1 0 100%;min-height:44px}
+@media(max-width:899px){.hide-m{display:none!important}.hm-w{display:none}.hm-top h1 small{margin:0;font-size:15px}.hm-top{padding-top:12px}}
+
+/* ── MOUVEMENT : sobre, transform + opacity, 120–300 ms (jetons --ease-* / --t-* en :root) ── */
+.btn,.ed-rec,.ed-rcb{overflow:hidden}
+.btn:active,.btn-icon:active,.ed-rec:active,.ed-rcb:active{transform:scale(.95)}
+.btn-icon,.ed-rcb{transition:transform var(--t-fast) var(--ease-out),background var(--t-fast),color var(--t-fast)}
+.ed-rec{transition:transform var(--t-fast) var(--ease-out)}
+.m-rip{position:absolute;border-radius:50%;background:rgba(255,138,42,.35);pointer-events:none;transform:scale(0)}
+/* vues : fondu + glissement léger (opacité seule là où un bloc fixe vit dans la vue) */
+.view.on{animation:viewIn var(--t-mid) var(--ease-out) both}
+#v-sheet.on,#v-ed.on,#v-atelier.on{animation-name:viewFade}
+#v-cours.on{animation:none}   /* la carte du parcours (page haute) a sa propre arrivée : pas de calque géant pour le fondu de la vue */
+@keyframes viewIn{from{opacity:0;transform:translateX(var(--vx,14px))}}
+@keyframes viewFade{from{opacity:0}}
+/* pastille de la barre du bas */
+#tb-pill{display:none}
+@media(max-width:759px){
+  #tb-pill{display:block;position:absolute;top:0;left:0;width:28px;height:3px;border-radius:0 0 3px 3px;background:var(--gold2);pointer-events:none;transition:transform var(--t-slow) var(--ease-out),opacity var(--t-mid)}
+  #tb-pill.nt{transition:none}
+}
+/* accord qui se pose */
+.ed-ct.landing{animation:ctLand 280ms var(--ease-pop) both}
+.ed-ct.landing svg circle:not([fill="none"]){transform-box:fill-box;transform-origin:center;animation:ctDot 200ms var(--ease-pop) both}
+.ed-ct.landing svg circle:not([fill="none"]):nth-of-type(1){animation-delay:140ms}
+.ed-ct.landing svg circle:not([fill="none"]):nth-of-type(2){animation-delay:190ms}
+.ed-ct.landing svg circle:not([fill="none"]):nth-of-type(n+3){animation-delay:240ms}
+@keyframes ctLand{0%{transform:translateY(-14px) scale(.92);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes ctDot{from{transform:scale(0)}to{transform:scale(1)}}
+/* barre ⏺ : entrée de chaque état, décompte, jauge, coche */
+.ed-rc.enter,.ed-rec.enter{animation:rcIn var(--t-slow) var(--ease-out) both}
+.ed-rc.done.enter{animation-name:rcDone;animation-duration:300ms}
+@keyframes rcIn{from{transform:translateY(18px);opacity:0}}
+@keyframes rcDone{0%{transform:translateY(0)}40%{transform:translateY(-4px)}100%{transform:none}}
+.ed-rc-n.pop{animation:rcN 260ms var(--ease-out) both}
+@keyframes rcN{0%{transform:scale(1.6);opacity:0}40%{opacity:1}100%{transform:scale(1);opacity:1}}
+.ed-rc.live{position:relative;overflow:hidden}
+.ed-gauge{position:absolute;left:0;right:0;top:0;height:3px;background:var(--terra);transform:scaleX(0);transform-origin:left;pointer-events:none;opacity:.7}
+.ed-rc.done.enter .ed-ok{animation:okPop 300ms var(--ease-pop) both}
+.ed-rc.done.enter .ed-ok svg path{stroke-dasharray:24;stroke-dashoffset:24;animation:okDraw 260ms var(--ease-out) 80ms forwards}
+@keyframes okPop{from{transform:scale(.4)}to{transform:scale(1)}}
+@keyframes okDraw{to{stroke-dashoffset:0}}
+/* coche du toast */
+.toast .tk{width:15px;height:15px;vertical-align:-2px;margin-right:7px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:24;stroke-dashoffset:24}
+.toast.show .tk{animation:okDraw 240ms var(--ease-out) 120ms forwards}
+/* panneaux repliés (details) : le contenu se déroule à l'ouverture */
+details.det-in>:not(summary){animation:detIn var(--t-slow) var(--ease-out) both}
+@keyframes detIn{from{opacity:0;transform:translateY(-6px)}}
+@supports selector(::details-content){
+  :root{interpolate-size:allow-keywords}
+  details::details-content{block-size:0;overflow:clip;transition:block-size var(--t-slow) var(--ease-out),content-visibility var(--t-slow) allow-discrete}
+  details[open]::details-content{block-size:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  :root{--t-fast:1ms;--t-mid:1ms;--t-slow:1ms}
+  *,*::before,*::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important}
+  .ed-dot,.rec-dot,.cap-blob-ring,.tt-live{animation:none!important}
+  details::details-content{transition:none!important}
+}
+

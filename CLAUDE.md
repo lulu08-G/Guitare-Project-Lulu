@@ -10,18 +10,20 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 - Navigation principale (16/11/2026, soir) : **Découvrir** (accueil, vue `disc`) · Fiches · Créer (« + » : fiche seule ou fiche avec tuto) · S'entraîner · Plus. L'écran Tutos seul (vue `atelier`), l'accordeur, les accords et le métronome sont dans « Plus ». Les écrans pas au niveau (Recherche de tutos, Importer, Sites utiles) restent dans « Plus », section « bêta » : ne pas les remettre en avant ni les supprimer sans son accord.
 - Une demande de nouveauté pendant le gel : la noter, rappeler le gel, et laisser Lucas trancher.
 
-## Le code
-- App web en **un seul fichier** : `index.html` (HTML + CSS + JS vanilla, sans dépendance ni build). C'est la **source de vérité**.
+## Le code (fondations, 17/11/2026)
+- **La source de vérité est `src/`** : `src/html/` (balisage), `src/css/` (styles), `src/js/` (code), un fichier par thème, numérotés dans l'ordre d'assemblage. **On ne modifie jamais `index.html` à la main.**
+- `node build.mjs` assemble `src/` en `index.html` (l'app en un seul fichier, sans dépendance, hors ligne) ; `node build.mjs --check` vérifie qu'il est à jour. `index.html` reste committé (c'est lui qu'on publie).
+- `src/js/99-samples-guitare.js` : ~570 Ko de base64 sur quelques lignes très longues : ne jamais l'afficher (utiliser `grep -n ... | cut -c1-200`).
 - `a supprimer/` : fichiers obsolètes en attente de suppression (validée par Lucas en fin de projet). Ne pas les modifier ni les synchroniser.
-- Le fichier fait ~9 000 lignes : **ne jamais le lire en entier**. Repérer avec `grep -n` les sections (`/* ═══════ NOM ═══════ */`), puis lire par plages.
-- Fin de fichier : bloc `SAMPLES GUITARE` (~570 Ko de base64 sur quelques lignes très longues) : ne jamais l’afficher ; utiliser `grep -n ... | cut -c1-200` ou exclure ce bloc.
 - Données : IndexedDB (`gms_v2` : stores `sheets`, `media`, `meta`) + quelques préférences en localStorage.
 - **Identité visuelle « Studio » (validée par Lucas le 16/11/2026, thème unique)** : fond sombre neutre, surfaces à peine relevées, **un seul accent orange** (`--gold`), une seule police (Inter, `--sans` ; `--serif` et `--mono` pointent dessus). Pas de dégradés, pas de textures, pas de bande colorée sur les cartes, pas d'emoji décoratif dans les nouveaux écrans. Jetons dans `:root` ; la règle `:is(…)` juste après redéfinit les jetons pour ce qui est posé comme une surface. Ne jamais coder de couleur en dur : utiliser les jetons. Couche de finition : bloc `STUDIO — couche finale` en fin de `<style>` (barres, liste des fiches, fiche, PC). PC : menu à gauche (≥ 900 px), liste + fiche côte à côte (≥ 1200 px). L'impression reste sur papier blanc (bloc `PRINT`).
 - Interface **en français, avec accents** (les vieux textes sans accents sont à corriger au passage).
 
 ## Vérifier avant de livrer
-- Tester dans Chromium avec Playwright (`require('playwright')`, déjà installé ; scripts dans le scratchpad, jamais dans le dépôt) : 0 erreur console, captures desktop 1200px + mobile 390px, pas de scroll horizontal.
-- Ne jamais committer de captures ou de scripts de test.
+- `node build.mjs`, puis **`NODE_PATH=$(npm root -g) node tests/smoke.cjs`** (test automatique du projet : écrans, fiche, éditeur, blocs, vidéo, impression, sauvegarde et restauration, en téléphone et PC). Il doit afficher « OK ».
+- Pour un changement visuel : captures desktop 1200 px + mobile 390 px avec des scripts dans le scratchpad (jamais dans le dépôt), pas de scroll horizontal.
+- Ne jamais committer de captures. Les seuls scripts committés sont `build.mjs` et `tests/`.
+- Sauvegarde : « Sauvegarder toutes mes fiches » (menu ⋯ de Fiches) exporte fiches + médias ; « Restaurer ou importer un fichier » les remet. Un rappel apparaît dans Fiches si rien n'a été sauvegardé depuis 14 jours.
 
 ## Git
 - Travailler sur la branche `claude/relaxed-hawking-5olqsb` ; ne pas toucher `main` sans accord de Lucas.

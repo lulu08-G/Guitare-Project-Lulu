@@ -1,0 +1,64 @@
+<!-- ══ SHEET VIEW (mode jeu) ══ -->
+<div class="view" id="v-sheet">
+  <div class="sv-wrap">
+    <div class="sv-head">
+      <button type="button" class="sv-back" onclick="svExit()" aria-label="Quitter le mode jeu, retour aux fiches"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span>Fiches</span></button>
+      <div class="sv-btns">
+        <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+        <button type="button" class="btn-icon vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
+        <div class="hm-menu" id="sv-menu">
+          <button type="button" class="btn-icon" onclick="svMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>
+          <div class="pop">
+            <button type="button" id="sv-edit">Modifier la fiche</button>
+            <button type="button" id="sv-aa" onclick="toggleNames()">Noms des accords</button>
+            <button type="button" id="sv-lyr-m" onclick="svMenuClose();svToggleLyrics()">Afficher les paroles</button>
+            <button type="button" onclick="svMenuClose();svOriginal()">Écouter l’original</button>
+            <button type="button" onclick="svMenuClose();printOne()">Imprimer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sv-hero"><h2 id="sv-title"></h2><p class="sv-meta"><span id="sv-artist"></span><span id="sv-capo"></span><span id="sv-stats"></span></p></div>
+    <div class="sv-body">
+      <div class="sv-tabs" id="sv-tabs"></div>
+      <div class="parts-view" id="sv-parts"></div>
+      <div class="sv-hint" id="sv-hint"></div>
+    </div>
+    <div class="sv-pop" id="sv-pop" role="dialog" aria-label="Diagramme de l’accord"></div>
+    <details class="sv-more" id="sv-more"><summary id="sv-more-t">Perso : mes enregistrements, tutos</summary>
+      <div id="sv-coffre"></div>
+      <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--cream2)"><input type="checkbox" id="opt-lefty" onchange="setLefty(this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Mode gaucher : bouton Play à droite</label>
+    </details>
+    <div class="sv-foot"><button type="button" class="btn btn-ghost btn-sm" onclick="printOne()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg>Imprimer cette fiche</button></div>
+  </div>
+  <div class="sv-bar" id="sv-bar"><div class="sv-bar-in">
+    <div class="sv-live" id="sv-live">Rythme en boucle</div>
+    <div class="sv-links sv-n" id="sv-links">
+      <button type="button" onclick="svOriginal()">Original<i>›</i></button>
+      <button type="button" onclick="svTuto()">Tuto<i>›</i></button>
+      <button type="button" id="sv-takes" onclick="svTakes()">Prises<i>›</i></button>
+      <button type="button" id="sv-lyr" onclick="svToggleLyrics()" aria-pressed="false">Paroles<i>›</i></button>
+    </div>
+    <div class="sv-main">
+      <div class="sv-big"><button type="button" class="sv-play" id="sv-play" onclick="svPlayCur()" aria-label="Lancer le rythme en cases"></button><span class="sv-cap" id="sv-play-cap">Jouer</span></div>
+      <div class="sv-mid">
+        <div class="sv-n">
+          <div class="sv-bpm2">
+            <button type="button" onpointerdown="bpmHold(-1,event)" onclick="if(!event.detail)rhBpmStep(-1)" aria-label="Moins vite">&minus;</button>
+            <button type="button" class="val" onclick="bpmTap()" aria-label="Tempo (touche au rythme pour le trouver)"><b id="rh-bpm-bar">90</b></button>
+            <button type="button" onpointerdown="bpmHold(1,event)" onclick="if(!event.detail)rhBpmStep(1)" aria-label="Plus vite">+</button>
+          </div>
+          <span class="sv-cap">BPM</span>
+        </div>
+        <div class="sv-r"><div class="sv-lvl" id="sv-lvl"><i></i></div></div>
+        <div class="sv-r sv-rt" id="sv-rec-t">Enregistrement 0:00</div>
+      </div>
+      <div class="sv-big">
+        <button type="button" class="sv-n sv-take" id="sv-rec" onclick="svRecBtn()" aria-label="Enregistrer ma prise à la guitare"></button>
+        <span class="sv-cap sv-n">Enregistrer</span>
+        <button type="button" class="sv-r sv-cancel" onclick="rcClose()">Annuler</button>
+      </div>
+    </div>
+  </div></div>
+</div>
+

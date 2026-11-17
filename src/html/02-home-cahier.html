@@ -1,0 +1,41 @@
+<!-- ══ HOME / CAHIER ══ -->
+<div class="view on" id="v-home">
+  <div class="wrap">
+    <div class="hm-top">
+      <h1><span class="hm-w">Fiches</span><small id="greet-count"></small></h1>
+      <button type="button" class="btn-icon tun-btn hm-vol" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="btn-icon vol-btn hm-vol2" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
+      <button type="button" class="btn-icon hm-print" onclick="startPrintPick()" aria-label="Imprimer des fiches" title="Imprimer des fiches"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg></button>
+      <div class="hm-menu" id="hm-menu">
+        <button class="btn-icon" onclick="toggleHomeMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+        <div class="pop">
+          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Imprimer ou exporter des fiches</button>
+          <button onclick="closeHomeMenu();backupAll()">Sauvegarder toutes mes fiches</button>
+          <button onclick="closeHomeMenu();document.getElementById('json-in').click()">Restaurer ou importer un fichier</button>
+        </div>
+        <input type="file" id="json-in" accept="application/json" style="display:none" onchange="importJSON(this)">
+      </div>
+    </div>
+    <div class="search-bar">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="q" placeholder="Titre ou artiste" oninput="renderHome()">
+    </div>
+    <div id="backup-nag"></div>
+    <div id="resume-wrap"></div>
+    <div class="filters" id="home-filters">
+      <button type="button" class="filt" data-f="all" onclick="setHomeFilter('all')" id="filt-all">Toutes</button>
+      <button type="button" class="filt" data-f="fav" onclick="setHomeFilter('fav')">Favoris</button>
+      <button type="button" class="filt" data-f="recent" onclick="setHomeFilter('recent')">Récentes</button>
+    </div>
+    <div class="toolbar" id="cahier-bar" style="display:none">
+      <span class="toolbar-count" id="sel-count"></span>
+      <button class="btn btn-ghost btn-sm" onclick="selAll()" id="sel-all-btn">Tout cocher</button>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Annuler</button>
+      <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" title="Enregistrer ces fiches dans un fichier">Exporter</button>
+      <button class="btn btn-primary btn-sm" onclick="openPrintModal()" id="btn-print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg><span id="btn-print-t">Imprimer</span></button>
+    </div>
+    <div id="pinned-wrap" style="display:none"><div class="pinned-row" id="pinned-row"></div></div>
+    <div class="grid" id="home-grid"></div>
+  </div>
+</div>
+

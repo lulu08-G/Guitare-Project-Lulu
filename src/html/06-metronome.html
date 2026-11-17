@@ -1,0 +1,41 @@
+<!-- ══ METRONOME ══ -->
+<div class="view" id="v-metro">
+  <div class="wrap-narrow mt">
+    <div class="mt-stage" id="mt-stage">
+      <div class="mt-dial" id="mt-dial" role="button" tabindex="0" aria-label="Cadran du métronome : touche-le en rythme pour donner le tempo" onclick="metroTapTempo()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();metroTapTempo()}">
+        <svg id="mt-svg" viewBox="0 0 300 300" aria-hidden="true"></svg>
+        <div class="mt-core" id="mt-core">
+          <span class="mt-name" id="mt-name">Andante</span>
+          <b class="mt-bpm" id="mt-bpm">100</b>
+          <span class="mt-unit">BPM</span>
+        </div>
+      </div>
+      <p class="mt-hint">Touche le cadran en rythme pour donner le tempo</p>
+      <div class="mt-tempo">
+        <button type="button" class="mt-step" onpointerdown="metroHold(-1)" onkeydown="if(event.key==='Enter')metroBpmStep(-1)" aria-label="Moins vite">−</button>
+        <input type="range" id="metro-bpm-range" min="30" max="280" value="100" oninput="metroSetBpmFromRange(this.value)" aria-label="Tempo en battements par minute">
+        <button type="button" class="mt-step" onpointerdown="metroHold(1)" onkeydown="if(event.key==='Enter')metroBpmStep(1)" aria-label="Plus vite">+</button>
+      </div>
+      <button type="button" class="mt-play" id="metro-toggle" onclick="toggleMetro()" aria-label="Démarrer le métronome"></button>
+    </div>
+
+    <div class="mt-row"><span class="mt-lbl">Mesure</span><div class="mt-chips" id="mt-sigs"></div></div>
+    <div class="mt-row"><span class="mt-lbl">Son</span>
+      <div class="mt-seg">
+        <button type="button" id="metro-mode-simple" onclick="metroSetImpro(false)">Clic seul</button>
+        <button type="button" id="metro-mode-impro" onclick="metroSetImpro(true)">Le groupe joue</button>
+      </div>
+    </div>
+    <div id="mt-band">
+      <div class="mt-row"><span class="mt-lbl">Style</span><div class="mt-chips" id="mt-styles"></div></div>
+      <div class="mt-row"><span class="mt-lbl">Instruments</span><div class="mt-chips" id="metro-layers"></div></div>
+      <div class="mt-row" id="metro-bass-row" style="display:none"><span class="mt-lbl">Basse</span>
+        <select id="metro-bass-note" onchange="metroChangeBassString(this.value)" aria-label="Note de basse"></select></div>
+      <details class="mt-pat">
+        <summary>Modifier le motif<small>touche une case pour l’allumer ou l’éteindre</small></summary>
+        <div id="metro-grid-host"></div>
+      </details>
+    </div>
+  </div>
+</div>
+

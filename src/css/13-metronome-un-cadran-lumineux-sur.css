@@ -1,0 +1,62 @@
+/* ═══════ MÉTRONOME : un cadran lumineux sur le bois ═══════ */
+.mt{padding-top:14px;padding-bottom:40px}
+.mt-stage{position:relative;display:flex;flex-direction:column;align-items:center;padding:8px 0 6px}
+.mt-dial{position:relative;width:min(78vw,330px);aspect-ratio:1;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:50%;outline-offset:6px}
+.mt-dial svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.mt-arc{fill:none;stroke:rgba(255,255,255,.11);stroke-width:11;stroke-linecap:round;transition:stroke .18s,filter .18s,stroke-width .18s}
+.mt-arc.done{stroke:rgba(255,138,42,.38)}
+.mt-arc.on{stroke:var(--gold2);stroke-width:13;filter:drop-shadow(0 0 9px rgba(255,138,42,.75))}
+.mt-arc.first.on{stroke:var(--gold3);filter:drop-shadow(0 0 13px rgba(255,138,42,.95))}
+.mt-tick{fill:rgba(255,255,255,.2)}.mt-tick.b{fill:rgba(255,255,255,.5)}
+.mt-num{font:600 15px var(--serif);fill:var(--cream3);text-anchor:middle;dominant-baseline:central;transition:fill .15s}
+.mt-num.on{fill:var(--gold3)}
+#mt-orb{transform-origin:150px 150px;will-change:transform}
+#mt-orb circle{fill:var(--cream);filter:drop-shadow(0 0 8px rgba(255,138,42,.95))}
+.mt-stage:not(.playing) #mt-orb{opacity:.35}
+.mt-core{position:absolute;inset:19%;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+  background:radial-gradient(circle at 50% 32%,var(--card3),#151517 72%);border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 18px 40px rgba(0,0,0,.55);will-change:transform}
+.mt-name{font:600 italic 15px var(--serif);color:var(--gold2);letter-spacing:.01em}
+.mt-bpm{font:600 clamp(58px,19vw,84px)/1 var(--serif);color:var(--cream);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.mt-unit{font:700 11px var(--sans);letter-spacing:.24em;color:var(--cream3)}
+.mt-hint{margin:12px 0 2px;font-size:12px;color:var(--cream3);text-align:center}
+.mt-tempo{display:flex;align-items:center;gap:12px;width:min(100%,420px);margin-top:8px}
+.mt-step{flex:none;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid var(--border2);color:var(--gold2);font:600 28px/1 var(--sans);touch-action:manipulation;transition:background var(--t-fast),transform var(--t-fast)}
+.mt-step:active{background:rgba(255,255,255,.14);transform:scale(.94)}
+.mt-tempo input[type=range]{flex:1;min-width:0;height:44px;background:none;border:0;padding:0;-webkit-appearance:none;appearance:none}
+.mt-tempo input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:9px;background:linear-gradient(90deg,var(--gold2) var(--p,30%),rgba(255,255,255,.14) var(--p,30%))}
+.mt-tempo input[type=range]::-moz-range-track{height:6px;border-radius:9px;background:rgba(255,255,255,.14)}
+.mt-tempo input[type=range]::-moz-range-progress{height:6px;border-radius:9px;background:var(--gold2)}
+.mt-tempo input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-10px;border-radius:50%;background:var(--cream);border:0;box-shadow:0 2px 10px rgba(0,0,0,.5),0 0 0 5px rgba(255,138,42,.25)}
+.mt-tempo input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--cream);border:0;box-shadow:0 2px 10px rgba(0,0,0,.5),0 0 0 5px rgba(255,138,42,.25)}
+.mt-play{margin:18px 0 8px;width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);
+  background:var(--gold);box-shadow:0 10px 26px rgba(255,138,42,.4);transition:transform var(--t-fast)}
+.mt-play svg{width:34px;height:34px}
+.mt-play:active{transform:scale(.94)}
+.mt-play.on{background:linear-gradient(180deg,#d4674a,#b24a30);color:#fff;animation:idHalo 1.6s ease-out infinite}
+.mt-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border)}
+.mt-lbl{flex:none;width:92px;font:700 11px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--cream3)}
+.mt-chips{display:flex;gap:8px;flex-wrap:wrap;flex:1;min-width:0}
+.mt-chips button{min-height:44px;padding:0 16px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--border2);color:var(--cream2);font:700 14px var(--sans);transition:background var(--t-fast),color var(--t-fast)}
+.mt-chips button.on{background:var(--gold);border-color:transparent;color:var(--ink)}
+#mt-sigs button{font:600 18px var(--serif);min-width:58px}
+.mt-seg{display:flex;flex:1;min-width:0;padding:4px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--border)}
+.mt-seg button{flex:1;min-height:40px;border-radius:99px;background:none;color:var(--cream3);font:700 14px var(--sans)}
+.mt-seg button.on{background:var(--gold);color:var(--ink)}
+.mt-row select{flex:1;min-height:44px}
+.mt-pat{border-top:1px solid var(--border);padding:4px 0 6px}
+.mt-pat>summary{list-style:none;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 14px var(--sans);color:var(--cream2);cursor:pointer}
+.mt-pat>summary::-webkit-details-marker{display:none}
+.mt-pat>summary small{font-weight:500;font-size:12px;color:var(--cream3);text-align:right}
+.mt .metro-cell{width:26px;height:30px;border-radius:7px}
+@media(max-width:480px){.mt-row{flex-wrap:wrap;gap:8px;padding:10px 0 12px}.mt-lbl{width:100%}.mt .metro-row-lbl{width:78px}.mt-pat>summary small{display:none}#mt-sigs button{flex:1;min-width:0;padding:0 6px}}
+@media(min-width:900px){.mt-dial{width:360px}}
+
+/* le temps est un instant : repère net à l'entrée de chaque temps, flash bref au passage */
+.mt-arc{stroke-width:5}.mt-arc.done{stroke:rgba(255,138,42,.3)}
+.mt-mark{fill:var(--card2);stroke:var(--cream3);stroke-width:2;transform-box:fill-box;transform-origin:center}
+.mt-mark.first{stroke:var(--gold2)}
+.mt-mark.hit{animation:mtHit .28s var(--ease-out) both}
+@keyframes mtHit{0%{fill:#fff;stroke:#fff;transform:scale(1.9);filter:drop-shadow(0 0 14px rgba(255,138,42,1))}100%{fill:var(--gold2);stroke:var(--gold3);transform:scale(1);filter:drop-shadow(0 0 3px rgba(255,138,42,.5))}}
+.mt-num.on{fill:var(--gold3)}
+

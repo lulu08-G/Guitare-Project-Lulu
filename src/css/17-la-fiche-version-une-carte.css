@@ -1,0 +1,72 @@
+/* ── La fiche, version « une carte par partie » : accords puis rythme dans la même carte ; plus de barre du bas ── */
+#v-sheet .sv-wrap{padding-bottom:60px}
+.sv-bar{display:none}.sv-bar.rec{display:block}
+#v-sheet .parts-view .pv-block,#v-sheet.all .parts-view .pv-block{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:12px 14px 14px;margin:14px 0 0;cursor:default}
+#v-sheet .parts-view .pv-block>.pv-hdr,#v-sheet.all .parts-view .pv-block>.pv-hdr,#v-sheet.one:not(.solo) .parts-view .pv-block>.pv-hdr{display:flex;align-items:center;gap:6px;background:none;border:0;padding:0 0 10px;min-height:32px}
+#v-sheet .pv-name,#v-sheet.all .pv-name,#v-sheet.one:not(.solo) .pv-name{flex:1;min-width:0;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
+#v-sheet.all .pv-block.on .pv-name{color:var(--cream3)}
+#v-sheet.solo .pv-name{visibility:hidden}
+.pv-take{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:99px;background:var(--card2);color:var(--cream);font-size:12.5px;font-weight:600;flex:none}
+.pv-take.has{background:var(--acc-soft);color:var(--gold)}
+.pv-take svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pv-take u{width:8px;height:8px;border-radius:50%;background:#e5484d;display:block}
+.pv-edit{width:32px;height:32px;border-radius:50%;background:none;color:var(--cream3);display:grid;place-items:center;flex:none}
+.pv-edit:hover{color:var(--cream);background:var(--card2)}
+.pv-edit svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.pv-menu .pop{top:36px;min-width:240px}.pv-menu .pop button.danger{color:var(--terra)}
+#v-sheet .chord-cell,#v-sheet.all .chord-cell,#v-sheet.all.compact .chord-cell{background:var(--card2);border-color:transparent}
+#v-sheet .pv-way{background:none;border:0;border-top:1px solid var(--border);border-radius:0;padding:12px 0 0;margin-top:12px;min-height:0}
+#v-sheet .pv-pl{width:40px;height:40px;background:var(--gold);color:var(--ink)}
+#v-sheet .pv-pl.on{background:var(--cream);color:var(--bg)}
+.rs-ar{height:36px;max-width:72%}
+.sv-bpm-b{background:none;color:inherit;font:inherit;padding:0;border-bottom:1px dashed var(--cream4)}
+#bpm-pop{position:fixed;z-index:400;display:none;align-items:center;gap:4px;padding:6px 8px;border-radius:99px;background:var(--card2);border:1px solid var(--border2);box-shadow:0 10px 30px var(--shadow);color:var(--cream)}
+#bpm-pop.on{display:flex}
+#bpm-pop button{width:40px;height:40px;border-radius:50%;background:none;color:var(--cream2);font-size:22px;font-weight:500}
+#bpm-pop b{min-width:44px;text-align:center;font-size:19px;font-weight:800}
+#bpm-pop button.tap{width:auto;padding:0 14px;font-size:13px;font-weight:600;color:var(--gold);border-radius:99px}
+@media(min-width:900px){#v-sheet.all .parts-view{gap:0 16px}#v-sheet.all .parts-view .pv-block{padding:12px 14px 14px}}
+@media(min-width:1200px){body.playing #v-sheet .sv-wrap{padding-bottom:60px}}
+@media(max-width:480px){.rs-n{visibility:hidden}}
+#bpm-pop button.tap{white-space:nowrap}
+#v-sheet.solo .chords-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+/* ── Création : titre compact, capo et tempo à part, « Enregistrer mon rythme » dans la page ── */
+.ed-ta{grid-template-columns:1.5fr 1fr;gap:8px;margin:2px 0 10px}
+.ed-ta .ed-in{min-height:46px;font-family:var(--sans);border-radius:12px;border:0;background:var(--card2)}
+.ed-ta .ed-in-t{font-size:17px;font-weight:700;letter-spacing:-.01em}.ed-ta .ed-in-a{font-size:15px}
+.ed-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ed-meta small{font-size:12px;color:var(--cream3)}
+.ed-meta .ed-capo{margin:0}
+.ed-tempo{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 6px 0 14px;border-radius:99px;background:var(--card2);font-size:14px;font-weight:600;color:var(--cream);text-transform:none;letter-spacing:0;margin:0}
+.ed-tempo input{width:58px;min-height:30px;padding:2px 6px;border:0;background:none;color:var(--gold);font-size:15px;font-weight:700;text-align:center}
+.ed-lab{margin:20px 0 8px}.ed-lab b{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
+#v-ed .ed-chords{margin:0 0 8px}
+#v-ed .part-card.pc.solo{background:none;border:0;padding:0;box-shadow:none}
+.ed-dock{position:static;left:auto;pointer-events:auto}
+.ed-rec{position:relative;overflow:hidden;width:100%;min-width:0;min-height:64px;margin:0;padding:10px 16px;border-radius:16px;background:var(--card2);color:var(--cream);border:1px solid var(--border2);justify-content:flex-start;gap:14px}
+.ed-rec:hover{border-color:var(--gold)}
+.ed-rec-str{position:absolute;inset:0;width:100%;height:100%;opacity:.5}.ed-rec-str path{stroke:var(--cream4);fill:none}
+.ed-rec>*:not(.ed-rec-str){position:relative}
+.ed-rec-d{width:18px;height:18px;background:#e5484d;box-shadow:0 0 0 5px rgba(229,72,77,.22)}
+.ed-rec span{flex:1;min-width:0}
+.ed-rec b{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.ed-rec small{display:block;font-size:12.5px;font-weight:500;color:var(--cream2);margin-top:1px}
+.ed-rec-ar{width:54px;height:30px;flex:none;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ed-rec-ar .d{stroke:var(--cream)}.ed-rec-ar .u{stroke:var(--gold)}
+.ed-alt{display:flex;gap:8px;margin-top:8px}
+.ed-alt button{flex:1;min-height:44px;border-radius:12px;background:var(--card2);color:var(--cream);font-size:13.5px;font-weight:600}
+.ed-rp{background:none;padding:0 0 6px}
+body:has(#v-ed.on) .toast{bottom:90px}
+/* le « + » : deux choix */
+#create-ask{position:fixed;inset:0;z-index:600;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.6)}
+#create-ask.on{display:flex}
+.ca-box{width:min(100%,460px);background:var(--card);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+.ca-grab{width:38px;height:5px;border-radius:5px;background:var(--card3);margin:0 auto 8px}
+.ca-box h3{font-size:20px;font-weight:800;color:var(--cream);margin:0 4px 6px}
+.ca-box button{display:flex;align-items:center;gap:14px;min-height:68px;padding:10px 14px;border-radius:16px;background:var(--card2);color:var(--cream);text-align:left}
+.ca-box button svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--gold);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ca-box button b{display:block;font-size:16px;font-weight:700}.ca-box button small{display:block;font-size:13px;color:var(--cream2);margin-top:2px}
+.ca-box button.ca-x{min-height:46px;justify-content:center;background:none;color:var(--cream2);font-weight:600}
+@media(min-width:900px){#create-ask{align-items:center}.ca-box{border-radius:24px}.ca-grab{display:none}}
+#ed-recbar{display:flex;flex-direction:column;align-items:stretch}
+@media(max-width:899px){body:has(#v-ed.on) nav{display:none}#v-ed .ed-top{top:0}}

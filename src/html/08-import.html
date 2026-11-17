@@ -1,0 +1,42 @@
+<!-- ══ IMPORT ══ -->
+<div class="view" id="v-import">
+  <div class="wrap-narrow">
+    <div class="hero"><div><h1>Importer une <em>tab</em></h1><p>Colle une tablature texte, ou garde une image en référence</p></div></div>
+    <div class="fcard">
+      <div class="fcard-t">Coller du texte (tab ou grille d’accords)</div>
+      <div class="fg">
+        <textarea id="imp-text" rows="9" class="mono" placeholder="[Intro]&#10;Em  G  D  A7&#10;&#10;[Verse]&#10;e|---0---3---|&#10;B|---0---0---|&#10;..."></textarea>
+      </div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="parseImport()">Analyser et pré-remplir</button>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('imp-file').click()">Charger un .txt</button>
+        <input type="file" id="imp-file" accept=".txt,text/plain" style="display:none" onchange="loadTxt(this)">
+      </div>
+      <div id="imp-preview" style="margin-top:14px"></div>
+    </div>
+    <div class="fcard">
+      <div class="fcard-t">Image de référence</div>
+      <p style="font-size:12px;color:var(--cream4);margin-bottom:12px">Pas de lecture automatique approximative : l’image reste affichée à côté de l’éditeur pour recopier tranquillement, et elle est gardée dans la fiche.</p>
+      <div class="drop-zone" id="img-drop" onclick="document.getElementById('imp-img').click()">
+        Déposer une image de tab, ou cliquer pour choisir
+      </div>
+      <input type="file" id="imp-img" accept="image/*" style="display:none" onchange="loadTabImg(this)">
+      <div id="img-preview" style="margin-top:12px"></div>
+    </div>
+
+    <div class="fcard">
+      <div class="fcard-t">Test<span class="test-badge">Beta</span></div>
+      <p style="font-size:12px;color:var(--cream4);margin-bottom:6px">Capture éclair — le micro écoute quelques secondes et propose des accords probables. Expérimental, pas fiable à 100 % : à prendre comme point de départ, pas comme vérité.</p>
+      <div class="cap-wrap">
+        <button class="btn btn-primary btn-sm" id="cap-toggle" onclick="toggleCapture()">Écouter 5 secondes</button>
+        <div class="cap-blob" id="cap-blob" style="display:none">
+          <div class="cap-blob-ring"></div>
+          <div class="cap-blob-core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg></div>
+        </div>
+        <div class="cap-timer" id="cap-timer"></div>
+        <div class="cap-chips" id="cap-chips"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
