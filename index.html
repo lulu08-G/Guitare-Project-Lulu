@@ -4866,7 +4866,7 @@ function renderBlocs() {
   const host = $('blocs-body'); if (!host) return;
   const dn = blocDone();
   if (!blocCur) {
-    host.innerHTML = `<div class="bk-hero"><small>PASSE LE MUR</small><h2>Quel mur te bloque ?</h2><p>Des cours courts, en vidéo, pour franchir chaque mur de la guitare. Choisis le tien, dans l’ordre que tu veux.</p></div><div class="bk-list">` +
+    host.innerHTML = `<div class="bk-hero"><small>DÉBLOQUE TON JEU</small><h2>Quel mur te bloque ?</h2><p>Des cours courts, en vidéo, pour franchir chaque mur de la guitare. Choisis le tien, dans l’ordre que tu veux.</p></div><div class="bk-list">` +
       BLOCS.map((b, i) => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length;
         return `<button type="button" class="bk-it${n || b.to ? '' : ' soon'}" onclick="${n || b.to ? `blocOpen('${b.id}')` : ''}"><span class="bk-n">${i + 1}</span><span class="bk-tx"><b>${b.n}</b><i>« ${b.mur} »</i></span><span class="bk-st">${b.to ? 'Ouvrir' : n ? `${f}/${n}` : 'Bientôt'}</span></button>`; }).join('') + '</div>';
     return;
@@ -4922,15 +4922,15 @@ function lvStop(keep) {
 function lvFull(id) { const el = $(id); try { document.fullscreenElement ? document.exitFullscreen() : (el.requestFullscreen || el.webkitRequestFullscreen).call(el); } catch (e) { toast('Plein écran indisponible ici', true); } }
 function renderAdmin() {
   const ks = Object.keys(LV);
-  const bl = BLOCS.filter(b => b.cards.length).map((b, bi) => `<h3 class="ad-h">Passe le mur · mur ${bi + 1} : ${esc(b.n)}</h3>` + b.cards.map(c =>
+  const bl = BLOCS.filter(b => b.cards.length).map((b, bi) => `<h3 class="ad-h">Débloque ton jeu · mur ${bi + 1} : ${esc(b.n)}</h3>` + b.cards.map(c =>
     `<div class="ad-it"><div class="ad-t"><b>${esc(c.t)}</b><small>${LV[c.k].dur} s</small></div>${lvCard(c.k, 'a')}</div>`).join('')).join('');
-  $('admin-body').innerHTML = `<p class="ad-n">${ks.length} vidéos : les cours « Passe le mur », puis « Comprendre en 2 minutes ». Plein écran pour les filmer.</p>` + bl + `<h3 class="ad-h">Comprendre · les cours</h3>` +
+  $('admin-body').innerHTML = `<p class="ad-n">${ks.length} vidéos : les cours « Débloque ton jeu », puis « Comprendre en 2 minutes ». Plein écran pour les filmer.</p>` + bl + `<h3 class="ad-h">Comprendre · les cours</h3>` +
     COURS.map((l, i) => LV[l.k]
       ? `<div class="ad-it"><div class="ad-t"><b>Leçon ${i + 1} · ${esc(l.t)}</b><small>${LV[l.k].dur} s</small></div>${lvCard(l.k, 'a')}</div>`
       : `<div class="ad-it off"><div class="ad-t"><b>Leçon ${i + 1} · ${esc(l.t)}</b><small>à venir</small></div></div>`).join('');
 }
 function coursListHTML() {
-  return `<button type="button" class="bk-back" onclick="go('blocs')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Passe le mur</button>
+  return `<button type="button" class="bk-back" onclick="go('blocs')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Débloque ton jeu</button>
     <div class="bk-hero"><small>MUR 8</small><h2>Comprendre en 2 minutes</h2><p>« Pourquoi ces accords vont ensemble ? » Douze petits cours pour comprendre ce que tu joues.</p></div>
     <div class="cl-list">${COURS.map((l, i) =>
       `<button type="button" class="les" onclick="coursOpen('${l.k}')"><span class="les-n">${i + 1}</span><b>${l.t}</b>${LV[l.k] ? '<i class="les-v">▶ vidéo</i>' : ''}<small>${l.m} min</small></button>`).join('')}</div>`;
@@ -7634,7 +7634,7 @@ addEventListener('resize', () => { tbPillOn = false; const on = document.querySe
 function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'blocs'); }
 let curView = 'home';
 const SUBNAV = {
-  train: [['blocs','Passe le mur'],['exo','Jouer']]
+  train: [['blocs','Débloque ton jeu'],['exo','Jouer']]
 };
 function renderSubnav(v) {
   curView = v;
