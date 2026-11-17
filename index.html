@@ -2262,6 +2262,70 @@ body:has(#v-ed.on) .toast{bottom:90px}
 }
 .lv-t,.lv-cd{min-height:26cqh}.lv-t b{font-size:6cqmin}.lv-t i,.lv-cd i{font-size:2.6cqmin}
 @container (max-aspect-ratio:1/1){.lv-t,.lv-cd{min-height:13cqh;padding:1.2cqh 1cqw;gap:.5cqh}.lv-t b{font-size:7.5cqw}.lv-t i,.lv-cd i{font-size:3.3cqw}.lv-cd svg{width:min(100%,17cqw)}.lv-cd b{font-size:5cqw}.lv-tl.cds{margin:3cqh 0 4cqh}}
+/* ── vidéos riches : schéma qui se transforme, mesure qui défile ── */
+.lv-sc2{justify-content:flex-start;padding-top:6cqh}
+.lv-mo{display:flex;align-items:center;justify-content:center;gap:6cqw;margin:2cqh 0 3cqh;flex:1;min-height:0}
+.lv-mo-g{height:min(62cqh,62cqw);width:auto;overflow:visible}
+.lv-mo-g .st{stroke:#5c5a57;stroke-width:1.6}.lv-mo-g .fr{stroke:#5c5a57;stroke-width:1.4}.lv-mo-g .nut{stroke:#f4f3f1;stroke-width:6;stroke-linecap:round}
+.lv-mo-g .mk circle,.lv-mo-g .mk path{fill:none;stroke:#bdbbb6;stroke-width:2.2;stroke-linecap:round}
+.lv-mo-g .fd circle{fill:#f4f3f1}.lv-mo-g .fd text{font:800 15px var(--sans);text-anchor:middle;fill:#151517}
+.lv-mo-g .fd.pv circle{fill:#ff8a2a;filter:drop-shadow(0 0 7px rgba(255,138,42,.7))}
+.lv-mo-r{display:flex;flex-direction:column;gap:3cqh;min-width:0}
+.lv-mo-n{position:relative;height:16cqmin;min-width:30cqmin}
+.lv-mo-n span{position:absolute;left:0;top:0;font:800 14cqmin/1 var(--sans);letter-spacing:-.03em;color:var(--lc);white-space:nowrap}
+.lv-mo-l{display:flex;flex-direction:column;gap:1.4cqh;font:600 2.8cqmin var(--sans);color:var(--lc3)}
+.lv-mo-l span{display:flex;align-items:center;gap:1.4cqmin}.lv-mo-l i{width:2.6cqmin;height:2.6cqmin;border-radius:50%;background:#f4f3f1}.lv-mo-l i.pv{background:#ff8a2a}
+.lv-bts{display:flex;flex-direction:column;gap:3.4cqh;margin:3cqh 0 2cqh}
+.lv-bt{opacity:.3}
+.lv-bt-h{display:flex;align-items:baseline;gap:2cqw;margin-bottom:1.4cqh}
+.lv-bt-h b{font:700 3.2cqmin var(--sans);color:var(--lc)}.lv-bt-h small{margin-left:auto;font:600 2.4cqmin var(--sans);color:var(--lc3)}
+.lv-bt-c{position:relative;display:inline-block;min-width:12cqmin;height:4.6cqmin}
+.lv-bt-c i{position:absolute;left:0;top:-.6cqmin;font:800 4.4cqmin/1 var(--sans);font-style:normal;color:var(--lg);opacity:0}
+.lv-bt-c i.rest{opacity:.55;color:var(--lc3)}
+.lv-bt:has(.lv-bt-c i[style*="lvWin"]) .lv-bt-c i.rest{animation:none}
+.lv-bt-row{display:flex;align-items:stretch;gap:2cqw}
+.lv-bt-bar{position:relative;flex:1;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:.8cqw}
+.lv-bc{display:flex;flex-direction:column;align-items:center;gap:.4cqh;padding:1cqh 0 1.2cqh;border-radius:1.6cqmin;background:#232327;position:relative}
+.lv-bc em{font:700 2.4cqmin var(--sans);font-style:normal;color:var(--lc3)}
+.lv-bc svg{width:62%;max-width:5.4cqmin;height:auto;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.lv-bc .d{stroke:#f4f3f1}.lv-bc .u{stroke:#ff9d4d}.lv-bc .soft{opacity:.6}.lv-bc .x{stroke:#ff6b6b;stroke-width:3.4}
+.lv-bc .gh{stroke:#5c5a57;stroke-width:2;stroke-dasharray:3 4}.lv-bc .o{fill:#5c5a57}
+.lv-bc.free{background:rgba(255,138,42,.14);box-shadow:inset 0 0 0 1.5px rgba(255,138,42,.6)}
+.lv-bc.free small{position:absolute;top:100%;margin-top:.6cqh;font:700 2.1cqmin var(--sans);color:var(--lg);white-space:nowrap}
+.lv-ph{position:absolute;top:-.8cqh;bottom:-.8cqh;left:0;width:3px;border-radius:3px;background:#ff8a2a;box-shadow:0 0 10px rgba(255,138,42,.8);opacity:0;pointer-events:none}
+.lv-hand{width:4.4cqmin;border-radius:3cqmin;background:#1d1d20;position:relative;flex:none}
+.lv-hand i{position:absolute;left:50%;top:6%;width:3.4cqmin;height:3.4cqmin;margin-left:-1.7cqmin;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#ff8a2a}
+@keyframes lvPh{from{left:0;opacity:1}to{left:100%;opacity:1}}
+@keyframes lvHit{0%{background:#ff8a2a;transform:scale(1.1)}100%{background:#232327;transform:none}}
+@keyframes lvRow{0%,100%{opacity:1}}
+@keyframes lvWin{0%,100%{opacity:1}}
+@keyframes lvSwing{from{top:6%}to{top:calc(94% - 3.4cqmin)}}
+.lv-bt:has(.lv-bt-c i) .lv-bt-c i.rest{opacity:0}
+@container (max-aspect-ratio:1/1){
+  .lv-mo{flex-direction:column;gap:2cqh;margin:1cqh 0}.lv-mo-g{height:40cqh}
+  .lv-mo-r{flex-direction:row;align-items:center;gap:6cqw}.lv-mo-n{height:12cqw;min-width:24cqw}.lv-mo-n span{font-size:11cqw}.lv-mo-l{font-size:3.4cqw}.lv-mo-l i{width:3cqw;height:3cqw}
+  .lv-bts{gap:3cqh;margin:2cqh 0}.lv-bt-h b{font-size:4cqw}.lv-bt-h small{font-size:3cqw}.lv-bt-c i{font-size:5.4cqw}.lv-bt-c{height:5.6cqw}
+  .lv-bc em{font-size:3cqw}.lv-bc svg{max-width:6.4cqw}.lv-bc.free small{font-size:2.6cqw}.lv-hand{width:5cqw}.lv-hand i{width:4cqw;height:4cqw;margin-left:-2cqw}
+}
+/* ── écran Débloquer ── */
+.bk-hero{padding:6px 0 14px}.bk-hero small{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--gold)}
+.bk-hero h2{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--cream);margin-top:2px}.bk-hero p{font-size:14px;color:var(--cream2);margin-top:4px}
+.bk-list{display:flex;flex-direction:column;gap:8px;padding-bottom:40px}
+.bk-it{display:flex;align-items:center;gap:14px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--border);color:var(--cream);text-align:left}
+.bk-it:hover{background:var(--card2)}.bk-it.soon{opacity:.5;cursor:default}
+.bk-n{width:34px;height:34px;border-radius:10px;background:var(--acc-soft);color:var(--gold);display:grid;place-items:center;font-size:14px;font-weight:800;flex:none}
+.bk-tx{flex:1;min-width:0}.bk-tx b{display:block;font-size:16px;font-weight:700}.bk-tx i{display:block;font-size:13px;color:var(--cream2);margin-top:2px}
+.bk-st{font-size:12.5px;font-weight:700;color:var(--cream3);flex:none}
+.bk-back{display:flex;align-items:center;gap:2px;background:none;color:var(--gold);font-size:16px;font-weight:500;padding:8px 0;margin-left:-6px}
+.bk-back svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.bk-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:14px}
+.bk-card.done{border-color:rgba(111,207,151,.4)}
+.bk-ch{display:flex;gap:12px;margin-bottom:12px}.bk-ch b{font-size:17px;font-weight:700;color:var(--cream)}.bk-ch p{font-size:13.5px;line-height:1.45;color:var(--cream2);margin-top:3px}
+.bk-card .lv-wrap{margin:0 0 12px}
+.bk-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bk-done{margin-left:auto;background:none;color:var(--cream3);font-size:13px;font-weight:600;padding:8px 4px}
+.bk-card.done .bk-done{color:var(--sage)}
+@media(max-width:480px){.bk-acts .btn{flex:1 1 100%;min-height:44px}.bk-done{margin:0 auto}}
 </style>
 </head>
 <body>
@@ -2659,6 +2723,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
   </div>
 </div>
 
+<div class="view" id="v-blocs"><div class="wrap"><div id="blocs-body" style="padding-bottom:60px"></div></div></div>
 <!-- ══ COURS ══ -->
 <div class="view" id="v-cours">
   <div class="wrap">
@@ -5206,6 +5271,191 @@ const lvT = (l, s, m, hot) => ({l, s, m, hot}), lvC = (c, s) => ({c, s});
     {top:['Trois écarts à reconnaître', 'chante-les'], step:1.1, items:[lvT('tierce', 'Do → Mi', [48,52]), lvT('quinte', 'Do → Sol', [48,55], 1), lvT('octave', 'Do → Do', [48,60])],
      caps:['Chante la deuxième note <b>avant</b> de la jouer, puis vérifie.']}]],
 ].forEach(([k, num, kick, h, sub, sc]) => { const title = COURS_T[k]; LV[k] = Object.assign({t: title}, lvMake(num, kick, h, sub, sc)); });
+/* ═══════ VIDÉOS RICHES (blocs « Débloquer ») ═══════
+   lvBuild(spec) fabrique une vidéo pour le lecteur LV à partir de scènes décrites en données :
+   - morph : un schéma d'accord dont les doigts glissent d'un accord à l'autre (doigts communs en orange)
+   - beats : une mesure qui défile, flèches qui s'allument au son, main qui balance, accords qui tournent
+   - tiles : quelques tuiles qui tombent (chiffres, idées)
+   Chaque scène a ses sous-titres minutés [seconde relative, texte]. Les durées découlent du contenu. */
+const LVX = {n: 0};
+const lvCh = x => typeof x === 'string' ? newChord(x) : Object.assign({id: uid(), arp: [], base: 1}, x);
+const lvCaps = (t0, caps) => `<div class="lv-caps">${caps.map(([r, txt], j) => {
+  const a = t0 + r, nx = caps[j + 1];
+  return `<div style="animation:lvUp .5s var(--ease-out) ${a.toFixed(2)}s forwards${nx ? `,lvOut .3s ease ${(t0 + nx[0] - .3).toFixed(2)}s forwards` : ''}">${txt}</div>`;
+}).join('')}</div>`;
+const lvTop = sc => sc.top ? `<div class="lv-top"><div><b>${sc.top[0]}</b><small>${sc.top[1] || ''}</small></div>${sc.cnt ? `<div class="lv-cnt"><span data-c="${sc.cnt}">0</span><small>${sc.cntL || ''}</small></div>` : ''}</div>` : '';
+// keyframes d'opacité : visible pendant les états où flags[k] est vrai
+function lvVisKF(name, flags, h, m) {
+  const T = flags.length * (h + m), p = x => (x / T * 100).toFixed(3) + '%';
+  return `@keyframes ${name}{` + flags.map((f, k) => `${p(k * (h + m))},${p(k * (h + m) + h)}{opacity:${f ? 1 : 0}}`).join('') + `100%{opacity:${flags[flags.length - 1] ? 1 : 0}}}`;
+}
+function lvMorph(t0, sc, id, cues) {
+  const A = lvCh(sc.a), B = lvCh(sc.b), n = sc.n || 6, h = sc.hold || 1.1, m = sc.move || .5, st = .9, T = n * (h + m);
+  const seq = Array.from({length: n}, (_, k) => k % 2 ? B : A), X = i => 30 + i * 33, Y = f => 52 + (f - .5) * 44;
+  const pos = (c, f) => { const i = c.fingers.findIndex((g, k) => g === f && c.frets[k] > 0); return i < 0 ? null : [X(i), Y(c.frets[i])]; };
+  let css = '', svg = `<svg class="lv-mo-g" viewBox="0 0 226 280" aria-hidden="true">`;
+  for (let j = 0; j <= 5; j++) svg += `<path class="${j ? 'fr' : 'nut'}" d="M${X(0)} ${52 + j * 44}H${X(5)}"/>`;
+  for (let i = 0; i < 6; i++) svg += `<path class="st" d="M${X(i)} 52V${52 + 5 * 44}"/>`;
+  [A, B].forEach((c, w) => {   // cordes à vide (o) et muettes (x), propres à chaque accord
+    const nm = `lvm${id}_${w}`; css += lvVisKF(nm, seq.map(s => s === c), h, m);
+    svg += `<g class="mk" style="animation:${nm} ${T}s linear ${(t0 + st).toFixed(2)}s both">` + c.frets.map((f, i) => f === 0 ? `<circle cx="${X(i)}" cy="30" r="7"/>` : f < 0 ? `<path d="M${X(i) - 6} 24l12 12m0 -12l-12 12"/>` : '').join('') + '</g>';
+  });
+  [1, 2, 3, 4].forEach(f => {
+    const ps = seq.map(c => pos(c, f)); if (!ps.some(Boolean)) return;
+    const pa = pos(A, f), pb = pos(B, f), pivot = pa && pb && pa[0] === pb[0] && pa[1] === pb[1];
+    const fill = ps.map((p, k) => p || ps.slice(k).find(Boolean) || ps.slice(0, k).reverse().find(Boolean));
+    const nm = `lvf${id}_${f}`, pc = x => (x / T * 100).toFixed(3) + '%';
+    css += `@keyframes ${nm}{` + fill.map((p, k) => `${pc(k * (h + m))},${pc(k * (h + m) + h)}{transform:translate(${p[0]}px,${p[1]}px);opacity:${ps[k] ? 1 : 0}}`).join('') + `100%{transform:translate(${fill[n - 1][0]}px,${fill[n - 1][1]}px);opacity:${ps[n - 1] ? 1 : 0}}}`;
+    svg += `<g class="fd${pivot ? ' pv' : ''}" style="animation:${nm} ${T}s ease-in-out ${(t0 + st).toFixed(2)}s both"><circle r="15"/><text y="5.5">${f}</text></g>`;
+  });
+  svg += '</svg>';
+  const names = [A, B].map((c, w) => `<span style="animation:lvm${id}_${w} ${T}s linear ${(t0 + st).toFixed(2)}s both">${esc(c.name)}</span>`).join('');
+  seq.forEach((c, k) => cues.push([t0 + st + k * (h + m), el => { playChord(c, 0, 'D'); if (sc.cnt && k) { const e = el.querySelector(`[data-c="${sc.cnt}"]`); if (e) e.textContent = k; } }]));
+  const leg = sc.legend === false ? '' : `<div class="lv-mo-l"><span><i class="pv"></i>reste posé</span><span><i></i>bouge</span></div>`;
+  return {d: st + T + (sc.tail || 1.4), html: `<style>${css}</style><div class="lv-mo">${svg}<div class="lv-mo-r"><div class="lv-mo-n">${names}</div>${leg}</div></div>`};
+}
+const LV_CNT = {'4/4': ['1', '+', '2', '+', '3', '+', '4', '+'], '3/4': ['1', '+', '2', '+', '3', '+'], '6/8': ['1', '2', '3', '4', '5', '6']};
+function lvGlyph(c, ghost) {
+  if (!c) return ghost ? `<path class="gh" d="${ghost === 'U' ? 'M10 34V6m-6 7l6-7l6 7' : 'M10 6v28m-6-7l6 7l6-7'}"/>` : '<circle class="o" cx="10" cy="20" r="2"/>';
+  if (c.d === 'X') return '<path class="x" d="M4 14l12 12m0-12l-12 12"/>';
+  const w = c.a === 2 ? 4.2 : c.a === 0 ? 2 : 3;
+  return `<path class="${c.d === 'U' ? 'u' : 'd'}${c.a === 0 ? ' soft' : ''}" stroke-width="${w}" d="${c.d === 'U' ? 'M10 34V6m-6 7l6-7l6 7' : 'M10 6v28m-6-7l6 7l6-7'}"/>`;
+}
+function lvBeats(t0, sc, id, cues) {
+  let t = t0 + .9, html = '<div class="lv-bts">';
+  sc.rows.forEach((r, ri) => {
+    const mes = r.mes || '4/4', cd = mes === '6/8' ? 60 / r.bpm / 3 : 60 / r.bpm / 2, chs = r.chords.map(lvCh);
+    const cells = [...r.pat].map((ch, k) => ch === '-' ? null : ch === 'X' || ch === 'x' ? {d: 'X', a: 1} : {d: ch.toUpperCase() === 'U' ? 'U' : 'D', a: (r.acc || []).includes(k) ? 2 : ch === ch.toLowerCase() ? 0 : 1});
+    const n = cells.length, bar = n * cd, L = chs.length, rs = t, cnt = LV_CNT[mes] || LV_CNT['4/4'];
+    const win = (k) => `lvWin ${bar.toFixed(3)}s linear ${(rs + k * bar).toFixed(2)}s`;
+    html += `<div class="lv-bt" style="animation:lvRow ${(L * bar).toFixed(2)}s linear ${rs.toFixed(2)}s">
+      <div class="lv-bt-h"><b>${r.lbl}</b><span class="lv-bt-c">${chs.map((c, k) => `<i style="animation:${win(k)}">${esc(c.name)}</i>`).join('')}<i class="rest">${esc(chs[0].name)}</i></span><small>${r.bpm} BPM</small></div>
+      <div class="lv-bt-row"><div class="lv-bt-bar" style="--n:${n}">` +
+      cells.map((c, k) => {
+        const anim = c || (r.free && k === n - 1) ? chs.map((_, l) => `lvHit .32s ease-out ${(rs + l * bar + k * cd).toFixed(2)}s`).join(',') : '';
+        const free = r.free && k === n - 1, gh = !c && r.ghost ? (mes === '6/8' ? '' : k % 2 ? 'U' : 'D') : '';
+        return `<div class="lv-bc${free ? ' free' : ''}${c && c.a === 2 ? ' acc' : ''}"${anim ? ` style="animation:${anim}"` : ''}><em>${cnt[k] || ''}</em><svg viewBox="0 0 20 40">${free ? lvGlyph({d: 'U', a: 0}) : lvGlyph(c, gh)}</svg>${free ? '<small>à vide</small>' : ''}</div>`;
+      }).join('') + `<i class="lv-ph" style="animation:${chs.map((_, l) => `lvPh ${bar.toFixed(3)}s linear ${(rs + l * bar).toFixed(2)}s`).join(',')}"></i></div>` +
+      (r.hand ? `<div class="lv-hand"><i style="animation:lvSwing ${cd.toFixed(3)}s ease-in-out ${rs.toFixed(2)}s ${n * L} alternate"></i></div>` : '') + `</div></div>`;
+    const open = {name: '', frets: [0, 0, 0, 0, 0, 0], fingers: [0, 0, 0, 0, 0, 0]};
+    chs.forEach((ch, l) => cells.forEach((c, k) => {
+      const free = r.free && k === n - 1;
+      if (c || free) cues.push([rs + l * bar + k * cd, () => rhPlayCell(free ? {d: 'U', a: 0} : c, audio().currentTime + .01, free ? open : ch, 0)]);
+    }));
+    t = rs + L * bar + .7;
+  });
+  return {d: t - t0 + (sc.tail || .8), html: html + '</div>'};
+}
+function lvTiles(t0, sc, id, cues) {
+  const st = .9, step = sc.step || .6;
+  sc.items.forEach((it, i) => { if (it.m != null) cues.push([t0 + st + i * step, () => [].concat(it.m).forEach((m, k) => setTimeout(() => playNote(m), k * 170))]); });
+  return {d: st + sc.items.length * step + (sc.tail || 3), html: `<div class="lv-tl" style="--n:${sc.items.length};--np:${Math.min(3, sc.items.length)}">` + sc.items.map((it, i) =>
+    `<div class="lv-t${it.hot ? ' hot' : ''}" style="animation-delay:${(t0 + st + i * step).toFixed(2)}s"><b>${it.l}</b>${it.s ? `<i>${it.s}</i>` : ''}</div>`).join('') + '</div>'};
+}
+function lvBuild(spec) {
+  const id = ++LVX.n, cues = [[1.8, () => playNote(40)]];
+  let t = 3.4, html = `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
+      <div class="lv-k" style="animation-delay:.3s">${spec.kick}</div>
+      <div class="lv-h"><span style="animation-delay:.5s">${spec.h[0]}</span> <span style="animation-delay:.7s"><em>${spec.h[1]}</em></span></div>
+      <div class="lv-s" style="animation-delay:1.4s">${spec.sub}</div>
+      <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg></div>`;
+  spec.scenes.forEach((sc, si) => {
+    const b = (sc.morph ? lvMorph : sc.rows ? lvBeats : lvTiles)(t, sc, `${id}_${si}`, cues);
+    const caps = sc.caps || [], d = Math.max(b.d, caps.length ? caps[caps.length - 1][0] + 3 : 0), last = si === spec.scenes.length - 1;
+    html += `<div class="lv-sc lv-sc2" style="animation:lvIn .5s var(--ease-out) ${t.toFixed(2)}s forwards${last ? '' : `,lvOut .4s ease ${(t + d - .4).toFixed(2)}s forwards`}">${lvTop(sc)}${b.html}${lvCaps(t, caps)}</div>`;
+    t += d;
+  });
+  return {t: spec.t, dur: Math.ceil(t + .5), html: () => html, cues: () => cues};
+}
+
+/* ═══════ BLOCS « DÉBLOQUER » : l'entraînement à la carte, un mur = un bloc ═══════ */
+const G4 = {name: 'G', frets: [3, 2, 0, 0, 3, 3], fingers: [2, 1, 0, 0, 3, 4]};   // Sol à 4 doigts : l'annulaire sert d'ancre vers Ré
+const FC = 'D-DU-UDU';
+const BLOCS = [
+  {id: 'b1', n: 'Changer sans casser le rythme', mur: 'Je m’arrête à chaque changement d’accord', cards: [
+    {k: 'b1-1', t: 'Le doigt qui ne bouge pas', d: 'Entre deux accords, certains doigts restent au même endroit. Ne les soulève jamais : seuls les autres bougent.', ex: {type: 'exo', ref: 'anchor', param: 'C-Am'}, exl: 'Doigts pivots', song: 'Je l’aime à mourir',
+     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['Le doigt qui', 'ne bouge pas'], sub: 'Entre deux accords, certains doigts <b>restent posés</b>. C’est la moitié du travail en moins.', scenes: [
+       {morph: 1, a: 'C', b: 'Am', top: ['Do → La mineur', 'regarde les doigts orange'], caps: [[.4, 'L’<b>index</b> et le <b>majeur</b> ne bougent pas.'], [4, 'Seul l’<b>annulaire</b> voyage, d’une corde à l’autre.'], [7.4, 'Garde-les appuyés pendant tout le changement.']]},
+       {morph: 1, a: G4, b: 'D', top: ['Sol → Ré', 'avec le Sol à quatre doigts'], caps: [[.4, 'Joue le Sol avec l’<b>annulaire</b> et l’<b>auriculaire</b> en bas.'], [4, 'L’annulaire reste sur la corde de Si : c’est ton <b>ancre</b>.'], [7.4, 'Les autres doigts se replacent autour de lui.']]},
+       {rows: [{lbl: 'En rythme', pat: FC, bpm: 80, chords: ['C', 'Am', 'C', 'Am'], hand: 1}], top: ['Maintenant en jouant', 'feu de camp, Do et La mineur'], caps: [[.4, 'Les doigts orange ne quittent <b>jamais</b> les cordes.'], [4.5, 'Le changement devient presque invisible.']]}]}},
+    {k: 'b1-2', t: 'La dernière croche à vide', d: 'Le dernier coup de la mesure se joue cordes à vide : ta main gauche part en avance et arrive à l’heure sur le 1.', ex: {type: 'exo', ref: 'silent'}, exl: 'Croche à vide', song: 'Wonderwall',
+     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['La dernière croche', 'à vide'], sub: 'Le secret des guitaristes : la main gauche part <b>avant</b> la fin de la mesure.', scenes: [
+       {rows: [{lbl: 'Ce que tu fais', pat: FC, bpm: 80, chords: ['G', 'C'], hand: 1}, {lbl: 'Avec l’astuce', pat: FC, bpm: 80, chords: ['G', 'C', 'G', 'C'], free: 1, hand: 1}], top: ['Le dernier « et » de la mesure', 'regarde la dernière case'],
+        caps: [[.4, 'Si tu attends le 1 pour bouger, tu arrives <b>en retard</b>.'], [4.6, 'Le dernier coup se joue <b>cordes à vide</b> : ta main gauche est déjà partie.'], [9, 'Personne ne l’entend, et tu tombes pile sur le 1.']]},
+       {tiles: 1, items: [{l: '4', s: 'je compte'}, {l: '+', s: 'je lâche l’accord', hot: 1}, {l: '1', s: 'nouvel accord', hot: 1}], step: .9, top: ['À retenir', 'sur le dernier « et »'], caps: [[.4, 'Lâche l’accord sur le dernier « et », <b>pas avant</b>.'], [3.6, 'Commence lentement, puis monte le tempo.']]}]}},
+    {k: 'b1-3', t: 'Une minute, deux accords', d: 'Le défi qui fait progresser le plus vite : une minute, deux accords, et tu comptes tes changements. Bats ton score demain.', ex: {type: 'exo', ref: 'omc', param: 'G-C'}, exl: 'Défi d’une minute', song: 'Dès que le vent soufflera',
+     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['Une minute,', 'deux accords'], sub: 'Le défi qui a débloqué des milliers de guitaristes : <b>compter</b> ses changements.', scenes: [
+       {morph: 1, a: 'G', b: 'C', n: 12, hold: .45, move: .32, cnt: 'omc', cntL: 'CHANGEMENTS', legend: false, top: ['Sol ↔ Do pendant une minute', 'sans gratter, juste les doigts'], caps: [[.4, 'Lance un chrono d’<b>une minute</b>.'], [3.2, 'Change le plus de fois possible, même si c’est sale.'], [6.4, 'Note ton score.']]},
+       {tiles: 1, items: [{l: '12', s: 'jour 1'}, {l: '19', s: 'jour 3'}, {l: '26', s: 'jour 5'}, {l: '35', s: 'jour 7', hot: 1}], step: .7, top: ['Ce qui se passe en une semaine', 'deux minutes par jour suffisent'], caps: [[.4, 'Chaque jour, tu bats un peu ton score.'], [3.4, 'Au-delà de <b>30</b>, le changement ne te bloque plus en chanson.']]}]}},
+    {k: 'b1-4', t: 'Changer en rythme', d: 'Les accords changent, la main droite continue. On commence lentement, on accélère seulement quand ça ne casse plus.', ex: {type: 'prog', ref: 'j3', param: 'feucamp'}, exl: 'Jouer G C G D', song: 'Morgane de toi',
+     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['Changer', 'en rythme'], sub: 'Les accords changent. <b>La main droite, elle, ne s’arrête jamais.</b>', scenes: [
+       {rows: [{lbl: 'Lent', pat: FC, bpm: 70, chords: ['G', 'C', 'D', 'Em'], hand: 1}, {lbl: 'Plus vite', pat: FC, bpm: 92, chords: ['G', 'C', 'D', 'Em'], hand: 1}], top: ['Sol, Do, Ré, Mi mineur', 'un accord par mesure'],
+        caps: [[.4, 'La main droite <b>balance</b> en continu, comme un métronome.'], [5, 'Change d’accord sans jamais l’arrêter.'], [10, 'Tu n’accélères que quand ça ne casse plus.']]}]}}]},
+  {id: 'b2', n: 'Sortir du feu de camp', mur: 'Tous mes morceaux ont le même rythme', cards: [
+    {k: 'b2-1', t: 'Le balancier', d: 'La main droite monte et descend tout le temps, même quand elle ne touche pas les cordes. C’est elle qui garde le tempo.', ex: {type: 'rc', ref: 'rc2'}, exl: 'Le balancier', song: 'Les Champs-Élysées',
+     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Le', 'balancier'], sub: 'Ta main droite est un <b>métronome</b> : elle bouge tout le temps, même dans le vide.', scenes: [
+       {rows: [{lbl: 'Tout sonne', pat: 'DUDUDUDU', bpm: 80, chords: ['G', 'C'], hand: 1}, {lbl: 'Feu de camp', pat: FC, bpm: 80, chords: ['G', 'C'], ghost: 1, hand: 1}], top: ['Bas sur le temps, haut sur le « et »', 'regarde la main à droite'],
+        caps: [[.4, 'Bas sur les chiffres, haut sur les « + ».'], [4.6, 'Dans le feu de camp, la main passe <b>au-dessus</b> des cordes sur les cases grises.'], [9, 'Elle ne s’arrête jamais : c’est tout le secret.']]}]}},
+    {k: 'b2-2', t: 'Le « tchak »', d: 'Sur les temps 2 et 4, le plat de la main droite étouffe les cordes en frappant. La guitare devient batterie.', ex: {type: 'rc', ref: 'rc6'}, exl: 'Le tchak', song: 'Wonderwall',
+     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Le', '« tchak »'], sub: 'Sur les temps 2 et 4, on <b>étouffe</b> les cordes : la guitare devient batterie.', scenes: [
+       {tiles: 1, items: [{l: 'Frappe', s: 'vers le bas'}, {l: 'Pose', s: 'le plat de la main', hot: 1}, {l: 'Tchak', s: 'son sec, sans note', hot: 1}], step: .8, top: ['Le geste', 'main droite'], caps: [[.4, 'Pendant que tu grattes, le <b>plat de la main</b> se pose sur les cordes.'], [3.6, 'Pas de note : juste un bruit sec.']]},
+       {rows: [{lbl: 'Feu de camp', pat: FC, bpm: 84, chords: ['G', 'C'], hand: 1}, {lbl: 'Avec le tchak', pat: 'DUXUDUXU', bpm: 84, chords: ['G', 'C', 'D', 'Em'], hand: 1}], top: ['Mêmes accords, autre énergie', 'écoute la différence'],
+        caps: [[.4, 'D’abord le feu de camp…'], [4.4, '… puis le <b>tchak</b> sur 2 et 4 : tout de suite, ça groove.']]}]}},
+    {k: 'b2-3', t: 'Fort, doux', d: 'Un rythme vivant n’a pas tous ses coups au même volume. Appuie les temps 2 et 4, effleure le reste.', ex: {type: 'rc', ref: 'rc5'}, exl: 'Fort et doux', song: 'How to Save a Life',
+     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Fort,', 'doux'], sub: 'Un rythme vivant n’a pas tous ses coups <b>au même volume</b>.', scenes: [
+       {rows: [{lbl: 'Tout pareil', pat: 'DUDUDUDU', bpm: 86, chords: ['G', 'D'], hand: 1}, {lbl: 'Accents sur 2 et 4', pat: 'dudududu', acc: [2, 6], bpm: 86, chords: ['G', 'D', 'Em', 'C'], hand: 1}], top: ['Les grosses flèches sonnent plus fort', 'même rythme, autre relief'],
+        caps: [[.4, 'Tous les coups au même volume : c’est plat.'], [4.4, 'Appuie le <b>2</b> et le <b>4</b>, effleure le reste.'], [9, 'C’est ce qui donne envie de taper du pied.']]}]}},
+    {k: 'b2-4', t: 'La pop syncopée', d: 'Les temps 2 et 3 restent muets, la main continue de balancer. C’est ce trou qui fait danser.', ex: {type: 'rc', ref: 'rc8'}, exl: 'Pop syncopée', song: 'How to Save a Life',
+     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['La pop', 'syncopée'], sub: 'Deux temps <b>muets</b> au milieu de la mesure : c’est ce trou qui fait danser.', scenes: [
+       {rows: [{lbl: 'Feu de camp', pat: FC, bpm: 90, chords: ['G', 'D'], ghost: 1, hand: 1}, {lbl: 'Pop syncopée', pat: 'D--U-UDU', bpm: 90, chords: ['G', 'D', 'Em', 'C'], ghost: 1, hand: 1}], top: ['Bas… (rien)… haut, haut-bas-haut', 'les cases grises : la main passe dans le vide'],
+        caps: [[.4, 'Le feu de camp que tu connais.'], [4.4, 'On enlève le <b>2</b> : bas, puis on attend…'], [8.6, '… et on reprend sur le « + » du 2. La main ne s’arrête pas.']]}]}},
+    {k: 'b2-5', t: 'Le reggae', d: 'On ne joue que les coups vers le haut, entre les temps. Le coup vers le bas se fait dans le vide.', ex: {type: 'rc', ref: 'rc4'}, exl: 'Reggae', song: 'Lady Melody',
+     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Le', 'reggae'], sub: 'On ne joue <b>que les coups vers le haut</b>, entre les temps.', scenes: [
+       {rows: [{lbl: 'Reggae', pat: '-U-U-U-U', bpm: 84, chords: ['D', 'A', 'Em', 'G'], ghost: 1, hand: 1}], top: ['Le bas dans le vide, le haut sur les cordes', 'Ré, La, Mi mineur, Sol'],
+        caps: [[.4, 'Sur les chiffres : la main descend <b>sans toucher</b>.'], [4.4, 'Sur les « + » : un petit coup <b>vers le haut</b>, court et léger.'], [8.4, 'Étouffe juste après chaque coup pour un son bien sec.']]}]}},
+    {k: 'b2-6', t: 'Trois temps : valse et 6/8', d: 'Tous les morceaux ne sont pas en quatre. En valse, on compte 1-2-3 ; en 6/8, deux groupes de trois.', ex: {type: 'rc', ref: 'rc9'}, exl: 'La valse',
+     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Valse', 'et 6/8'], sub: 'Tous les morceaux ne sont pas en 4 : on compte <b>1-2-3</b>.', scenes: [
+       {rows: [{lbl: 'Valse', mes: '3/4', pat: 'D-d-d-', acc: [0], bpm: 104, chords: ['G', 'C', 'D', 'G'], hand: 1}, {lbl: 'Six-huit', mes: '6/8', pat: 'D-UD-U', bpm: 60, chords: ['Em', 'C', 'G', 'D'], hand: 1}], top: ['Compter en trois', 'un temps fort, deux temps doux'],
+        caps: [[.4, 'La valse : <b>UN</b>-deux-trois, un bas fort puis deux doux.'], [5.6, 'Le 6/8 : deux groupes de trois, comme une <b>berceuse</b>.'], [10.4, 'Parfait pour les ballades et les chansons lentes.']]}]}}]},
+  {id: 'b3', n: 'De nouveaux accords sans barré', mur: 'Mes accords sonnent toujours pareil', cards: []},
+  {id: 'b4', n: 'Le barré', mur: 'Le F me bloque', cards: []},
+  {id: 'b5', n: 'Les arpèges', mur: 'Je ne sais que gratter', cards: []},
+  {id: 'b6', n: 'Embellir', mur: 'Ça sonne débutant', cards: []},
+  {id: 'b7', n: 'Jouer de vraies chansons', mur: 'Je ne sais pas apprendre un morceau seul', cards: []},
+  {id: 'b8', n: 'Comprendre en 2 minutes', mur: 'Pourquoi ces accords vont ensemble ?', cards: [], to: 'cours'},
+];
+BLOCS.forEach(b => b.cards.forEach(c => { LV[c.k] = lvBuild(Object.assign({t: c.t}, c.v)); }));
+let blocCur = null;
+const blocDone = () => LS.get('gms_bloc_done', {});
+function blocToggleDone(k) { const d = blocDone(); d[k] ? delete d[k] : d[k] = Date.now(); LS.set('gms_bloc_done', d); renderBlocs(); }
+function blocOpen(id) { const b = BLOCS.find(x => x.id === id); if (b && b.to) { coursList(); return; } lvStop(); blocCur = id; renderBlocs(); window.scrollTo(0, 0); }
+function blocBack() { lvStop(); blocCur = null; renderBlocs(); window.scrollTo(0, 0); }
+function blocSong(t) {
+  const lc = t.toLowerCase(), s = sheets.find(z => z.title.trim().toLowerCase() === lc);
+  if (s) { viewSheet(s.id); return; }
+  const k = CATALOG.findIndex(z => z.t.toLowerCase() === lc);
+  if (k >= 0) catOpen(k); else discGo(t, '');
+}
+function blocEx(id, i) { const c = BLOCS.find(x => x.id === id).cards[i]; lvStop(); pcGo(c.ex); }
+function renderBlocs() {
+  const host = $('blocs-body'); if (!host) return;
+  const dn = blocDone();
+  if (!blocCur) {
+    host.innerHTML = `<div class="bk-hero"><h2>Qu’est-ce qui te bloque ?</h2><p>Choisis ton mur. Chaque bloc se fait à la carte, dans l’ordre que tu veux.</p></div><div class="bk-list">` +
+      BLOCS.map((b, i) => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length;
+        return `<button type="button" class="bk-it${n || b.to ? '' : ' soon'}" onclick="${n || b.to ? `blocOpen('${b.id}')` : ''}"><span class="bk-n">${i + 1}</span><span class="bk-tx"><b>${b.n}</b><i>« ${b.mur} »</i></span><span class="bk-st">${b.to ? 'Ouvrir' : n ? `${f}/${n}` : 'Bientôt'}</span></button>`; }).join('') + '</div>';
+    return;
+  }
+  const b = BLOCS.find(x => x.id === blocCur), bi = BLOCS.indexOf(b);
+  host.innerHTML = `<button type="button" class="bk-back" onclick="blocBack()"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Tous les blocs</button>
+    <div class="bk-hero"><small>BLOC ${bi + 1}</small><h2>${b.n}</h2><p>« ${b.mur} »</p></div>` +
+    b.cards.map((c, i) => `<div class="bk-card${dn[c.k] ? ' done' : ''}"><div class="bk-ch"><span class="bk-n">${i + 1}</span><div><b>${c.t}</b><p>${c.d}</p></div></div>
+      ${lvCard(c.k, 'b')}
+      <div class="bk-acts"><button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">S’exercer · ${c.exl}</button>
+        ${c.song ? `<button type="button" class="btn btn-ghost btn-sm" onclick="lvStop();blocSong('${c.song.replace(/'/g, "\\'")}')">Essaie sur « ${c.song} »</button>` : ''}
+        <button type="button" class="bk-done" onclick="blocToggleDone('${c.k}')" aria-pressed="${!!dn[c.k]}">${dn[c.k] ? 'Fait ✓' : 'Marquer fait'}</button></div></div>`).join('');
+}
+
 let lv = null;   // {el, k, t0, done (s écoulées avant pause), timers, paused}
 const LV_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5.2v13.6a.6.6 0 00.92.5l10.6-6.8a.6.6 0 000-1L8.92 4.7A.6.6 0 008 5.2z" fill="currentColor"/></svg>';
 function lvCard(k, ctx) {
@@ -7923,6 +8173,7 @@ function go(v) {
   window.scrollTo(0,0);
   if (v === 'home') renderHome();
   if (v === 'disc') renderDisc();
+  if (v === 'blocs') renderBlocs();
   if (v === 'lib') renderLib();
   if (v === 'cours') renderCours();
   if (v === 'exo' && !exoCur) exoRet = null;
@@ -7939,7 +8190,7 @@ function go(v) {
 }
 
 /* ═══════ 5 ESPACES : Fiches · Trouver · Créer · S'entraîner · Plus ═══════ */
-const SPACE_OF = {disc:'trouver', home:'fiches', sheet:'fiches', atelier:'plus', tuto:'plus', tools:'plus', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
+const SPACE_OF = {disc:'trouver', home:'fiches', sheet:'fiches', atelier:'plus', tuto:'plus', tools:'plus', blocs:'train', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
 const SPACE_TITLE = {fiches:'Fiches', trouver:'Découvrir', creer:'Créer', train:'S’entraîner', plus:'Plus'};
 const VIEW_TITLE = {atelier:'Tutos', tuto:'Recherche de tutos', tools:'Sites utiles', admin:'Admin', lib:'Accords', metro:'Métronome', tuner:'Accordeur', import:'Importer', ed:'Fiche'};
 function navMark(v) {
@@ -7959,10 +8210,10 @@ function tbPill(sp) {
   pill.style.opacity = sp === 'creer' ? 0 : 1;
 }
 addEventListener('resize', () => { tbPillOn = false; const on = document.querySelector('#tabbar button.on'); if (on) tbPill(on.id.slice(3)); });
-function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'exo'); }
+function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'blocs'); }
 let curView = 'home';
 const SUBNAV = {
-  train: [['exo','Exercices'],['cours','Cours']]
+  train: [['blocs','Débloquer'],['exo','Jouer'],['cours','Comprendre']]
 };
 function renderSubnav(v) {
   curView = v;
