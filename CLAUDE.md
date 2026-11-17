@@ -2,7 +2,7 @@
 
 Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 
-**Positionnement (Lucas, 17/11/2026)** : « L'app pour kiffer son apprentissage de la guitare en autodidacte : retenir facilement les morceaux appris sur le tas, et passer les murs qui séparent le débutant de celui qui sait jouer. » Deux piliers : **Retenir** (les fiches) et **Débloquer** (les blocs). Tout ce qui ne sert pas l'un des deux est à cacher ou couper (liste proposée le 17/11, en attente de son accord).
+**Positionnement (Lucas, 17/11/2026)** : « L'app pour kiffer son apprentissage de la guitare en autodidacte : retenir facilement les morceaux appris sur le tas, et passer les murs qui séparent le débutant de celui qui sait jouer. » Deux piliers : **Retenir** (les fiches) et **Débloquer** (les blocs). Navigation validée le 17/11 : Découvrir · Fiches · Créer · S'entraîner · Plus. « Plus » est voué à disparaître (c'est le brouillon de S'entraîner, à repenser) ; l'**accordeur** est une icône à côté du volume (comme GuitarTuna) ; le métronome sera refait dans S'entraîner. Parcours guidé retiré. Cours de théorie uniquement dans « Comprendre ». **Admin liste toutes les vidéos** (pour les pubs) : toute nouvelle vidéo doit y apparaître.
 
 ## Gel des nouveautés (décision de Lucas, 13/11/2026)
 - **Plus aucune nouvelle fonction** tant que le cœur n'est pas validé par Lucas. Le cœur : **créer une fiche, puis la jouer** (accueil, création, fiche, mode jeu).

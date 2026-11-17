@@ -2348,6 +2348,15 @@ body:has(#v-ed.on) .toast{bottom:90px}
 @container (max-aspect-ratio:1/1){.lv-ads{height:40cqh}.lv-ad b{font-size:6cqw}.lv-ac b{font-size:3cqw}.lv-nk{margin:6cqh 0 4cqh}}
 @container (max-aspect-ratio:1/1){.lv-mo-r{flex-direction:column;align-items:center;gap:1.4cqh}.lv-mo-n{min-width:0;width:100%;text-align:center}.lv-mo-n span{left:0;right:0}.lv-mo-l{flex-direction:row;gap:5cqw}}
 .lv-ac b{font-size:3.2cqmin}
+.nav-tools{display:flex;gap:4px;align-items:center}
+.tun-btn{width:40px;height:40px;border-radius:50%;background:none;color:var(--cream2);display:grid;place-items:center}
+.tun-btn svg,.hm-top .tun-btn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tun-btn circle{fill:currentColor}
+.hm-vol2{display:none}@media(max-width:899px){.hm-vol2{display:flex}}
+.hm-top .hm-vol + .hm-vol2{margin-left:0}
+@media(min-width:900px){.nav-tools{margin-top:auto;align-self:flex-start}nav .nav-right>.vol-btn{margin-top:0}}
+.ad-h{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin:22px 0 4px}
+.hm-top .tun-btn{background:var(--card2);margin-left:auto}@media(min-width:900px){.hm-top .tun-btn{display:none}}
 </style>
 </head>
 <body>
@@ -2367,7 +2376,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
       <button class="nav-link" id="nl-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>Plus</button>
       <button class="nav-link nl-create" id="nl-creer" onclick="createAsk(event)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nouvelle fiche</button>
     </div>
-    <button type="button" class="vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
+    <div class="nav-tools"><button type="button" class="tun-btn" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button></div>
   </div>
 </nav>
 
@@ -2388,7 +2397,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
   <div class="wrap">
     <div class="hm-top">
       <h1><span class="hm-w">Fiches</span><small id="greet-count"></small></h1>
-      <button type="button" class="btn-icon vol-btn hm-vol" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
+      <button type="button" class="btn-icon tun-btn hm-vol" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="btn-icon vol-btn hm-vol2" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
       <button type="button" class="btn-icon hm-print" onclick="startPrintPick()" aria-label="Imprimer des fiches" title="Imprimer des fiches"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg></button>
       <div class="hm-menu" id="hm-menu">
         <button class="btn-icon" onclick="toggleHomeMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
@@ -2716,7 +2725,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
 </div>
 <div class="view" id="v-disc">
   <div class="wrap">
-    <div class="hm-top"><h1>Découvrir</h1><button type="button" class="btn-icon vol-btn hm-vol" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button></div>
+    <div class="hm-top"><h1>Découvrir</h1><button type="button" class="btn-icon tun-btn hm-vol" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="btn-icon vol-btn hm-vol2" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button></div>
     <div class="search-bar"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.350-4.350"/></svg>
       <input type="text" id="disc-q" placeholder="Un morceau, un artiste" autocomplete="off" enterkeyhint="search" aria-label="Chercher un morceau" onkeydown="if(event.key==='Enter')discSearch()"></div>
     <div id="disc-body"></div>
@@ -5664,7 +5673,9 @@ function lvStop(keep) {
 function lvFull(id) { const el = $(id); try { document.fullscreenElement ? document.exitFullscreen() : (el.requestFullscreen || el.webkitRequestFullscreen).call(el); } catch (e) { toast('Plein écran indisponible ici', true); } }
 function renderAdmin() {
   const ks = Object.keys(LV);
-  $('admin-body').innerHTML = `<p class="ad-n">${ks.length} vidéo${ks.length > 1 ? 's' : ''} sur ${COURS.length} leçons. Les autres arrivent une par une.</p>` +
+  const bl = BLOCS.filter(b => b.cards.length).map((b, bi) => `<h3 class="ad-h">Débloquer · bloc ${bi + 1} : ${esc(b.n)}</h3>` + b.cards.map(c =>
+    `<div class="ad-it"><div class="ad-t"><b>${esc(c.t)}</b><small>${LV[c.k].dur} s</small></div>${lvCard(c.k, 'a')}</div>`).join('')).join('');
+  $('admin-body').innerHTML = `<p class="ad-n">${ks.length} vidéos : les blocs « Débloquer », puis les cours « Comprendre ». Plein écran pour les filmer.</p>` + bl + `<h3 class="ad-h">Comprendre · les cours</h3>` +
     COURS.map((l, i) => LV[l.k]
       ? `<div class="ad-it"><div class="ad-t"><b>Leçon ${i + 1} · ${esc(l.t)}</b><small>${LV[l.k].dur} s</small></div>${lvCard(l.k, 'a')}</div>`
       : `<div class="ad-it off"><div class="ad-t"><b>Leçon ${i + 1} · ${esc(l.t)}</b><small>à venir</small></div></div>`).join('');
