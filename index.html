@@ -2326,6 +2326,28 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .bk-done{margin-left:auto;background:none;color:var(--cream3);font-size:13px;font-weight:600;padding:8px 4px}
 .bk-card.done .bk-done{color:var(--sage)}
 @media(max-width:480px){.bk-acts .btn{flex:1 1 100%;min-height:44px}.bk-done{margin:0 auto}}
+/* ── vidéos riches : arpèges et manche ── */
+.lv-mo-g .fd.bar rect{fill:#f4f3f1}.lv-mo-g .fd.bar text{font:800 15px var(--sans);text-anchor:middle;fill:#151517}
+.lv-mo-g .st.hs{stroke-linecap:round}
+@keyframes lvStr{0%{stroke:#ff8a2a;stroke-width:5}100%{stroke:#5c5a57;stroke-width:1.6}}
+.lv-arp{display:flex;flex-direction:column;align-items:center;gap:3cqh;margin:1cqh 0 2cqh;flex:1;min-height:0}
+.lv-ads{position:relative;height:min(46cqh,52cqw);aspect-ratio:226/310}
+.lv-ad{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center}
+.lv-ad.hid{opacity:0}
+.lv-ad .lv-mo-g{height:88%}.lv-ad b{font:800 5cqmin var(--sans);color:var(--lc)}
+.lv-arp .lv-bt-bar{width:100%;max-width:90cqw}
+.lv-ac{justify-content:center;min-height:7cqh}.lv-ac b{font:700 2.6cqmin var(--sans);color:var(--lc)}
+.lv-nk{width:100%;max-height:52cqh;margin:3cqh 0 2cqh;overflow:visible}
+.lv-nk .wood{fill:#1d1d20}.lv-nk .fr{stroke:#3a3a40;stroke-width:2}.lv-nk .nut{stroke:#f4f3f1;stroke-width:5}
+.lv-nk .st{stroke:#94928d}.lv-nk .inl{fill:#2e2e33}.lv-nk .sh{fill:rgba(255,255,255,.12)}
+.lv-nk .nd circle{fill:#f4f3f1}.lv-nk .nd.hp circle,.lv-nk .nd.sl circle{fill:#ff8a2a}
+.lv-nk .lb{font:800 15px var(--sans);text-anchor:middle;fill:#ff9d4d}
+.lv-nk .cn{font:800 26px var(--sans);text-anchor:middle;fill:#f4f3f1}
+@keyframes lvPop{from{opacity:0;transform-box:fill-box;transform-origin:center;scale:.4}to{opacity:1;scale:1}}
+@keyframes lvFlash{0%{opacity:0}15%{opacity:1}75%{opacity:1}100%{opacity:0}}
+@container (max-aspect-ratio:1/1){.lv-ads{height:40cqh}.lv-ad b{font-size:6cqw}.lv-ac b{font-size:3cqw}.lv-nk{margin:6cqh 0 4cqh}}
+@container (max-aspect-ratio:1/1){.lv-mo-r{flex-direction:column;align-items:center;gap:1.4cqh}.lv-mo-n{min-width:0;width:100%;text-align:center}.lv-mo-n span{left:0;right:0}.lv-mo-l{flex-direction:row;gap:5cqw}}
+.lv-ac b{font-size:3.2cqmin}
 </style>
 </head>
 <body>
@@ -5300,7 +5322,13 @@ function lvMorph(t0, sc, id, cues) {
     const nm = `lvm${id}_${w}`; css += lvVisKF(nm, seq.map(s => s === c), h, m);
     svg += `<g class="mk" style="animation:${nm} ${T}s linear ${(t0 + st).toFixed(2)}s both">` + c.frets.map((f, i) => f === 0 ? `<circle cx="${X(i)}" cy="30" r="7"/>` : f < 0 ? `<path d="M${X(i) - 6} 24l12 12m0 -12l-12 12"/>` : '').join('') + '</g>';
   });
+  const isBar = (c, f) => c.fingers.filter((g, k) => g === f && c.frets[k] > 0).length > 1;
+  [A, B].forEach((c, w) => [1, 2, 3, 4].filter(f => isBar(c, f)).forEach(f => {   // barré : une barre par accord, en fondu
+    const ks = c.fingers.map((g, k) => g === f && c.frets[k] > 0 ? k : -1).filter(k => k >= 0), fr = c.frets[ks[0]], x1 = X(Math.min(...ks)), x2 = X(Math.max(...ks));
+    svg += `<g class="fd bar" style="animation:lvm${id}_${w} ${T}s linear ${(t0 + st).toFixed(2)}s both"><rect x="${x1 - 15}" y="${Y(fr) - 15}" width="${x2 - x1 + 30}" height="30" rx="15"/><text x="${(x1 + x2) / 2}" y="${Y(fr) + 5.5}">${f}</text></g>`;
+  }));
   [1, 2, 3, 4].forEach(f => {
+    if (isBar(A, f) || isBar(B, f)) return;
     const ps = seq.map(c => pos(c, f)); if (!ps.some(Boolean)) return;
     const pa = pos(A, f), pb = pos(B, f), pivot = pa && pb && pa[0] === pb[0] && pa[1] === pb[1];
     const fill = ps.map((p, k) => p || ps.slice(k).find(Boolean) || ps.slice(0, k).reverse().find(Boolean));
@@ -5348,9 +5376,66 @@ function lvBeats(t0, sc, id, cues) {
 }
 function lvTiles(t0, sc, id, cues) {
   const st = .9, step = sc.step || .6;
-  sc.items.forEach((it, i) => { if (it.m != null) cues.push([t0 + st + i * step, () => [].concat(it.m).forEach((m, k) => setTimeout(() => playNote(m), k * 170))]); });
+  sc.items.forEach((it, i) => { if (it.c) cues.push([t0 + st + i * step, () => playChord(lvCh(it.c), 0, 'D')]); if (it.m != null) cues.push([t0 + st + i * step, () => [].concat(it.m).forEach((m, k) => setTimeout(() => playNote(m), k * 170))]); });
   return {d: st + sc.items.length * step + (sc.tail || 3), html: `<div class="lv-tl" style="--n:${sc.items.length};--np:${Math.min(3, sc.items.length)}">` + sc.items.map((it, i) =>
     `<div class="lv-t${it.hot ? ' hot' : ''}" style="animation-delay:${(t0 + st + i * step).toFixed(2)}s"><b>${it.l}</b>${it.s ? `<i>${it.s}</i>` : ''}</div>`).join('') + '</div>'};
+}
+
+const LV_OPEN = [40, 45, 50, 55, 59, 64];   // cordes à vide, de la 6e (grave) à la 1re
+function lvDiag(c, hits) {   // schéma fixe ; hits[corde] = liste d'instants où la corde s'allume
+  const X = i => 30 + i * 33, Y = f => 52 + (f - .5) * 44;
+  let g = `<svg class="lv-mo-g" viewBox="0 0 226 280" aria-hidden="true">`;
+  for (let j = 0; j <= 5; j++) g += `<path class="${j ? 'fr' : 'nut'}" d="M${X(0)} ${52 + j * 44}H${X(5)}"/>`;
+  for (let i = 0; i < 6; i++) g += `<path class="st${hits && hits[i] ? ' hs' : ''}" d="M${X(i)} 52V${52 + 5 * 44}"${hits && hits[i] ? ` style="animation:${hits[i].map(t => `lvStr .45s ease-out ${t.toFixed(2)}s`).join(',')}"` : ''}/>`;
+  g += '<g class="mk">' + c.frets.map((f, i) => f === 0 ? `<circle cx="${X(i)}" cy="30" r="7"/>` : f < 0 ? `<path d="M${X(i) - 6} 24l12 12m0 -12l-12 12"/>` : '').join('') + '</g>';
+  const done = {};
+  c.frets.forEach((f, i) => { if (f <= 0) return; const fg = c.fingers[i]; const ks = c.fingers.map((x, k) => x === fg && fg && c.frets[k] === f ? k : -1).filter(k => k >= 0);
+    if (ks.length > 1) { if (done[fg]) return; done[fg] = 1; const x1 = X(ks[0]), x2 = X(ks[ks.length - 1]); g += `<g class="fd bar"><rect x="${x1 - 15}" y="${Y(f) - 15}" width="${x2 - x1 + 30}" height="30" rx="15"/><text x="${(x1 + x2) / 2}" y="${Y(f) + 5.5}">${fg}</text></g>`; }
+    else g += `<g class="fd" transform="translate(${X(i)} ${Y(f)})"><circle r="15"/><text y="5.5">${fg || ''}</text></g>`; });
+  return g + '</svg>';
+}
+function lvArp(t0, sc, id, cues) {
+  const st = .9, cd = 60 / sc.bpm / 2, rep = sc.rep || 2, chs = sc.chords.map(lvCh), seq = sc.seq, n = seq.length, per = n * rep * cd;
+  const strOf = (c, tok) => { const b = c.frets.findIndex(f => f >= 0); return tok === 'B' ? b : tok === 'A' ? Math.min(3, b === 0 ? 2 : b + 1) : 6 - tok; };
+  let diags = '', end = t0 + st + chs.length * per;
+  chs.forEach((c, l) => {
+    const hits = {}, s0 = t0 + st + l * per;
+    for (let r = 0; r < rep; r++) seq.forEach((tok, k) => { const si = strOf(c, tok), t = s0 + (r * n + k) * cd; (hits[si] = hits[si] || []).push(t);
+      if (c.frets[si] >= 0) cues.push([t, () => playNote(LV_OPEN[si] + c.frets[si])]); });
+    const anim = l === 0 ? (chs.length > 1 ? `lvOut .01s linear ${(s0 + per).toFixed(2)}s forwards` : '') : l === chs.length - 1 ? `lvIn .01s linear ${s0.toFixed(2)}s forwards` : `lvWin ${per.toFixed(2)}s linear ${s0.toFixed(2)}s`;
+    diags += `<div class="lv-ad${l ? ' hid' : ''}"${anim ? ` style="animation:${anim}"` : ''}>${lvDiag(c, hits)}<b>${esc(c.name)}</b></div>`;
+  });
+  const lbl = sc.lbl || seq.map(t => t === 'B' ? 'B' : t === 'A' ? 'B2' : String(t));
+  const cells = seq.map((t, k) => `<div class="lv-bc lv-ac" style="animation:${Array.from({length: chs.length * rep}, (_, r) => `lvHit .3s ease-out ${(t0 + st + (r * n + k) * cd).toFixed(2)}s`).join(',')}"><b>${lbl[k]}</b></div>`).join('');
+  return {d: end - t0 + (sc.tail || 1.2), html: `<div class="lv-arp"><div class="lv-ads">${diags}</div><div class="lv-bt-bar" style="--n:${n}">${cells}</div></div>`};
+}
+function lvNeck(t0, sc, id, cues) {
+  const st = .9, NF = sc.frets || 5, Y = s => 22 + (s - 1) * 25, FX = f => f === 0 ? 22 : 44 + (f - .5) * (340 / NF);
+  let g = `<svg class="lv-nk" viewBox="0 0 400 170" aria-hidden="true"><rect class="wood" x="44" y="10" width="346" height="150" rx="4"/>`;
+  for (let f = 1; f <= NF; f++) g += `<path class="fr" d="M${44 + f * 340 / NF} 10V160"/>`;
+  [3, 5].filter(f => f < NF).forEach(f => { g += `<circle class="inl" cx="${FX(f)}" cy="85" r="5"/>`; });
+  g += `<path class="nut" d="M44 10V160"/>`;
+  for (let si = 1; si <= 6; si++) g += `<path class="st" stroke-width="${.9 + si * .35}" d="M10 ${Y(si)}H392"/>`;
+  if (sc.shape) { const c = lvCh(sc.shape); c.frets.forEach((f, i) => { if (f > 0) g += `<circle class="sh" cx="${FX(f)}" cy="${Y(6 - i)}" r="10"/>`; }); }
+  let last = null, tl = st;
+  (sc.ev || []).forEach(([dt, s, f, k, lab], j) => {
+    const t = t0 + st + dt; tl = Math.max(tl, st + dt);
+    if (k === 'c') { const c = lvCh(s); cues.push([t, () => playChord(c, 0, 'D')]);
+      g += `<text class="cn" x="200" y="-6" style="animation:lvFlash 1.2s ease-out ${t.toFixed(2)}s both">${esc(c.name)}</text>`; return; }
+    const midi = LV_OPEN[6 - s] + f;
+    if (k === 's' && last) {
+      const nm = `lvs${id}_${j}`, x0 = FX(last[1]), x1 = FX(f), y = Y(s);
+      s = s; g += `<style>@keyframes ${nm}{0%{transform:translate(${x0}px,${y}px);opacity:1}100%{transform:translate(${x1}px,${y}px);opacity:1}}</style>
+        <g class="nd sl" style="animation:${nm} .45s ease-in-out ${t.toFixed(2)}s both,lvOut .3s ease ${(t + 1.4).toFixed(2)}s forwards"><circle r="11"/></g>`;
+      cues.push([t + .42, () => playNote(midi)]);
+    } else {
+      g += `<g class="nd${k === 'h' || k === 'p' ? ' hp' : ''}" transform="translate(${FX(f)} ${Y(s)})"><circle r="11" style="animation:lvPop .3s var(--ease-pop) ${t.toFixed(2)}s both,lvOut .3s ease ${(t + 1.2).toFixed(2)}s forwards"/></g>`;
+      cues.push([t, () => playNote(midi)]);
+    }
+    if (lab) g += `<text class="lb" x="${FX(f)}" y="${Y(s) - 16}" style="animation:lvPop .3s ease ${t.toFixed(2)}s both,lvOut .3s ease ${(t + 1.2).toFixed(2)}s forwards">${lab}</text>`;
+    last = [s, f];
+  });
+  return {d: tl + (sc.tail || 2), html: g + '</svg>'};
 }
 function lvBuild(spec) {
   const id = ++LVX.n, cues = [[1.8, () => playNote(40)]];
@@ -5360,7 +5445,7 @@ function lvBuild(spec) {
       <div class="lv-s" style="animation-delay:1.4s">${spec.sub}</div>
       <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg></div>`;
   spec.scenes.forEach((sc, si) => {
-    const b = (sc.morph ? lvMorph : sc.rows ? lvBeats : lvTiles)(t, sc, `${id}_${si}`, cues);
+    const b = (sc.morph ? lvMorph : sc.rows ? lvBeats : sc.arp ? lvArp : sc.neck ? lvNeck : lvTiles)(t, sc, `${id}_${si}`, cues);
     const caps = sc.caps || [], d = Math.max(b.d, caps.length ? caps[caps.length - 1][0] + 3 : 0), last = si === spec.scenes.length - 1;
     html += `<div class="lv-sc lv-sc2" style="animation:lvIn .5s var(--ease-out) ${t.toFixed(2)}s forwards${last ? '' : `,lvOut .4s ease ${(t + d - .4).toFixed(2)}s forwards`}">${lvTop(sc)}${b.html}${lvCaps(t, caps)}</div>`;
     t += d;
@@ -5424,6 +5509,88 @@ const BLOCS = [
   {id: 'b7', n: 'Jouer de vraies chansons', mur: 'Je ne sais pas apprendre un morceau seul', cards: []},
   {id: 'b8', n: 'Comprendre en 2 minutes', mur: 'Pourquoi ces accords vont ensemble ?', cards: [], to: 'cours'},
 ];
+
+const EM7P = {name: 'Em7', frets: [0, 2, 2, 0, 3, 3], fingers: [0, 1, 2, 0, 3, 4]};       // Em7 « pro » : annulaire et auriculaire en haut, comme le Sol
+const FMINI = {name: 'F', frets: [-1, -1, 3, 2, 1, 1], fingers: [0, 0, 3, 2, 1, 1]};     // le petit Fa (index sur 2 cordes)
+const GBAR = {name: 'G', frets: [3, 5, 5, 4, 3, 3], fingers: [1, 3, 4, 2, 1, 1]};         // forme de Fa glissée en case 3
+const BK = n => 'BLOC ' + n + ' · ';
+const MORE_BLOCS = {
+  b3: [
+    {k: 'b3-1', t: 'Les accords « sus »', d: 'Enlève ou déplace un seul doigt, et le Ré devient suspendu : ni joyeux ni triste, il flotte et appelle la suite.', song: 'Wonderwall',
+     v: {kick: BK(3) + 'NOUVEAUX ACCORDS SANS BARRÉ', h: ['Les accords', '« sus »'], sub: 'Un seul doigt change, et l’accord se met à <b>flotter</b>.', scenes: [
+       {morph: 1, a: 'D', b: 'Dsus4', n: 6, top: ['Ré → Ré sus4', 'l’auriculaire s’ajoute'], caps: [[.4, 'Pose l’<b>auriculaire</b> une case au-dessus : Ré sus4.'], [4.2, 'Ça crée une tension qui veut revenir au Ré.']]},
+       {morph: 1, a: 'D', b: 'Dsus2', n: 6, top: ['Ré → Ré sus2', 'le majeur se lève'], caps: [[.4, 'Lève le <b>majeur</b> : la corde de Mi aigu sonne à vide.'], [4.2, 'Plus ouvert, plus aérien.']]},
+       {rows: [{lbl: 'Ré qui respire', pat: FC, bpm: 84, chords: ['D', 'Dsus4', 'D', 'Dsus2'], hand: 1}], top: ['En rythme', 'Ré, sus4, Ré, sus2'], caps: [[.4, 'Alterne dans la même mesure : c’est le son <b>folk</b> par excellence.'], [4.6, 'Même chose avec La : Asus2, Asus4.']]}]}},
+    {k: 'b3-2', t: 'Les couleurs : maj7 et 7', d: 'Retire ou ajoute un doigt à un accord que tu connais : Do devient Do maj7, Mi mineur devient Mi mineur 7. Plus doux, plus jazzy.', ex: {type: 'prog', ref: 'r5', param: 'douce'}, exl: 'Suite rêveuse',
+     v: {kick: BK(3) + 'NOUVEAUX ACCORDS SANS BARRÉ', h: ['Les', 'couleurs'], sub: 'Tu connais déjà les formes. Il suffit d’<b>un doigt</b> pour changer l’ambiance.', scenes: [
+       {morph: 1, a: 'C', b: 'Cmaj7', n: 6, top: ['Do → Do maj7', 'l’index se lève'], caps: [[.4, 'Lève l’<b>index</b> : la corde de Si sonne à vide.'], [4.2, 'Do maj7 : doux, rêveur, très « ballade ».']]},
+       {morph: 1, a: 'Em', b: 'Em7', n: 6, top: ['Mi mineur → Mi mineur 7', 'l’auriculaire s’ajoute'], caps: [[.4, 'Ajoute l’<b>auriculaire</b> sur la corde de Si, case 3.'], [4.2, 'Mi mineur 7 : moins triste, plus mélancolique.']]},
+       {rows: [{lbl: 'Rêveur', pat: 'D-du-udu', bpm: 76, chords: ['Cmaj7', 'Em7', 'Cmaj7', 'Em7'], hand: 1}], top: ['Juste deux accords', 'et c’est déjà une ambiance'], caps: [[.4, 'Deux accords « couleur » suffisent à faire un morceau.']]}]}},
+    {k: 'b3-3', t: 'Les accords magiques, version pro', d: 'Sol, Do add9, Ré, Mi mineur 7 : l’annulaire et l’auriculaire restent collés en haut. Ça sonne riche, et les changements deviennent faciles.', ex: {type: 'prog', ref: 'r5', param: 'douce'}, exl: 'Suite rêveuse', song: 'Wonderwall',
+     v: {kick: BK(3) + 'NOUVEAUX ACCORDS SANS BARRÉ', h: ['Les accords magiques,', 'version pro'], sub: 'Deux doigts qui ne bougent <b>jamais</b>, et tes quatre accords sonnent comme sur un disque.', scenes: [
+       {morph: 1, a: G4, b: 'Cadd9', n: 6, top: ['Sol → Do add9', 'regarde les doigts orange'], caps: [[.4, 'L’<b>annulaire</b> et l’<b>auriculaire</b> restent en case 3.'], [4.2, 'Seuls l’index et le majeur descendent d’une corde.']]},
+       {morph: 1, a: G4, b: EM7P, n: 6, top: ['Sol → Mi mineur 7', 'toujours les mêmes ancres'], caps: [[.4, 'Les deux doigts du haut ne bougent toujours pas.'], [4.2, 'C’est le secret de Wonderwall et de mille chansons acoustiques.']]},
+       {rows: [{lbl: 'Version pro', pat: FC, bpm: 86, chords: [G4, 'Cadd9', 'D', EM7P], hand: 1}], top: ['Les quatre ensemble', 'Sol, Do add9, Ré, Mi mineur 7'], caps: [[.4, 'Compare avec ta version habituelle : ça <b>sonne</b> tout de suite plus riche.']]}]}},
+    {k: 'b3-4', t: 'Contourner le Fa', d: 'Pas encore de barré ? Le Fa maj7 le remplace dans presque toutes les chansons, et l’index ne bouge pas depuis le Do.', ex: {type: 'prog', ref: 'j2', param: 'feucamp'}, exl: 'Do, Sol, La mineur, Fa', song: 'Je l’aime à mourir',
+     v: {kick: BK(3) + 'NOUVEAUX ACCORDS SANS BARRÉ', h: ['Contourner', 'le Fa'], sub: 'Le Fa barré fait peur. Le <b>Fa maj7</b> fait presque le même travail.', scenes: [
+       {morph: 1, a: 'C', b: 'Fmaj7', n: 6, top: ['Do → Fa maj7', 'l’index reste posé'], caps: [[.4, 'L’<b>index</b> ne bouge pas.'], [4.2, 'Majeur et annulaire montent d’une corde, ensemble.']]},
+       {rows: [{lbl: 'La grille des tubes', pat: FC, bpm: 84, chords: ['C', 'G', 'Am', 'Fmaj7'], hand: 1}], top: ['Do, Sol, La mineur, Fa maj7', 'personne n’entendra la différence'], caps: [[.4, 'Partout où tu vois <b>F</b>, joue <b>Fmaj7</b> en attendant le barré.']]}]}}],
+  b4: [
+    {k: 'b4-1', t: 'Le petit Fa', d: 'L’index couche deux cordes seulement. C’est la marche entre le Fa maj7 et le vrai barré.', ex: {type: 'exo', ref: 'barre'}, exl: 'Le barré en marches', song: 'Je l’aime à mourir',
+     v: {kick: BK(4) + 'LE BARRÉ', h: ['Le', 'petit Fa'], sub: 'Première marche : l’index couche <b>deux cordes</b>, pas six.', scenes: [
+       {morph: 1, a: 'Fmaj7', b: FMINI, n: 6, top: ['Fa maj7 → petit Fa', 'l’index se couche'], caps: [[.4, 'Pars du Fa maj7 que tu connais.'], [4.2, 'Couche l’<b>index</b> sur les cordes de Si et de Mi aigu.'], [8, 'Appuie avec le côté de l’index, près de la frette.']]},
+       {rows: [{lbl: 'En chanson', pat: FC, bpm: 80, chords: ['C', 'Am', FMINI, 'G'], hand: 1}], top: ['Do, La mineur, petit Fa, Sol', ''], caps: [[.4, 'Joue seulement les <b>quatre cordes aiguës</b> sur le Fa.']]}]}},
+    {k: 'b4-2', t: 'Le grand Fa', d: 'Le pouce derrière, l’index roulé sur le côté, le poids du bras qui tire : le barré tient avec moins de force que tu crois.', ex: {type: 'exo', ref: 'barre'}, exl: 'Le barré en marches',
+     v: {kick: BK(4) + 'LE BARRÉ', h: ['Le', 'grand Fa'], sub: 'Le barré, c’est de la <b>technique</b>, pas de la force.', scenes: [
+       {tiles: 1, items: [{l: 'Pouce', s: 'derrière le manche, au milieu'}, {l: 'Index', s: 'roulé sur son côté', hot: 1}, {l: 'Frette', s: 'tout près, pas au milieu de la case'}, {l: 'Bras', s: 'son poids tire, la main serre peu', hot: 1}], step: .8, top: ['Les quatre réglages', ''], caps: [[.4, 'Le côté de l’index est plus dur : les cordes sonnent mieux.'], [4.2, 'Laisse le <b>poids du bras</b> tirer vers toi au lieu de serrer.']]},
+       {morph: 1, a: FMINI, b: 'F', n: 6, top: ['Petit Fa → grand Fa', 'l’index s’allonge, deux doigts arrivent'], caps: [[.4, 'L’index couvre maintenant les <b>six cordes</b>.'], [4.2, 'L’annulaire et l’auriculaire prennent les cordes graves.'], [8, 'Vérifie corde par corde, puis gratte.']]}]}},
+    {k: 'b4-3', t: 'Une forme, douze accords', d: 'Une fois le Fa en main, il suffit de le glisser : case 3 c’est Sol, case 5 La, case 8 Do. Le même geste te donne tous les accords majeurs.', ex: {type: 'exo', ref: 'barre'}, exl: 'Le barré en marches',
+     v: {kick: BK(4) + 'LE BARRÉ', h: ['Une forme,', 'douze accords'], sub: 'La forme du Fa <b>glisse</b> sur le manche : chaque case donne un nouvel accord.', scenes: [
+       {morph: 1, a: 'F', b: GBAR, n: 6, top: ['Fa en case 1 → Sol en case 3', 'toute la main glisse'], caps: [[.4, 'Même forme, deux cases plus haut : <b>Sol</b>.'], [4.2, 'Les doigts gardent leur place les uns par rapport aux autres.']]},
+       {tiles: 1, items: [{l: '1', s: 'Fa', m: [41, 45, 48]}, {l: '3', s: 'Sol', m: [43, 47, 50]}, {l: '5', s: 'La', m: [45, 49, 52], hot: 1}, {l: '7', s: 'Si', m: [47, 51, 54]}, {l: '8', s: 'Do', m: [48, 52, 55], hot: 1}], step: .8, top: ['La case de l’index donne le nom', 'sur la grosse corde'], caps: [[.4, 'Repère la note sous l’index, sur la corde de Mi grave.'], [4.2, 'Avec une seule forme, tu joues <b>tous</b> les accords majeurs.']]}]}},
+    {k: 'b4-4', t: 'Le Si mineur', d: 'Le barré le plus fréquent après le Fa : la forme du La mineur, décalée en case 2 avec l’index en barre.', ex: {type: 'exo', ref: 'omc', param: 'G-Bm'}, exl: 'Sol ↔ Si mineur',
+     v: {kick: BK(4) + 'LE BARRÉ', h: ['Le Si', 'mineur'], sub: 'Le La mineur que tu connais, <b>glissé</b> et barré en case 2.', scenes: [
+       {morph: 1, a: 'Am', b: 'Bm', n: 6, top: ['La mineur → Si mineur', 'même dessin, une case plus haut'], caps: [[.4, 'Regarde : le dessin des trois doigts est <b>le même</b>.'], [4.2, 'L’index devient la barre, en case 2.']]},
+       {rows: [{lbl: 'En chanson', pat: FC, bpm: 80, chords: ['G', 'D', 'Bm', 'C'], hand: 1}], top: ['Sol, Ré, Si mineur, Do', ''], caps: [[.4, 'Ne joue pas la corde de Mi grave sur le Si mineur.']]}]}}],
+  b5: [
+    {k: 'b5-1', t: 'p-i-m-a', d: 'Le pouce joue la basse, puis l’index, le majeur et l’annulaire prennent chacun leur corde. Même accord, tout un autre monde.', ex: {type: 'exo', ref: 'pima'}, exl: 'Arpège p-i-m-a',
+     v: {kick: BK(5) + 'LES ARPÈGES', h: ['p-i-m-a,', 'note par note'], sub: 'Au lieu de gratter, on fait <b>chanter</b> l’accord une corde à la fois.', scenes: [
+       {arp: 1, chords: ['C', 'Am'], seq: ['B', 3, 2, 1], lbl: ['p · basse', 'i · sol', 'm · si', 'a · mi'], bpm: 76, rep: 4, top: ['Do puis La mineur', 'chaque doigt a sa corde'], caps: [[.4, 'Le <b>pouce</b> (p) joue la basse de l’accord.'], [4.6, 'Puis index, majeur, annulaire : une corde chacun.'], [9.2, 'La main gauche ne change rien : c’est le même accord.']]}]}},
+    {k: 'b5-2', t: 'L’arpège qui monte et descend', d: 'Le motif de toutes les ballades : la basse, puis les cordes aiguës qui montent et redescendent.', ex: {type: 'exo', ref: 'pickarp'}, exl: 'Arpège au médiator',
+     v: {kick: BK(5) + 'LES ARPÈGES', h: ['L’arpège', 'des ballades'], sub: 'Huit notes par accord : la basse, puis on <b>monte</b> et on <b>redescend</b>.', scenes: [
+       {arp: 1, chords: ['G', 'Em', 'C', 'D'], seq: ['B', 3, 2, 3, 1, 3, 2, 3], bpm: 92, rep: 1, top: ['Sol, Mi mineur, Do, Ré', 'basse · 3 · 2 · 3 · 1 · 3 · 2 · 3'], caps: [[.4, 'La <b>basse</b> d’abord, puis les cordes 3, 2 et 1.'], [5, 'Au doigt ou au médiator : le motif est le même.'], [9.6, 'Laisse sonner les notes, ne les étouffe pas.']]}]}},
+    {k: 'b5-3', t: 'La basse alternée', d: 'Le pouce alterne entre deux cordes graves pendant que les doigts piquent les aiguës : le son folk et country.', ex: {type: 'exo', ref: 'travis'}, exl: 'Basse alternée',
+     v: {kick: BK(5) + 'LES ARPÈGES', h: ['La basse', 'alternée'], sub: 'Le pouce fait <b>tic-tac</b> entre deux basses, les doigts jouent par-dessus.', scenes: [
+       {arp: 1, chords: ['C', 'G', 'Am', 'G'], seq: ['B', 2, 'A', 1], lbl: ['pouce', 'i', 'pouce', 'm'], bpm: 84, rep: 2, top: ['Do, Sol, La mineur, Sol', 'basse · 2 · basse 2 · 1'], caps: [[.4, 'Le pouce va et vient entre <b>deux cordes graves</b>.'], [5, 'Les doigts glissent une note entre chaque basse.'], [9.6, 'Commence très lentement : c’est le pouce qui doit devenir automatique.']]}]}}],
+  b6: [
+    {k: 'b6-1', t: 'Le hammer-on', d: 'Tu grattes une corde à vide, puis tu frappes la case du doigt sans regratter : la note sort toute seule.', ex: {type: 'exo', ref: 'hammer'}, exl: 'Hammer-on et pull-off',
+     v: {kick: BK(6) + 'EMBELLIR', h: ['Le', 'hammer-on'], sub: 'Une note qui sort <b>sans gratter</b> : le doigt frappe la corde comme un marteau.', scenes: [
+       {neck: 1, shape: 'C', ev: [[0, 'C', 0, 'c'], [1.2, 4, 0, 'n'], [1.55, 4, 2, 'h', 'h'], [3, 'C', 0, 'c'], [4.2, 4, 0, 'n'], [4.55, 4, 2, 'h', 'h'], [6, 'C', 0, 'c'], [7.2, 4, 0, 'n'], [7.55, 4, 2, 'h', 'h']], top: ['Sur un Do', 'corde de Ré : à vide, puis case 2'], caps: [[.4, 'Joue la corde de Ré <b>à vide</b>…'], [3.2, '… puis frappe la case 2 avec le majeur, <b>sans regratter</b>.'], [6.4, 'Le Do prend tout de suite un air folk.']]}]}},
+    {k: 'b6-2', t: 'Le pull-off', d: 'L’inverse du hammer : tu joues la note, puis tu tires le doigt vers le bas pour faire sonner la corde à vide.', ex: {type: 'exo', ref: 'hammer'}, exl: 'Hammer-on et pull-off',
+     v: {kick: BK(6) + 'EMBELLIR', h: ['Le', 'pull-off'], sub: 'Tu <b>arraches</b> le doigt de la corde : la note d’en dessous sonne toute seule.', scenes: [
+       {neck: 1, shape: 'Am', ev: [[0, 'Am', 0, 'c'], [1.2, 3, 2, 'n'], [1.55, 3, 0, 'p', 'p'], [3, 'Am', 0, 'c'], [4.2, 3, 2, 'n'], [4.55, 3, 0, 'p', 'p'], [6, 'Am', 0, 'c'], [7.2, 3, 2, 'n'], [7.55, 3, 0, 'p', 'p']], top: ['Sur un La mineur', 'corde de Sol : case 2, puis à vide'], caps: [[.4, 'Joue la corde de Sol case 2…'], [3.2, '… puis tire le doigt <b>vers le sol</b>, en accrochant un peu la corde.'], [6.4, 'Hammer et pull ensemble : c’est le petit ornement des solos acoustiques.']]}]}},
+    {k: 'b6-3', t: 'Le glissé', d: 'Tu joues une note et tu fais glisser le doigt jusqu’à la case suivante sans le lever : la note chante.', ex: {type: 'exo', ref: 'slide'}, exl: 'Les glissés',
+     v: {kick: BK(6) + 'EMBELLIR', h: ['Le', 'glissé'], sub: 'Le doigt <b>reste appuyé</b> et voyage sur la corde.', scenes: [
+       {neck: 1, frets: 7, ev: [[0, 3, 2, 'n'], [.5, 3, 4, 's', 'glisse'], [2, 3, 2, 'n'], [2.5, 3, 4, 's', 'glisse'], [4, 2, 3, 'n'], [4.5, 2, 5, 's', 'glisse'], [6, 2, 3, 'n'], [6.5, 2, 5, 's', 'glisse']], top: ['Corde de Sol, puis de Si', 'case 2 vers 4, case 3 vers 5'], caps: [[.4, 'Joue la note, puis <b>glisse</b> sans relâcher la pression.'], [4, 'La note d’arrivée doit sonner aussi fort que la première.']]}]}},
+    {k: 'b6-4', t: 'Les basses qui relient', d: 'Entre deux accords, trois notes de basse font le pont. Ton enchaînement devient une petite mélodie.', ex: {type: 'exo', ref: 'combo'}, exl: 'Arpège et hammer-on',
+     v: {kick: BK(6) + 'EMBELLIR', h: ['Les basses', 'qui relient'], sub: 'Trois notes graves entre deux accords : le <b>pont</b> qui fait pro.', scenes: [
+       {neck: 1, ev: [[0, 'G', 0, 'c'], [1.4, 6, 3, 'n', 'Sol'], [1.8, 6, 2, 'n', 'Fa♯'], [2.2, 6, 0, 'n', 'Mi'], [2.6, 'Em', 0, 'c'], [4.4, 6, 0, 'n', 'Mi'], [4.8, 5, 0, 'n', 'La'], [5.2, 5, 2, 'n', 'Si'], [5.6, 'C', 0, 'c'], [7.4, 5, 3, 'n', 'Do'], [7.8, 5, 2, 'n', 'Si'], [8.2, 5, 0, 'n', 'La'], [8.6, 'Am', 0, 'c']], top: ['Sol → Mi mineur → Do → La mineur', 'la basse descend ou monte, note à note'], caps: [[.4, 'Sol, Fa dièse, Mi : la basse <b>descend</b> jusqu’au Mi mineur.'], [4.4, 'Mi, La, Si : elle <b>monte</b> jusqu’au Do.'], [7.6, 'Joue ces notes à la place du dernier coup de la mesure.']]}]}}],
+  b7: [
+    {k: 'b7-1', t: 'Lire une grille trouvée en ligne', d: 'Une grille sur internet, c’est un code simple : un accord = une mesure, deux accords dans une case = moitié-moitié, « % » ou « ×2 » = on répète.', ex: {type: 'fiche'}, exl: 'Créer une fiche',
+     v: {kick: BK(7) + 'JOUER DE VRAIES CHANSONS', h: ['Lire une grille', 'trouvée en ligne'], sub: 'Trois règles, et n’importe quelle grille devient <b>jouable</b>.', scenes: [
+       {tiles: 1, items: [{l: 'G', s: 'une mesure entière', c: 'G'}, {l: 'D', s: 'une mesure entière', c: 'D'}, {l: 'Em  C', s: 'moitié-moitié', hot: 1, c: 'Em'}, {l: '%', s: 'on rejoue la mesure', hot: 1}], step: 1, top: ['| G | D | Em C | % |', 'comment la lire'], caps: [[.4, 'Un accord seul : on le joue <b>toute la mesure</b>.'], [4.2, 'Deux accords dans une case : <b>deux temps</b> chacun.'], [7.8, '« % », « ×2 » ou « bis » : on répète.']]},
+       {rows: [{lbl: 'La même grille, jouée', pat: FC, bpm: 84, chords: ['G', 'D', 'Em', 'C'], hand: 1}], top: ['Et en vrai', 'un accord par mesure'], caps: [[.4, 'Recopie-la dans une fiche : tu ne la chercheras plus jamais.']]}]}},
+    {k: 'b7-2', t: 'La structure d’un morceau', d: 'Une chanson, c’est deux ou trois parties qui reviennent. Apprends le couplet et le refrain : tu as déjà presque tout le morceau.', ex: {type: 'fiche'}, exl: 'Créer une fiche',
+     v: {kick: BK(7) + 'JOUER DE VRAIES CHANSONS', h: ['La structure', 'd’un morceau'], sub: 'Une chanson, c’est <b>deux ou trois parties</b> qui reviennent.', scenes: [
+       {tiles: 1, items: [{l: 'Intro'}, {l: 'Couplet', hot: 1}, {l: 'Refrain', hot: 1}, {l: 'Couplet', hot: 1}, {l: 'Refrain', hot: 1}, {l: 'Pont'}], step: .6, top: ['Le plan de presque toutes les chansons', ''], caps: [[.4, 'Couplet et refrain reviennent <b>plusieurs fois</b>.'], [3.8, 'Apprends ces deux-là d’abord : c’est 80 % du morceau.'], [7.2, 'Dans ta fiche : <b>une carte par partie</b>.']]}]}},
+    {k: 'b7-3', t: 'Le capo pour ta voix', d: 'Si la chanson est trop haute ou trop basse pour toi, le capo change la hauteur sans changer tes doigtés.', ex: {type: 'cours', ref: 'capo'}, exl: 'Le cours sur le capo',
+     v: {kick: BK(7) + 'JOUER DE VRAIES CHANSONS', h: ['Le capo', 'pour ta voix'], sub: 'Mêmes doigts, <b>autre hauteur</b> : la chanson se met à ta voix.', scenes: [
+       {tiles: 1, items: [{l: '0', s: 'Sol', m: [43, 47, 50]}, {l: '1', s: 'Sol #', m: [44, 48, 51]}, {l: '2', s: 'La', m: [45, 49, 52], hot: 1}, {l: '3', s: 'La #', m: [46, 50, 53]}, {l: '4', s: 'Si', m: [47, 51, 54]}, {l: '5', s: 'Do', m: [48, 52, 55], hot: 1}], step: .7, top: ['La forme de Sol avec le capo', ''], caps: [[.4, 'Chaque case du capo monte tout d’un demi-ton.'], [3.8, 'Chante par-dessus : le bon capo, c’est quand tu ne forces <b>ni en haut ni en bas</b>.']]}]}},
+    {k: 'b7-4', t: 'Apprendre un morceau en 4 étapes', d: 'Écouter, trouver les accords, poser le rythme, chanter dessus. Avec un tuto à côté, la fiche se remplit pendant que tu apprends.', ex: {type: 'tuto'}, exl: 'Fiche avec un tuto',
+     v: {kick: BK(7) + 'JOUER DE VRAIES CHANSONS', h: ['Un morceau', 'en 4 étapes'], sub: 'Toujours le même ordre, et chaque morceau devient <b>plus facile</b> que le précédent.', scenes: [
+       {tiles: 1, items: [{l: '1', s: 'écoute en entier'}, {l: '2', s: 'les accords, sans rythme', hot: 1}, {l: '3', s: 'le rythme, lentement', hot: 1}, {l: '4', s: 'chante par-dessus'}], step: 1, top: ['La méthode', ''], caps: [[.4, 'D’abord les accords seuls, en changeant <b>lentement</b>.'], [4.6, 'Puis le rythme, puis la voix.'], [8.4, 'Note tout dans une fiche : c’est ta mémoire de guitariste.']]}]}}],
+};
+BLOCS.forEach(b => { if (MORE_BLOCS[b.id]) b.cards = MORE_BLOCS[b.id]; });
 BLOCS.forEach(b => b.cards.forEach(c => { LV[c.k] = lvBuild(Object.assign({t: c.t}, c.v)); }));
 let blocCur = null;
 const blocDone = () => LS.get('gms_bloc_done', {});
@@ -5436,7 +5603,7 @@ function blocSong(t) {
   const k = CATALOG.findIndex(z => z.t.toLowerCase() === lc);
   if (k >= 0) catOpen(k); else discGo(t, '');
 }
-function blocEx(id, i) { const c = BLOCS.find(x => x.id === id).cards[i]; lvStop(); pcGo(c.ex); }
+function blocEx(id, i) { const c = BLOCS.find(x => x.id === id).cards[i]; lvStop(); if (c.ex.type === 'tuto') go('atelier'); else pcGo(c.ex); }
 function renderBlocs() {
   const host = $('blocs-body'); if (!host) return;
   const dn = blocDone();
@@ -5451,7 +5618,7 @@ function renderBlocs() {
     <div class="bk-hero"><small>BLOC ${bi + 1}</small><h2>${b.n}</h2><p>« ${b.mur} »</p></div>` +
     b.cards.map((c, i) => `<div class="bk-card${dn[c.k] ? ' done' : ''}"><div class="bk-ch"><span class="bk-n">${i + 1}</span><div><b>${c.t}</b><p>${c.d}</p></div></div>
       ${lvCard(c.k, 'b')}
-      <div class="bk-acts"><button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">S’exercer · ${c.exl}</button>
+      <div class="bk-acts">${c.ex ? `<button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">${c.ex.type === 'fiche' || c.ex.type === 'tuto' ? c.exl : 'S’exercer · ' + c.exl}</button>` : ''}
         ${c.song ? `<button type="button" class="btn btn-ghost btn-sm" onclick="lvStop();blocSong('${c.song.replace(/'/g, "\\'")}')">Essaie sur « ${c.song} »</button>` : ''}
         <button type="button" class="bk-done" onclick="blocToggleDone('${c.k}')" aria-pressed="${!!dn[c.k]}">${dn[c.k] ? 'Fait ✓' : 'Marquer fait'}</button></div></div>`).join('');
 }
