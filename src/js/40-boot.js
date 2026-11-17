@@ -80,3 +80,6 @@
   } catch (e) { console.warn('seed', e); }
   renderHome(); go('disc'); // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
 })();
+
+// App installable : le service de fonctionnement hors ligne ne s'active que sur un vrai site (pas en fichier local ni dans un aperçu)
+try { if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && window.top === window.self) navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
