@@ -22,7 +22,7 @@ addEventListener('resize', () => { tbPillOn = false; const on = document.querySe
 function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'blocs'); }
 let curView = 'home';
 const SUBNAV = {
-  train: [['blocs','Débloquer'],['exo','Jouer'],['cours','Comprendre']]
+  train: [['blocs','Passe le mur'],['exo','Jouer']]
 };
 function renderSubnav(v) {
   curView = v;

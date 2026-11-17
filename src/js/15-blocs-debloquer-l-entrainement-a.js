@@ -4,47 +4,47 @@ const FC = 'D-DU-UDU';
 const BLOCS = [
   {id: 'b1', n: 'Changer sans casser le rythme', mur: 'Je m’arrête à chaque changement d’accord', cards: [
     {k: 'b1-1', t: 'Le doigt qui ne bouge pas', d: 'Entre deux accords, certains doigts restent au même endroit. Ne les soulève jamais : seuls les autres bougent.', ex: {type: 'exo', ref: 'anchor', param: 'C-Am'}, exl: 'Doigts pivots', song: 'Je l’aime à mourir',
-     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['Le doigt qui', 'ne bouge pas'], sub: 'Entre deux accords, certains doigts <b>restent posés</b>. C’est la moitié du travail en moins.', scenes: [
+     v: {kick: 'MUR 1 · CHANGER SANS CASSER LE RYTHME', h: ['Le doigt qui', 'ne bouge pas'], sub: 'Entre deux accords, certains doigts <b>restent posés</b>. C’est la moitié du travail en moins.', scenes: [
        {morph: 1, a: 'C', b: 'Am', top: ['Do → La mineur', 'regarde les doigts orange'], caps: [[.4, 'L’<b>index</b> et le <b>majeur</b> ne bougent pas.'], [4, 'Seul l’<b>annulaire</b> voyage, d’une corde à l’autre.'], [7.4, 'Garde-les appuyés pendant tout le changement.']]},
        {morph: 1, a: G4, b: 'D', top: ['Sol → Ré', 'avec le Sol à quatre doigts'], caps: [[.4, 'Joue le Sol avec l’<b>annulaire</b> et l’<b>auriculaire</b> en bas.'], [4, 'L’annulaire reste sur la corde de Si : c’est ton <b>ancre</b>.'], [7.4, 'Les autres doigts se replacent autour de lui.']]},
        {rows: [{lbl: 'En rythme', pat: FC, bpm: 80, chords: ['C', 'Am', 'C', 'Am'], hand: 1}], top: ['Maintenant en jouant', 'feu de camp, Do et La mineur'], caps: [[.4, 'Les doigts orange ne quittent <b>jamais</b> les cordes.'], [4.5, 'Le changement devient presque invisible.']]}]}},
     {k: 'b1-2', t: 'La dernière croche à vide', d: 'Le dernier coup de la mesure se joue cordes à vide : ta main gauche part en avance et arrive à l’heure sur le 1.', ex: {type: 'exo', ref: 'silent'}, exl: 'Croche à vide', song: 'Wonderwall',
-     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['La dernière croche', 'à vide'], sub: 'Le secret des guitaristes : la main gauche part <b>avant</b> la fin de la mesure.', scenes: [
+     v: {kick: 'MUR 1 · CHANGER SANS CASSER LE RYTHME', h: ['La dernière croche', 'à vide'], sub: 'Le secret des guitaristes : la main gauche part <b>avant</b> la fin de la mesure.', scenes: [
        {rows: [{lbl: 'Ce que tu fais', pat: FC, bpm: 80, chords: ['G', 'C'], hand: 1}, {lbl: 'Avec l’astuce', pat: FC, bpm: 80, chords: ['G', 'C', 'G', 'C'], free: 1, hand: 1}], top: ['Le dernier « et » de la mesure', 'regarde la dernière case'],
         caps: [[.4, 'Si tu attends le 1 pour bouger, tu arrives <b>en retard</b>.'], [4.6, 'Le dernier coup se joue <b>cordes à vide</b> : ta main gauche est déjà partie.'], [9, 'Personne ne l’entend, et tu tombes pile sur le 1.']]},
        {tiles: 1, items: [{l: '4', s: 'je compte'}, {l: '+', s: 'je lâche l’accord', hot: 1}, {l: '1', s: 'nouvel accord', hot: 1}], step: .9, top: ['À retenir', 'sur le dernier « et »'], caps: [[.4, 'Lâche l’accord sur le dernier « et », <b>pas avant</b>.'], [3.6, 'Commence lentement, puis monte le tempo.']]}]}},
     {k: 'b1-3', t: 'Une minute, deux accords', d: 'Le défi qui fait progresser le plus vite : une minute, deux accords, et tu comptes tes changements. Bats ton score demain.', ex: {type: 'exo', ref: 'omc', param: 'G-C'}, exl: 'Défi d’une minute', song: 'Dès que le vent soufflera',
-     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['Une minute,', 'deux accords'], sub: 'Le défi qui a débloqué des milliers de guitaristes : <b>compter</b> ses changements.', scenes: [
+     v: {kick: 'MUR 1 · CHANGER SANS CASSER LE RYTHME', h: ['Une minute,', 'deux accords'], sub: 'Le défi qui a débloqué des milliers de guitaristes : <b>compter</b> ses changements.', scenes: [
        {morph: 1, a: 'G', b: 'C', n: 12, hold: .45, move: .32, cnt: 'omc', cntL: 'CHANGEMENTS', legend: false, top: ['Sol ↔ Do pendant une minute', 'sans gratter, juste les doigts'], caps: [[.4, 'Lance un chrono d’<b>une minute</b>.'], [3.2, 'Change le plus de fois possible, même si c’est sale.'], [6.4, 'Note ton score.']]},
        {tiles: 1, items: [{l: '12', s: 'jour 1'}, {l: '19', s: 'jour 3'}, {l: '26', s: 'jour 5'}, {l: '35', s: 'jour 7', hot: 1}], step: .7, top: ['Ce qui se passe en une semaine', 'deux minutes par jour suffisent'], caps: [[.4, 'Chaque jour, tu bats un peu ton score.'], [3.4, 'Au-delà de <b>30</b>, le changement ne te bloque plus en chanson.']]}]}},
     {k: 'b1-4', t: 'Changer en rythme', d: 'Les accords changent, la main droite continue. On commence lentement, on accélère seulement quand ça ne casse plus.', ex: {type: 'prog', ref: 'j3', param: 'feucamp'}, exl: 'Jouer G C G D', song: 'Morgane de toi',
-     v: {kick: 'BLOC 1 · CHANGER SANS CASSER LE RYTHME', h: ['Changer', 'en rythme'], sub: 'Les accords changent. <b>La main droite, elle, ne s’arrête jamais.</b>', scenes: [
+     v: {kick: 'MUR 1 · CHANGER SANS CASSER LE RYTHME', h: ['Changer', 'en rythme'], sub: 'Les accords changent. <b>La main droite, elle, ne s’arrête jamais.</b>', scenes: [
        {rows: [{lbl: 'Lent', pat: FC, bpm: 70, chords: ['G', 'C', 'D', 'Em'], hand: 1}, {lbl: 'Plus vite', pat: FC, bpm: 92, chords: ['G', 'C', 'D', 'Em'], hand: 1}], top: ['Sol, Do, Ré, Mi mineur', 'un accord par mesure'],
         caps: [[.4, 'La main droite <b>balance</b> en continu, comme un métronome.'], [5, 'Change d’accord sans jamais l’arrêter.'], [10, 'Tu n’accélères que quand ça ne casse plus.']]}]}}]},
   {id: 'b2', n: 'Sortir du feu de camp', mur: 'Tous mes morceaux ont le même rythme', cards: [
     {k: 'b2-1', t: 'Le balancier', d: 'La main droite monte et descend tout le temps, même quand elle ne touche pas les cordes. C’est elle qui garde le tempo.', ex: {type: 'rc', ref: 'rc2'}, exl: 'Le balancier', song: 'Les Champs-Élysées',
-     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Le', 'balancier'], sub: 'Ta main droite est un <b>métronome</b> : elle bouge tout le temps, même dans le vide.', scenes: [
+     v: {kick: 'MUR 2 · SORTIR DU FEU DE CAMP', h: ['Le', 'balancier'], sub: 'Ta main droite est un <b>métronome</b> : elle bouge tout le temps, même dans le vide.', scenes: [
        {rows: [{lbl: 'Tout sonne', pat: 'DUDUDUDU', bpm: 80, chords: ['G', 'C'], hand: 1}, {lbl: 'Feu de camp', pat: FC, bpm: 80, chords: ['G', 'C'], ghost: 1, hand: 1}], top: ['Bas sur le temps, haut sur le « et »', 'regarde la main à droite'],
         caps: [[.4, 'Bas sur les chiffres, haut sur les « + ».'], [4.6, 'Dans le feu de camp, la main passe <b>au-dessus</b> des cordes sur les cases grises.'], [9, 'Elle ne s’arrête jamais : c’est tout le secret.']]}]}},
     {k: 'b2-2', t: 'Le « tchak »', d: 'Sur les temps 2 et 4, le plat de la main droite étouffe les cordes en frappant. La guitare devient batterie.', ex: {type: 'rc', ref: 'rc6'}, exl: 'Le tchak', song: 'Wonderwall',
-     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Le', '« tchak »'], sub: 'Sur les temps 2 et 4, on <b>étouffe</b> les cordes : la guitare devient batterie.', scenes: [
+     v: {kick: 'MUR 2 · SORTIR DU FEU DE CAMP', h: ['Le', '« tchak »'], sub: 'Sur les temps 2 et 4, on <b>étouffe</b> les cordes : la guitare devient batterie.', scenes: [
        {tiles: 1, items: [{l: 'Frappe', s: 'vers le bas'}, {l: 'Pose', s: 'le plat de la main', hot: 1}, {l: 'Tchak', s: 'son sec, sans note', hot: 1}], step: .8, top: ['Le geste', 'main droite'], caps: [[.4, 'Pendant que tu grattes, le <b>plat de la main</b> se pose sur les cordes.'], [3.6, 'Pas de note : juste un bruit sec.']]},
        {rows: [{lbl: 'Feu de camp', pat: FC, bpm: 84, chords: ['G', 'C'], hand: 1}, {lbl: 'Avec le tchak', pat: 'DUXUDUXU', bpm: 84, chords: ['G', 'C', 'D', 'Em'], hand: 1}], top: ['Mêmes accords, autre énergie', 'écoute la différence'],
         caps: [[.4, 'D’abord le feu de camp…'], [4.4, '… puis le <b>tchak</b> sur 2 et 4 : tout de suite, ça groove.']]}]}},
     {k: 'b2-3', t: 'Fort, doux', d: 'Un rythme vivant n’a pas tous ses coups au même volume. Appuie les temps 2 et 4, effleure le reste.', ex: {type: 'rc', ref: 'rc5'}, exl: 'Fort et doux', song: 'How to Save a Life',
-     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Fort,', 'doux'], sub: 'Un rythme vivant n’a pas tous ses coups <b>au même volume</b>.', scenes: [
+     v: {kick: 'MUR 2 · SORTIR DU FEU DE CAMP', h: ['Fort,', 'doux'], sub: 'Un rythme vivant n’a pas tous ses coups <b>au même volume</b>.', scenes: [
        {rows: [{lbl: 'Tout pareil', pat: 'DUDUDUDU', bpm: 86, chords: ['G', 'D'], hand: 1}, {lbl: 'Accents sur 2 et 4', pat: 'dudududu', acc: [2, 6], bpm: 86, chords: ['G', 'D', 'Em', 'C'], hand: 1}], top: ['Les grosses flèches sonnent plus fort', 'même rythme, autre relief'],
         caps: [[.4, 'Tous les coups au même volume : c’est plat.'], [4.4, 'Appuie le <b>2</b> et le <b>4</b>, effleure le reste.'], [9, 'C’est ce qui donne envie de taper du pied.']]}]}},
     {k: 'b2-4', t: 'La pop syncopée', d: 'Les temps 2 et 3 restent muets, la main continue de balancer. C’est ce trou qui fait danser.', ex: {type: 'rc', ref: 'rc8'}, exl: 'Pop syncopée', song: 'How to Save a Life',
-     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['La pop', 'syncopée'], sub: 'Deux temps <b>muets</b> au milieu de la mesure : c’est ce trou qui fait danser.', scenes: [
+     v: {kick: 'MUR 2 · SORTIR DU FEU DE CAMP', h: ['La pop', 'syncopée'], sub: 'Deux temps <b>muets</b> au milieu de la mesure : c’est ce trou qui fait danser.', scenes: [
        {rows: [{lbl: 'Feu de camp', pat: FC, bpm: 90, chords: ['G', 'D'], ghost: 1, hand: 1}, {lbl: 'Pop syncopée', pat: 'D--U-UDU', bpm: 90, chords: ['G', 'D', 'Em', 'C'], ghost: 1, hand: 1}], top: ['Bas… (rien)… haut, haut-bas-haut', 'les cases grises : la main passe dans le vide'],
         caps: [[.4, 'Le feu de camp que tu connais.'], [4.4, 'On enlève le <b>2</b> : bas, puis on attend…'], [8.6, '… et on reprend sur le « + » du 2. La main ne s’arrête pas.']]}]}},
     {k: 'b2-5', t: 'Le reggae', d: 'On ne joue que les coups vers le haut, entre les temps. Le coup vers le bas se fait dans le vide.', ex: {type: 'rc', ref: 'rc4'}, exl: 'Reggae', song: 'Lady Melody',
-     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Le', 'reggae'], sub: 'On ne joue <b>que les coups vers le haut</b>, entre les temps.', scenes: [
+     v: {kick: 'MUR 2 · SORTIR DU FEU DE CAMP', h: ['Le', 'reggae'], sub: 'On ne joue <b>que les coups vers le haut</b>, entre les temps.', scenes: [
        {rows: [{lbl: 'Reggae', pat: '-U-U-U-U', bpm: 84, chords: ['D', 'A', 'Em', 'G'], ghost: 1, hand: 1}], top: ['Le bas dans le vide, le haut sur les cordes', 'Ré, La, Mi mineur, Sol'],
         caps: [[.4, 'Sur les chiffres : la main descend <b>sans toucher</b>.'], [4.4, 'Sur les « + » : un petit coup <b>vers le haut</b>, court et léger.'], [8.4, 'Étouffe juste après chaque coup pour un son bien sec.']]}]}},
     {k: 'b2-6', t: 'Trois temps : valse et 6/8', d: 'Tous les morceaux ne sont pas en quatre. En valse, on compte 1-2-3 ; en 6/8, deux groupes de trois.', ex: {type: 'rc', ref: 'rc9'}, exl: 'La valse',
-     v: {kick: 'BLOC 2 · SORTIR DU FEU DE CAMP', h: ['Valse', 'et 6/8'], sub: 'Tous les morceaux ne sont pas en 4 : on compte <b>1-2-3</b>.', scenes: [
+     v: {kick: 'MUR 2 · SORTIR DU FEU DE CAMP', h: ['Valse', 'et 6/8'], sub: 'Tous les morceaux ne sont pas en 4 : on compte <b>1-2-3</b>.', scenes: [
        {rows: [{lbl: 'Valse', mes: '3/4', pat: 'D-d-d-', acc: [0], bpm: 104, chords: ['G', 'C', 'D', 'G'], hand: 1}, {lbl: 'Six-huit', mes: '6/8', pat: 'D-UD-U', bpm: 60, chords: ['Em', 'C', 'G', 'D'], hand: 1}], top: ['Compter en trois', 'un temps fort, deux temps doux'],
         caps: [[.4, 'La valse : <b>UN</b>-deux-trois, un bas fort puis deux doux.'], [5.6, 'Le 6/8 : deux groupes de trois, comme une <b>berceuse</b>.'], [10.4, 'Parfait pour les ballades et les chansons lentes.']]}]}}]},
   {id: 'b3', n: 'De nouveaux accords sans barré', mur: 'Mes accords sonnent toujours pareil', cards: []},
@@ -58,7 +58,7 @@ const BLOCS = [
 const EM7P = {name: 'Em7', frets: [0, 2, 2, 0, 3, 3], fingers: [0, 1, 2, 0, 3, 4]};       // Em7 « pro » : annulaire et auriculaire en haut, comme le Sol
 const FMINI = {name: 'F', frets: [-1, -1, 3, 2, 1, 1], fingers: [0, 0, 3, 2, 1, 1]};     // le petit Fa (index sur 2 cordes)
 const GBAR = {name: 'G', frets: [3, 5, 5, 4, 3, 3], fingers: [1, 3, 4, 2, 1, 1]};         // forme de Fa glissée en case 3
-const BK = n => 'BLOC ' + n + ' · ';
+const BK = n => 'MUR ' + n + ' · ';
 const MORE_BLOCS = {
   b3: [
     {k: 'b3-1', t: 'Les accords « sus »', d: 'Enlève ou déplace un seul doigt, et le Ré devient suspendu : ni joyeux ni triste, il flotte et appelle la suite.', song: 'Wonderwall',
@@ -169,14 +169,14 @@ function renderBlocs() {
   const host = $('blocs-body'); if (!host) return;
   const dn = blocDone();
   if (!blocCur) {
-    host.innerHTML = `<div class="bk-hero"><h2>Qu’est-ce qui te bloque ?</h2><p>Choisis ton mur. Chaque bloc se fait à la carte, dans l’ordre que tu veux.</p></div><div class="bk-list">` +
+    host.innerHTML = `<div class="bk-hero"><small>PASSE LE MUR</small><h2>Quel mur te bloque ?</h2><p>Des cours courts, en vidéo, pour franchir chaque mur de la guitare. Choisis le tien, dans l’ordre que tu veux.</p></div><div class="bk-list">` +
       BLOCS.map((b, i) => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length;
         return `<button type="button" class="bk-it${n || b.to ? '' : ' soon'}" onclick="${n || b.to ? `blocOpen('${b.id}')` : ''}"><span class="bk-n">${i + 1}</span><span class="bk-tx"><b>${b.n}</b><i>« ${b.mur} »</i></span><span class="bk-st">${b.to ? 'Ouvrir' : n ? `${f}/${n}` : 'Bientôt'}</span></button>`; }).join('') + '</div>';
     return;
   }
   const b = BLOCS.find(x => x.id === blocCur), bi = BLOCS.indexOf(b);
   host.innerHTML = `<button type="button" class="bk-back" onclick="blocBack()"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Tous les blocs</button>
-    <div class="bk-hero"><small>BLOC ${bi + 1}</small><h2>${b.n}</h2><p>« ${b.mur} »</p></div>` +
+    <div class="bk-hero"><small>MUR ${bi + 1}</small><h2>${b.n}</h2><p>« ${b.mur} »</p></div>` +
     b.cards.map((c, i) => `<div class="bk-card${dn[c.k] ? ' done' : ''}"><div class="bk-ch"><span class="bk-n">${i + 1}</span><div><b>${c.t}</b><p>${c.d}</p></div></div>
       ${lvCard(c.k, 'b')}
       <div class="bk-acts">${c.ex ? `<button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">${c.ex.type === 'fiche' || c.ex.type === 'tuto' ? c.exl : 'S’exercer · ' + c.exl}</button>` : ''}
@@ -225,15 +225,16 @@ function lvStop(keep) {
 function lvFull(id) { const el = $(id); try { document.fullscreenElement ? document.exitFullscreen() : (el.requestFullscreen || el.webkitRequestFullscreen).call(el); } catch (e) { toast('Plein écran indisponible ici', true); } }
 function renderAdmin() {
   const ks = Object.keys(LV);
-  const bl = BLOCS.filter(b => b.cards.length).map((b, bi) => `<h3 class="ad-h">Débloquer · bloc ${bi + 1} : ${esc(b.n)}</h3>` + b.cards.map(c =>
+  const bl = BLOCS.filter(b => b.cards.length).map((b, bi) => `<h3 class="ad-h">Passe le mur · mur ${bi + 1} : ${esc(b.n)}</h3>` + b.cards.map(c =>
     `<div class="ad-it"><div class="ad-t"><b>${esc(c.t)}</b><small>${LV[c.k].dur} s</small></div>${lvCard(c.k, 'a')}</div>`).join('')).join('');
-  $('admin-body').innerHTML = `<p class="ad-n">${ks.length} vidéos : les blocs « Débloquer », puis les cours « Comprendre ». Plein écran pour les filmer.</p>` + bl + `<h3 class="ad-h">Comprendre · les cours</h3>` +
+  $('admin-body').innerHTML = `<p class="ad-n">${ks.length} vidéos : les cours « Passe le mur », puis « Comprendre en 2 minutes ». Plein écran pour les filmer.</p>` + bl + `<h3 class="ad-h">Comprendre · les cours</h3>` +
     COURS.map((l, i) => LV[l.k]
       ? `<div class="ad-it"><div class="ad-t"><b>Leçon ${i + 1} · ${esc(l.t)}</b><small>${LV[l.k].dur} s</small></div>${lvCard(l.k, 'a')}</div>`
       : `<div class="ad-it off"><div class="ad-t"><b>Leçon ${i + 1} · ${esc(l.t)}</b><small>à venir</small></div></div>`).join('');
 }
 function coursListHTML() {
-  return `<div class="cl-t">Les leçons</div>
+  return `<button type="button" class="bk-back" onclick="go('blocs')"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Passe le mur</button>
+    <div class="bk-hero"><small>MUR 8</small><h2>Comprendre en 2 minutes</h2><p>« Pourquoi ces accords vont ensemble ? » Douze petits cours pour comprendre ce que tu joues.</p></div>
     <div class="cl-list">${COURS.map((l, i) =>
       `<button type="button" class="les" onclick="coursOpen('${l.k}')"><span class="les-n">${i + 1}</span><b>${l.t}</b>${LV[l.k] ? '<i class="les-v">▶ vidéo</i>' : ''}<small>${l.m} min</small></button>`).join('')}</div>`;
 }
