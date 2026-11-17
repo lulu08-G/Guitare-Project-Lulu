@@ -1,6 +1,5 @@
 # Guitar Memory : aucun robot autorisé (moteurs de recherche, IA, aspirateurs de sites).
-# Attention : sur GitHub Pages en sous-dossier (lulu08-g.github.io/Guitare-Project-Lulu/),
-# ce fichier n'est lu par les robots que s'il est à la racine du domaine.
-# La vraie protection est la balise <meta name="robots"> dans src/html/00-head.html.
+# À utiliser le jour où l'app a son propre domaine : les robots ne lisent ce fichier
+# qu'à la racine du domaine (pas dans lulu08-g.github.io/Guitare-Project-Lulu/).
 User-agent: *
 Disallow: /
