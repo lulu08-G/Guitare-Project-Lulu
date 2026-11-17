@@ -1,10 +1,4 @@
 /* ═══════ PARTS EDITOR (drag & drop, duplicate, collapse) ═══════ */
-function addPart() {
-  const used = draft.parts.map(p => p.name);
-  const name = PART_NAMES.find(n => !used.includes(n)) || 'Partie ' + (draft.parts.length + 1);
-  draft.parts.push(newPart(name));
-  renderParts();
-}
 function dupPart(i) {
   const c = clone(draft.parts[i]);
   c.id = uid(); c.chords.forEach(ch => ch.id = uid());
@@ -53,7 +47,7 @@ function edOpenCoffre(target) {
   $('more-opts').open = true;
   setTimeout(() => { const t = $(target); if (t) { t.scrollIntoView({block: 'center', behavior: 'smooth'}); if (t.tagName === 'INPUT') t.focus(); } }, 60);
 }
-function edClose() { rcCleanup(); stopPlay(); edBarReset(); if (pcRet) { coursList(); return; } go('home'); }
+function edClose() { rcCleanup(); stopPlay(); edBarReset(); go('home'); }
 const edOK = () => !!($('f-title').value.trim() && draft && draft.parts.some(p => p.chords.length));
 function edSyncSave() {
   const b = $('ed-save'); if (!b) return;

@@ -364,7 +364,6 @@ function exoPlayTab(id) {
 
 /* ── strum grid ── */
 const STRUMREG = {};
-const CNT8 = ['1','et','2','et','3','et','4','et'];
 function strumGlyph(ch, i) {
   const u = String(ch).toUpperCase();
   if (u === 'D' || u === 'U') return `<span class="sgl ${u}">${rhArrow(u, ch === u ? 1 : 0)}</span>`;
@@ -675,14 +674,12 @@ function exoCard(ex) {
 }
 function exoStatsHTML() {
   const done = EXOS.filter(e => exoProg.done[e.id]).length;
-  const total = PC_STEPS.length, pdone = pcCur();
   const days = new Set(exoProg.log.map(l => l.d)).size;
-  if (!days && !done && !pdone) return '';   // pas de stats à zéro
+  if (!days && !done) return '';   // pas de stats à zéro
   return `<div class="exo-stats">
     <div class="sv-stat"><div class="v">${exoStreak()}</div><div class="l">Jours d’affilée</div></div>
     <div class="sv-stat"><div class="v">${days}</div><div class="l">Jours de pratique</div></div>
-    <div class="sv-stat"><div class="v">${done}/${EXOS.length}</div><div class="l">Exercices essayés</div></div>
-    <div class="sv-stat"><div class="v">${Math.round(pdone/total*100)}%</div><div class="l">Parcours guidé</div></div></div>`;
+    <div class="sv-stat"><div class="v">${done}/${EXOS.length}</div><div class="l">Exercices essayés</div></div></div>`;
 }
 function axesHTML() {
   const list = exoAxis === 'all' ? AXES : AXES.filter(a => a.k === exoAxis);

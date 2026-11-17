@@ -148,6 +148,22 @@ function blocSong(t) {
   const k = CATALOG.findIndex(z => z.t.toLowerCase() === lc);
   if (k >= 0) catOpen(k); else discGo(t, '');
 }
+// lance l'action d'une carte : exercice, rythme, suite d'accords, cours ou nouvelle fiche
+function pcGo(a) {
+  rccStop(); feelStop();
+  if (a.type === 'exo') exoOpen(a.ref, a.param);
+  else if (a.type === 'cours') coursOpen(a.ref);
+  else if (a.type === 'rc') {
+    const i = RH_COURSE.findIndex(s => s.id === a.ref);
+    exoCur = null; exoMode = 'rhy'; exoRet = null; rcz.cur = i; rcz.bpm = RH_COURSE[i].bpm[0]; rcz.bars = 0; rcz.fin = false;
+    go('exo');
+  } else if (a.type === 'prog') {
+    const p = FEEL_PROGS.find(x => x.id === a.ref), r = RHYTHMS.find(x => x.id === a.param);
+    exoCur = null; exoMode = 'feel'; exoRet = null; feel.amb = p.amb;
+    go('exo'); feelPickProg(p.id);
+    if (r) { feel.rh = r.id; feel.kind = 'rh'; feel.fx = null; feel.bpm = Math.round((r.bpm[0] + (r.bpm[1] - r.bpm[0])*.35)/5)*5; feelFixBpm(); exoRender(); }
+  } else if (a.type === 'fiche') newSheet();
+}
 function blocEx(id, i) { const c = BLOCS.find(x => x.id === id).cards[i]; lvStop(); if (c.ex.type === 'tuto') go('atelier'); else pcGo(c.ex); }
 function renderBlocs() {
   const host = $('blocs-body'); if (!host) return;
@@ -225,12 +241,11 @@ function coursList() { coursStop(); coursView = 'list'; go('cours'); }
 function renderCours() {
   if (coursView === 'list') {
     $('cours-list').innerHTML = coursListHTML(); $('cours-body').innerHTML = '';
-    pcUnmount(); $('cours-hero').innerHTML = ''; $('cours-map').innerHTML = '';   // parcours à débloquer retiré : les leçons sont en liste, toutes libres
+    $('cours-hero').innerHTML = ''; $('cours-map').innerHTML = '';
   } else {
-    pcUnmount(); $('cours-hero').innerHTML = ''; $('cours-map').innerHTML = ''; $('cours-list').innerHTML = '';
+    $('cours-hero').innerHTML = ''; $('cours-map').innerHTML = ''; $('cours-list').innerHTML = '';
     renderCoursLesson();
   }
-  pcPill();
 }
 function renderCoursLesson() {
   const i = COURS.findIndex(l => l.k === coursCur), l = COURS[i];

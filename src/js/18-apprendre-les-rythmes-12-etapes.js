@@ -18,7 +18,6 @@ const RH_COURSE = [
 const rcz = {cur:null, bpm:70, click:true, bars:0};
 const rccRh = st => RHYTHMS.find(r => r.id === st.rh);
 const rccUnlocked = () => true;   // tout est libre : on choisit le rythme qu'on veut
-const rccBpmOf = st => Math.max(st.bpm[0], Math.min(st.bpm[1], exoProg.best[st.id] ? exoProg.best[st.id] : st.bpm[0]));
 const rccChord = () => newChord('Em');
 const rccArrows = pat => [...pat].map(ch => ch === '-' ? '·' : ch.toLowerCase() === 'x' ? '✕' : ch.toLowerCase() === 'u' ? '↑' : '↓').join('');
 function rccStop() { if (rhPlaying('rc')) rhStop(); }

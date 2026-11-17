@@ -40,7 +40,6 @@ function rbHTML(ctx, i) {
   }
   return h + '</div>';
 }
-const rbSync = () => rbSyncPlay();
 function rbSyncAll() {
   rbSyncPlay(); rbSyncRec();
 }

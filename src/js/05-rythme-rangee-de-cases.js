@@ -15,10 +15,6 @@ function rhArrow(d, a) {
   return `<svg class="rga${a === 0 ? ' soft' : ''}" viewBox="0 0 24 40" aria-hidden="true"><g${d === 'U' ? ' transform="rotate(180 12 20)"' : ''}><path d="M12 4V${a === 2 ? 26 : 33}" stroke-width="${w}"/>${head}</g></svg>`;
 }
 // cases par ligne de saisie : une mesure tient sur une ligne (≤ 9 cases), sinon on coupe sur un temps (16 cases → 2 lignes de 8)
-function rhRow(mes, res) {
-  const per = rhPerBar(mes, res), spb = rhSpb(mes, res);
-  return per <= 9 ? per : (per % 2 === 0 && (per/2) % spb === 0 ? per/2 : per);
-}
 /* Vue du rythme « ruban dans des blocs » : un bloc arrondi par temps (le chiffre dessus), et dedans la vague de la main —
    chaque case est un demi-trait (↓ = la vague descend, ↑ = elle remonte), la flèche en est la pointe, ✕ = étouffé,
    pointillé = la main passe sans jouer. Une case = un petit SVG (viewBox fixe, mis à l'échelle par la largeur) pour que
@@ -26,9 +22,6 @@ function rhRow(mes, res) {
 const rhGeo = (mini, edit) => mini ? {W:32, H:34, yT:5, yB:29, l:6, x:3.4, w:[1.5, 2.2, 3]} : edit ? {W:44, H:60, yT:9, yB:51, l:9, x:4.8, w:[2.2, 3.2, 4.4]} : {W:32, H:56, yT:8, yB:48, l:8, x:4.4, w:[1.9, 2.8, 3.8]};
 const rhN = v => Math.round(v*100)/100;
 const rhLerp = (a, b, t) => [a[0] + (b[0] - a[0])*t, a[1] + (b[1] - a[1])*t];
-const rhBez = (p, t) => { const m = 1 - t; return [0, 1].map(i => m*m*m*p[0][i] + 3*m*m*t*p[1][i] + 3*m*t*t*p[2][i] + t*t*t*p[3][i]); };
-function rhSplit(p, t) { const a = rhLerp(p[0], p[1], t), b = rhLerp(p[1], p[2], t), c = rhLerp(p[2], p[3], t), d = rhLerp(a, b, t), e = rhLerp(b, c, t); return [p[0], a, d, rhLerp(d, e, t)]; }
-const rhCub = p => `M${rhN(p[0][0])} ${rhN(p[0][1])}C${rhN(p[1][0])} ${rhN(p[1][1])} ${rhN(p[2][0])} ${rhN(p[2][1])} ${rhN(p[3][0])} ${rhN(p[3][1])}`;
 function rhCellSVG(c, dir, g) {   // une flèche droite par case : ↓ bas, ↑ haut, ✕ étouffé ; case vide = petit repère
   const {W, H, yT, yB} = g, x = W/2, hd = Math.min(W*.24, 7);
   let s = `<svg class="rgs" viewBox="0 0 ${W} ${H}" aria-hidden="true">`;

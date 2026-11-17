@@ -21,22 +21,6 @@ function setHomeFilter(k) { homeFilter = k; renderHome(); }
 function renderGreeting() {
   $('greet-count').textContent = `${sheets.length} fiche${sheets.length>1?'s':''}`;
 }
-function renameUser() {
-  const v = prompt('Comment veux-tu qu’on t’appelle ?', localStorage.getItem('gms_name') || '');
-  if (v == null) return;
-  localStorage.setItem('gms_name', v.trim());
-  renderGreeting();
-}
-function renderPinned(all) {
-  const wrap = $('pinned-wrap'), row = $('pinned-row');
-  const favs = all.filter(s => s.favorite).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-  if (!favs.length) { wrap.style.display = 'none'; return; }
-  wrap.style.display = '';
-  row.innerHTML = favs.map(s => `<div class="pinned-card" onclick="viewSheet('${s.id}')">
-    <div class="cn">${esc(s.title)}</div>
-    <div class="sub">${esc(s.artist||'—')}${s.capo?' · Capo '+s.capo:''}</div>
-  </div>`).join('');
-}
 function renderHome() {
   renderGreeting();
   const q = ($('q').value || '').toLowerCase().trim();

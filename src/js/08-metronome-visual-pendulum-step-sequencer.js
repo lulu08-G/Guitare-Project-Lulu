@@ -216,7 +216,6 @@ function metroPaintBpm() {
 }
 function metroSetBpm(v) { metroState.bpm = Math.max(30, Math.min(280, Math.round(+v) || 100)); metroPaintBpm(); }
 function metroSetBpmFromRange(v) { metroSetBpm(v); }
-function metroSetBpmFromNum(v) { metroSetBpm(v); }
 function metroBpmStep(d) { metroSetBpm(metroState.bpm + d); }
 function metroHold(d) {   // appui long sur − / + : répétition accélérée (relâcher = clearBpmHold, écouté sur window)
   clearBpmHold(); metroBpmStep(d);

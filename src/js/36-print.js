@@ -70,7 +70,7 @@ function doPrint() {
 // façon de jouer imprimée : la ligne de groupes de la fiche, volontairement plus petite que les accords
 function pPrintWay(p, h, mini) {
   if (pWay(p) !== 'rh') return pWayHTML(p, true, mini ? {mini: true} : undefined);
-  return `<div class="p-rh" style="height:${h}px">${metroLineHTML(p.rhythm, null, true)}<span class="p-rh-k">↓ bas · ↑ haut · en boucle</span></div>`;
+  return `<div class="p-rh">${rhTimeHTML(p.rhythm)}</div>`;
 }
 function printSheetHTML(s, compact) {
   return `<div class="p-head">

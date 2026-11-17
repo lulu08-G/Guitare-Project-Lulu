@@ -1,6 +1,5 @@
 /* ═══════ NAV ═══════ */
 function go(v) {
-  if (pcRet && !PC_KEEP.has(v)) pcRet = null;   // on quitte l'action lancée depuis le parcours
   if (v !== 'atelier' && atOn()) { atFlush(); atPause(); }
   stopPlay();
   if (v !== 'tuner') stopTuner();
@@ -34,6 +33,5 @@ function go(v) {
   if (v === 'plus') renderPlus();
   if (v === 'admin') renderAdmin();
   renderSubnav(v);
-  pcPill();
 }
 
