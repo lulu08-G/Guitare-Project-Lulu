@@ -29,7 +29,7 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 - Sauvegarde : « Sauvegarder toutes mes fiches » (menu ⋯ de Fiches) exporte fiches + médias ; « Restaurer ou importer un fichier » les remet. Un rappel apparaît dans Fiches si rien n'a été sauvegardé depuis 14 jours.
 
 ## Git
-- Travailler sur la branche `claude/relaxed-hawking-5olqsb` ; ne pas toucher `main` sans accord de Lucas.
+- **18/11 : Lucas autorise à travailler sur `main`** (« tant que tu as des sauvegardes de version précédente »). Chaque livraison vérifiée est poussée sur `main` ET sur la branche `claude/relaxed-hawking-5olqsb` ; l'historique git sert de sauvegarde (revenir en arrière = `git revert`, jamais de réécriture d'historique ni de force-push sur `main`).
 - Commits clairs, en anglais.
 
 ## L'équipe (sous-agents dans `.claude/agents/`)
