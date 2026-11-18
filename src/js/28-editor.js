@@ -13,14 +13,17 @@ function createAsk(e) {
   let m = $('create-ask');
   if (!m) {
     m = document.createElement('div'); m.id = 'create-ask'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Créer une fiche');
-    m.innerHTML = `<div class="ca-box" onclick="event.stopPropagation()"><div class="ca-grab"></div><h3>Nouvelle fiche</h3>
-      <button type="button" onclick="createAskClose();newSheet()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span><b>Fiche seule</b><small>Titre, accords, rythme : je la remplis moi-même</small></span></button>
-      <button type="button" onclick="createAskClose();go('atelier')"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/></svg><span><b>Fiche avec un tuto</b><small>Je cherche un morceau, je regarde et je note</small></span></button>
+    m.innerHTML = `<div class="ca-box" onclick="event.stopPropagation()"><div class="ca-grab"></div>
+      <div class="ca-medi">${mediSVG('contente', {size: 84, anim: 'jump'})}</div>
+      <div class="ca-hd"><h3>On garde quel morceau ?</h3><p>Tu peux toujours ajouter un tuto plus tard.</p></div>
+      <button type="button" onclick="createAskClose();newSheet()"><span class="ca-i"><svg viewBox="0 0 28 28"><rect x="6" y="3" width="16" height="22" rx="3.5"/><path d="M10 10 H18 M10 15 H18 M10 20 H14"/></svg></span><span><b>Une fiche</b><small>Tu sais déjà le jouer. Accords et rythme, c’est noté en une minute.</small></span></button>
+      <button type="button" onclick="createAskClose();go('atelier')"><span class="ca-i t"><svg viewBox="0 0 28 28"><rect x="3" y="4" width="22" height="13" rx="3"/><path class="f" d="M12 8 L17 10.5 L12 13 Z"/><path d="M5 22 H23 M5 26 H15"/></svg></span><span><b>Une fiche avec un tuto</b><small>La vidéo en haut, ta fiche se remplit dessous pendant que tu apprends.</small></span></button>
       <button type="button" class="ca-x" onclick="createAskClose()">Annuler</button></div>`;
     m.addEventListener('click', createAskClose); document.body.appendChild(m);
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape') createAskClose(); });
   }
-  m.classList.add('on');
+  m.classList.remove('on'); void m.offsetWidth; m.classList.add('on');
+  const md = m.querySelector('.medi'); if (md) { md.classList.remove('a-jump'); void md.getBoundingClientRect(); md.classList.add('a-jump'); }
 }
 function createAskClose() { const m = $('create-ask'); if (m) m.classList.remove('on'); }
 function newSheet() {

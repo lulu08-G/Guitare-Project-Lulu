@@ -161,15 +161,15 @@ function edBar() {
     edPeaks(p.rec.mediaId).then(pk => { const e = $('ed-pk'); if (e && pk && draft && edRp() === i) e.innerHTML = edWaveBars(pk, 'done'); });
   } else {
     const bareP = p && wayOf(p) === 'rh' && !rhHas(p.rhythm);
-    h = `<button type="button" class="ed-rec" onclick="edRecStart()"><svg class="ed-rec-pick" viewBox="0 0 38 38" aria-hidden="true"><path d="M19 5c7.5 0 13 2.800 13 8.400 0 7-6.800 15-13 19.100-6.200-4.100-13-12.100-13-19.100C6 7.800 11.500 5 19 5z"/><circle cx="19" cy="15.5" r="4.200"/></svg>
-      <span><b>Enregistrer mon rythme</b><small>Gratte une ou deux mesures</small></span>
-      <svg class="ed-rec-ar" viewBox="0 0 66 34" aria-hidden="true"><path class="l" d="M2 31H64"/>${[[8, 24, 'd'], [20, 15, 'd'], [29, 11, 'u'], [41, 13, 'u'], [50, 22, 'd'], [59, 10, 'u']].map(([x, h, c]) => `<rect class="${c}" x="${x - 2.5}" y="${31 - h}" width="5" height="${h}" rx="2.5"/>`).join('')}</svg></button>
-      ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Le saisir à la main</button><button type="button" onclick="weOpen('draft',${i},'arp')">Arpège</button></div>` : ''}`;
+    h = `<div class="ed-rcard">${mediBulle('concentree', 'Gratte deux mesures comme tu le sens. J’écoute et je te le note.', {size: 64, anim: 'tilt'})}
+      <button type="button" class="ed-rec" onclick="edRecStart()"><span class="ed-rec-dot" aria-hidden="true"></span><b>Enregistrer mon rythme</b></button>
+      <div class="ed-cells" aria-hidden="true">${['1','et','2','et','3','et','4','et'].map((c, k) => `<span class="${k % 2 ? 'o' : ''}"><i></i>${c}</span>`).join('')}</div>
+      ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Saisir à la main</button><button type="button" onclick="weOpen('draft',${i},'arp')">Arpège</button></div>` : ''}</div>`;
   }
   host.innerHTML = pick + h;
   const st = rc && rc.inline && (rc.stage === 'count' || rc.stage === 'rec') ? rc.stage : (p && p.rec ? 'done' : 'idle');
   if (st !== edBarSt && edBarSt !== '') {   // changement d'état : la barre entre, la coche se trace
-    const bar = host.querySelector('.ed-rc,.ed-rec'); if (bar && !mReduced()) bar.classList.add('enter');
+    const bar = host.querySelector('.ed-rc,.ed-rcard'); if (bar && !mReduced()) bar.classList.add('enter');
   }
   edBarSt = st;
   if (st === 'rec' && rc.t0) {   // jauge de la prise (garde-fou 90 s), reprise à l'instant écoulé
