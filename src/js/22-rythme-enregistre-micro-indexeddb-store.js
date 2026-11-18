@@ -162,13 +162,10 @@ async function rcStopped(me) {
   if (me.buf.duration < .4) { toast('Trop court, réessaie', true); if (me.inline) { rcClose(); edBar(); return; } me.stage = 'idle'; rcRender(); return; }
   me.start = 0; me.end = me.buf.duration; me.isNew = true; me.peaks = rcPeaks(me.buf); me.stage = 'trim';
   if (me.inline) {   // éditeur : la prise entière est gardée tout de suite, et le rythme est proposé en flèches s'il n'y en a pas encore
-    let heard = false, old = null;   // le rythme entendu remplace l'ancien ; « × » dans l'écran de correction remet l'ancien
-    try { const pp = rbPart(me.ctx, me.part); if (pp && wayOf(pp) === 'rh') { const r = rhFromTake(me.buf, draft && draft.bpm); if (r) { heard = true; old = pp.rhythm ? clone(pp.rhythm) : null; pp.rhythm = r.rhythm; if (draft && !draft.bpm) draft.bpm = r.bpm; } } } catch (e) {}
-    const ctx = me.ctx, part = me.part;
-    rcSave().then(() => {
-      if (!heard) { toast('Ta prise est gardée. Je n’ai pas reconnu les coups : saisis le rythme à la main si besoin'); return; }
-      weOpen(ctx, part); if (we) { we.heard = true; we.snap.rhythm = old; weRender(); }
-    });
+    // le but : ta prise audio. Les flèches sont un bonus : proposées seulement si la partie n'a pas de rythme, ou un rythme lui-même proposé par une prise
+    let heard = false;
+    try { const pp = rbPart(me.ctx, me.part); if (pp && wayOf(pp) === 'rh' && (!rhHas(pp.rhythm) || pp.rhAuto)) { const r = rhFromTake(me.buf, draft && draft.bpm); if (r) { heard = true; pp.rhythm = r.rhythm; pp.rhAuto = true; if (draft && !draft.bpm) draft.bpm = r.bpm; } } } catch (e) {}
+    rcSave().then(() => { if (heard) toast('Prise gardée. Flèches proposées : touche une case pour la corriger'); });
     return; }
   rcRender();
 }

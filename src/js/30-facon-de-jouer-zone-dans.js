@@ -22,11 +22,12 @@ function rbHTML(ctx, i) {
   if (w !== 'none') {
     const arp = w === 'arp', has = arp ? arpHas(p.arp) : rhHas(p.rhythm);
     const prev = i > 0 && rbPart(ctx, i - 1), pk = arp ? 'arp' : 'rhythm';
-    h += `<div class="rb-lane"><div class="rb-rib" role="button" tabindex="0" onclick="weOpen(${a})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();weOpen(${a})}" aria-label="${has ? 'Modifier' : 'Saisir'} ${arp ? 'l’arpège' : 'le rythme'} de la partie">
+    h += `<div class="rb-lane"><div class="rb-rib" role="button" tabindex="0" onclick="rbRibTap(event,${a})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();weOpen(${a})}" aria-label="${has ? 'Modifier' : 'Saisir'} ${arp ? 'l’arpège' : 'le rythme'} de la partie">
       <span class="rb-ll">${arp ? 'Arpège' : 'Rythme'}<i>✎</i></span>
       ${has ? `<div class="rb-view">${arp ? arpRibbonHTML(p.arp, false, {mini: true, cursor: l, chord: p.chords[0]}) : rhythmSVG(p.rhythm, false, {mini: true, cursor: l})}</div>`
             : `<span class="rb-emp">Pas encore ${arp ? 'd’arpège' : 'de rythme'}<b>Saisir ›</b></span>`}</div>
       ${has ? `<button type="button" class="rb-play rb-pl-r" data-ctx="${ctx}" data-i="${i}" id="${id}-play" onclick="rbPlay(${a})" aria-label="Écouter"></button>` : ''}</div>`;
+    if (!arp && has && p.rhAuto) h += `<p class="rb-auto">Flèches devinées d’après ta prise : touche une case pour la corriger.</p>`;
     if (prev && pWay(prev) === (arp ? 'arp' : 'rh') && JSON.stringify(prev[pk]) !== JSON.stringify(p[pk]))
       h += `<button type="button" class="rb-same" onclick="rbSame(${a})">Même ${arp ? 'arpège' : 'rythme'} que la partie d’avant</button>`;
   }
@@ -39,6 +40,18 @@ function rbHTML(ctx, i) {
       : `<button type="button" class="rb-lnk rb-recl" onclick="rbRec(${a})"><span class="rb-rd"></span>Je le joue à la guitare<small>l’app garde ta prise et la rejoue en boucle</small></button>`;
   }
   return h + '</div>';
+}
+// Aperçu du rythme : toucher une case la corrige sur place (vide → ↓/↑ → l'autre sens → vide) ; le reste (« Rythme ✎ ») ouvre l'éditeur complet
+function rbRibTap(e, ctx, i) {
+  const p = rbPart(ctx, i), c = e.target.closest('.rb-view .rgc[data-k]');
+  if (!p || !c || wayOf(p) !== 'rh' || !rhHas(p.rhythm)) { weOpen(ctx, i); return; }
+  const r = rhNorm(p.rhythm), k = +c.dataset.k, spb = rhSpb(r.mes, r.res), x = r.cells[k];
+  const auto = rhAutoDir(spb, k % spb), other = auto === 'D' ? 'U' : 'D';
+  r.cells[k] = !x ? {d: auto, a: 1} : x.d === auto ? {d: other, a: x.a} : null;
+  p.rhAuto = false;   // corrigé à la main : une nouvelle prise ne l'écrasera plus
+  if (ctx === 'at') atMark();
+  const el = $(rbId(ctx, i)); if (el) { el.outerHTML = rbHTML(ctx, i); rbSyncAll(); }
+  const n = document.querySelector(`#${rbId(ctx, i)} .rb-view .rgc[data-k="${k}"]`); if (n) mAnim(n, [{transform: 'scale(.8)'}, {transform: 'none'}], {duration: 160, easing: 'cubic-bezier(.22,.8,.3,1)'});
 }
 function rbSyncAll() {
   rbSyncPlay(); rbSyncRec();
@@ -232,7 +245,7 @@ function weRibUp() { if (we) we.drag = null; }
 function weApplyCell(k) {
   const d = we.drag; if (!d || d.seen.has(k)) return;
   d.seen.add(k);
-  const r = rhNorm(wePart().rhythm);
+  const r = rhNorm(wePart().rhythm); wePart().rhAuto = false;
   if (k === d.cyc && d.seen.size === 1) {   // la case touchée tourne ; si on glisse ensuite, les autres cases prennent le même sort (posé ou vidé)
     const x = r.cells[k], auto = weBrush(r, k).d, other = auto === 'D' ? 'U' : 'D';
     r.cells[k] = !x ? {d: auto, a: 1} : x.d === auto ? {d: other, a: x.a} : null;

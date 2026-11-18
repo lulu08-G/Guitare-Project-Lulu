@@ -141,3 +141,4 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-tempo-mini:hover{color:var(--cream);border-color:var(--cream3)}
 .ed-tempo-mini::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
+.rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
