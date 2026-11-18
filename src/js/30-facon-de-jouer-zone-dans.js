@@ -155,9 +155,16 @@ function weClose(ok) {
 }
 document.addEventListener('keydown', e => { if (we && e.key === 'Escape') { e.preventDefault(); weClose(false); } });
 const weChanged = () => { if (we && we.ctx === 'at') atMark(); };
-function weTop(p) {
+function weTop(p) {   // refonte : Rythme | Arpège en onglets, « Valider »
+  const seg = k => `<button type="button" role="tab" aria-selected="${we.kind === k}" class="${we.kind === k ? 'on' : ''}" onclick="weKind('${k}')">${k === 'arp' ? 'Arpège' : 'Rythme'}</button>`;
   return `<div class="we-top"><button type="button" class="we-x" onclick="weClose(false)" aria-label="Annuler et fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <h2>${we.kind === 'arp' ? 'Arpège' : 'Rythme'}${p.name ? ' · ' + esc(p.name) : ''}</h2><button type="button" class="we-ok" onclick="weClose(true)">OK</button></div>`;
+    <div class="we-seg" role="tablist" aria-label="${p.name ? esc(p.name) : 'La partie'}">${seg('rh')}${seg('arp')}</div><button type="button" class="we-ok" onclick="weClose(true)">Valider</button></div>`;
+}
+function weKind(k) {   // passer du rythme à l'arpège (et retour) sans quitter
+  const p = wePart(); if (!p || we.kind === k) return;
+  stopPlay(); we.kind = k;
+  if (k === 'arp') { if (!p.arp) p.arp = arpEmpty(); p.way = 'arp'; } else { p.rhythm = p.rhythm ? rhNorm(p.rhythm) : rbEmpty(); p.way = 'rh'; }
+  weChanged(); weRender();
 }
 function weRender() {
   const p = wePart(), s = weSheet(); if (!p) return;
@@ -175,11 +182,11 @@ function weRender() {
         <div class="rb-sels" id="we-sets" ${we.sets ? '' : 'hidden'}>
           <label>Mesure<select onchange="weOpt('mes',this.value)">${['4/4', '3/4', '6/8'].map(m => `<option ${r.mes === m ? 'selected' : ''}>${m}</option>`).join('')}</select></label>
           <label>Subdivision<select onchange="weOpt('res',+this.value)">${[[8, 'Croches'], [12, 'Triolets'], [16, 'Doubles croches']].map(([v, t]) => `<option value="${v}" ${r.res === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label></div></div>
-      <div class="we-hint">${we.heard ? '<b>Voilà ce que j’ai entendu.</b> Une flèche ne colle pas ? ' : ''}<b>Touche</b> une case : bas, puis haut, puis rien. <b>Glisse</b> pour en poser plusieurs.</div>
+      ${mediBulle('neutre', `${we.heard ? 'Voilà ce que j’ai entendu. Une flèche ne colle pas ? ' : ''}Touche une case : bas, puis haut, puis rien. Glisse pour en poser plusieurs.`, {size: 46, cls: 'we-medi'})}
       <div class="we-tools" role="group" aria-label="Pinceau">${WE_TOOLS.map(([k, t, ic]) => `<button type="button" class="we-tool${we.tool === k ? ' on' : ''}" aria-pressed="${we.tool === k}" onclick="weTool('${k}')"><span>${ic}</span>${t}</button>`).join('')}</div>
       ${play}<div class="we-mm"><span>Son</span>${mmBtn('learn')}</div>`;
   } else {
-    h += `<div class="we-sec">Choisis un motif</div><div class="we-motifs" id="we-motifs"></div>
+    h += `${mediBulle('neutre', 'Commence par la basse : la corde la plus grave de l’accord. Puis touche les notes une à une.', {size: 46, cls: 'we-medi'})}<div class="we-sec">Partir d’un arpège connu</div><div class="we-motifs" id="we-motifs"></div>
       <div class="we-sec">Affiner (touche une case)</div><div class="we-card" id="we-grid"></div>
       <div class="we-bass"><span>Basse</span><div class="rb-seg sm" role="group" aria-label="Corde de la basse" id="we-bass"></div></div>
       <p class="we-note">Auto : la corde grave de l’accord (Do = 5, Mi = 6…).</p>${play}`;

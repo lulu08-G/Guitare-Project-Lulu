@@ -445,3 +445,18 @@ body.mj-on{overflow:hidden}
 .lib-c2 svg{width:80px;height:auto}
 .lib-c2:active{transform:scale(.96)}
 .lib-n,.lib-none{font-size:13px;color:var(--cream3);margin:0 0 10px}
+
+/* ── Rythme / arpège à la main ── */
+.we-seg{flex:1;display:flex;justify-content:center}
+.we-seg{max-width:220px;margin:0 auto;height:44px;padding:4px;background:var(--card);border-radius:22px;box-sizing:border-box;display:grid;grid-template-columns:1fr 1fr}
+.we-seg button{border-radius:18px;background:none;color:var(--cream);font-size:14px;font-weight:600;border:0}
+.we-seg button.on{background:var(--cream);color:var(--bg);font-weight:700}
+#we .we-x{background:var(--card)}
+#we .we-ok{height:44px;min-width:0;padding:0 16px;border-radius:22px;font-size:15px;font-weight:700}
+.we-medi{margin:10px 0 4px}.we-medi .bulle{font-size:14px}
+#we .we-sec{font:600 14px var(--sans);text-transform:none;letter-spacing:0;color:var(--cream3)}
+#we .we-card{background:var(--card);border:0;border-radius:28px}
+#we .we-chip{height:40px;border-radius:20px;background:var(--card);border:0;color:var(--cream);font-size:14px;font-weight:600}
+#we .we-tool{border:0;border-radius:18px;background:var(--card)}
+#we .we-tool.on{background:var(--bulle);box-shadow:inset 0 0 0 2px var(--gold)}
+#we .we-listen{height:64px;border-radius:32px}
