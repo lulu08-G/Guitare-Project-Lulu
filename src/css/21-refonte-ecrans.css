@@ -193,3 +193,51 @@ body.mj-on{overflow:hidden}
 @keyframes mdDance{0%{transform:translateY(0) rotate(-8deg) scale(1.1,.88)}12%{transform:translateY(0) rotate(-8deg) scale(.97,1.04)}30%{transform:translateY(-12px) rotate(-2deg)}50%{transform:translateY(0) rotate(8deg) scale(1.1,.88)}62%{transform:translateY(0) rotate(8deg) scale(.97,1.04)}80%{transform:translateY(-12px) rotate(2deg)}100%{transform:translateY(0) rotate(-8deg) scale(1.1,.88)}}
 #mj:not(.playing) .medi.a-dance .mv{animation-play-state:paused}
 @media(prefers-reduced-motion:reduce){.medi.a-dance .mv,.mj-big{animation:none}}
+
+/* ── Accordeur : Médi est l'aiguille ── */
+.tn{display:flex;flex-direction:column;align-items:center;gap:14px;padding-bottom:40px}
+.tn-top{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 0 0}
+.tn-top h1{font:800 32px var(--display);letter-spacing:-.02em;color:var(--cream)}
+.tn-auto{height:44px;padding:0 6px 0 14px;border-radius:22px;background:var(--card);color:var(--cream);font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.tn-auto .sw{width:40px;height:28px;border-radius:14px;background:var(--card3);position:relative;display:block;transition:background .2s}
+.tn-auto .sw i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:11px;background:var(--cream3);transition:transform .2s var(--ease-out),background .2s}
+.tn-auto.on .sw{background:var(--gold)}.tn-auto.on .sw i{transform:translateX(12px);background:var(--ink)}
+.tn-tun{font-size:13px;color:var(--cream3)}.tn-tun b{color:var(--cream);font-weight:600;margin-left:4px}
+.tn-stage{position:relative;width:350px;max-width:100%;aspect-ratio:350/270}
+.tn-arc{position:absolute;inset:0 0 auto 0;width:100%;height:auto}
+.tn-arc text{fill:var(--cream3);font:600 13px var(--sans)}
+#tn-dot{transform-box:view-box;transform-origin:175px 185px;transform:rotate(0);transition:transform .22s var(--ease-out)}
+#tn-dot circle{fill:var(--gold)}
+#tn-ring{transform-box:fill-box;transform-origin:50% 50%;opacity:0}
+#tn-ring.go{animation:tnRing .7s ease-out}
+@keyframes tnRing{0%{transform:scale(.6);opacity:1}100%{transform:scale(2.2);opacity:0}}
+.tn-medi{position:absolute;left:30%;top:34%;width:40%;display:flex;justify-content:center;transform-origin:50% 100%;transition:transform .25s var(--ease-out)}
+.tn-medi .medi{width:100%;height:auto;max-width:140px}
+.tn-note{min-height:84px;display:flex;align-items:baseline;justify-content:center;gap:10px}
+.tn-n{font:800 80px/1 var(--display);letter-spacing:-.04em;color:var(--cream)}
+.tn-n.ok{color:var(--gold)}.tn-n.off{color:var(--cream4);font-size:56px}
+.tn-s{display:flex;flex-direction:column;gap:2px;font-size:15px;font-weight:600;color:var(--cream3)}
+.tn-s b{font-size:20px;color:var(--cream)}.tn-s b.c{color:var(--gold)}
+.tn-help{width:100%;display:flex;justify-content:center}
+.tn-b{border-radius:18px;text-align:center;max-width:300px}
+.tn-aide{width:100%;border-radius:22px;display:flex;flex-direction:column;gap:12px;animation:caOut .45s cubic-bezier(.2,.9,.3,1.2);transform-origin:50% 0}
+.tn-gtr{width:100%;height:auto}
+.tn-gtr .tn-gl{fill:var(--gold);font:700 13px var(--sans)}.tn-gtr .tn-gs{fill:var(--cream3);font:600 11px var(--sans)}
+.tn-vib{animation:tnVib .09s linear infinite;transform-box:fill-box}
+@keyframes tnVib{50%{transform:translateY(1.2px)}}
+.tn-aide-b{display:flex;align-items:center;gap:10px}
+.tn-aide-b .btn{min-height:44px;border-radius:22px;box-shadow:none}
+.tn-off{min-height:44px;padding:0 8px;background:none;color:var(--bulle-ink);font-size:14px;font-weight:600;text-decoration:underline}
+.tn-strings{width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.tn-strings button{height:64px;border-radius:18px;background:var(--card);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.tn-strings b{font:800 17px var(--display)}.tn-strings small{font-size:10px;font-weight:600;color:var(--cream3)}
+.tn-strings button.on{background:var(--gold);color:var(--ink)}.tn-strings button.on small{color:var(--ink)}
+.tn-strings button.ok{background:var(--bulle);color:var(--bulle-ink)}
+.tn-strings svg{width:12px;height:10px;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tn-mic{width:100%;height:60px;border-radius:30px;background:var(--gold);color:var(--ink);font:800 17px var(--display);display:flex;align-items:center;justify-content:center;gap:10px}
+.tn-mic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tn-mic.on{background:var(--card);color:var(--cream)}.tn-mic.on svg{fill:currentColor;stroke:none}
+@media(prefers-reduced-motion:reduce){#tn-dot,.tn-medi{transition:none}.tn-vib,#tn-ring.go,.tn-aide{animation:none}}
+.tn-stage{aspect-ratio:350/236}
+.tn-top{gap:12px}.tn-top .tn-tun{flex:1;text-align:right}
+@media(max-width:899px){.tn-top h1{display:none}.tn-top{padding-top:6px}.tn-top .tn-tun{text-align:left}}
