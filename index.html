@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   /* ── IDENTITÉ « Studio » : fond sombre neutre, surfaces à peine relevées, un seul accent orange ── */
@@ -2258,6 +2258,92 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .hm-top .tun-btn{background:var(--card2);margin-left:auto}@media(min-width:900px){.hm-top .tun-btn{display:none}}
 .bk-nag{display:flex;align-items:center;gap:12px;padding:12px 14px;margin:4px 0 6px;border-radius:14px;background:var(--acc-soft);border:1px solid rgba(255,138,42,.35)}
 .bk-nag span{flex:1;min-width:0;font-size:13px;color:var(--cream2)}.bk-nag b{display:block;font-size:14px;color:var(--cream)}
+/* ═══════ REFONTE « MÉDI » (maquettes validées par Lucas le 18/11/2026, planche « Refonte ») ═══════
+   Couche posée au-dessus de tout : jetons, police des titres, barre du bas, Médi et sa bulle. */
+:root{
+  --bg:#121014; --bg2:#17151a; --card:#1d1b21; --card2:#28252c; --card3:#34303a;
+  --border:rgba(255,255,255,.06); --border2:rgba(255,255,255,.12);
+  --cream:#f6f1ea; --cream2:#c9c4cf; --cream3:#a19ca8; --cream4:#6b6670;
+  --nav-bg:#17151a; --paper:#1d1b21; --paper-ink:#f6f1ea; --acc-soft:#2e1f12;
+  --bulle:#2e1f12; --bulle-ink:#ffe2c6;
+  --display:'Bricolage Grotesque','Inter',system-ui,sans-serif; --serif:var(--display);
+  --r:22px; --rs:16px; --ra:22px; --rb:20px;
+}
+:is(.pinned-card,.card,.pv-block,.fcard,.qc-sugg button,.qc-parts button,.lib-card,.modal,.coffre-block,.exo-card,.fl-card,.fl-rh,.fl-bpm,.fl-anc,.rc-card,.sg-cell,.rb-take,.nb,.we-card,.we-tool,.we-motif,.wpc,.part-card.pc,.ed-ct,.ed-rc,.sub-cell,.tool-card,.tt-plat,.tt-site,.tt-yt,.at-fld,.at-mic,.at-links,.at-card,.at-banner,.at-ptools input,.at-ch,.cp-panel,.at-roots button,.at-txt input,.at-rh,.at-in input,.at-pinrow,.at-lyr textarea,#v-sheet .chord-cell,.sv-reccard,.sv-bpm2,#v-sheet.all.compact .chord-cell,.sv-pop,#pc-pill,.hm-menu .pop){
+  --bg:#1d1b21; --bg2:#221f26; --card:#1d1b21; --card2:#28252c; --card3:#34303a;
+}
+body{background:var(--bg);color:var(--cream2)}
+#app-shell{overflow-x:clip}   /* une vue qui glisse en entrant ne crée jamais de défilement horizontal */
+h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
+.hm-top h1{font-weight:800;letter-spacing:-.02em}
+
+/* ── Médi (mascotte) : un médiator penché de 14°, deux yeux, rien d'autre ── */
+.medi{display:block;flex:none;overflow:visible}
+.medi .mb{fill:var(--gold)}.medi .me{fill:var(--ink)}.medi .ms{fill:none;stroke:var(--ink);stroke-width:10;stroke-linecap:round}
+.medi .mv{transform-box:fill-box;transform-origin:50% 100%}
+.medi .mc{transform-box:fill-box;transform-origin:50% 50%}
+.medi.a-breathe .mv{animation:mdBreathe 2.6s ease-in-out infinite}
+.medi.a-breathe .mc,.medi.a-blink .mc{animation:mdBlink 4.2s linear infinite}
+.medi.a-jump .mv{animation:mdJump 1.4s cubic-bezier(.3,.7,.4,1) 1}
+.medi.a-tilt .mv{animation:mdTilt 3.2s ease-in-out infinite}
+.medi.a-look .mc{animation:mdLook 3.2s ease-in-out infinite}
+.medi.a-hop .mv{animation:mdHop var(--beat,.6667s) linear infinite}
+@keyframes mdBreathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-4px) scale(1.015,.985)}}
+@keyframes mdBlink{0%,90%,96%,100%{transform:scaleY(1)}93%{transform:scaleY(.08)}}
+@keyframes mdJump{0%{transform:translateY(0) scale(1,1)}15%{transform:translateY(0) scale(1.1,.88)}40%{transform:translateY(-22px) scale(.95,1.06)}62%{transform:translateY(0) scale(1.12,.86)}75%{transform:translateY(0) scale(.97,1.03)}88%,100%{transform:translateY(0) scale(1,1)}}
+@keyframes mdTilt{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes mdLook{0%,100%{transform:translateX(0)}25%,40%{transform:translateX(-10px)}65%,80%{transform:translateX(10px)}}
+@keyframes mdHop{0%{transform:translateY(0) scale(1.14,.84)}12%{transform:translateY(0) scale(.97,1.04)}45%{transform:translateY(-18px) scale(.98,1.03)}85%{transform:translateY(-2px) scale(1,1)}100%{transform:translateY(0) scale(1.14,.84)}}
+
+/* ── la bulle de Médi : sa voix, deux phrases maximum ── */
+.bulle{background:var(--bulle);color:var(--bulle-ink);border-radius:18px 18px 18px 6px;padding:12px 14px;font-size:15px;line-height:1.4;font-weight:500}
+.medi-row{display:flex;align-items:flex-end;gap:10px}
+.medi-row .bulle{flex:1;min-width:0}
+
+/* ── barre du bas (téléphone) ── */
+@media(max-width:899px){
+  #tabbar{height:calc(76px + env(safe-area-inset-bottom));padding:0 6px env(safe-area-inset-bottom);border-top:0;background:var(--nav-bg);display:flex;align-items:center;box-sizing:border-box;overflow:hidden}
+  #tabbar button{flex:1 1 0;min-width:0}
+  #tabbar button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #tabbar button{color:var(--cream3);font-size:11px;font-weight:600;gap:5px;min-height:56px}
+  #tabbar button.on{color:var(--gold)}
+  #tabbar button .ic-f{display:none}
+  #tabbar button.on .ic-o{display:none}#tabbar button.on .ic-f{display:block}
+  #tabbar .ic-f .fl{fill:var(--gold);stroke:none}#tabbar .ic-f .ink{fill:var(--ink);stroke:none}
+  #tabbar .ic-f .inks{stroke:var(--ink)}#tabbar .ic-f .flo{stroke:var(--gold);stroke-width:2.2}
+  #tabbar button.tb-create{flex:none;flex-direction:row;gap:8px;height:50px;min-height:50px;padding:0 16px 0 8px;margin:0 4px;border-radius:25px;background:var(--gold);color:var(--ink);font:800 16px/1 var(--display)}
+  #tabbar button.tb-create.on{color:var(--ink);box-shadow:none}
+  #tabbar .tb-pick{width:32px;height:34px;stroke:none!important;fill:none}
+  #tabbar .tb-pick path:first-child{fill:var(--ink)}
+}
+.tb-pick .tb-plus,.nl-pick .tb-plus{fill:none;stroke:var(--gold);stroke-width:20;stroke-linecap:round}
+.tb-pick path:not(.tb-plus),.nl-pick path:not(.tb-plus){fill:var(--ink)}
+.nl-pick{width:24px;height:26px;stroke:none!important}
+/* gestes des icônes quand l'onglet devient actif (0,3 s) */
+.tb-pk,.tb-needle,.tb-page,.tb-drop,.tb-head{transform-box:fill-box;transform-origin:50% 50%}
+.tb-pk{transform-origin:50% 90%}
+#tabbar button.on .ic-f{animation:tbPop .32s var(--ease-out)}
+#tb-trouver.on .tb-needle{animation:tbSpin .5s var(--ease-out)}
+#tb-fiches.on .tb-page{animation:tbFlip .32s var(--ease-out)}
+#tb-train.on .tb-drop{animation:tbDrop .36s cubic-bezier(.3,.7,.4,1)}
+#tb-plus.on .tb-head{animation:tbNod .4s var(--ease-out)}
+.tb-create:active,.nl-create:active{transform:scale(.94)}
+.tb-create.strum .tb-pk,.nl-create.strum .tb-pk{animation:tbStrum .45s cubic-bezier(.3,.7,.4,1)}
+@keyframes tbPop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes tbSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes tbFlip{0%{transform:scaleX(1)}45%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+@keyframes tbDrop{0%{transform:translateY(-8px);opacity:0}70%{transform:translateY(1px);opacity:1}100%{transform:translateY(0)}}
+@keyframes tbNod{0%,100%{transform:rotate(0)}35%{transform:rotate(-12deg)}70%{transform:rotate(8deg)}}
+@keyframes tbStrum{0%{transform:rotate(0)}30%{transform:rotate(-26deg)}60%{transform:rotate(16deg)}80%{transform:rotate(-6deg)}100%{transform:rotate(0)}}
+
+/* ── PC : menu de gauche ── */
+@media(min-width:900px){
+  nav{background:var(--nav-bg)}
+  .nav-link.nl-create{border-radius:23px;min-height:46px;font:800 16px var(--display);gap:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .medi .mv,.medi .mc,#tabbar button.on .ic-f,#tabbar .tb-needle,#tabbar .tb-page,#tabbar .tb-drop,#tabbar .tb-head,.tb-pk{animation:none!important}
+}
 </style>
 </head>
 <body>
@@ -2273,9 +2359,9 @@ body:has(#v-ed.on) .toast{bottom:90px}
     <div class="nav-links">
       <button class="nav-link" id="nl-trouver" onclick="go('disc')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.500 8.500l-2 5-5 2 2-5z"/></svg>Découvrir</button>
       <button class="nav-link" id="nl-fiches" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>Fiches</button>
-      <button class="nav-link" id="nl-train" onclick="goTrain()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>S’entraîner</button>
-      <button class="nav-link" id="nl-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>Plus</button>
-      <button class="nav-link nl-create" id="nl-creer" onclick="createAsk(event)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nouvelle fiche</button>
+      <button class="nav-link" id="nl-train" onclick="goTrain()"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="8" height="5" rx="1.2"/><rect x="13" y="6" width="8" height="5" rx="1.2"/><rect x="8" y="13" width="8" height="5" rx="1.2"/></svg>S’entraîner</button>
+      <button class="nav-link" id="nl-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c1-4.500 14-4.500 15 0"/></svg>Moi</button>
+      <button class="nav-link nl-create" id="nl-creer" onclick="createAsk(event)" aria-label="Créer une fiche"><svg class="nl-pick" viewBox="-10 -10 220 240" aria-hidden="true"><g class="tb-pk"><g transform="rotate(-14 100 110)"><path d="M100 214 C88 214 20 128 15 78 C10 32 48 8 100 8 C152 8 190 32 185 78 C180 128 112 214 100 214 Z"/></g><path class="tb-plus" d="M100 54 V130 M62 92 H138"/></g></svg>Créer</button>
     </div>
     <div class="nav-tools"><button type="button" class="tun-btn" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button></div>
   </div>
@@ -2283,11 +2369,11 @@ body:has(#v-ed.on) .toast{bottom:90px}
 
 <div id="tabbar" role="navigation" aria-label="Navigation principale">
   <i id="tb-pill" aria-hidden="true"></i>
-  <button id="tb-trouver" onclick="go('disc')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.500 8.500l-2 5-5 2 2-5z"/></svg><span>Découvrir</span></button>
-  <button id="tb-fiches" onclick="go('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg><span>Fiches</span></button>
-  <button id="tb-creer" class="tb-create" onclick="createAsk(event)" aria-label="Créer une fiche"><span class="tb-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="tb-l">Créer</span></button>
-  <button id="tb-train" onclick="goTrain()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span>S’entraîner</span></button>
-  <button id="tb-plus" onclick="go('plus')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg><span>Plus</span></button>
+  <button id="tb-trouver" class="tb-disc" onclick="go('disc')"><svg class="ic-o" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path class="tb-needle" d="M15.5 8.5 L13.5 13.5 L8.5 15.5 L10.5 10.5 Z"/></svg><svg class="ic-f" viewBox="0 0 24 24" aria-hidden="true"><circle class="fl" cx="12" cy="12" r="9"/><path class="tb-needle ink" d="M15.5 8.5 L13.5 13.5 L8.5 15.5 L10.5 10.5 Z"/></svg><span>Découvrir</span></button>
+  <button id="tb-fiches" class="tb-fic" onclick="go('home')"><svg class="ic-o" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8 H15 M9 12 H15"/></svg><svg class="ic-f" viewBox="0 0 24 24" aria-hidden="true"><g class="tb-page"><rect class="fl" x="5" y="3" width="14" height="18" rx="3"/><path class="inks" d="M9 8 H15 M9 12 H15"/></g></svg><span>Fiches</span></button>
+  <button id="tb-creer" class="tb-create" onclick="createAsk(event)" aria-label="Créer une fiche"><svg class="tb-pick" viewBox="-10 -10 220 240" aria-hidden="true"><g class="tb-pk"><g transform="rotate(-14 100 110)"><path d="M100 214 C88 214 20 128 15 78 C10 32 48 8 100 8 C152 8 190 32 185 78 C180 128 112 214 100 214 Z"/></g><path class="tb-plus" d="M100 54 V130 M62 92 H138"/></g></svg><span class="tb-l">Créer</span></button>
+  <button id="tb-train" class="tb-tr" onclick="goTrain()"><svg class="ic-o" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="8" height="5" rx="1.2"/><rect x="13" y="6" width="8" height="5" rx="1.2"/><rect x="8" y="13" width="8" height="5" rx="1.2"/></svg><svg class="ic-f" viewBox="0 0 24 24" aria-hidden="true"><rect class="fl" x="3" y="13" width="8" height="5" rx="1.2"/><rect class="fl" x="13" y="13" width="8" height="5" rx="1.2"/><rect class="fl tb-drop" x="8" y="6" width="8" height="5" rx="1.2"/></svg><span>S’entraîner</span></button>
+  <button id="tb-plus" class="tb-moi" onclick="go('plus')"><svg class="ic-o" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20 C5.5 15.5 18.5 15.5 19.5 20"/></svg><svg class="ic-f" viewBox="0 0 24 24" aria-hidden="true"><circle class="fl tb-head" cx="12" cy="8" r="4"/><path class="flo" d="M4.5 20 C5.5 15.5 18.5 15.5 19.5 20"/></svg><span>Moi</span></button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -2640,7 +2726,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
 </div>
 <div class="view" id="v-plus">
   <div class="wrap">
-    <div class="hm-top hide-m"><h1>Plus</h1></div>
+    <div class="hm-top"><h1>Moi</h1></div>
     <div id="plus-body"></div>
   </div>
 </div>
@@ -2955,6 +3041,37 @@ function legacyRhythm(id, custom, invert) {
   return r;
 }
 
+/* ═══════ MÉDI, la mascotte (refonte du 18/11/2026) ═══════
+   mediSVG(expression, {size, anim, label}) rend le personnage en SVG.
+   Expressions : neutre, clin, contente, curieuse, concentree.
+   Animations (CSS, couche 20-refonte-medi) : breathe, blink, jump, tilt, look, hop.
+   Règles de la charte : une seule fois par écran, jamais pendant qu'on joue une fiche, jamais sous 24 px. */
+const MEDI_BODY = 'M100 214 C88 214 20 128 15 78 C10 32 48 8 100 8 C152 8 190 32 185 78 C180 128 112 214 100 214 Z';
+const MEDI_EYES = {
+  neutre: '<rect class="me" x="72" y="64" width="20" height="42" rx="10"/><rect class="me" x="124" y="64" width="20" height="42" rx="10"/>',
+  clin: '<rect class="me" x="72" y="64" width="20" height="42" rx="10"/><path class="ms" d="M122 90 Q134 72 146 90"/>',
+  contente: '<path class="ms" d="M70 92 Q82 74 94 92"/><path class="ms" d="M122 92 Q134 74 146 92"/>',
+  curieuse: '<rect class="me" x="76" y="52" width="20" height="42" rx="10"/><rect class="me" x="128" y="52" width="20" height="42" rx="10"/>',
+  concentree: '<rect class="me" x="62" y="62" width="20" height="38" rx="10"/><rect class="me" x="114" y="62" width="20" height="38" rx="10"/>'
+};
+const MEDI_LABEL = {neutre: 'Médi', clin: 'Médi fait un clin d’œil', contente: 'Médi est contente', curieuse: 'Médi est curieuse', concentree: 'Médi écoute'};
+function mediSVG(expr = 'neutre', o = {}) {
+  const size = Math.max(24, o.size || 64), anim = o.anim || 'breathe', eyes = MEDI_EYES[expr] || MEDI_EYES.neutre;
+  const label = o.label || MEDI_LABEL[expr] || 'Médi';
+  return `<svg class="medi a-${anim}" width="${size}" height="${Math.round(size * 250 / 240)}" viewBox="-20 -10 240 250" role="img" aria-label="${label}">`
+    + `<g class="mv"><g transform="rotate(-14 100 110)"><path class="mb" d="${MEDI_BODY}"/><g class="mc">${eyes}</g></g></g></svg>`;
+}
+// Médi + sa bulle, sur une ligne
+function mediBulle(expr, html, o = {}) {
+  return `<div class="medi-row${o.cls ? ' ' + o.cls : ''}">${mediSVG(expr, o)}<div class="bulle">${html}</div></div>`;
+}
+// Le bouton Créer « gratte » au toucher
+document.addEventListener('pointerdown', e => {
+  const b = e.target.closest && e.target.closest('.tb-create,.nl-create');
+  if (!b) return;
+  b.classList.remove('strum'); void b.offsetWidth; b.classList.add('strum');
+  clearTimeout(b._st); b._st = setTimeout(() => b.classList.remove('strum'), 500);
+});
 /* ═══════ SVG: CHORD DIAGRAM ═══════ */
 function chordSVG(ch, opt) {
   opt = opt || {};
@@ -7761,7 +7878,7 @@ function go(v) {
 
 /* ═══════ 5 ESPACES : Fiches · Trouver · Créer · S'entraîner · Plus ═══════ */
 const SPACE_OF = {disc:'trouver', home:'fiches', sheet:'fiches', atelier:'plus', tuto:'plus', tools:'plus', privacy:'plus', blocs:'train', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
-const SPACE_TITLE = {fiches:'Fiches', trouver:'Découvrir', creer:'Créer', train:'S’entraîner', plus:'Plus'};
+const SPACE_TITLE = {fiches:'Fiches', trouver:'Découvrir', creer:'Créer', train:'S’entraîner', plus:'Moi'};
 const VIEW_TITLE = {atelier:'Tutos', tuto:'Recherche de tutos', tools:'Sites utiles', admin:'Admin', privacy:'Confidentialité', lib:'Accords', metro:'Métronome', tuner:'Accordeur', import:'Importer', ed:'Fiche'};
 function navMark(v) {
   let sp = SPACE_OF[v] || 'fiches';

@@ -1,0 +1,86 @@
+/* ═══════ REFONTE « MÉDI » (maquettes validées par Lucas le 18/11/2026, planche « Refonte ») ═══════
+   Couche posée au-dessus de tout : jetons, police des titres, barre du bas, Médi et sa bulle. */
+:root{
+  --bg:#121014; --bg2:#17151a; --card:#1d1b21; --card2:#28252c; --card3:#34303a;
+  --border:rgba(255,255,255,.06); --border2:rgba(255,255,255,.12);
+  --cream:#f6f1ea; --cream2:#c9c4cf; --cream3:#a19ca8; --cream4:#6b6670;
+  --nav-bg:#17151a; --paper:#1d1b21; --paper-ink:#f6f1ea; --acc-soft:#2e1f12;
+  --bulle:#2e1f12; --bulle-ink:#ffe2c6;
+  --display:'Bricolage Grotesque','Inter',system-ui,sans-serif; --serif:var(--display);
+  --r:22px; --rs:16px; --ra:22px; --rb:20px;
+}
+:is(.pinned-card,.card,.pv-block,.fcard,.qc-sugg button,.qc-parts button,.lib-card,.modal,.coffre-block,.exo-card,.fl-card,.fl-rh,.fl-bpm,.fl-anc,.rc-card,.sg-cell,.rb-take,.nb,.we-card,.we-tool,.we-motif,.wpc,.part-card.pc,.ed-ct,.ed-rc,.sub-cell,.tool-card,.tt-plat,.tt-site,.tt-yt,.at-fld,.at-mic,.at-links,.at-card,.at-banner,.at-ptools input,.at-ch,.cp-panel,.at-roots button,.at-txt input,.at-rh,.at-in input,.at-pinrow,.at-lyr textarea,#v-sheet .chord-cell,.sv-reccard,.sv-bpm2,#v-sheet.all.compact .chord-cell,.sv-pop,#pc-pill,.hm-menu .pop){
+  --bg:#1d1b21; --bg2:#221f26; --card:#1d1b21; --card2:#28252c; --card3:#34303a;
+}
+body{background:var(--bg);color:var(--cream2)}
+#app-shell{overflow-x:clip}   /* une vue qui glisse en entrant ne crée jamais de défilement horizontal */
+h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
+.hm-top h1{font-weight:800;letter-spacing:-.02em}
+
+/* ── Médi (mascotte) : un médiator penché de 14°, deux yeux, rien d'autre ── */
+.medi{display:block;flex:none;overflow:visible}
+.medi .mb{fill:var(--gold)}.medi .me{fill:var(--ink)}.medi .ms{fill:none;stroke:var(--ink);stroke-width:10;stroke-linecap:round}
+.medi .mv{transform-box:fill-box;transform-origin:50% 100%}
+.medi .mc{transform-box:fill-box;transform-origin:50% 50%}
+.medi.a-breathe .mv{animation:mdBreathe 2.6s ease-in-out infinite}
+.medi.a-breathe .mc,.medi.a-blink .mc{animation:mdBlink 4.2s linear infinite}
+.medi.a-jump .mv{animation:mdJump 1.4s cubic-bezier(.3,.7,.4,1) 1}
+.medi.a-tilt .mv{animation:mdTilt 3.2s ease-in-out infinite}
+.medi.a-look .mc{animation:mdLook 3.2s ease-in-out infinite}
+.medi.a-hop .mv{animation:mdHop var(--beat,.6667s) linear infinite}
+@keyframes mdBreathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-4px) scale(1.015,.985)}}
+@keyframes mdBlink{0%,90%,96%,100%{transform:scaleY(1)}93%{transform:scaleY(.08)}}
+@keyframes mdJump{0%{transform:translateY(0) scale(1,1)}15%{transform:translateY(0) scale(1.1,.88)}40%{transform:translateY(-22px) scale(.95,1.06)}62%{transform:translateY(0) scale(1.12,.86)}75%{transform:translateY(0) scale(.97,1.03)}88%,100%{transform:translateY(0) scale(1,1)}}
+@keyframes mdTilt{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes mdLook{0%,100%{transform:translateX(0)}25%,40%{transform:translateX(-10px)}65%,80%{transform:translateX(10px)}}
+@keyframes mdHop{0%{transform:translateY(0) scale(1.14,.84)}12%{transform:translateY(0) scale(.97,1.04)}45%{transform:translateY(-18px) scale(.98,1.03)}85%{transform:translateY(-2px) scale(1,1)}100%{transform:translateY(0) scale(1.14,.84)}}
+
+/* ── la bulle de Médi : sa voix, deux phrases maximum ── */
+.bulle{background:var(--bulle);color:var(--bulle-ink);border-radius:18px 18px 18px 6px;padding:12px 14px;font-size:15px;line-height:1.4;font-weight:500}
+.medi-row{display:flex;align-items:flex-end;gap:10px}
+.medi-row .bulle{flex:1;min-width:0}
+
+/* ── barre du bas (téléphone) ── */
+@media(max-width:899px){
+  #tabbar{height:calc(76px + env(safe-area-inset-bottom));padding:0 6px env(safe-area-inset-bottom);border-top:0;background:var(--nav-bg);display:flex;align-items:center;box-sizing:border-box;overflow:hidden}
+  #tabbar button{flex:1 1 0;min-width:0}
+  #tabbar button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #tabbar button{color:var(--cream3);font-size:11px;font-weight:600;gap:5px;min-height:56px}
+  #tabbar button.on{color:var(--gold)}
+  #tabbar button .ic-f{display:none}
+  #tabbar button.on .ic-o{display:none}#tabbar button.on .ic-f{display:block}
+  #tabbar .ic-f .fl{fill:var(--gold);stroke:none}#tabbar .ic-f .ink{fill:var(--ink);stroke:none}
+  #tabbar .ic-f .inks{stroke:var(--ink)}#tabbar .ic-f .flo{stroke:var(--gold);stroke-width:2.2}
+  #tabbar button.tb-create{flex:none;flex-direction:row;gap:8px;height:50px;min-height:50px;padding:0 16px 0 8px;margin:0 4px;border-radius:25px;background:var(--gold);color:var(--ink);font:800 16px/1 var(--display)}
+  #tabbar button.tb-create.on{color:var(--ink);box-shadow:none}
+  #tabbar .tb-pick{width:32px;height:34px;stroke:none!important;fill:none}
+  #tabbar .tb-pick path:first-child{fill:var(--ink)}
+}
+.tb-pick .tb-plus,.nl-pick .tb-plus{fill:none;stroke:var(--gold);stroke-width:20;stroke-linecap:round}
+.tb-pick path:not(.tb-plus),.nl-pick path:not(.tb-plus){fill:var(--ink)}
+.nl-pick{width:24px;height:26px;stroke:none!important}
+/* gestes des icônes quand l'onglet devient actif (0,3 s) */
+.tb-pk,.tb-needle,.tb-page,.tb-drop,.tb-head{transform-box:fill-box;transform-origin:50% 50%}
+.tb-pk{transform-origin:50% 90%}
+#tabbar button.on .ic-f{animation:tbPop .32s var(--ease-out)}
+#tb-trouver.on .tb-needle{animation:tbSpin .5s var(--ease-out)}
+#tb-fiches.on .tb-page{animation:tbFlip .32s var(--ease-out)}
+#tb-train.on .tb-drop{animation:tbDrop .36s cubic-bezier(.3,.7,.4,1)}
+#tb-plus.on .tb-head{animation:tbNod .4s var(--ease-out)}
+.tb-create:active,.nl-create:active{transform:scale(.94)}
+.tb-create.strum .tb-pk,.nl-create.strum .tb-pk{animation:tbStrum .45s cubic-bezier(.3,.7,.4,1)}
+@keyframes tbPop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes tbSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes tbFlip{0%{transform:scaleX(1)}45%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+@keyframes tbDrop{0%{transform:translateY(-8px);opacity:0}70%{transform:translateY(1px);opacity:1}100%{transform:translateY(0)}}
+@keyframes tbNod{0%,100%{transform:rotate(0)}35%{transform:rotate(-12deg)}70%{transform:rotate(8deg)}}
+@keyframes tbStrum{0%{transform:rotate(0)}30%{transform:rotate(-26deg)}60%{transform:rotate(16deg)}80%{transform:rotate(-6deg)}100%{transform:rotate(0)}}
+
+/* ── PC : menu de gauche ── */
+@media(min-width:900px){
+  nav{background:var(--nav-bg)}
+  .nav-link.nl-create{border-radius:23px;min-height:46px;font:800 16px var(--display);gap:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .medi .mv,.medi .mc,#tabbar button.on .ic-f,#tabbar .tb-needle,#tabbar .tb-page,#tabbar .tb-drop,#tabbar .tb-head,.tb-pk{animation:none!important}
+}
