@@ -37,13 +37,16 @@ function renderHome() {
     $('btn-print-t').textContent = k ? `Créer le PDF (${k})` : 'Créer le PDF';
     $('sel-all-btn').textContent = sheets.length && sheets.every(x => selIds.has(x.id)) ? 'Tout décocher' : 'Tout cocher';
     document.body.classList.toggle('sel-on', selMode); }
-  { const bn = $('backup-nag'); if (bn) bn.innerHTML = !selMode && backupDue() ? `<div class="bk-nag"><span><b>Pense à sauvegarder tes fiches</b>Elles ne sont gardées que sur cet appareil.</span><button type="button" class="btn btn-primary btn-sm" onclick="backupAll()">Sauvegarder</button></div>` : ''; }
+  { const bn = $('backup-nag'); if (bn) bn.innerHTML = ''; }   // le rappel de sauvegarde est retiré (refonte du 18/11) : la sauvegarde reste dans le menu ⋯
   $('filt-all').textContent = sheets.length ? `Toutes · ${sheets.length}` : 'Toutes';
-  { const last = !selMode && !q && homeFilter === 'all' && sheets.length > 1 ? sheets.find(x => x.id === LS.get('gms_last')) : null;   // « Reprendre » : la dernière fiche ouverte
-    const lc = last ? [...new Set((last.parts||[]).flatMap(p => p.chords.map(c => c.name)).filter(Boolean))].slice(0, 7).join(' · ') : '';
-    $('resume-wrap').innerHTML = last ? `<div class="sec-lbl">Reprendre</div><div class="resume" role="button" tabindex="0" onclick="viewSheet('${last.id}')" onkeydown="if(event.key==='Enter')viewSheet('${last.id}')">
-      <div class="resume-tx"><b>${esc(last.title)}</b><span>${esc([last.artist && last.artist !== '—' ? last.artist : '', last.capo > 0 ? 'Capo ' + last.capo : '', last.bpm ? last.bpm + ' BPM' : ''].filter(Boolean).join(' · ') || '—')}</span>${lc ? `<i>${esc(lc)}</i>` : ''}</div>
-      <span class="resume-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>` : ''; }
+  { // Médi propose un morceau à retravailler : pas ouvert depuis au moins 4 jours (les favoris d'abord)
+    const seen = LS.get('gms_seen', {}), now = Date.now(), DAY = 864e5;
+    const old = !selMode && !q && homeFilter === 'all' && sheets.length > 2 ? sheets
+      .map(s => ({s, t: seen[s.id] || s.updatedAt || now})).filter(x => now - x.t >= 4 * DAY)
+      .sort((x, y) => (y.s.favorite ? 1 : 0) - (x.s.favorite ? 1 : 0) || x.t - y.t)[0] : null;
+    $('resume-wrap').innerHTML = old ? `<section class="hm-nudge">${mediSVG('neutre', {size: 52, anim: 'look', label: 'Médi cherche un morceau à rejouer'})}
+      <div><p>${esc(old.s.title)} t’attend depuis ${Math.floor((now - old.t) / DAY)} jours. Cinq minutes ce soir ?</p>
+      <button type="button" class="btn btn-primary btn-sm" onclick="viewSheet('${old.s.id}')">Le rejouer</button></div></section>` : ''; }
   const g = $('home-grid');
   if (!list.length) {
     const q0 = q, favE = !q0 && homeFilter === 'fav', recE = !q0 && homeFilter !== 'all' && homeFilter !== 'fav';
@@ -60,16 +63,17 @@ function renderHome() {
   g.innerHTML = list.map(s => {
     const names = [...new Set((s.parts||[]).flatMap(p => p.chords.map(c => c.name)).filter(Boolean))].slice(0, 7).join(' · ');
     const ini = (s.title || '?').trim().replace(/^(le|la|les|l’|l'|un|une|des|the)\s+/i, '').charAt(0).toUpperCase() || '?';
-    const meta = [s.artist && s.artist !== '—' ? s.artist : '', s.capo > 0 ? `Capo ${s.capo}` : '', s.bpm ? `${s.bpm} BPM` : ''].filter(Boolean).join(' · ');
+    const meta = [s.artist && s.artist !== '—' ? s.artist : '', s.capo > 0 ? `capo ${s.capo}` : ''].filter(Boolean).join(', ');
+    const ch1 = sheetChords(s)[0] || ini;
     const ico = (d) => `<svg viewBox="0 0 24 24">${d}</svg>`;
     return `<div class="card c-${s.color||'gold'} ${selIds.has(s.id)?'sel':''}${document.body.classList.contains('playing') && cur && cur.id === s.id ? ' cur' : ''}" data-id="${s.id}" onclick="${selMode?`toggleSel('${s.id}',event)`:`viewSheet('${s.id}')`}">
       <div class="card-row">
         ${selMode ? `<div class="chk ${selIds.has(s.id)?'on':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>` : ''}
-        <div class="tile${s.favorite ? ' a' : ''}" aria-hidden="true">${esc(ini)}</div>
+        <div class="tile${s.favorite ? ' a' : ''}${ch1.length > 3 ? ' sm' : ''}" aria-hidden="true">${esc(ch1)}</div>
         <div class="card-txt">
           <h3>${esc(s.title)}</h3>
           <div class="sub">${esc(meta || '—')}</div>
-          ${names ? `<div class="card-ch">${esc(names)}</div>` : ''}
+          
         </div>
         ${selMode ? '' : `<button class="fav-btn ${s.favorite?'on':''}" onclick="event.stopPropagation();toggleFav('${s.id}',event)" title="Favori" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
         <button class="card-more" onclick="toggleCardActs('${s.id}',event)" aria-label="Plus d’actions" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>`}

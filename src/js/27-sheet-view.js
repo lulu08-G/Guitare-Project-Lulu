@@ -68,7 +68,7 @@ async function viewSheet(id, keepPart) {
   $('sv-stats').innerHTML = [`<button type="button" class="sv-bpm-b" onclick="svTempo(event)" aria-label="Régler le tempo"><b id="rh-bpm-meta">${s.bpm || 90}</b> BPM</button>`, s.tuning && s.tuning !== 'Standard' ? esc(s.tuning) : '', s.difficulty ? esc(dispDiff(s.difficulty)) : ''].filter(Boolean).join(' · ');
   { const b = $('sv-lyr-m'); if (b) { b.style.display = (s.parts || []).some(hasLyr) ? '' : 'none'; b.textContent = s.showLyrics ? 'Masquer les paroles' : 'Afficher les paroles'; } }
   $('sv-capo').textContent = s.capo > 0 ? 'Capo ' + s.capo : '';
-  LS.set('gms_last', id); svMenuClose(); svAaLabel();
+  LS.set('gms_last', id); { const sn = LS.get('gms_seen', {}); sn[id] = Date.now(); LS.set('gms_seen', sn); } svMenuClose(); svAaLabel();
 
   const tabsHost = $('sv-tabs'), partsHost = $('sv-parts');
   const nPts = (s.parts||[]).length, nCh = (s.parts||[]).reduce((n, p) => n + p.chords.length, 0);
