@@ -111,7 +111,7 @@ async function viewSheet(id, keepPart) {
   $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s) + resourcesHTML(s);
-  { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Perso · ${n} élément${n > 1 ? 's' : ''} (mes prises, enregistrements, tutos)` : 'Perso : enregistrer mon rythme, mes tutos'; }
+  { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Perso · ${n} élément${n > 1 ? 's' : ''} (mes prises, enregistrements, tutos)` : 'Perso : enregistrer, mes tutos'; }
   svSync();
   if (!$('v-sheet').classList.contains('on')) go('sheet');
   if (matchMedia('(min-width:1200px)').matches) renderHome();   // PC large : la liste reste affichée à côté, fiche en cours marquée
@@ -367,19 +367,80 @@ function ytId(url) {
   const m = String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
   return m ? m[1] : null;
 }
-// Coffre : « Mes prises de rythme », une ligne par partie (enregistrer, écouter, rogner, refaire, supprimer)
+// Coffre : un seul bouton « Enregistrer » (on choisit ensuite quoi), puis la liste de mes prises de rythme
 function takesHTML(s) {
-  const ps = (s.parts || []).filter(p => p.chords.length || p.rec); if (!ps.length) return '';
   const one = (s.parts || []).length < 2;
   const rows = (s.parts || []).map((p, i) => {
-    if (!p.chords.length && !p.rec) return '';
+    if (!p.rec) return '';
     const nm = one ? 'Le morceau' : esc(p.name || 'Partie ' + (i + 1));
-    const act = p.rec
-      ? `<button type="button" class="btn btn-ghost btn-sm" onclick="recPlayToggle(${i})">Écouter</button><div class="hm-menu"><button type="button" class="btn-icon tk-more" onclick="this.parentNode.classList.toggle('open');event.stopPropagation()" aria-label="Gérer ma prise : ${nm}" aria-haspopup="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button><div class="pop" onclick="event.stopPropagation();this.parentNode.classList.remove('open')"><button type="button" onclick="rcOpen(${i},'trim')">Rogner ma prise</button><button type="button" onclick="rcOpen(${i})">Refaire ma prise</button><button type="button" class="danger" onclick="rcDelete(${i})">Supprimer ma prise</button></div></div>`
-      : `<button type="button" class="btn btn-ghost btn-sm tk-rec" onclick="rcOpen(${i})"><u></u>Enregistrer</button>`;
-    return `<div class="tk-row"><span class="tk-n">${nm}</span><span class="tk-s">${p.rec ? 'Ma prise' : ''}</span><span class="tk-a">${act}</span></div>`;
+    return `<div class="tk-row"><span class="tk-n">${nm}</span><span class="tk-s">Ma prise</span><span class="tk-a"><button type="button" class="btn btn-ghost btn-sm" onclick="recPlayToggle(${i})">Écouter</button><div class="hm-menu"><button type="button" class="btn-icon tk-more" onclick="this.parentNode.classList.toggle('open');event.stopPropagation()" aria-label="Gérer ma prise : ${nm}" aria-haspopup="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button><div class="pop" onclick="event.stopPropagation();this.parentNode.classList.remove('open')"><button type="button" onclick="rcOpen(${i},'trim')">Rogner ma prise</button><button type="button" onclick="rcOpen(${i})">Refaire ma prise</button><button type="button" class="danger" onclick="rcDelete(${i})">Supprimer ma prise</button></div></div></span></div>`;
   }).join('');
-  return `<div class="coffre-sec"><div class="coffre-sec-t">Mes prises de rythme</div><p class="tk-help">Enregistre-toi en train de jouer : le ▶ de la partie jouera ta prise.</p>${rows}</div>`;
+  return `<button type="button" class="btn btn-primary tk-main" onclick="svRecChoose()"><u></u>Enregistrer</button>`
+    + (rows ? `<div class="coffre-sec"><div class="coffre-sec-t">Mes prises de rythme</div>${rows}</div>` : '');
+}
+/* Choix de l'enregistrement : le rythme d'une partie, le morceau en entier (audio) ou une vidéo */
+let svFull = null;
+function svRecChoose(step) {
+  if (!cur) return;
+  const m = $('m-media'), b = $('m-media-body'), ps = cur.parts || [];
+  const opt = (fn, t, d, ico) => `<button type="button" class="rcc-opt" onclick="${fn}"><span class="rcc-ico" aria-hidden="true"><svg viewBox="0 0 24 24">${ico}</svg></span><span><b>${t}</b><small>${d}</small></span></button>`;
+  let h;
+  if (step === 'parts') {
+    h = `<div class="modal-t">Le rythme de quelle partie ?</div><div class="rcc-list">` + ps.map((p, i) => opt(`svRecClose();rcOpen(${i})`, esc(p.name || 'Partie ' + (i + 1)), p.rec ? 'Remplace ma prise actuelle' : (p.chords.map(c => esc(c.name)).join(' ') || 'Partie vide'), '<path d="M8 4v15M4 15l4 4 4-4"/><path d="M16 20V5M12 9l4-4 4 4"/>')).join('') + `</div>`
+      + `<div class="modal-f"><button type="button" class="btn btn-ghost" onclick="svRecChoose()">Retour</button></div>`;
+  } else if (step === 'full') {
+    h = `<div class="modal-t">Le morceau en entier</div><p class="rcc-p">Joue tout le morceau : l’enregistrement est rangé dans tes médias.</p>
+      <div class="rcc-full"><span class="rec-dot"></span><span id="svf-t">0 s</span></div>
+      <div class="modal-f"><button type="button" class="btn btn-ghost" onclick="svFullStop(false)">Annuler</button><button type="button" class="btn btn-primary" onclick="svFullStop(true)">Arrêter et garder</button></div>`;
+  } else {
+    h = `<div class="modal-t">Enregistrer</div><div class="rcc-list">`
+      + opt(ps.length > 1 ? "svRecChoose('parts')" : 'svRecClose();rcOpen(0)', 'Le rythme d’une partie', 'Ta prise remplace la guitare de l’app sur le ▶ de la partie', '<path d="M8 4v15M4 15l4 4 4-4"/><path d="M16 20V5M12 9l4-4 4 4"/>')
+      + opt('svFullStart()', 'Le morceau en entier', 'Un enregistrement audio, rangé dans tes médias', '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/>')
+      + opt("$('svm-video').click()", 'En vidéo', 'Filme-toi avec l’appareil photo', '<rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10l5-3v10l-5-3"/>')
+      + `</div><input type="file" id="svm-video" accept="video/*" capture="user" hidden onchange="svAddVideo(this)">
+      <div class="modal-f"><button type="button" class="btn btn-ghost" onclick="svRecClose()">Fermer</button></div>`;
+  }
+  b.innerHTML = h; m.classList.remove('hide');
+}
+function svRecClose() { if (svFull) svFullStop(false); $('m-media').classList.add('hide'); }
+async function svMediaAdd(blob, kind, name) {
+  const mediaId = uid();
+  await DB.put('media', {id: mediaId, blob, type: blob.type});
+  cur.media = cur.media || [];
+  cur.media.push({id: uid(), mediaId, name, kind});
+  cur.updatedAt = Date.now(); await DB.put('sheets', clone(cur));
+  viewSheet(cur.id, svAll ? null : svPart);
+}
+async function svAddVideo(inp) {
+  const f = inp.files[0]; inp.value = ''; if (!f || !cur) return;
+  const n = (cur.media || []).filter(m => m.kind === 'video').length + 1;
+  svRecClose(); await svMediaAdd(f, 'video', `Ma vidéo ${n}`); toast('Vidéo gardée dans tes médias');
+}
+async function svFullStart() {
+  if (!window.MediaRecorder) { toast('Enregistrement audio non disponible ici', true); return; }
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({audio: true}); } catch (e) { toast('Micro refusé ou indisponible', true); return; }
+  stopPlay();
+  const chunks = [], r = new MediaRecorder(stream), t0 = Date.now();
+  svFull = {r, stream, chunks, keep: false};
+  r.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+  r.onstop = async () => {
+    const F = svFull; svFull = null; clearInterval(F.iv);
+    stream.getTracks().forEach(t => t.stop());
+    if (!F.keep || !chunks.length) return;
+    const n = (cur.media || []).filter(m => m.kind === 'audio').length + 1;
+    await svMediaAdd(new Blob(chunks, {type: r.mimeType || 'audio/webm'}), 'audio', `Morceau entier ${n}`);
+    toast('Enregistrement gardé dans tes médias');
+  };
+  r.start();
+  svRecChoose('full');
+  svFull.iv = setInterval(() => { const e = $('svf-t'); if (e) { const s = Math.round((Date.now() - t0) / 1000); e.textContent = s < 60 ? s + ' s' : Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0'); } }, 250);
+}
+function svFullStop(keep) {
+  if (!svFull) return;
+  svFull.keep = keep;
+  try { svFull.r.stop(); } catch (e) {}
+  $('m-media').classList.add('hide');
 }
 function coffreViewHTML(s) {
   const videos = (s.media||[]).filter(m => m.kind === 'video');
@@ -394,7 +455,7 @@ function coffreViewHTML(s) {
   if (s.memo) h += `<div class="pv-note" style="margin-top:0;margin-bottom:18px">${esc(s.memo)}</div>`;
   h += takesHTML(s);
 
-  h += `<div class="coffre-sec"><div class="coffre-sec-t">Nos videos</div>`;
+  h += `<div class="coffre-sec"><div class="coffre-sec-t">Mes vidéos</div>`;
   h += videos.length ? `<div class="media-list" data-media-host="video"></div>` : `<div class="coffre-empty">Aucune vidéo pour l’instant.</div>`;
   h += `</div>`;
 
@@ -406,11 +467,11 @@ function coffreViewHTML(s) {
         ? `<div class="yt-embed" style="margin-bottom:10px"><iframe src="https://www.youtube.com/embed/${id}" title="${esc(l.title||'Video')}" allowfullscreen loading="lazy"></iframe></div>`
         : `<a class="link-card" href="${esc(l.url)}" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg><span class="lc-t">${esc(l.title || l.url)}</span></a>`;
     }).join('');
-  } else h += `<div class="coffre-empty">Aucun tuto enregistre.</div>`;
+  } else h += `<div class="coffre-empty">Aucun tuto enregistré.</div>`;
   h += `</div>`;
 
-  h += `<div class="coffre-sec"><div class="coffre-sec-t">Variations de rythme</div>`;
-  h += audios.length ? `<div class="media-list" data-media-host="audio"></div>` : `<div class="coffre-empty">Aucune variation enregistrée.</div>`;
+  h += `<div class="coffre-sec"><div class="coffre-sec-t">Mes enregistrements</div>`;
+  h += audios.length ? `<div class="media-list" data-media-host="audio"></div>` : `<div class="coffre-empty">Aucun enregistrement pour l’instant.</div>`;
   h += `</div>`;
 
   if (s.tabImage) h += `<div class="coffre-sec"><div class="coffre-sec-t">Image de tab</div><div data-tabimg="1"></div></div>`;

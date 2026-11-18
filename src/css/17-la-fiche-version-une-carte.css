@@ -87,3 +87,18 @@ body:has(#v-ed.on) .toast{bottom:90px}
   #v-sheet.all .chord-cell svg{max-width:112px;width:100%}
   #v-sheet.all .chord-cell .cn{font-size:26px}
 }
+/* Un seul bouton « Enregistrer » dans le coffre, puis le choix */
+.tk-main{width:100%;min-height:48px;margin:0 0 16px;font-size:16px;gap:8px}
+.tk-main u{width:9px;height:9px;border-radius:50%;background:currentColor;display:inline-block}
+.rcc-list{display:flex;flex-direction:column;gap:8px}
+.rcc-opt{display:flex;align-items:center;gap:14px;width:100%;min-height:64px;padding:12px 14px;border-radius:14px;border:1px solid var(--border);background:var(--card2);color:var(--cream);text-align:left;font:inherit;cursor:pointer}
+.rcc-opt:hover{border-color:var(--border2)}
+.rcc-opt b{display:block;font-size:16px}
+.rcc-opt small{display:block;font-size:13px;color:var(--cream3);margin-top:2px}
+.rcc-ico{width:40px;height:40px;flex:none;border-radius:12px;background:var(--acc-soft);display:flex;align-items:center;justify-content:center}
+.rcc-ico svg{width:22px;height:22px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rcc-p{font-size:14px;color:var(--cream2);margin:-4px 0 14px}
+.rcc-full{display:flex;align-items:center;justify-content:center;gap:10px;font-size:32px;font-weight:700;color:var(--cream);padding:18px 0}
+/* Onglets de parties : pas de barre de défilement visible */
+#v-sheet .sv-tabs{overflow-y:hidden;scrollbar-width:none}
+#v-sheet .sv-tabs::-webkit-scrollbar{display:none}
