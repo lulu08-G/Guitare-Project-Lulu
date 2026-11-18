@@ -127,12 +127,15 @@ function stopMetro() {
 }
 function metroRenderToggleBtn() {
   const b = $('metro-toggle'); if (!b) return;
+  const band = metroState.improMode;
   b.innerHTML = metroPlaying
-    ? '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>'
-    : '<svg viewBox="0 0 24 24"><path d="M8 5.2v13.6a.6.6 0 00.92.5l10.6-6.8a.6.6 0 000-1L8.92 4.7A.6.6 0 008 5.2z" fill="currentColor"/></svg>';
+    ? '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>Stop'
+    : '<svg viewBox="0 0 24 24"><path d="M8 5.2v13.6a.6.6 0 00.92.5l10.6-6.8a.6.6 0 000-1L8.92 4.7A.6.6 0 008 5.2z" fill="currentColor"/></svg>' + (band ? 'Lancer la bande' : 'Jouer');
   b.classList.toggle('on', metroPlaying);
-  b.setAttribute('aria-label', metroPlaying ? 'Arrêter le métronome' : 'Démarrer le métronome');
+  b.setAttribute('aria-label', metroPlaying ? 'Arrêter' : band ? 'Lancer la bande' : 'Démarrer le métronome');
   const st = $('mt-stage'); if (st) st.classList.toggle('playing', metroPlaying);
+  const v = $('v-metro'); if (v) v.classList.toggle('playing', metroPlaying);
+  if (band) renderMetroBand();
   if (metroPlaying) { if (!metroRaf) metroRaf = requestAnimationFrame(metroVisLoop); }
   else { metroVis = []; metroDialReset(); }
 }
@@ -180,6 +183,7 @@ function flashMetroBeat(beatIdx, accent, beatDurSec) {
   document.querySelectorAll('#mt-svg .mt-arc').forEach((a, i) => a.classList.toggle('done', i < beatIdx));
   document.querySelectorAll('#mt-svg .mt-mark').forEach((m, i) => { m.classList.remove('hit'); if (i === beatIdx) { void m.getBoundingClientRect(); m.classList.add('hit'); } });
   document.querySelectorAll('#mt-svg .mt-num').forEach((n, i) => n.classList.toggle('on', i === beatIdx));
+  document.querySelectorAll('#mt-dots i').forEach((d, i) => { d.classList.toggle('on', i === beatIdx); });
   const core = $('mt-core');
   if (core && core.animate && !mReduced()) core.animate(
     [{transform: `scale(${accent ? 1.075 : 1.04})`}, {transform: 'scale(1)'}],
@@ -211,6 +215,8 @@ const METRO_TEMPI = [[60,'Largo'],[76,'Adagio'],[108,'Andante'],[120,'Moderato']
 function metroPaintBpm() {
   const v = metroState.bpm, r = $('metro-bpm-range');
   if ($('mt-bpm')) $('mt-bpm').textContent = v;
+  document.querySelectorAll('#v-metro [data-bpm]').forEach(e => e.textContent = v);
+  const vm = $('v-metro'); if (vm) vm.style.setProperty('--beat', (60 / v).toFixed(3) + 's');
   if ($('mt-name')) $('mt-name').textContent = METRO_TEMPI.find(([m]) => v < m)[1];
   if (r) { r.value = v; r.style.setProperty('--p', ((v - 30) / 250 * 100) + '%'); r.setAttribute('aria-valuetext', v + ' battements par minute'); }
 }
@@ -241,9 +247,10 @@ function metroSetImpro(on) {
   metroState.layers = on
     ? {click:false, kick:true, snare:true, hihat:true, bass:true}
     : {click:true, kick:false, snare:false, hihat:false, bass:false};
-  renderMetroLayerButtons(); renderMetroGrid();
+  const v = $('v-metro'); if (v) v.classList.toggle('band', on);
+  renderMetroLayerButtons(); renderMetroGrid(); metroRenderToggleBtn(); window.scrollTo(0, 0);
 }
-function metroChangeBassString(i) { metroState.bassString = +i; }
+function metroChangeBassString(i) { metroState.bassString = +i; renderMetroBand(); }
 
 /* ── rendering ── */
 function renderMetroLights() {   // le cadran : un arc par temps, des repères par subdivision, un point qui tourne
@@ -261,6 +268,7 @@ function renderMetroLights() {   // le cadran : un arc par temps, des repères p
   for (let k = 0; k < total; k++) { const b = k % metroState.sigCfg.sub === 0, [x, y] = pt(k * 360 / total, R + 13); h += `<circle class="mt-tick${b ? ' b' : ''}" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${b ? 2.6 : 1.5}"/>`; }
   h += marks + `<g id="mt-orb"><circle cx="150" cy="${150 - R}" r="5"/></g>`;
   svg.innerHTML = h;
+  const dt = $('mt-dots'); if (dt) dt.innerHTML = Array.from({length: N}, (_, i) => `<i class="${i ? '' : 'a'}"></i>`).join('');
   const sg = $('mt-sigs'); if (sg) sg.innerHTML = Object.keys(METRO_SIGS).sort().map(k => `<button type="button" class="${metroState.sig === k ? 'on' : ''}" aria-pressed="${metroState.sig === k}" onclick="metroChangeSig('${k}')">${k}</button>`).join('');
 }
 function renderMetroGrid() {
@@ -294,13 +302,34 @@ function renderMetroLayerButtons() {
   $('metro-mode-simple').classList.toggle('on', !metroState.improMode);
   $('metro-mode-impro').classList.toggle('on', metroState.improMode);
   $('mt-band').style.display = metroState.improMode ? '' : 'none';
+  renderMetroBand();
   $('metro-bass-row').style.display = metroState.layers.bass ? '' : 'none';
 }
 function renderMetroBassSelect() {
   $('metro-bass-note').innerHTML = STRINGS.map((n,i) =>
     `<option value="${i}" ${metroState.bassString===i?'selected':''}>${n} — ${STRING_LABELS_FULL[i]}</option>`).join('');
 }
+// La bande : Boum (batterie) et Basile (basse) ; les toucher les fait taire ou revenir
+const BOUM_SVG = (on, cls) => `<svg class="mt-pal ${cls || ''}" viewBox="0 0 200 200" aria-hidden="true"><g class="pv"><rect x="24" y="56" width="152" height="128" rx="30" fill="#8b95ff"/><ellipse cx="100" cy="58" rx="76" ry="22" fill="#c9ceff"/>${on ? '<rect x="70" y="96" width="18" height="36" rx="9" fill="#1a0d02"/><rect x="112" y="96" width="18" height="36" rx="9" fill="#1a0d02"/>' : '<path d="M70 116 H88 M112 116 H130" stroke="#1a0d02" stroke-width="8" stroke-linecap="round"/>'}</g></svg>`;
+const BASILE_SVG = (on, cls) => `<svg class="mt-pal ${cls || ''}" viewBox="20 0 160 250" aria-hidden="true"><g class="pv"><circle cx="52" cy="62" r="11" fill="#2f9e8a"/><circle cx="148" cy="62" r="11" fill="#2f9e8a"/><rect x="52" y="30" width="96" height="210" rx="48" fill="#45cbb2"/>${on ? '<rect x="74" y="92" width="18" height="36" rx="9" fill="#1a0d02"/><rect x="108" y="92" width="18" height="36" rx="9" fill="#1a0d02"/>' : '<path d="M74 112 H92 M108 112 H126" stroke="#1a0d02" stroke-width="8" stroke-linecap="round"/>'}</g></svg>`;
+function metroBandToggle(who) {
+  const L = metroState.layers;
+  if (who === 'boum') { const on = !(L.kick || L.snare || L.hihat); L.kick = L.snare = L.hihat = on; }
+  else L.bass = !L.bass;
+  renderMetroGrid(); renderMetroBand();
+}
+function renderMetroBand() {
+  const fl = $('mt-floor'); if (!fl) return;
+  const L = metroState.layers, boum = !!(L.kick || L.snare || L.hihat), basile = !!L.bass;
+  fl.innerHTML = `<button type="button" class="mt-mate${boum ? '' : ' off'}" aria-pressed="${boum}" aria-label="Boum, la batterie" onclick="metroBandToggle('boum')">${BOUM_SVG(boum, 'boum')}<b>Boum</b><small>${boum ? 'batterie' : 'se tait'}</small></button>
+    <div class="mt-mate lead">${mediSVG('contente', {size: 92, anim: 'nod', label: 'Médi mène la bande'})}<b>Médi</b><small>mène</small></div>
+    <button type="button" class="mt-mate${basile ? '' : ' off'}" aria-pressed="${basile}" aria-label="Basile, la basse" onclick="metroBandToggle('basile')">${BASILE_SVG(basile, 'basile')}<b>Basile</b><small>${basile ? 'basse' : 'se tait'}</small></button>`;
+  const bb = $('mt-bb'); if (bb) bb.textContent = !metroPlaying ? 'J’ai appelé Boum et Basile. Lance la bande et joue par-dessus.' : !boum && !basile ? 'Plus personne ne joue. Rappelle Boum ou Basile.' : 'Touche un pote pour le faire taire, touche-le encore pour qu’il revienne.';
+  const bc = $('mt-bass-chips'); if (bc) bc.innerHTML = ['Mi', 'La', 'Ré', 'Sol'].map((n, i) => `<button type="button" class="${metroState.bassString === i ? 'on' : ''}" aria-pressed="${metroState.bassString === i}" onclick="metroChangeBassString(${i})">${n}</button>`).join('');
+  const mm = $('mt-mates'); if (mm && !mm.innerHTML) mm.innerHTML = BOUM_SVG(true) + BASILE_SVG(true);
+}
 function renderMetroAll() {
+  { const m = $('mt-medi'); if (m && !m.innerHTML) m.innerHTML = mediSVG('neutre', {size: 130, anim: 'hop', label: 'Médi saute sur chaque temps'}); }
   if (!metroState.pattern) buildMetroPattern();
   renderMetroPresetSelect(); renderMetroLights(); renderMetroGrid();
   renderMetroLayerButtons(); renderMetroBassSelect(); metroRenderToggleBtn(); metroPaintBpm();
