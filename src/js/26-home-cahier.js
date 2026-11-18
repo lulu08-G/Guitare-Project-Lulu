@@ -46,10 +46,13 @@ function renderHome() {
       <span class="resume-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>` : ''; }
   const g = $('home-grid');
   if (!list.length) {
+    const q0 = q, favE = !q0 && homeFilter === 'fav', recE = !q0 && homeFilter !== 'all' && homeFilter !== 'fav';
+    const emT = !sheets.length ? 'Le cahier est vide' : favE ? 'Pas encore de favori' : recE ? 'Rien d’ouvert récemment' : 'Aucun résultat';
+    const emP = !sheets.length ? 'Crée ta première fiche : un titre et trois accords suffisent.' : favE ? 'Touche le cœur d’une fiche pour la retrouver ici.' : recE ? 'Les fiches que tu ouvres apparaîtront ici.' : 'Essaie un autre mot ou un autre filtre.';
     g.innerHTML = `<div class="empty">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--cream4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>
-      <h3>${sheets.length ? 'Aucun résultat' : 'Le cahier est vide'}</h3>
-      <p>${sheets.length ? 'Essaie un autre terme ou un autre filtre.' : 'Crée ta première fiche : un titre et trois accords suffisent.'}</p>
+      <h3>${emT}</h3>
+      <p>${emP}</p>
       ${sheets.length ? '' : '<button class="btn btn-primary" onclick="newSheet()">+ Créer une fiche</button>'}
     </div>`;
     return;

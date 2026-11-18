@@ -1361,6 +1361,26 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
   .subnav{padding:0 14px;margin-top:10px;overflow-x:auto}
   #v-atelier .subnav{padding:0 14px}
 }
+/* Confidentialité */
+.priv{max-width:640px}
+.priv h2{font-size:18px;font-weight:700;color:var(--cream);margin:26px 0 6px}
+.priv p,.priv li{font-size:15px;line-height:1.6;color:var(--cream2)}
+.priv ul{padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.priv b{color:var(--cream)}
+.priv-lead{font-size:17px!important;color:var(--cream)!important;margin-top:8px}
+.priv-date{margin-top:24px;font-size:13px!important;color:var(--cream3)!important}
+/* Premier lancement */
+.onb{position:fixed;inset:0;z-index:2000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+.onb-card{position:relative;width:100%;max-width:420px;min-height:420px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding-top:56px}
+.onb-skip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:8px;min-height:44px;padding:0 12px;background:none;border:0;color:var(--cream3);font:inherit;font-size:15px;cursor:pointer}
+.onb-ico{width:96px;height:96px;border-radius:28px;background:var(--card2);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.onb-ico svg{width:44px;height:44px;fill:none;stroke:var(--gold);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.onb h2{font-size:28px;font-weight:800;color:var(--cream);letter-spacing:-.01em}
+.onb p{font-size:16px;line-height:1.55;color:var(--cream2);max-width:340px}
+.onb-dots{display:flex;gap:8px;margin:12px 0 6px}
+.onb-dots i{width:8px;height:8px;border-radius:4px;background:var(--border2)}
+.onb-dots i.on{width:22px;background:var(--gold)}
+.onb-next{min-height:50px;min-width:220px;margin-top:auto;font-size:16px}
 /* ── FICHES : lignes compactes ── */
 .hm-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 0 10px}
 .hm-top h1{font-family:var(--serif);font-size:clamp(24px,3.4vw,32px);font-weight:800;color:var(--cream);line-height:1.1}
@@ -1751,6 +1771,9 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
   #cahier-bar{top:12px}
 }
 
+/* Zones de toucher : au moins 44 × 44 px au doigt (règle des stores), sans changer le dessin des boutons */
+:where(.btn-icon,.tun-btn,.vol-btn,.fav-btn,.card-more,.filt,.sv-tab,.pv-take,.pv-edit,.rs-tg,.pv-pl,.ed-ctx,.bk-done,.bk-back,.lv-fs,.lib-play,.btn-sm,.add-btn,.sv-bpm-b,.rm){position:relative}
+:is(.btn-icon,.tun-btn,.vol-btn,.fav-btn,.card-more,.filt,.sv-tab,.pv-take,.pv-edit,.rs-tg,.pv-pl,.ed-ctx,.bk-done,.bk-back,.lv-fs,.lib-play,.btn-sm,.add-btn,.sv-bpm-b,.rm)::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}
 /* ── Fiches : grand titre, recherche, « Reprendre », liste ── */
 .hm-top{padding:14px 0 14px;gap:6px}
 .hm-top h1{font-family:var(--sans);font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1}
@@ -2518,6 +2541,24 @@ body:has(#v-ed.on) .toast{bottom:90px}
   </div>
 </div>
 
+<div class="view" id="v-privacy">
+  <div class="wrap-narrow priv" style="padding-bottom:60px">
+    <div class="hm-top hide-m"><h1>Confidentialité</h1></div>
+    <p class="priv-lead">Guitar Memory n’a pas de compte, pas de publicité et ne suit pas ce que tu fais. Tes fiches restent sur ton appareil.</p>
+    <h2>Ce qui reste sur ton appareil</h2>
+    <p>Tes fiches, tes enregistrements, tes photos et tes réglages sont rangés dans le stockage de ton navigateur ou de l’app. Rien n’est envoyé à un serveur. Si tu effaces les données du site ou désinstalles l’app, elles disparaissent : pense à « Sauvegarder toutes mes fiches » (menu ⋯ de Fiches). Le fichier de sauvegarde t’appartient, tu le ranges où tu veux.</p>
+    <h2>Le micro</h2>
+    <p>L’app demande le micro seulement quand tu lances l’accordeur ou que tu enregistres. Le son est analysé sur ton appareil et n’est envoyé nulle part.</p>
+    <h2>Ce qui passe par d’autres services</h2>
+    <ul>
+      <li><b>Vidéos YouTube</b> : quand tu regardes un tuto, la vidéo vient de YouTube, qui applique ses propres règles (Google).</li>
+      <li><b>Police d’écriture</b> : la police Inter est chargée depuis Google Fonts, puis gardée sur ton appareil.</li>
+      <li><b>Reconnaissance d’un morceau</b> (écran en rodage) : seulement si tu ajoutes ta propre clé et lances l’écoute, un court extrait est envoyé au service AudD.</li>
+      <li><b>Liens externes</b> : les sites ouverts depuis l’app ont leurs propres règles.</li>
+    </ul>
+    <p class="priv-date">Mise à jour : 18 novembre 2026.</p>
+  </div>
+</div>
 <!-- ══ OUTILS ══ -->
 <div class="view" id="v-tools">
   <div class="wrap">
@@ -7611,9 +7652,9 @@ function go(v) {
 }
 
 /* ═══════ 5 ESPACES : Fiches · Trouver · Créer · S'entraîner · Plus ═══════ */
-const SPACE_OF = {disc:'trouver', home:'fiches', sheet:'fiches', atelier:'plus', tuto:'plus', tools:'plus', blocs:'train', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
+const SPACE_OF = {disc:'trouver', home:'fiches', sheet:'fiches', atelier:'plus', tuto:'plus', tools:'plus', privacy:'plus', blocs:'train', exo:'train', cours:'train', lib:'plus', metro:'plus', tuner:'plus', import:'plus', plus:'plus', admin:'plus'};
 const SPACE_TITLE = {fiches:'Fiches', trouver:'Découvrir', creer:'Créer', train:'S’entraîner', plus:'Plus'};
-const VIEW_TITLE = {atelier:'Tutos', tuto:'Recherche de tutos', tools:'Sites utiles', admin:'Admin', lib:'Accords', metro:'Métronome', tuner:'Accordeur', import:'Importer', ed:'Fiche'};
+const VIEW_TITLE = {atelier:'Tutos', tuto:'Recherche de tutos', tools:'Sites utiles', admin:'Admin', privacy:'Confidentialité', lib:'Accords', metro:'Métronome', tuner:'Accordeur', import:'Importer', ed:'Fiche'};
 function navMark(v) {
   let sp = SPACE_OF[v] || 'fiches';
   if (v === 'ed') sp = (typeof draft !== 'undefined' && draft && sheets.some(x => x.id === draft.id)) ? 'fiches' : 'creer';
@@ -7645,6 +7686,8 @@ function renderSubnav(v) {
   if (sp === 'train') el.classList.add('seg-big');
   const view = $('v-' + v); view.insertBefore(el, view.firstChild);
 }
+// Mode admin (Lucas) : ouvrir l'app avec ?admin dans l'adresse l'active et il est retenu ; ?admin=0 le coupe.
+const IS_ADMIN = (() => { try { const q = new URLSearchParams(location.search); if (q.has('admin')) LS.set('gms_admin', q.get('admin') !== '0'); } catch (e) {} return !!LS.get('gms_admin', false); })();
 function renderPlus() {
   const ic = d => `<svg viewBox="0 0 24 24">${d}</svg>`;
   const items = [
@@ -7652,13 +7695,16 @@ function renderPlus() {
     ['tuner','Accordeur','Accorder la guitare au micro',ic('<path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/>')],
     ['lib','Accords','Bibliothèque de diagrammes',ic('<path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/>')],
     ['metro','Métronome','Tempo et rythmes',ic('<path d="M8 21h8l-2-17h-4z"/><path d="M12 15l5-8"/>')],
-    ['admin','Admin','Les vidéos des cours',ic('<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8M12 17v4"/>')]];
+    ['privacy','Confidentialité','Tes données restent sur ton appareil',ic('<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>')]];
+  if (IS_ADMIN) items.push(['admin','Admin','Les vidéos des cours',ic('<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8M12 17v4"/>')]);
   // écrans pas encore au niveau du cœur de l'appli : rangés ici, hors de la navigation principale
   const beta = [
     ['tuto','Recherche de tutos','L’ancien écran de recherche',ic('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>')],
     ['import','Importer','Depuis une tab ou un texte',ic('<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>')],
     ['tools','Sites utiles','Les bons sites de guitare',ic('<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>')]];
   const grid = l => '<div class="more-grid">' + l.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') + '</div>';
+  // version publiée : les écrans en rodage ne sont visibles qu'en mode admin
+  if (!IS_ADMIN) { $('plus-body').innerHTML = grid(items); return; }
   $('plus-body').innerHTML = grid(items) + '<div class="more-beta"><h2>En rodage <span>bêta</span></h2><p>Ces écrans fonctionnent, mais ne sont pas encore finis.</p></div>' + grid(beta);
 }
 
@@ -7758,10 +7804,13 @@ function renderHome() {
       <span class="resume-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span></div>` : ''; }
   const g = $('home-grid');
   if (!list.length) {
+    const q0 = q, favE = !q0 && homeFilter === 'fav', recE = !q0 && homeFilter !== 'all' && homeFilter !== 'fav';
+    const emT = !sheets.length ? 'Le cahier est vide' : favE ? 'Pas encore de favori' : recE ? 'Rien d’ouvert récemment' : 'Aucun résultat';
+    const emP = !sheets.length ? 'Crée ta première fiche : un titre et trois accords suffisent.' : favE ? 'Touche le cœur d’une fiche pour la retrouver ici.' : recE ? 'Les fiches que tu ouvres apparaîtront ici.' : 'Essaie un autre mot ou un autre filtre.';
     g.innerHTML = `<div class="empty">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--cream4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>
-      <h3>${sheets.length ? 'Aucun résultat' : 'Le cahier est vide'}</h3>
-      <p>${sheets.length ? 'Essaie un autre terme ou un autre filtre.' : 'Crée ta première fiche : un titre et trois accords suffisent.'}</p>
+      <h3>${emT}</h3>
+      <p>${emP}</p>
       ${sheets.length ? '' : '<button class="btn btn-primary" onclick="newSheet()">+ Créer une fiche</button>'}
     </div>`;
     return;
@@ -9647,6 +9696,32 @@ try { if (navigator.storage && navigator.storage.persist) navigator.storage.pers
   });
 })();
 
+/* ═══════ PREMIER LANCEMENT : 3 écrans pour comprendre l'app (une seule fois, nouvelle installation) ═══════ */
+const ONB = [
+  ['Retiens tes morceaux', 'Une fiche par chanson : les accords et le rythme de chaque partie, lisibles d’un coup d’œil pendant que tu joues.',
+    '<rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/>'],
+  ['Passe tes murs', 'Changer d’accord sans casser le rythme, le barré, les arpèges… Des blocs courts en vidéo, dans l’ordre que tu veux.',
+    '<path d="M3 17l5-10 4 8 3-5 6 9"/>'],
+  ['Une fiche t’attend', 'Wonderwall et quelques classiques sont déjà prêts pour essayer. Touche + pour créer ta propre fiche.',
+    '<path d="M7 4.5v15l13-7.5z"/>']];
+let onbI = 0;
+function onbShow() {
+  if ($('onb')) return;
+  const el = document.createElement('div');
+  el.id = 'onb'; el.className = 'onb'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Bienvenue');
+  document.body.appendChild(el); onbI = 0; onbRender();
+}
+function onbRender() {
+  const [t, d, ico] = ONB[onbI], last = onbI === ONB.length - 1;
+  $('onb').innerHTML = `<div class="onb-card">
+    <button type="button" class="onb-skip" onclick="onbEnd()">Passer</button>
+    <div class="onb-ico" aria-hidden="true"><svg viewBox="0 0 24 24">${ico}</svg></div>
+    <h2>${t}</h2><p>${d}</p>
+    <div class="onb-dots" aria-hidden="true">${ONB.map((_, i) => `<i class="${i === onbI ? 'on' : ''}"></i>`).join('')}</div>
+    <button type="button" class="btn btn-primary onb-next" onclick="${last ? 'onbEnd()' : 'onbI++;onbRender()'}">${last ? 'C’est parti' : 'Suivant'}</button>
+  </div>`;
+}
+function onbEnd() { LS.set('gms_onboarded', true); const el = $('onb'); if (el) el.remove(); }
 /* ═══════ MODAL BACKDROP CLOSE ═══════ */
 ['m-chord','m-print','m-media'].forEach(id => {
   const el = $(id); if (el) el.addEventListener('click', e => { if (e.target === el) el.classList.add('hide'); });
@@ -9735,7 +9810,8 @@ document.addEventListener('keydown', e => {
       }
     }
   } catch (e) { console.warn('seed', e); }
-  renderHome(); go('disc'); // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
+  renderHome(); go('disc');
+  if (!hadSheets && !LS.get('gms_onboarded', false)) onbShow();   // nouvelle installation : 3 écrans d'accueil, une seule fois // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
 })();
 
 // App installable : le service de fonctionnement hors ligne ne s'active que sur un vrai site (pas en fichier local ni dans un aperçu)

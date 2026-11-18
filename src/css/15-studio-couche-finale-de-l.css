@@ -58,3 +58,6 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
   #cahier-bar{top:12px}
 }
 
+/* Zones de toucher : au moins 44 × 44 px au doigt (règle des stores), sans changer le dessin des boutons */
+:where(.btn-icon,.tun-btn,.vol-btn,.fav-btn,.card-more,.filt,.sv-tab,.pv-take,.pv-edit,.rs-tg,.pv-pl,.ed-ctx,.bk-done,.bk-back,.lv-fs,.lib-play,.btn-sm,.add-btn,.sv-bpm-b,.rm){position:relative}
+:is(.btn-icon,.tun-btn,.vol-btn,.fav-btn,.card-more,.filt,.sv-tab,.pv-take,.pv-edit,.rs-tg,.pv-pl,.ed-ctx,.bk-done,.bk-back,.lv-fs,.lib-play,.btn-sm,.add-btn,.sv-bpm-b,.rm)::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:max(100%,44px);transform:translate(-50%,-50%)}

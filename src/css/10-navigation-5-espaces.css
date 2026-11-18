@@ -63,3 +63,23 @@
   .subnav{padding:0 14px;margin-top:10px;overflow-x:auto}
   #v-atelier .subnav{padding:0 14px}
 }
+/* Confidentialité */
+.priv{max-width:640px}
+.priv h2{font-size:18px;font-weight:700;color:var(--cream);margin:26px 0 6px}
+.priv p,.priv li{font-size:15px;line-height:1.6;color:var(--cream2)}
+.priv ul{padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.priv b{color:var(--cream)}
+.priv-lead{font-size:17px!important;color:var(--cream)!important;margin-top:8px}
+.priv-date{margin-top:24px;font-size:13px!important;color:var(--cream3)!important}
+/* Premier lancement */
+.onb{position:fixed;inset:0;z-index:2000;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+.onb-card{position:relative;width:100%;max-width:420px;min-height:420px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding-top:56px}
+.onb-skip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:8px;min-height:44px;padding:0 12px;background:none;border:0;color:var(--cream3);font:inherit;font-size:15px;cursor:pointer}
+.onb-ico{width:96px;height:96px;border-radius:28px;background:var(--card2);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.onb-ico svg{width:44px;height:44px;fill:none;stroke:var(--gold);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.onb h2{font-size:28px;font-weight:800;color:var(--cream);letter-spacing:-.01em}
+.onb p{font-size:16px;line-height:1.55;color:var(--cream2);max-width:340px}
+.onb-dots{display:flex;gap:8px;margin:12px 0 6px}
+.onb-dots i{width:8px;height:8px;border-radius:4px;background:var(--border2)}
+.onb-dots i.on{width:22px;background:var(--gold)}
+.onb-next{min-height:50px;min-width:220px;margin-top:auto;font-size:16px}

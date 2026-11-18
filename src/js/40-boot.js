@@ -78,7 +78,8 @@
       }
     }
   } catch (e) { console.warn('seed', e); }
-  renderHome(); go('disc'); // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
+  renderHome(); go('disc');
+  if (!hadSheets && !LS.get('gms_onboarded', false)) onbShow();   // nouvelle installation : 3 écrans d'accueil, une seule fois // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
 })();
 
 // App installable : le service de fonctionnement hors ligne ne s'active que sur un vrai site (pas en fichier local ni dans un aperçu)
