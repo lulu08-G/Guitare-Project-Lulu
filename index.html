@@ -2044,6 +2044,13 @@ body:has(#v-ed.on) .toast{bottom:90px}
 /* Onglets de parties : pas de barre de défilement visible */
 #v-sheet .sv-tabs{overflow-y:hidden;scrollbar-width:none}
 #v-sheet .sv-tabs::-webkit-scrollbar{display:none}
+/* Coffre : « Chercher d'autres tutos », un lien discret sous les tutos */
+.res-more{margin-top:6px}
+.res-more summary{display:inline-flex;align-items:center;gap:4px;min-height:44px;font-size:14px;color:var(--gold);cursor:pointer;list-style:none}
+.res-more summary::-webkit-details-marker{display:none}
+.res-more summary::after{content:'›';font-size:18px;line-height:1;transition:transform .15s}
+.res-more[open] summary::after{transform:rotate(90deg)}
+.res-more .res-links{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:4px}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -7986,7 +7993,7 @@ async function viewSheet(id, keepPart) {
   }).join('');
   $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
-  $('sv-coffre').innerHTML = coffreViewHTML(s) + resourcesHTML(s);
+  $('sv-coffre').innerHTML = coffreViewHTML(s);
   { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Perso · ${n} élément${n > 1 ? 's' : ''} (mes prises, enregistrements, tutos)` : 'Perso : enregistrer, mes tutos'; }
   svSync();
   if (!$('v-sheet').classList.contains('on')) go('sheet');
@@ -8344,7 +8351,7 @@ function coffreViewHTML(s) {
         : `<a class="link-card" href="${esc(l.url)}" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg><span class="lc-t">${esc(l.title || l.url)}</span></a>`;
     }).join('');
   } else h += `<div class="coffre-empty">Aucun tuto enregistré.</div>`;
-  h += `</div>`;
+  h += resourcesHTML(s) + `</div>`;
 
   h += `<div class="coffre-sec"><div class="coffre-sec-t">Mes enregistrements</div>`;
   h += audios.length ? `<div class="media-list" data-media-host="audio"></div>` : `<div class="coffre-empty">Aucun enregistrement pour l’instant.</div>`;
@@ -8352,7 +8359,6 @@ function coffreViewHTML(s) {
 
   if (s.tabImage) h += `<div class="coffre-sec"><div class="coffre-sec-t">Image de tab</div><div data-tabimg="1"></div></div>`;
 
-  h += `<div class="coffre-sec"><div class="coffre-sec-t">À venir</div><div class="coffre-soon">D’autres façons de remplir les Médias arrivent bientôt.</div></div>`;
   return h + `</div></div>`;
 }
 function resourcesHTML(s) {
@@ -8364,13 +8370,11 @@ function resourcesHTML(s) {
     ['Songsterr', `https://www.songsterr.com/?pattern=${q}`],
     ['Google "tab"', `https://www.google.com/search?q=${q}+guitar+tab`],
   ];
-  return `<div class="pv-block"><div class="pv-hdr"><div class="pv-dot" style="background:var(--sage)"></div><div class="pv-name">Trouver des ressources</div></div>
-    <div class="pv-body">
-      <p style="font-size:12px;color:var(--cream4);margin-bottom:12px">Recherches pré-remplies à partir du titre et de l’artiste. Pour aller plus loin (TikTok, Instagram, YouTube, sites de confiance) :</p>
-      <button type="button" class="btn btn-primary btn-sm" style="margin-bottom:12px" onclick="tutoOpenFor(cur.title, cur.artist)">Tous les tutos de ce morceau →</button>
-      <div class="res-links">${L.map(([t,u]) => `<a class="btn btn-ghost btn-sm" href="${u}" target="_blank" rel="noopener">${t}
-        <svg class="ico" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`).join('')}</div>
-    </div></div>`;
+  // discret : un simple lien sous les tutos, qui déplie les recherches pré-remplies
+  return `<details class="res-more"><summary>Chercher d’autres tutos</summary>
+    <div class="res-links"><button type="button" class="btn btn-ghost btn-sm" onclick="tutoOpenFor(cur.title, cur.artist)">Tous les tutos de ce morceau</button>${L.map(([t,u]) => `<a class="btn btn-ghost btn-sm" href="${u}" target="_blank" rel="noopener">${t}
+      <svg class="ico" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`).join('')}</div>
+  </details>`;
 }
 async function hydrateMedia(s, host) {
   for (const kind of ['video','audio']) {

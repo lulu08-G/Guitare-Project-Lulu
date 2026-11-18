@@ -102,3 +102,10 @@ body:has(#v-ed.on) .toast{bottom:90px}
 /* Onglets de parties : pas de barre de défilement visible */
 #v-sheet .sv-tabs{overflow-y:hidden;scrollbar-width:none}
 #v-sheet .sv-tabs::-webkit-scrollbar{display:none}
+/* Coffre : « Chercher d'autres tutos », un lien discret sous les tutos */
+.res-more{margin-top:6px}
+.res-more summary{display:inline-flex;align-items:center;gap:4px;min-height:44px;font-size:14px;color:var(--gold);cursor:pointer;list-style:none}
+.res-more summary::-webkit-details-marker{display:none}
+.res-more summary::after{content:'›';font-size:18px;line-height:1;transition:transform .15s}
+.res-more[open] summary::after{transform:rotate(90deg)}
+.res-more .res-links{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:4px}
