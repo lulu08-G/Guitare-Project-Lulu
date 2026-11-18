@@ -70,3 +70,20 @@ body:has(#v-ed.on) .toast{bottom:90px}
 @media(min-width:900px){#create-ask{align-items:center}.ca-box{border-radius:24px}.ca-grab{display:none}}
 #ed-recbar{display:flex;flex-direction:column;align-items:stretch}
 @media(max-width:899px){body:has(#v-ed.on) nav{display:none}#v-ed .ed-top{top:0}}
+/* Coffre : mes prises de rythme */
+.tk-help{font-size:13px;color:var(--cream3);margin:0 0 8px}
+.tk-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--border)}
+.tk-row:first-of-type{border-top:0}
+.tk-n{font-weight:650;color:var(--cream);flex:none;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk-s{flex:1;min-width:0;font-size:13px;color:var(--cream3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-a{display:flex;align-items:center;gap:4px}
+.tk-rec u{width:8px;height:8px;border-radius:50%;background:var(--red,#e5484d);display:inline-block;margin-right:6px}
+.tk-more svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.tk-a .pop{right:0;left:auto}
+/* PC : les cartes de la vue « Tout » l'une sous l'autre, accords plus grands (ils étaient à ~50 px) */
+@media(min-width:900px){
+  #v-sheet.all .parts-view{grid-template-columns:minmax(0,1fr)}
+  #v-sheet.all .chords-row{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+  #v-sheet.all .chord-cell svg{max-width:112px;width:100%}
+  #v-sheet.all .chord-cell .cn{font-size:26px}
+}

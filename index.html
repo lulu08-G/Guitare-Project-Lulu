@@ -2012,6 +2012,23 @@ body:has(#v-ed.on) .toast{bottom:90px}
 @media(min-width:900px){#create-ask{align-items:center}.ca-box{border-radius:24px}.ca-grab{display:none}}
 #ed-recbar{display:flex;flex-direction:column;align-items:stretch}
 @media(max-width:899px){body:has(#v-ed.on) nav{display:none}#v-ed .ed-top{top:0}}
+/* Coffre : mes prises de rythme */
+.tk-help{font-size:13px;color:var(--cream3);margin:0 0 8px}
+.tk-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--border)}
+.tk-row:first-of-type{border-top:0}
+.tk-n{font-weight:650;color:var(--cream);flex:none;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk-s{flex:1;min-width:0;font-size:13px;color:var(--cream3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-a{display:flex;align-items:center;gap:4px}
+.tk-rec u{width:8px;height:8px;border-radius:50%;background:var(--red,#e5484d);display:inline-block;margin-right:6px}
+.tk-more svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.tk-a .pop{right:0;left:auto}
+/* PC : les cartes de la vue « Tout » l'une sous l'autre, accords plus grands (ils étaient à ~50 px) */
+@media(min-width:900px){
+  #v-sheet.all .parts-view{grid-template-columns:minmax(0,1fr)}
+  #v-sheet.all .chords-row{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+  #v-sheet.all .chord-cell svg{max-width:112px;width:100%}
+  #v-sheet.all .chord-cell .cn{font-size:26px}
+}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -7942,13 +7959,12 @@ async function viewSheet(id, keepPart) {
     const rep = +(p.repeat || p.reps || 0);   // ×N si la partie se répète (champ facultatif)
     return `<div class="pv-block ${i===svPart?'on':''}" data-idx="${i}" id="pvb-${i}" ${svAll ? `onclick="svPick(${i})"` : ''}>
       <div class="pv-hdr"><div class="pv-name">${esc(p.name || 'Partie ' + (i+1))}${rep > 1 ? `<span class="pv-rep">×${rep}</span>` : ''}</div>
-        ${p.rec ? `<span class="pv-take has"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>Ma prise</span>` : `<button type="button" class="pv-take" onclick="event.stopPropagation();rcOpen(${i})"><u></u>Enregistrer</button>`}
+        ${p.rec ? `<span class="pv-take has"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>Ma prise</span>` : ''}
         <div class="hm-menu pv-menu" id="pvm-${i}"><button type="button" class="pv-edit" onclick="pvMenu(${i},event)" aria-label="Modifier cette partie" aria-haspopup="true" title="Modifier cette partie"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg></button>
           <div class="pop" onclick="event.stopPropagation()">
             <button type="button" onclick="pvMenuClose();editSheet(cur.id)">Changer les accords</button>
-            <button type="button" onclick="pvMenuClose();rcOpen(${i})">${p.rec ? 'Refaire ma prise' : 'Enregistrer mon rythme'}</button>
             <button type="button" onclick="pvMenuClose();rbEditCur(${i})">${pWay(p) === 'arp' ? 'Changer l’arpège' : 'Saisir le rythme à la main'}</button>
-            ${p.rec ? `<button type="button" onclick="pvMenuClose();svWayPlay(${i})">Écouter la guitare de l’app</button><button type="button" onclick="pvMenuClose();rcOpen(${i},'trim')">Rogner ma prise</button><button type="button" class="danger" onclick="pvMenuClose();rcDelete(${i})">Supprimer ma prise</button>` : ''}
+            ${p.rec ? `<button type="button" onclick="pvMenuClose();svWayPlay(${i})">Écouter la guitare de l’app</button>` : ''}
           </div></div></div>
       <div class="pv-body">${body}</div>
     </div>`;
@@ -7956,7 +7972,7 @@ async function viewSheet(id, keepPart) {
   $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s) + resourcesHTML(s);
-  { const n = (s.links || []).length + (s.media || []).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Perso · ${n} élément${n > 1 ? 's' : ''} (mes enregistrements, tutos)` : 'Perso : mes enregistrements, tutos'; }
+  { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Perso · ${n} élément${n > 1 ? 's' : ''} (mes prises, enregistrements, tutos)` : 'Perso : enregistrer mon rythme, mes tutos'; }
   svSync();
   if (!$('v-sheet').classList.contains('on')) go('sheet');
   if (matchMedia('(min-width:1200px)').matches) renderHome();   // PC large : la liste reste affichée à côté, fiche en cours marquée
@@ -8212,6 +8228,20 @@ function ytId(url) {
   const m = String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
   return m ? m[1] : null;
 }
+// Coffre : « Mes prises de rythme », une ligne par partie (enregistrer, écouter, rogner, refaire, supprimer)
+function takesHTML(s) {
+  const ps = (s.parts || []).filter(p => p.chords.length || p.rec); if (!ps.length) return '';
+  const one = (s.parts || []).length < 2;
+  const rows = (s.parts || []).map((p, i) => {
+    if (!p.chords.length && !p.rec) return '';
+    const nm = one ? 'Le morceau' : esc(p.name || 'Partie ' + (i + 1));
+    const act = p.rec
+      ? `<button type="button" class="btn btn-ghost btn-sm" onclick="recPlayToggle(${i})">Écouter</button><div class="hm-menu"><button type="button" class="btn-icon tk-more" onclick="this.parentNode.classList.toggle('open');event.stopPropagation()" aria-label="Gérer ma prise : ${nm}" aria-haspopup="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button><div class="pop" onclick="event.stopPropagation();this.parentNode.classList.remove('open')"><button type="button" onclick="rcOpen(${i},'trim')">Rogner ma prise</button><button type="button" onclick="rcOpen(${i})">Refaire ma prise</button><button type="button" class="danger" onclick="rcDelete(${i})">Supprimer ma prise</button></div></div>`
+      : `<button type="button" class="btn btn-ghost btn-sm tk-rec" onclick="rcOpen(${i})"><u></u>Enregistrer</button>`;
+    return `<div class="tk-row"><span class="tk-n">${nm}</span><span class="tk-s">${p.rec ? 'Ma prise' : ''}</span><span class="tk-a">${act}</span></div>`;
+  }).join('');
+  return `<div class="coffre-sec"><div class="coffre-sec-t">Mes prises de rythme</div><p class="tk-help">Enregistre-toi en train de jouer : le ▶ de la partie jouera ta prise.</p>${rows}</div>`;
+}
 function coffreViewHTML(s) {
   const videos = (s.media||[]).filter(m => m.kind === 'video');
   const audios = (s.media||[]).filter(m => m.kind === 'audio');
@@ -8223,6 +8253,7 @@ function coffreViewHTML(s) {
     </div>
     <div class="coffre-body">`;
   if (s.memo) h += `<div class="pv-note" style="margin-top:0;margin-bottom:18px">${esc(s.memo)}</div>`;
+  h += takesHTML(s);
 
   h += `<div class="coffre-sec"><div class="coffre-sec-t">Nos videos</div>`;
   h += videos.length ? `<div class="media-list" data-media-host="video"></div>` : `<div class="coffre-empty">Aucune vidéo pour l’instant.</div>`;
