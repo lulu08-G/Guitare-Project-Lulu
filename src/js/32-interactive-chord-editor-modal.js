@@ -10,7 +10,7 @@ function closeCE() { $('m-chord').classList.add('hide'); ceState = null; }
 function renderCE() {
   const c = ceState.chord;
   $('m-chord-body').innerHTML = `
-    <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l’accord' : 'Ajouter un accord'}</div>
+    <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l’accord' : 'Créer mon accord'}</div>
     <div class="fg">
       <label>Nom — tape un accord connu, le diagramme se remplit</label>
       <input type="text" id="ce-name" value="${esc(c.name)}" placeholder="Am, F#m, Cmaj7..." autocomplete="off"
@@ -20,14 +20,14 @@ function renderCE() {
     <div class="ce-grid" id="ce-grid">${chordEditorSVG(c)}</div>
     <div class="ce-row">
       <button class="btn btn-ghost btn-xs" onclick="ceBase(-1)">&#8592; case</button>
-      <span style="font-size:12px;color:var(--cream3);font-weight:600">Depart : case ${c.base}</span>
+      <span style="font-size:12px;color:var(--cream3);font-weight:600">Départ : case ${c.base}</span>
       <button class="btn btn-ghost btn-xs" onclick="ceBase(1)">case &#8594;</button>
       <button class="btn btn-ghost btn-xs" onclick="ceClear()">Effacer</button>
       <button class="btn btn-ghost btn-xs" onclick="playChord(ceState.chord, draft.capo)">
         <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Écouter</button>
     </div>
     <div style="font-size:11px;color:var(--cream4);text-align:center;margin-top:6px">
-      Clic sur une case = doigt · clic au-dessus du sillet = O / X · re-clic = enlever
+      Touche une case = un doigt · au-dessus du sillet = corde à vide (O) ou muette (X) · retouche = enlever
     </div>
 
     <div class="mode-toggle" style="margin:18px 0 4px">
@@ -35,14 +35,14 @@ function renderCE() {
         <svg class="ico" viewBox="0 0 24 24"><path d="M8 6l10 6-10 6V6z" fill="currentColor" stroke="none"/></svg> Grattage
       </button>
       <button type="button" class="mode-pill big ${ceState.arpMode?'on':''}" onclick="ceSetMode(true)">
-        <svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5" fill="currentColor" stroke="none"/><circle cx="18" cy="16" r="2.5" fill="currentColor" stroke="none"/><path d="M8.5 17V5l11-2v13"/></svg> Arpege (picking)
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5" fill="currentColor" stroke="none"/><circle cx="18" cy="16" r="2.5" fill="currentColor" stroke="none"/><path d="M8.5 17V5l11-2v13"/></svg> Arpège (picking)
       </button>
     </div>
     ${ceState.arpMode ? `
     <div class="arp-panel">
-      <div class="part-sub" style="margin-top:0"><span class="part-sub-t">Ordre des cordes jouees</span>
+      <div class="part-sub" style="margin-top:0"><span class="part-sub-t">Ordre des cordes jouées</span>
         <button class="add-btn" onclick="ceAddStep()">+ Temps</button></div>
-      <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Coche les cordes jouees a chaque temps. Plusieurs cordes cochees sur le meme temps = jouees ensemble.</p>
+      <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Coche les cordes jouées à chaque temps. Plusieurs cordes cochées sur le même temps = jouées ensemble.</p>
       <div class="arp-tl" id="ce-arp">${arpTimelineHTML(c)}</div>
     </div>` : ''}
 

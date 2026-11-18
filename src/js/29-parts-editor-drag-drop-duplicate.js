@@ -70,7 +70,8 @@ function edChordsHTML(p, i) {
         <button type="button" class="ed-ctx" onclick="event.stopPropagation();rmChord(${i},${ci})" aria-label="Retirer ${esc(c.name || 'l’accord')}"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
         <b>${esc(c.name || '?')}</b>${chordSVG(c, {size:.86})}
         ${todo ? '<em>à compléter</em>' : c.arp && c.arp.length ? '<em>arpège</em>' : ''}</div>`; }).join('')}
-    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>${open ? cpHTML('ed') : ''}`;
+    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>
+    <button type="button" class="ed-mine" onclick="edRpSet(${i});openChordEditor(${i},-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg>Créer mon accord</button>${open ? cpHTML('ed') : ''}`;
 }
 function edMoreHTML(p, i) {
   const hasLyr = typeof p.lyrics === 'string';

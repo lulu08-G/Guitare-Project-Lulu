@@ -2084,6 +2084,9 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-tempo-mini::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 .rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
+/* Création : « Créer mon accord » (dessiner son propre doigté) */
+.ed-mine{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:2px;padding:0 4px;background:none;border:0;color:var(--gold);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.ed-mine svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -8797,7 +8800,8 @@ function edChordsHTML(p, i) {
         <button type="button" class="ed-ctx" onclick="event.stopPropagation();rmChord(${i},${ci})" aria-label="Retirer ${esc(c.name || 'l’accord')}"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
         <b>${esc(c.name || '?')}</b>${chordSVG(c, {size:.86})}
         ${todo ? '<em>à compléter</em>' : c.arp && c.arp.length ? '<em>arpège</em>' : ''}</div>`; }).join('')}
-    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>${open ? cpHTML('ed') : ''}`;
+    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>
+    <button type="button" class="ed-mine" onclick="edRpSet(${i});openChordEditor(${i},-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg>Créer mon accord</button>${open ? cpHTML('ed') : ''}`;
 }
 function edMoreHTML(p, i) {
   const hasLyr = typeof p.lyrics === 'string';
@@ -9366,7 +9370,7 @@ function closeCE() { $('m-chord').classList.add('hide'); ceState = null; }
 function renderCE() {
   const c = ceState.chord;
   $('m-chord-body').innerHTML = `
-    <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l’accord' : 'Ajouter un accord'}</div>
+    <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l’accord' : 'Créer mon accord'}</div>
     <div class="fg">
       <label>Nom — tape un accord connu, le diagramme se remplit</label>
       <input type="text" id="ce-name" value="${esc(c.name)}" placeholder="Am, F#m, Cmaj7..." autocomplete="off"
@@ -9376,14 +9380,14 @@ function renderCE() {
     <div class="ce-grid" id="ce-grid">${chordEditorSVG(c)}</div>
     <div class="ce-row">
       <button class="btn btn-ghost btn-xs" onclick="ceBase(-1)">&#8592; case</button>
-      <span style="font-size:12px;color:var(--cream3);font-weight:600">Depart : case ${c.base}</span>
+      <span style="font-size:12px;color:var(--cream3);font-weight:600">Départ : case ${c.base}</span>
       <button class="btn btn-ghost btn-xs" onclick="ceBase(1)">case &#8594;</button>
       <button class="btn btn-ghost btn-xs" onclick="ceClear()">Effacer</button>
       <button class="btn btn-ghost btn-xs" onclick="playChord(ceState.chord, draft.capo)">
         <svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Écouter</button>
     </div>
     <div style="font-size:11px;color:var(--cream4);text-align:center;margin-top:6px">
-      Clic sur une case = doigt · clic au-dessus du sillet = O / X · re-clic = enlever
+      Touche une case = un doigt · au-dessus du sillet = corde à vide (O) ou muette (X) · retouche = enlever
     </div>
 
     <div class="mode-toggle" style="margin:18px 0 4px">
@@ -9391,14 +9395,14 @@ function renderCE() {
         <svg class="ico" viewBox="0 0 24 24"><path d="M8 6l10 6-10 6V6z" fill="currentColor" stroke="none"/></svg> Grattage
       </button>
       <button type="button" class="mode-pill big ${ceState.arpMode?'on':''}" onclick="ceSetMode(true)">
-        <svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5" fill="currentColor" stroke="none"/><circle cx="18" cy="16" r="2.5" fill="currentColor" stroke="none"/><path d="M8.5 17V5l11-2v13"/></svg> Arpege (picking)
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.5" fill="currentColor" stroke="none"/><circle cx="18" cy="16" r="2.5" fill="currentColor" stroke="none"/><path d="M8.5 17V5l11-2v13"/></svg> Arpège (picking)
       </button>
     </div>
     ${ceState.arpMode ? `
     <div class="arp-panel">
-      <div class="part-sub" style="margin-top:0"><span class="part-sub-t">Ordre des cordes jouees</span>
+      <div class="part-sub" style="margin-top:0"><span class="part-sub-t">Ordre des cordes jouées</span>
         <button class="add-btn" onclick="ceAddStep()">+ Temps</button></div>
-      <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Coche les cordes jouees a chaque temps. Plusieurs cordes cochees sur le meme temps = jouees ensemble.</p>
+      <p style="font-size:11px;color:var(--cream4);margin-bottom:8px">Coche les cordes jouées à chaque temps. Plusieurs cordes cochées sur le même temps = jouées ensemble.</p>
       <div class="arp-tl" id="ce-arp">${arpTimelineHTML(c)}</div>
     </div>` : ''}
 
