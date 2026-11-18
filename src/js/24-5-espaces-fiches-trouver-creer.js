@@ -40,23 +40,29 @@ function renderSubnav(v) {
 }
 // Moi : outils, mes fiches, l'appli
 const IS_ADMIN = (() => { try { const q = new URLSearchParams(location.search); if (q.has('admin')) LS.set('gms_admin', q.get('admin') !== '0'); } catch (e) {} return !!LS.get('gms_admin', false); })();
-function renderPlus() {
-  const ic = d => `<svg viewBox="0 0 24 24">${d}</svg>`;
-  const items = [
-    ['atelier','Tutos','Chercher un tuto et faire la fiche',ic('<rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/>')],
-    ['tuner','Accordeur','Accorder la guitare au micro',ic('<path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/>')],
-    ['lib','Accords','Bibliothèque de diagrammes',ic('<path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/>')],
-    ['metro','Métronome','Tempo et rythmes',ic('<path d="M8 21h8l-2-17h-4z"/><path d="M12 15l5-8"/>')],
-    ['privacy','Confidentialité','Tes données restent sur ton appareil',ic('<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>')]];
-  if (IS_ADMIN) items.push(['admin','Admin','Les vidéos des cours',ic('<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8M12 17v4"/>')]);
-  // écrans pas encore au niveau du cœur de l'appli : rangés ici, hors de la navigation principale
-  const beta = [
-    ['tuto','Recherche de tutos','L’ancien écran de recherche',ic('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>')],
-    ['import','Importer','Depuis une tab ou un texte',ic('<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>')],
-    ['tools','Sites utiles','Les bons sites de guitare',ic('<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>')]];
-  const grid = l => '<div class="more-grid">' + l.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') + '</div>';
-  // version publiée : les écrans en rodage ne sont visibles qu'en mode admin
-  if (!IS_ADMIN) { $('plus-body').innerHTML = grid(items); return; }
-  $('plus-body').innerHTML = grid(items) + '<div class="more-beta"><h2>En rodage <span>bêta</span></h2><p>Ces écrans fonctionnent, mais ne sont pas encore finis.</p></div>' + grid(beta);
+function renderPlus() {   // « Moi » : outils, mes fiches, l'appli (refonte du 18/11)
+  const ic = d => `<span class="mo-i"><svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg></span>`;
+  const CH = '<svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg>';
+  const row = (act, i, t, d) => `<button type="button" class="mo-row" onclick="${act}">${ic(i)}<span class="mo-t"><b>${t}</b><small>${d}</small></span>${CH}</button>`;
+  const grp = (t, rows) => `<section class="mo-g"><h2>${t}</h2><div class="mo-box">${rows.join('')}</div></section>`;
+  const at = LS.get('gms_backup_at', 0), days = at ? Math.floor((Date.now() - at) / 864e5) : -1;
+  const bk = days < 0 ? 'Jamais sauvegardé sur cet appareil' : days === 0 ? 'Dernière sauvegarde : aujourd’hui' : `Dernière sauvegarde : il y a ${days} jour${days > 1 ? 's' : ''}`;
+  let h = grp('Outils', [
+    row("go('tuner')", '<path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/>', 'Accordeur', 'Accorde ta guitare au micro'),
+    row("go('metro')", '<path d="M8 21h8l-2-17h-4z"/><path d="M12 15l5-8"/>', 'Métronome et bande', 'Le tempo, ou Boum et Basile'),
+    row("go('lib')", '<path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/>', 'Accords', 'Tous les doigtés, à écouter'),
+    row("go('atelier')", '<rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/>', 'Tutos', 'Chercher un tuto pour un morceau')]);
+  h += grp('Mes fiches', [
+    row('backupAll()', '<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>', 'Sauvegarder toutes mes fiches', bk),
+    row("document.getElementById('json-in').click()", '<path d="M12 21V9M7 14l5-5 5 5M4 4h16"/>', 'Restaurer ou importer', 'Depuis un fichier de sauvegarde'),
+    row("go('home');startPrintPick()", '<path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/>', 'Créer mon cahier en PDF', 'Tes fiches, prêtes à imprimer')]);
+  h += grp('L’appli', [
+    row("go('privacy')", '<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>', 'Confidentialité', 'Tes fiches restent sur ton téléphone')]);
+  if (IS_ADMIN) h += grp('Admin et bêta', [
+    row("go('admin')", '<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8M12 17v4"/>', 'Admin', 'Les vidéos des cours'),
+    row("go('tuto')", '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>', 'Recherche de tutos', 'L’ancien écran de recherche (bêta)'),
+    row("go('import')", '<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>', 'Importer', 'Depuis une tab ou un texte (bêta)'),
+    row("go('tools')", '<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>', 'Sites utiles', 'Les bons sites de guitare (bêta)')]);
+  $('plus-body').innerHTML = h;
 }
 

@@ -2733,6 +2733,64 @@ body.mj-on{overflow:hidden}
 .fl-c2:first-child .fl-c2p{background:var(--gold)}.fl-c2:first-child .fl-c2p svg{fill:var(--ink)}
 #v-exo .fl-card.fl-c2{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;min-height:0}
 #v-exo .fl-c2t{align-items:flex-start}
+
+/* ── Moi ── */
+#plus-body{display:flex;flex-direction:column;gap:18px;padding:8px 0 40px}
+.mo-g h2{font:600 14px var(--sans);color:var(--cream3);margin:0 0 6px}
+.mo-box{background:var(--card);border-radius:22px;padding:2px 14px}
+.mo-row{display:flex;align-items:center;gap:14px;width:100%;padding:11px 4px;background:none;border:0;border-bottom:1px solid var(--card2);color:var(--cream);text-align:left}
+.mo-row:last-child{border-bottom:0}
+.mo-i{width:40px;height:40px;flex:none;border-radius:13px;background:var(--card2);display:flex;align-items:center;justify-content:center}
+.mo-i svg{width:20px;height:20px;fill:none;stroke:var(--gold);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.mo-t{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.mo-t b{font-size:16px;font-weight:600}.mo-t small{font-size:13px;color:var(--cream3)}
+@media(max-width:899px){body:has(#v-plus.on) nav{display:none}}
+
+/* ── Accueil (premier lancement) ── */
+#onb{background:var(--bg)}
+.onb-card.onb2{position:fixed;inset:0;max-width:none;width:auto;margin:0;border-radius:0;background:var(--bg);border:0;box-shadow:none;display:flex;flex-direction:column;padding:28px 24px calc(32px + env(safe-area-inset-bottom));text-align:left;animation:viewIn .3s var(--ease-out)}
+.onb2 .onb-top{height:44px;display:flex;justify-content:flex-end}
+.onb2 .onb-skip{position:static;height:44px;padding:0 6px;background:none;color:var(--cream3);font-size:15px;font-weight:600}
+.onb2 .onb-mid{flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px;max-width:440px;width:100%;margin:0 auto}
+.onb2 .onb-art{height:280px;display:flex;align-items:center;justify-content:center}
+.onb2 .onb-tx{display:flex;flex-direction:column;gap:12px}
+.onb2 h2{font:800 36px/1.05 var(--display);letter-spacing:-.03em;color:var(--cream);margin:0}
+.onb2 p{font-size:17px;line-height:1.5;color:var(--cream2);margin:0}
+.onb2 .onb-bot{display:flex;flex-direction:column;gap:20px;max-width:440px;width:100%;margin:0 auto}
+.onb2 .onb-dots{display:flex;gap:6px;justify-content:flex-start}
+.onb2 .onb-dots i{width:6px;height:6px;border-radius:3px;background:var(--card3);transition:width .25s var(--ease-out)}
+.onb2 .onb-dots i.on{width:22px;background:var(--gold)}
+.onb2 .onb-next{height:56px;border-radius:28px;background:var(--gold);color:var(--ink);font:800 17px var(--display);width:100%}
+.onb-m{width:230px;height:230px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center}
+.onb-f{position:relative;width:300px}
+.onb-fc{background:var(--card);border-radius:26px;padding:18px;display:flex;flex-direction:column;gap:14px;transform:rotate(-3deg)}
+.onb-fh{display:flex;align-items:baseline;justify-content:space-between}.onb-fh b{font:800 22px var(--display);color:var(--cream)}.onb-fh small{font-size:12px;color:var(--cream3)}
+.onb-fa{display:flex;gap:12px;font:800 26px var(--display);color:var(--cream)}.onb-fa span:first-child{color:var(--gold)}
+.onb-fr{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
+.onb-fr i{height:38px;border-radius:9px;background:var(--card2);display:flex;align-items:center;justify-content:center}
+.onb-fr i:nth-child(even){background:#221f26}
+.onb-fr svg{width:14px;height:20px;fill:none;stroke:var(--cream);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}.onb-fr .d{stroke:var(--gold)}
+.onb-fm{position:absolute;right:-18px;top:-52px}
+.onb-w{display:flex;flex-direction:column;align-items:center;gap:8px}
+.onb-w>div{display:flex;gap:8px}
+.onb-w span{height:46px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--cream3)}
+.onb-w span.on{background:var(--gold);color:var(--ink)}
+.onb-card.onb2{align-items:stretch}.onb2 .onb-top{align-self:stretch}
+
+/* ── Accords ── */
+@media(max-width:899px){.lib-top{display:none}}
+.lib-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -24px 14px;padding:0 24px}
+.lib-chips::-webkit-scrollbar{display:none}
+@media(min-width:900px){.lib-chips{margin:0 0 14px;padding:0;flex-wrap:wrap}}
+.lib-chips button{flex:none;height:38px;padding:0 16px;border-radius:19px;background:var(--card);color:var(--cream);font-size:14px;font-weight:600;border:0}
+.lib-chips button.on{background:var(--cream);color:var(--bg);font-weight:700}
+.lib-medi{margin:0 0 14px}.lib-medi .bulle{font-size:14px}
+.lib-g2{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;padding-bottom:40px}
+.lib-c2{background:var(--card);border-radius:20px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--cream);border:0}
+.lib-c2 b{font:800 22px var(--display)}
+.lib-c2 svg{width:80px;height:auto}
+.lib-c2:active{transform:scale(.96)}
+.lib-n,.lib-none{font-size:13px;color:var(--cream3);margin:0 0 10px}
 </style>
 </head>
 <body>
@@ -2946,10 +3004,10 @@ body.mj-on{overflow:hidden}
 <!-- ══ CHORD LIBRARY ══ -->
 <div class="view" id="v-lib">
   <div class="wrap">
-    <div class="hero"><div><h1>Les <em>accords</em></h1><p>Diagrammes, doigtés et écoute — la base de tout</p></div></div>
+    <div class="hm-top lib-top"><h1>Accords</h1></div>
     <div class="search-bar">
       <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" id="lib-q" placeholder="Rechercher un accord (Am, F#m, Cmaj7...)" oninput="renderLib()">
+      <input type="text" id="lib-q" placeholder="Am, F#m, Cmaj7…" aria-label="Chercher un accord" oninput="renderLib()">
     </div>
     <div id="lib-body" style="padding-bottom:60px"></div>
   </div>
@@ -8459,24 +8517,30 @@ function renderSubnav(v) {
 }
 // Moi : outils, mes fiches, l'appli
 const IS_ADMIN = (() => { try { const q = new URLSearchParams(location.search); if (q.has('admin')) LS.set('gms_admin', q.get('admin') !== '0'); } catch (e) {} return !!LS.get('gms_admin', false); })();
-function renderPlus() {
-  const ic = d => `<svg viewBox="0 0 24 24">${d}</svg>`;
-  const items = [
-    ['atelier','Tutos','Chercher un tuto et faire la fiche',ic('<rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/>')],
-    ['tuner','Accordeur','Accorder la guitare au micro',ic('<path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/>')],
-    ['lib','Accords','Bibliothèque de diagrammes',ic('<path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/>')],
-    ['metro','Métronome','Tempo et rythmes',ic('<path d="M8 21h8l-2-17h-4z"/><path d="M12 15l5-8"/>')],
-    ['privacy','Confidentialité','Tes données restent sur ton appareil',ic('<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>')]];
-  if (IS_ADMIN) items.push(['admin','Admin','Les vidéos des cours',ic('<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8M12 17v4"/>')]);
-  // écrans pas encore au niveau du cœur de l'appli : rangés ici, hors de la navigation principale
-  const beta = [
-    ['tuto','Recherche de tutos','L’ancien écran de recherche',ic('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>')],
-    ['import','Importer','Depuis une tab ou un texte',ic('<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>')],
-    ['tools','Sites utiles','Les bons sites de guitare',ic('<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>')]];
-  const grid = l => '<div class="more-grid">' + l.map(([k,n,d,i]) => `<button type="button" onclick="go('${k}')">${i}<span><b>${n}</b><small>${d}</small></span></button>`).join('') + '</div>';
-  // version publiée : les écrans en rodage ne sont visibles qu'en mode admin
-  if (!IS_ADMIN) { $('plus-body').innerHTML = grid(items); return; }
-  $('plus-body').innerHTML = grid(items) + '<div class="more-beta"><h2>En rodage <span>bêta</span></h2><p>Ces écrans fonctionnent, mais ne sont pas encore finis.</p></div>' + grid(beta);
+function renderPlus() {   // « Moi » : outils, mes fiches, l'appli (refonte du 18/11)
+  const ic = d => `<span class="mo-i"><svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg></span>`;
+  const CH = '<svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg>';
+  const row = (act, i, t, d) => `<button type="button" class="mo-row" onclick="${act}">${ic(i)}<span class="mo-t"><b>${t}</b><small>${d}</small></span>${CH}</button>`;
+  const grp = (t, rows) => `<section class="mo-g"><h2>${t}</h2><div class="mo-box">${rows.join('')}</div></section>`;
+  const at = LS.get('gms_backup_at', 0), days = at ? Math.floor((Date.now() - at) / 864e5) : -1;
+  const bk = days < 0 ? 'Jamais sauvegardé sur cet appareil' : days === 0 ? 'Dernière sauvegarde : aujourd’hui' : `Dernière sauvegarde : il y a ${days} jour${days > 1 ? 's' : ''}`;
+  let h = grp('Outils', [
+    row("go('tuner')", '<path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/>', 'Accordeur', 'Accorde ta guitare au micro'),
+    row("go('metro')", '<path d="M8 21h8l-2-17h-4z"/><path d="M12 15l5-8"/>', 'Métronome et bande', 'Le tempo, ou Boum et Basile'),
+    row("go('lib')", '<path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/>', 'Accords', 'Tous les doigtés, à écouter'),
+    row("go('atelier')", '<rect x="3" y="5" width="18" height="14" rx="3.5"/><path d="M10.2 9.2l4.6 2.8-4.6 2.8z"/>', 'Tutos', 'Chercher un tuto pour un morceau')]);
+  h += grp('Mes fiches', [
+    row('backupAll()', '<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>', 'Sauvegarder toutes mes fiches', bk),
+    row("document.getElementById('json-in').click()", '<path d="M12 21V9M7 14l5-5 5 5M4 4h16"/>', 'Restaurer ou importer', 'Depuis un fichier de sauvegarde'),
+    row("go('home');startPrintPick()", '<path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/>', 'Créer mon cahier en PDF', 'Tes fiches, prêtes à imprimer')]);
+  h += grp('L’appli', [
+    row("go('privacy')", '<path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>', 'Confidentialité', 'Tes fiches restent sur ton téléphone')]);
+  if (IS_ADMIN) h += grp('Admin et bêta', [
+    row("go('admin')", '<rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8M12 17v4"/>', 'Admin', 'Les vidéos des cours'),
+    row("go('tuto')", '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>', 'Recherche de tutos', 'L’ancien écran de recherche (bêta)'),
+    row("go('import')", '<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>', 'Importer', 'Depuis une tab ou un texte (bêta)'),
+    row("go('tools')", '<path d="M14.7 6.3a4 4 0 00-5 5L3 18l3 3 6.7-6.7a4 4 0 005-5l-2.4 2.4-2.3-.7-.7-2.3z"/>', 'Sites utiles', 'Les bons sites de guitare (bêta)')]);
+  $('plus-body').innerHTML = h;
 }
 
 /* ═══════ DÉCOUVRIR : l'accueil — du tout fait (fiches prêtes, morceaux populaires, entraînement) ═══════ */
@@ -10439,45 +10503,19 @@ async function delSheet(id) {
 }
 
 /* ═══════ CHORD LIBRARY VIEW ═══════ */
-function renderLib() {
+function renderLib() {   // refonte : familles en puces, une grille de doigtés à écouter, Médi en conseil
   const q = ($('lib-q').value || '').toLowerCase().trim();
   const body = $('lib-body');
-  const card = (c, big) => `<div class="lib-card ${big?'big':''}">
-    <div class="cn">${c.n}</div>${chordSVG(newChord(c.n), {size: big ? 1.28 : 1})}
-    <button class="lib-play" onclick="playChord(newChord('${c.n}'), 0)" title="Écouter">
-      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg></button>
-  </div>`;
-  if (q) {
-    const hits = LIB.filter(c => c.n.toLowerCase().includes(q));
-    body.innerHTML = `<div class="lib-sec"><div class="lib-sec-t">${hits.length} résultat${hits.length>1?'s':''}</div>
-      <div class="lib-grid">${hits.map(c => card(c)).join('') || '<p style="color:var(--cream4);font-size:13px">Aucun accord trouve.</p>'}</div></div>`;
-    return;
-  }
-  const rest = LIB.filter(c => !MAGIC.includes(c.n) && !ESSENTIAL.includes(c.n));
-  const filtered = rest.filter(c => libFilter === 'all' ? true
-    : libFilter === 'barre' ? !!c.barre
-    : libFilter === '7' ? c.fam === '7'
-    : c.fam === libFilter);
-  body.innerHTML = `
-    <div class="lib-sec">
-      <div class="lib-sec-t">Les 4 magiques</div>
-      <div class="lib-sec-d">G, C, D, Em — avec ces quatre-la, des centaines de morceaux tombent.</div>
-      <div class="lib-grid big">${MAGIC.map(n => card(findChord(n), true)).join('')}</div>
-    </div>
-    <div class="lib-sec">
-      <div class="lib-sec-t">Indispensables</div>
-      <div class="lib-sec-d">Le second cercle : ils debloquent presque tout le reste.</div>
-      <div class="lib-grid">${ESSENTIAL.map(n => card(findChord(n))).join('')}</div>
-    </div>
-    <div class="lib-sec">
-      <div class="lib-sec-t">Le reste</div>
-      <div class="lib-sec-d">${rest.length} accords — filtre par famille.</div>
-      <div class="filters">
-        ${[['all','Tous'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9'],['barre','Barrés']]
-          .map(([k,l]) => `<button class="filt ${libFilter===k?'on':''}" onclick="libFilter='${k}';renderLib()">${l}</button>`).join('')}
-      </div>
-      <div class="lib-grid">${filtered.map(c => card(c)).join('') || '<p style="color:var(--cream4);font-size:13px">Rien dans cette famille.</p>'}</div>
-    </div>`;
+  if (libFilter === 'all' && !renderLib._init) { libFilter = 'ess'; renderLib._init = true; }
+  const card = c => `<button type="button" class="lib-c2" onclick="playChord(newChord('${c.n}'), 0)" aria-label="Écouter ${c.n}"><b>${c.n}</b>${chordSVG(newChord(c.n), {size: 1})}</button>`;
+  const grid = l => `<div class="lib-g2">${l.map(card).join('') || '<p class="lib-none">Rien ici.</p>'}</div>`;
+  if (q) { const hits = LIB.filter(c => c.n.toLowerCase().includes(q)); body.innerHTML = `<p class="lib-n">${hits.length} accord${hits.length > 1 ? 's' : ''}</p>` + grid(hits); return; }
+  const fams = [['ess', 'Les essentiels'], ['min', 'Mineurs'], ['7', 'Septièmes'], ['barre', 'Barrés'], ['sus', 'Sus'], ['add', 'Add9'], ['maj', 'Majeurs'], ['all', 'Tous']];
+  const ess = [...MAGIC, ...ESSENTIAL].map(findChord).filter(Boolean);
+  const list = libFilter === 'ess' ? ess : LIB.filter(c => libFilter === 'all' ? true : libFilter === 'barre' ? !!c.barre : libFilter === '7' ? c.fam === '7' : c.fam === libFilter);
+  body.innerHTML = `<div class="lib-chips">${fams.map(([k, l]) => `<button type="button" class="${libFilter === k ? 'on' : ''}" aria-pressed="${libFilter === k}" onclick="libFilter='${k}';renderLib()">${l}</button>`).join('')}</div>
+    ${mediBulle('neutre', 'Touche un accord pour l’entendre. Pas trouvé ? Dans une fiche, « Créer mon accord » : tu poses tes doigts, je le reconnais.', {size: 44, cls: 'lib-medi'})}
+    ${grid(list)}`;
 }
 
 /* ═══════ IMPORT: ASCII TAB / CHORD SHEET PARSER ═══════ */
@@ -10782,13 +10820,20 @@ try { if (navigator.storage && navigator.storage.persist) navigator.storage.pers
 })();
 
 /* ═══════ PREMIER LANCEMENT : 3 écrans pour comprendre l'app (une seule fois, nouvelle installation) ═══════ */
+// refonte du 18/11 : Médi se présente (3 écrans)
 const ONB = [
-  ['Retiens tes morceaux', 'Une fiche par chanson : les accords et le rythme de chaque partie, lisibles d’un coup d’œil pendant que tu joues.',
-    '<rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M9 8.5h6M9 12h6M9 15.5h3.5"/>'],
-  ['Passe tes murs', 'Changer d’accord sans casser le rythme, le barré, les arpèges… Des blocs courts en vidéo, dans l’ordre que tu veux.',
-    '<path d="M3 17l5-10 4 8 3-5 6 9"/>'],
-  ['Une fiche t’attend', 'Wonderwall et quelques classiques sont déjà prêts pour essayer. Touche + pour créer ta propre fiche.',
-    '<path d="M7 4.5v15l13-7.5z"/>']];
+  ['Salut,<br>moi c’est Médi.', 'Je garde les morceaux que tu apprends sur le tas, et je t’aide à passer les murs de la guitare.', 'medi'],
+  ['Une fiche<br>par morceau.', 'Les accords et ton rythme, lisibles d’un coup d’œil pendant que tu joues. Le rythme, tu l’enregistres en grattant.', 'fiche'],
+  ['Passe tes murs.', 'Changer d’accord sans casser le rythme, le barré, les arpèges… En vidéos courtes, dans l’ordre que tu veux.', 'murs']];
+function onbArt(k) {
+  if (k === 'medi') return `<div class="onb-m">${mediSVG('clin', {size: 160, anim: 'breathe'})}</div>`;
+  if (k === 'fiche') {
+    const pat = ['d', '', 'd', 'u', '', 'u', 'd', 'u'], ar = a => a === 'd' ? '<svg viewBox="0 0 16 22"><path class="d" d="M8 2 V19 M2.5 13.5 L8 19 L13.5 13.5"/></svg>' : a === 'u' ? '<svg viewBox="0 0 16 22"><path d="M8 20 V3 M2.5 8.5 L8 3 L13.5 8.5"/></svg>' : '';
+    return `<div class="onb-f"><div class="onb-fc"><div class="onb-fh"><b>Wonderwall</b><small>capo 2</small></div><div class="onb-fa"><span>Em7</span><span>G</span><span>Dsus4</span></div><div class="onb-fr">${pat.map(ar).map(x => `<i>${x}</i>`).join('')}</div></div><div class="onb-fm">${mediSVG('contente', {size: 76, anim: 'breathe'})}</div></div>`;
+  }
+  const br = (w, on, t) => `<span style="width:${w}px" class="${on ? 'on' : ''}">${t}</span>`;
+  return `<div class="onb-w">${mediSVG('contente', {size: 86, anim: 'jump'})}<div>${br(130, 1, 'Changer d’accord')}${br(110, 1, 'Le rythme')}</div><div>${br(90, 0, 'Le barré')}${br(100, 0, 'Arpèges')}${br(70, 0, '…')}</div><div>${br(120, 0, 'Embellir')}${br(140, 0, 'Vraies chansons')}</div></div>`;
+}
 let onbI = 0;
 function onbShow() {
   if ($('onb')) return;
@@ -10797,13 +10842,13 @@ function onbShow() {
   document.body.appendChild(el); onbI = 0; onbRender();
 }
 function onbRender() {
-  const [t, d, ico] = ONB[onbI], last = onbI === ONB.length - 1;
-  $('onb').innerHTML = `<div class="onb-card">
-    <button type="button" class="onb-skip" onclick="onbEnd()">Passer</button>
-    <div class="onb-ico" aria-hidden="true"><svg viewBox="0 0 24 24">${ico}</svg></div>
-    <h2>${t}</h2><p>${d}</p>
-    <div class="onb-dots" aria-hidden="true">${ONB.map((_, i) => `<i class="${i === onbI ? 'on' : ''}"></i>`).join('')}</div>
-    <button type="button" class="btn btn-primary onb-next" onclick="${last ? 'onbEnd()' : 'onbI++;onbRender()'}">${last ? 'C’est parti' : 'Suivant'}</button>
+  const [t, d, art] = ONB[onbI], last = onbI === ONB.length - 1;
+  $('onb').innerHTML = `<div class="onb-card onb2">
+    <div class="onb-top">${last ? '' : '<button type="button" class="onb-skip" onclick="onbEnd()">Passer</button>'}</div>
+    <div class="onb-mid"><div class="onb-art">${onbArt(art)}</div>
+    <div class="onb-tx"><h2>${t}</h2><p>${d}</p></div></div>
+    <div class="onb-bot"><div class="onb-dots" aria-label="Écran ${onbI + 1} sur ${ONB.length}">${ONB.map((_, i) => `<i class="${i === onbI ? 'on' : ''}"></i>`).join('')}</div>
+    <button type="button" class="onb-next" onclick="${last ? 'onbEnd()' : 'onbI++;onbRender()'}">${last ? 'C’est parti' : 'Suivant'}</button></div>
   </div>`;
 }
 function onbEnd() { LS.set('gms_onboarded', true); const el = $('onb'); if (el) el.remove(); }
