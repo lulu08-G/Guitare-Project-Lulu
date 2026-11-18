@@ -139,8 +139,11 @@ BLOCS.forEach(b => { if (MORE_BLOCS[b.id]) b.cards = MORE_BLOCS[b.id]; });
 BLOCS.forEach(b => b.cards.forEach(c => { LV[c.k] = lvBuild(Object.assign({t: c.t}, c.v)); }));
 let blocCur = null;
 const blocDone = () => LS.get('gms_bloc_done', {});
-function blocToggleDone(k) { const d = blocDone(); d[k] ? delete d[k] : d[k] = Date.now(); LS.set('gms_bloc_done', d); renderBlocs(); }
-function blocOpen(id) { const b = BLOCS.find(x => x.id === id); if (b && b.to) { coursList(); return; } lvStop(); blocCur = id; renderBlocs(); window.scrollTo(0, 0); }
+function blocToggleDone(k) { const d = blocDone(), was = !!d[k]; was ? delete d[k] : d[k] = Date.now(); LS.set('gms_bloc_done', d);
+  const b = BLOCS.find(x => x.cards.some(c => c.k === k)); blocCardOpen = null;
+  if (!was && b && b.cards.every(c => d[c.k])) murPasse(b);
+  renderBlocs(); }
+function blocOpen(id) { const b = BLOCS.find(x => x.id === id); if (b && b.to) { coursList(); return; } lvStop(); blocCur = id; blocCardOpen = null; renderBlocs(); window.scrollTo(0, 0); }
 function blocBack() { lvStop(); blocCur = null; renderBlocs(); window.scrollTo(0, 0); }
 function blocSong(t) {
   const lc = t.toLowerCase(), s = sheets.find(z => z.title.trim().toLowerCase() === lc);
@@ -165,25 +168,54 @@ function pcGo(a) {
   } else if (a.type === 'fiche') newSheet();
 }
 function blocEx(id, i) { const c = BLOCS.find(x => x.id === id).cards[i]; lvStop(); if (c.ex.type === 'tuto') go('atelier'); else pcGo(c.ex); }
+let blocCardOpen = null;   // carte ouverte dans un mur (sinon : la première pas faite)
+const BK_CHK = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5 L7.5 13 L14.5 5"/></svg>';
+function blocRing(f, n) {   // anneau de progression d'un mur
+  if (!n) return '<span class="bk-st soon" aria-hidden="true"></span>';
+  if (f >= n) return `<span class="bk-st done" aria-label="Fait">${BK_CHK}</span>`;
+  if (!f) return '<span class="bk-st" aria-hidden="true"></span>';
+  const a = f / n * 2 * Math.PI, x = 22 + 18 * Math.sin(a), y = 22 - 18 * Math.cos(a);
+  return `<svg class="bk-ring" viewBox="0 0 44 44" role="img" aria-label="${f} sur ${n}"><circle cx="22" cy="22" r="18"/><path d="M22 4 A18 18 0 ${a > Math.PI ? 1 : 0} 1 ${x.toFixed(1)} ${y.toFixed(1)}"/></svg>`;
+}
 function renderBlocs() {
   const host = $('blocs-body'); if (!host) return;
   const dn = blocDone();
   if (!blocCur) {
-    host.innerHTML = `<div class="bk-hero"><small>DÉBLOQUE TON JEU</small><h2>Quel mur te bloque ?</h2><p>Des cours courts, en vidéo, pour franchir chaque mur de la guitare. Choisis le tien, dans l’ordre que tu veux.</p></div><div class="bk-list">` +
-      BLOCS.map((b, i) => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length;
-        return `<button type="button" class="bk-it${n || b.to ? '' : ' soon'}" onclick="${n || b.to ? `blocOpen('${b.id}')` : ''}"><span class="bk-n">${i + 1}</span><span class="bk-tx"><b>${b.n}</b><i>« ${b.mur} »</i></span><span class="bk-st">${b.to ? 'Ouvrir' : n ? `${f}/${n}` : 'Bientôt'}</span></button>`; }).join('') + '</div>';
+    const nx = blocNext();
+    let h = '';
+    if (nx) { const k = nx.b.cards.findIndex(c => !dn[c.k]);
+      h += `<section class="bk-now">${mediBulle('neutre', nx.f ? `${esc(nx.b.n)} : tu en es à la moitié du chemin. On continue ?` : `« ${esc(nx.b.mur)} » ? On s’y attaque ensemble.`, {size: 62})}
+        <button type="button" class="bk-go" onclick="blocOpen('${nx.b.id}')"><span><b>${esc(nx.b.n)}</b><small>Vidéo ${k + 1} sur ${nx.n}</small></span><i>${PLAY_I}</i></button></section>`; }
+    h += `<h2 class="bk-lt">Ce qui te bloque</h2><div class="bk-list2">` + BLOCS.map(b => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length, ok = n || b.to;
+      return `<button type="button" class="bk-row${ok ? '' : ' soon'}"${ok ? ` onclick="blocOpen('${b.id}')"` : ' disabled'}>${b.to ? `<span class="bk-st to" aria-hidden="true">?</span>` : blocRing(f, n)}<span class="bk-tx"><b>${esc(b.mur)}</b><small>${esc(b.n)}${ok ? '' : ', bientôt'}</small></span></button>`; }).join('') + '</div>';
+    host.innerHTML = h;
     return;
   }
-  const b = BLOCS.find(x => x.id === blocCur), bi = BLOCS.indexOf(b);
-  host.innerHTML = `<button type="button" class="bk-back" onclick="blocBack()"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Tous les blocs</button>
-    <div class="bk-hero"><small>MUR ${bi + 1}</small><h2>${b.n}</h2><p>« ${b.mur} »</p></div>` +
-    b.cards.map((c, i) => `<div class="bk-card${dn[c.k] ? ' done' : ''}"><div class="bk-ch"><span class="bk-n">${i + 1}</span><div><b>${c.t}</b><p>${c.d}</p></div></div>
-      ${lvCard(c.k, 'b')}
-      <div class="bk-acts">${c.ex ? `<button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">${c.ex.type === 'fiche' || c.ex.type === 'tuto' ? c.exl : 'S’exercer · ' + c.exl}</button>` : ''}
-        ${c.song ? `<button type="button" class="btn btn-ghost btn-sm" onclick="lvStop();blocSong('${c.song.replace(/'/g, "\\'")}')">Essaie sur « ${c.song} »</button>` : ''}
-        <button type="button" class="bk-done" onclick="blocToggleDone('${c.k}')" aria-pressed="${!!dn[c.k]}">${dn[c.k] ? 'Fait ✓' : 'Marquer fait'}</button></div></div>`).join('');
+  const b = BLOCS.find(x => x.id === blocCur), bi = BLOCS.indexOf(b), n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length;
+  const first = b.cards.findIndex(c => !dn[c.k]), open = blocCardOpen != null ? blocCardOpen : first;
+  const lastDone = b.cards.filter(c => dn[c.k]).pop();
+  const say = f >= n ? 'Mur passé ! Reviens quand tu veux revoir une vidéo.' : f ? `« ${esc(lastDone.t)} » est dans ta poche. On attaque « ${esc(b.cards[first].t)} » ?` : `On commence par « ${esc(b.cards[0].t)} » ?`;
+  host.innerHTML = `<div class="bk-top"><button type="button" class="bk-back2" onclick="blocBack()" aria-label="Tous les murs"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><span>Mur ${bi + 1} sur ${BLOCS.length}</span></div>
+    <div class="bk-hd"><h2>${esc(b.n)}</h2><p>« ${esc(b.mur)} »</p><div class="bk-pg"><span class="dc-pg"><i style="width:${Math.round(100 * f / n)}%"></i></span><small>${f} sur ${n}</small></div></div>
+    ${mediBulle(f >= n ? 'contente' : 'neutre', say, {size: 50})}
+    <div class="bk-cards">` + b.cards.map((c, i) => {
+      if (i !== open) return `<button type="button" class="bk-row" onclick="blocCardOpen=${i};renderBlocs()">${dn[c.k] ? `<span class="bk-st done">${BK_CHK}</span>` : `<span class="bk-st n">${i + 1}</span>`}<span class="bk-tx"><b>${esc(c.t)}</b><small>${dn[c.k] ? 'Fait' : 'Vidéo'}</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>`;
+      return `<section class="bk-open${dn[c.k] ? ' done' : ''}">${lvCard(c.k, 'b')}
+        <div class="bk-ot"><b>${i + 1}. ${esc(c.t)}</b><p>${c.d}</p></div>
+        <div class="bk-acts">${c.ex ? `<button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">${c.ex.type === 'fiche' || c.ex.type === 'tuto' ? c.exl : 'S’exercer'}</button>` : ''}
+          ${c.song ? `<button type="button" class="btn btn-ghost btn-sm" onclick="lvStop();blocSong('${c.song.replace(/'/g, "\\'")}')">Sur « ${esc(c.song)} »</button>` : ''}
+          <button type="button" class="bk-done" onclick="blocToggleDone('${c.k}')" aria-pressed="${!!dn[c.k]}">${dn[c.k] ? 'Fait ✓' : 'Fait'}</button></div></section>`;
+    }).join('') + '</div>';
 }
-
+// mur passé : les seuls confettis de l'app (des médiators qui tombent), 2 s
+function murPasse(b) {
+  if (mReduced()) { toast('Mur passé : ' + b.n); return; }
+  const el = document.createElement('div'); el.className = 'mur-ok'; el.setAttribute('role', 'status');
+  const P = MEDI_BODY, col = ['var(--gold)', 'var(--cream)', 'var(--bulle-ink)'];
+  el.innerHTML = Array.from({length: 14}, (_, i) => `<svg class="mo-p" style="left:${(i * 7.3 + 3) % 96}%;animation-delay:${(i * .13).toFixed(2)}s;width:${16 + (i * 5) % 12}px" viewBox="0 0 200 222" aria-hidden="true"><path d="${P}" fill="${col[i % 3]}"/></svg>`).join('')
+    + `<div class="mo-c">${mediSVG('contente', {size: 110, anim: 'jump'})}<b>Mur passé : ${esc(b.n)}</b><span>« ${esc(b.mur)} » : c’est derrière toi.</span></div>`;
+  document.body.appendChild(el); setTimeout(() => el.classList.add('out'), 2200); setTimeout(() => el.remove(), 2700);
+}
 let lv = null;   // {el, k, t0, done (s écoulées avant pause), timers, paused}
 const LV_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5.2v13.6a.6.6 0 00.92.5l10.6-6.8a.6.6 0 000-1L8.92 4.7A.6.6 0 008 5.2z" fill="currentColor"/></svg>';
 function lvCard(k, ctx) {

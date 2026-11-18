@@ -2655,6 +2655,84 @@ body.mj-on{overflow:hidden}
 .mt-styles button.on{background:var(--cream);color:var(--bg);font-weight:800}
 .mt-pat{width:100%}
 @media(prefers-reduced-motion:reduce){#v-metro .mt-core::after,.mt-pal .pv{animation:none!important}}
+
+/* ── S'entraîner ── */
+.tr-head{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:16px 24px 6px}
+.tr-head h1{font:800 32px var(--display);letter-spacing:-.02em;color:var(--cream)}
+.tr-metro{width:44px;height:44px;border-radius:22px;background:var(--card);border:0}
+.tr-metro svg{width:22px;height:22px;stroke:var(--cream)}.tr-metro .o{stroke:var(--gold);stroke-width:2.2}
+.subnav.tr-seg{max-width:952px;margin:0 auto 6px;padding:4px;background:var(--card);border-radius:22px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:0;position:static}
+@media(max-width:600px){.subnav.tr-seg{margin:0 20px 6px}.tr-head{padding:16px 20px 6px}}
+.subnav.tr-seg button{min-height:36px;border-radius:18px;background:none;color:var(--cream);font-size:14px;font-weight:600;border:0;padding:0 6px}
+.subnav.tr-seg button.on{background:var(--cream);color:var(--bg);font-weight:700}
+@media(max-width:899px){body:has(#v-blocs.on) nav,body:has(#v-exo.on) nav{display:none}}
+.bk-now{background:var(--card);border-radius:28px;padding:16px;display:flex;flex-direction:column;gap:14px;margin:12px 0 18px}
+.bk-go{display:flex;align-items:center;gap:12px;background:var(--gold);color:var(--ink);border-radius:20px;padding:14px 16px;text-align:left;width:100%}
+.bk-go>span{display:flex;flex-direction:column;gap:2px;flex:1}
+.bk-go b{font:800 19px var(--display)}.bk-go small{font-size:13px;font-weight:600}
+.bk-go i{width:44px;height:44px;border-radius:22px;background:var(--ink);display:flex;align-items:center;justify-content:center}
+.bk-go i svg{width:16px;height:16px;fill:var(--gold)}
+.bk-lt{font:600 14px var(--sans);color:var(--cream3);margin:0 0 4px}
+.bk-list2,.bk-cards{display:flex;flex-direction:column}
+.bk-row{display:flex;align-items:center;gap:14px;padding:10px 0;width:100%;background:none;color:var(--cream);text-align:left;border:0}
+.bk-row.soon{opacity:.55}
+.bk-tx{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.bk-tx b{font-size:16px;font-weight:700;line-height:1.3}.bk-tx small{font-size:13px;color:var(--cream3)}
+.bk-st{width:40px;height:40px;margin:2px;flex:none;border-radius:22px;border:2px solid var(--card3);display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.bk-st.done{border:0;background:var(--bulle)}
+.bk-st svg{width:18px;height:18px;fill:none;stroke:var(--gold);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.bk-st.n{border:0;background:var(--card2);font:800 16px var(--display);color:var(--cream3)}
+.bk-st.to{border:0;background:var(--card2);font:800 18px var(--display);color:var(--gold)}
+.bk-ring{width:44px;height:44px;flex:none}
+.bk-ring circle{fill:none;stroke:var(--card3);stroke-width:4}.bk-ring path{fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round}
+.bk-top{display:flex;align-items:center;gap:12px;margin:14px 0 10px}
+.bk-top span{font-size:14px;font-weight:600;color:var(--cream3)}
+.bk-back2{width:44px;height:44px;border-radius:22px;background:var(--card);display:flex;align-items:center;justify-content:center}
+.bk-back2 svg{width:10px;height:16px;fill:none;stroke:var(--cream);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bk-hd{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.bk-hd h2{font:800 34px/1 var(--display);letter-spacing:-.02em;color:var(--cream)}
+.bk-hd p{font-size:15px;color:var(--cream3)}
+.bk-pg{display:flex;align-items:center;gap:10px}.bk-pg .dc-pg{flex:1}.bk-pg small{font-size:13px;font-weight:600;color:var(--cream3)}
+.bk-cards{margin-top:12px}
+.bk-open{background:var(--card);border-radius:26px;padding:12px;display:flex;flex-direction:column;gap:12px;margin:6px 0}
+.bk-ot{display:flex;flex-direction:column;gap:4px;padding:0 4px}
+.bk-ot b{font:800 19px var(--display);color:var(--cream)}.bk-ot p{font-size:14px;color:var(--cream3);line-height:1.45}
+.bk-open .bk-acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bk-open .bk-acts .btn{min-height:44px;border-radius:22px;box-shadow:none}
+.bk-open .bk-done{margin-left:auto;min-height:44px;padding:0 10px;background:none;color:var(--cream3);font-size:13px;font-weight:600;border:0}
+.bk-open .bk-done[aria-pressed="true"]{color:var(--gold)}
+/* mur passé */
+.mur-ok{position:fixed;inset:0;z-index:900;background:rgba(10,9,11,.86);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .4s}
+.mur-ok.out{opacity:0}
+.mo-p{position:absolute;top:-40px;height:auto;animation:moFall 2.2s linear both}
+@keyframes moFall{to{transform:translateY(110vh) rotate(260deg)}}
+.mo-c{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:0 24px}
+.mo-c b{font:800 24px var(--display);color:var(--cream)}.mo-c span{font-size:15px;color:var(--bulle-ink)}
+.subnav.tr-seg button{white-space:nowrap;font-size:13.5px}
+/* suites d'accords */
+.fl-medi{margin:14px 0}
+.fl-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -24px 14px;padding:0 24px}
+@media(min-width:900px){.fl-chips{margin:0 0 14px;padding:0;flex-wrap:wrap}}
+.fl-chips::-webkit-scrollbar{display:none}
+.fl-chips button{flex:none;height:38px;padding:0 16px;border-radius:19px;background:var(--card);color:var(--cream);font-size:14px;font-weight:600;border:0}
+.fl-chips button.on{background:var(--cream);color:var(--bg);font-weight:700}
+.fl-rand{width:100%;height:48px;border-radius:24px;background:var(--bulle);color:var(--bulle-ink);font-size:15px;font-weight:700;margin-bottom:14px}
+.fl-secs .fl-sec{display:flex;align-items:center;gap:12px;width:100%;background:var(--card);border:0;border-radius:22px;padding:14px 16px;margin-bottom:8px;color:var(--cream);text-align:left}
+.fl-secs .fl-sec>span{flex:1;display:flex;flex-direction:column;gap:2px}
+.fl-secs .fl-sec b{font:800 17px var(--display)}.fl-secs .fl-sec small{font-size:13px;color:var(--cream3)}
+.fl-sh{font:800 24px var(--display);color:var(--cream);margin:10px 0 12px}
+.fl-c2s{display:flex;flex-direction:column;gap:10px}
+@media(min-width:700px){.fl-c2s{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fl-card.fl-c2{display:flex;align-items:center;gap:12px;background:var(--card);border:0;border-radius:22px;padding:14px 14px 14px 16px;cursor:pointer;box-shadow:none}
+.fl-card.fl-c2::before{display:none}
+.fl-c2t{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.fl-c2c{font:800 24px var(--display);letter-spacing:-.01em;color:var(--cream)}
+.fl-c2t b{font-size:15px;font-weight:700;color:var(--cream)}.fl-c2t small{font-size:13px;color:var(--cream3)}
+.fl-c2p{width:52px;height:52px;flex:none;border-radius:26px;background:var(--card2);display:flex;align-items:center;justify-content:center}
+.fl-c2p svg{width:16px;height:16px;fill:var(--gold)}
+.fl-c2:first-child .fl-c2p{background:var(--gold)}.fl-c2:first-child .fl-c2p svg{fill:var(--ink)}
+#v-exo .fl-card.fl-c2{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;min-height:0}
+#v-exo .fl-c2t{align-items:flex-start}
 </style>
 </head>
 <body>
@@ -5528,8 +5606,11 @@ BLOCS.forEach(b => { if (MORE_BLOCS[b.id]) b.cards = MORE_BLOCS[b.id]; });
 BLOCS.forEach(b => b.cards.forEach(c => { LV[c.k] = lvBuild(Object.assign({t: c.t}, c.v)); }));
 let blocCur = null;
 const blocDone = () => LS.get('gms_bloc_done', {});
-function blocToggleDone(k) { const d = blocDone(); d[k] ? delete d[k] : d[k] = Date.now(); LS.set('gms_bloc_done', d); renderBlocs(); }
-function blocOpen(id) { const b = BLOCS.find(x => x.id === id); if (b && b.to) { coursList(); return; } lvStop(); blocCur = id; renderBlocs(); window.scrollTo(0, 0); }
+function blocToggleDone(k) { const d = blocDone(), was = !!d[k]; was ? delete d[k] : d[k] = Date.now(); LS.set('gms_bloc_done', d);
+  const b = BLOCS.find(x => x.cards.some(c => c.k === k)); blocCardOpen = null;
+  if (!was && b && b.cards.every(c => d[c.k])) murPasse(b);
+  renderBlocs(); }
+function blocOpen(id) { const b = BLOCS.find(x => x.id === id); if (b && b.to) { coursList(); return; } lvStop(); blocCur = id; blocCardOpen = null; renderBlocs(); window.scrollTo(0, 0); }
 function blocBack() { lvStop(); blocCur = null; renderBlocs(); window.scrollTo(0, 0); }
 function blocSong(t) {
   const lc = t.toLowerCase(), s = sheets.find(z => z.title.trim().toLowerCase() === lc);
@@ -5554,25 +5635,54 @@ function pcGo(a) {
   } else if (a.type === 'fiche') newSheet();
 }
 function blocEx(id, i) { const c = BLOCS.find(x => x.id === id).cards[i]; lvStop(); if (c.ex.type === 'tuto') go('atelier'); else pcGo(c.ex); }
+let blocCardOpen = null;   // carte ouverte dans un mur (sinon : la première pas faite)
+const BK_CHK = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.5 L7.5 13 L14.5 5"/></svg>';
+function blocRing(f, n) {   // anneau de progression d'un mur
+  if (!n) return '<span class="bk-st soon" aria-hidden="true"></span>';
+  if (f >= n) return `<span class="bk-st done" aria-label="Fait">${BK_CHK}</span>`;
+  if (!f) return '<span class="bk-st" aria-hidden="true"></span>';
+  const a = f / n * 2 * Math.PI, x = 22 + 18 * Math.sin(a), y = 22 - 18 * Math.cos(a);
+  return `<svg class="bk-ring" viewBox="0 0 44 44" role="img" aria-label="${f} sur ${n}"><circle cx="22" cy="22" r="18"/><path d="M22 4 A18 18 0 ${a > Math.PI ? 1 : 0} 1 ${x.toFixed(1)} ${y.toFixed(1)}"/></svg>`;
+}
 function renderBlocs() {
   const host = $('blocs-body'); if (!host) return;
   const dn = blocDone();
   if (!blocCur) {
-    host.innerHTML = `<div class="bk-hero"><small>DÉBLOQUE TON JEU</small><h2>Quel mur te bloque ?</h2><p>Des cours courts, en vidéo, pour franchir chaque mur de la guitare. Choisis le tien, dans l’ordre que tu veux.</p></div><div class="bk-list">` +
-      BLOCS.map((b, i) => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length;
-        return `<button type="button" class="bk-it${n || b.to ? '' : ' soon'}" onclick="${n || b.to ? `blocOpen('${b.id}')` : ''}"><span class="bk-n">${i + 1}</span><span class="bk-tx"><b>${b.n}</b><i>« ${b.mur} »</i></span><span class="bk-st">${b.to ? 'Ouvrir' : n ? `${f}/${n}` : 'Bientôt'}</span></button>`; }).join('') + '</div>';
+    const nx = blocNext();
+    let h = '';
+    if (nx) { const k = nx.b.cards.findIndex(c => !dn[c.k]);
+      h += `<section class="bk-now">${mediBulle('neutre', nx.f ? `${esc(nx.b.n)} : tu en es à la moitié du chemin. On continue ?` : `« ${esc(nx.b.mur)} » ? On s’y attaque ensemble.`, {size: 62})}
+        <button type="button" class="bk-go" onclick="blocOpen('${nx.b.id}')"><span><b>${esc(nx.b.n)}</b><small>Vidéo ${k + 1} sur ${nx.n}</small></span><i>${PLAY_I}</i></button></section>`; }
+    h += `<h2 class="bk-lt">Ce qui te bloque</h2><div class="bk-list2">` + BLOCS.map(b => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length, ok = n || b.to;
+      return `<button type="button" class="bk-row${ok ? '' : ' soon'}"${ok ? ` onclick="blocOpen('${b.id}')"` : ' disabled'}>${b.to ? `<span class="bk-st to" aria-hidden="true">?</span>` : blocRing(f, n)}<span class="bk-tx"><b>${esc(b.mur)}</b><small>${esc(b.n)}${ok ? '' : ', bientôt'}</small></span></button>`; }).join('') + '</div>';
+    host.innerHTML = h;
     return;
   }
-  const b = BLOCS.find(x => x.id === blocCur), bi = BLOCS.indexOf(b);
-  host.innerHTML = `<button type="button" class="bk-back" onclick="blocBack()"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Tous les blocs</button>
-    <div class="bk-hero"><small>MUR ${bi + 1}</small><h2>${b.n}</h2><p>« ${b.mur} »</p></div>` +
-    b.cards.map((c, i) => `<div class="bk-card${dn[c.k] ? ' done' : ''}"><div class="bk-ch"><span class="bk-n">${i + 1}</span><div><b>${c.t}</b><p>${c.d}</p></div></div>
-      ${lvCard(c.k, 'b')}
-      <div class="bk-acts">${c.ex ? `<button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">${c.ex.type === 'fiche' || c.ex.type === 'tuto' ? c.exl : 'S’exercer · ' + c.exl}</button>` : ''}
-        ${c.song ? `<button type="button" class="btn btn-ghost btn-sm" onclick="lvStop();blocSong('${c.song.replace(/'/g, "\\'")}')">Essaie sur « ${c.song} »</button>` : ''}
-        <button type="button" class="bk-done" onclick="blocToggleDone('${c.k}')" aria-pressed="${!!dn[c.k]}">${dn[c.k] ? 'Fait ✓' : 'Marquer fait'}</button></div></div>`).join('');
+  const b = BLOCS.find(x => x.id === blocCur), bi = BLOCS.indexOf(b), n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length;
+  const first = b.cards.findIndex(c => !dn[c.k]), open = blocCardOpen != null ? blocCardOpen : first;
+  const lastDone = b.cards.filter(c => dn[c.k]).pop();
+  const say = f >= n ? 'Mur passé ! Reviens quand tu veux revoir une vidéo.' : f ? `« ${esc(lastDone.t)} » est dans ta poche. On attaque « ${esc(b.cards[first].t)} » ?` : `On commence par « ${esc(b.cards[0].t)} » ?`;
+  host.innerHTML = `<div class="bk-top"><button type="button" class="bk-back2" onclick="blocBack()" aria-label="Tous les murs"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><span>Mur ${bi + 1} sur ${BLOCS.length}</span></div>
+    <div class="bk-hd"><h2>${esc(b.n)}</h2><p>« ${esc(b.mur)} »</p><div class="bk-pg"><span class="dc-pg"><i style="width:${Math.round(100 * f / n)}%"></i></span><small>${f} sur ${n}</small></div></div>
+    ${mediBulle(f >= n ? 'contente' : 'neutre', say, {size: 50})}
+    <div class="bk-cards">` + b.cards.map((c, i) => {
+      if (i !== open) return `<button type="button" class="bk-row" onclick="blocCardOpen=${i};renderBlocs()">${dn[c.k] ? `<span class="bk-st done">${BK_CHK}</span>` : `<span class="bk-st n">${i + 1}</span>`}<span class="bk-tx"><b>${esc(c.t)}</b><small>${dn[c.k] ? 'Fait' : 'Vidéo'}</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>`;
+      return `<section class="bk-open${dn[c.k] ? ' done' : ''}">${lvCard(c.k, 'b')}
+        <div class="bk-ot"><b>${i + 1}. ${esc(c.t)}</b><p>${c.d}</p></div>
+        <div class="bk-acts">${c.ex ? `<button type="button" class="btn btn-primary btn-sm" onclick="blocEx('${b.id}',${i})">${c.ex.type === 'fiche' || c.ex.type === 'tuto' ? c.exl : 'S’exercer'}</button>` : ''}
+          ${c.song ? `<button type="button" class="btn btn-ghost btn-sm" onclick="lvStop();blocSong('${c.song.replace(/'/g, "\\'")}')">Sur « ${esc(c.song)} »</button>` : ''}
+          <button type="button" class="bk-done" onclick="blocToggleDone('${c.k}')" aria-pressed="${!!dn[c.k]}">${dn[c.k] ? 'Fait ✓' : 'Fait'}</button></div></section>`;
+    }).join('') + '</div>';
 }
-
+// mur passé : les seuls confettis de l'app (des médiators qui tombent), 2 s
+function murPasse(b) {
+  if (mReduced()) { toast('Mur passé : ' + b.n); return; }
+  const el = document.createElement('div'); el.className = 'mur-ok'; el.setAttribute('role', 'status');
+  const P = MEDI_BODY, col = ['var(--gold)', 'var(--cream)', 'var(--bulle-ink)'];
+  el.innerHTML = Array.from({length: 14}, (_, i) => `<svg class="mo-p" style="left:${(i * 7.3 + 3) % 96}%;animation-delay:${(i * .13).toFixed(2)}s;width:${16 + (i * 5) % 12}px" viewBox="0 0 200 222" aria-hidden="true"><path d="${P}" fill="${col[i % 3]}"/></svg>`).join('')
+    + `<div class="mo-c">${mediSVG('contente', {size: 110, anim: 'jump'})}<b>Mur passé : ${esc(b.n)}</b><span>« ${esc(b.mur)} » : c’est derrière toi.</span></div>`;
+  document.body.appendChild(el); setTimeout(() => el.classList.add('out'), 2200); setTimeout(() => el.remove(), 2700);
+}
 let lv = null;   // {el, k, t0, done (s écoulées avant pause), timers, paused}
 const LV_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5.2v13.6a.6.6 0 00.92.5l10.6-6.8a.6.6 0 000-1L8.92 4.7A.6.6 0 008 5.2z" fill="currentColor"/></svg>';
 function lvCard(k, ctx) {
@@ -6923,27 +7033,28 @@ function feelClick() {
 }
 
 const feelDia = (n, sz, p) => chordSVG(newChord(n), {size:sz, hl: p && p.sec === 'ouverts' ? openHl(p) : null});
-function feelCard(p) {
-  const names = feelNames(p), easy = !!feel.easy[p.id];
-  return `<div class="fl-card" style="--amb:${AMB_LOOK[p.amb][1]}" onclick="feelPickProg('${p.id}')">
-    <div class="fl-ct">${esc(p.n)}</div>
-    <div class="fl-deg">${p.sub ? esc(p.sub) : p.deg.slice(0, 4).map(esc).join(' · ') + (p.deg.length > 4 ? ' …' : '')}</div>
-    <div class="fl-dias">${[...new Set(names)].map(n => `<div class="chord-cell"><div class="cn" style="font-size:13px">${esc(n)}</div>${feelDia(n, .62, p)}</div>`).join('')}</div>
-    <div class="ec-meta"><span class="lvl" title="Niveau">${lvlDots(p.niv)}</span><span>${p.bpm[0]} → ${p.bpm[1]} BPM</span>
-      ${p.facile ? `<button type="button" class="filt ${easy ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div></div>`;
+function feelCard(p) {   // refonte : les accords en gros, le nom, le tempo, un ▶
+  const names = feelNames(p), u = [...new Set(names)].slice(0, 4).join(' ');
+  const niv = p.niv === 1 ? 'facile' : p.niv === 2 ? 'moyen' : 'costaud';
+  return `<div class="fl-card fl-c2" role="button" tabindex="0" onclick="feelPickProg('${p.id}')" onkeydown="if(event.key==='Enter')feelPickProg('${p.id}')">
+    <div class="fl-c2t"><span class="fl-c2c">${esc(u)}</span><b>${esc(p.n)}</b><small>${p.bpm[0]} à ${p.bpm[1]} BPM, ${niv}</small></div>
+    <span class="fl-c2p" aria-hidden="true">${PLAY_I}</span></div>`;
+}
+// la rangée des ambiances (puces)
+function feelChips() {
+  return `<div class="fl-chips">${AMBIANCES.map(a => `<button type="button" class="${feel.amb === a.id ? 'on' : ''}" aria-pressed="${feel.amb === a.id}" onclick="feelPickAmb('${a.id}')">${esc(a.n)}</button>`).join('')}</div>`;
 }
 function feelTiles() {
-  return `<div class="fl-surp"><div class="fl-lead">Suites d’accords</div><button type="button" class="btn btn-primary" onclick="feelSurprise()" title="Une suite et un rythme au hasard">Au hasard</button></div>
-    <div class="fl-tiles">${AMBIANCES.map(a => `<button type="button" class="fl-tile" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
-      <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>
-    <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
-      <span class="fl-em">${a.em}</span><span><b>${esc(a.n)}</b><small>${esc(a.d)} · ${feelSecList(a.id).length} suites</small></span><i>›</i></button>`).join('')}</div>`;
+  return `${mediBulle('clin', 'Envie de quoi ce soir ? Choisis une ambiance, je te sors des suites qui sonnent.', {size: 50, cls: 'fl-medi'})}
+    ${feelChips()}
+    <button type="button" class="fl-rand" onclick="feelSurprise()">Au hasard : une suite et un rythme</button>
+    <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" onclick="feelPickAmb('${a.id}')">
+      <span><b>${esc(a.n)}</b><small>${esc(a.d)}, ${feelSecList(a.id).length} suites</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>`).join('')}</div>`;
 }
 function feelList() {
   const a = feelAmbOf(feel.amb), list = feelSecList(a.id);
-  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; ${a.em ? 'Exercices' : 'Ambiances'}</button>
-    <div class="fl-ambh" style="--amb:${AMB_LOOK[a.id][1]}"><span class="fl-em">${AMB_LOOK[a.id][0]}</span><div><div class="fl-tn">${esc(a.n)}</div><div class="fl-td">${esc(a.d)}</div></div></div>
-    <div class="fl-cards">${list.map(feelCard).join('')}</div>`;
+  return `${a.em ? `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; Suites d’accords</button><h2 class="fl-sh">${esc(a.n)}</h2>` : feelChips()}
+    <div class="fl-cards fl-c2s">${list.map(feelCard).join('')}</div>`;
 }
 function feelPlayerHTML() {
   const p = feelProg(), a = feelHead(p), names = feelNames(p), m = feelMeter(), isR = p.sec === 'riffs', isO = p.sec === 'ouverts';
@@ -8330,18 +8441,23 @@ addEventListener('resize', () => { tbPillOn = false; const on = document.querySe
 function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'blocs'); }
 let curView = 'home';
 const SUBNAV = {
-  train: [['blocs','Débloque ton jeu'],['exo','Jouer']]
+  train: [['blocs', 'Murs'], ['exo:feel', 'Suites d’accords'], ['exo:rhy', 'Rythmes']]
 };
 function renderSubnav(v) {
   curView = v;
-  document.querySelectorAll('.subnav').forEach(e => e.remove());
+  document.querySelectorAll('.subnav,.tr-head').forEach(e => e.remove());
   const sp = SPACE_OF[v], items = SUBNAV[sp]; if (!items) return;
-  const el = document.createElement('div'); el.className = 'subnav'; el.setAttribute('role', 'tablist');
-  el.innerHTML = items.map(([k, l]) => `<button type="button" role="tab" aria-selected="${k === v}" class="${k === v ? 'on' : ''}" onclick="${k === 'cours' ? 'coursList()' : `go('${k}')`}">${l}</button>`).join('');
-  if (sp === 'train') el.classList.add('seg-big');
-  const view = $('v-' + v); view.insertBefore(el, view.firstChild);
+  const view = $('v-' + v);
+  const cur = v === 'exo' ? 'exo:' + (typeof exoMode !== 'undefined' && exoMode === 'rhy' ? 'rhy' : 'feel') : v;
+  const el = document.createElement('div'); el.className = 'subnav seg-big tr-seg'; el.setAttribute('role', 'tablist');
+  el.innerHTML = items.map(([k, l]) => { const [vv, m] = k.split(':'), on = k === cur;
+    const act = m ? `rccStop();feelStop();exoCur=null;exoMode='${m}';${m === 'rhy' ? 'rcz.cur=null;' : ''}go('exo');exoRender()` : `go('${vv}')`;
+    return `<button type="button" role="tab" aria-selected="${on}" class="${on ? 'on' : ''}" onclick="${act}">${l}</button>`; }).join('');
+  const hd = document.createElement('div'); hd.className = 'tr-head';
+  hd.innerHTML = `<h1>Débloque ton jeu</h1><button type="button" class="btn-icon tr-metro" onclick="go('metro')" aria-label="Métronome"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 H16 L20 21 H4 Z"/><path class="o" d="M12 16 L17 6"/></svg></button>`;
+  view.insertBefore(el, view.firstChild); view.insertBefore(hd, el);
 }
-// Mode admin (Lucas) : ouvrir l'app avec ?admin dans l'adresse l'active et il est retenu ; ?admin=0 le coupe.
+// Moi : outils, mes fiches, l'appli
 const IS_ADMIN = (() => { try { const q = new URLSearchParams(location.search); if (q.has('admin')) LS.set('gms_admin', q.get('admin') !== '0'); } catch (e) {} return !!LS.get('gms_admin', false); })();
 function renderPlus() {
   const ic = d => `<svg viewBox="0 0 24 24">${d}</svg>`;

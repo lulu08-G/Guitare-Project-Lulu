@@ -412,27 +412,28 @@ function feelClick() {
 }
 
 const feelDia = (n, sz, p) => chordSVG(newChord(n), {size:sz, hl: p && p.sec === 'ouverts' ? openHl(p) : null});
-function feelCard(p) {
-  const names = feelNames(p), easy = !!feel.easy[p.id];
-  return `<div class="fl-card" style="--amb:${AMB_LOOK[p.amb][1]}" onclick="feelPickProg('${p.id}')">
-    <div class="fl-ct">${esc(p.n)}</div>
-    <div class="fl-deg">${p.sub ? esc(p.sub) : p.deg.slice(0, 4).map(esc).join(' · ') + (p.deg.length > 4 ? ' …' : '')}</div>
-    <div class="fl-dias">${[...new Set(names)].map(n => `<div class="chord-cell"><div class="cn" style="font-size:13px">${esc(n)}</div>${feelDia(n, .62, p)}</div>`).join('')}</div>
-    <div class="ec-meta"><span class="lvl" title="Niveau">${lvlDots(p.niv)}</span><span>${p.bpm[0]} → ${p.bpm[1]} BPM</span>
-      ${p.facile ? `<button type="button" class="filt ${easy ? 'on' : ''}" onclick="feelEasy('${p.id}',event)">Version facile</button>` : ''}</div></div>`;
+function feelCard(p) {   // refonte : les accords en gros, le nom, le tempo, un ▶
+  const names = feelNames(p), u = [...new Set(names)].slice(0, 4).join(' ');
+  const niv = p.niv === 1 ? 'facile' : p.niv === 2 ? 'moyen' : 'costaud';
+  return `<div class="fl-card fl-c2" role="button" tabindex="0" onclick="feelPickProg('${p.id}')" onkeydown="if(event.key==='Enter')feelPickProg('${p.id}')">
+    <div class="fl-c2t"><span class="fl-c2c">${esc(u)}</span><b>${esc(p.n)}</b><small>${p.bpm[0]} à ${p.bpm[1]} BPM, ${niv}</small></div>
+    <span class="fl-c2p" aria-hidden="true">${PLAY_I}</span></div>`;
+}
+// la rangée des ambiances (puces)
+function feelChips() {
+  return `<div class="fl-chips">${AMBIANCES.map(a => `<button type="button" class="${feel.amb === a.id ? 'on' : ''}" aria-pressed="${feel.amb === a.id}" onclick="feelPickAmb('${a.id}')">${esc(a.n)}</button>`).join('')}</div>`;
 }
 function feelTiles() {
-  return `<div class="fl-surp"><div class="fl-lead">Suites d’accords</div><button type="button" class="btn btn-primary" onclick="feelSurprise()" title="Une suite et un rythme au hasard">Au hasard</button></div>
-    <div class="fl-tiles">${AMBIANCES.map(a => `<button type="button" class="fl-tile" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
-      <span class="fl-em">${AMB_LOOK[a.id][0]}</span><span class="fl-tn">${esc(a.n)}</span><span class="fl-td">${esc(a.d)}</span></button>`).join('')}</div>
-    <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" style="--amb:${AMB_LOOK[a.id][1]}" onclick="feelPickAmb('${a.id}')">
-      <span class="fl-em">${a.em}</span><span><b>${esc(a.n)}</b><small>${esc(a.d)} · ${feelSecList(a.id).length} suites</small></span><i>›</i></button>`).join('')}</div>`;
+  return `${mediBulle('clin', 'Envie de quoi ce soir ? Choisis une ambiance, je te sors des suites qui sonnent.', {size: 50, cls: 'fl-medi'})}
+    ${feelChips()}
+    <button type="button" class="fl-rand" onclick="feelSurprise()">Au hasard : une suite et un rythme</button>
+    <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" onclick="feelPickAmb('${a.id}')">
+      <span><b>${esc(a.n)}</b><small>${esc(a.d)}, ${feelSecList(a.id).length} suites</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>`).join('')}</div>`;
 }
 function feelList() {
   const a = feelAmbOf(feel.amb), list = feelSecList(a.id);
-  return `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; ${a.em ? 'Exercices' : 'Ambiances'}</button>
-    <div class="fl-ambh" style="--amb:${AMB_LOOK[a.id][1]}"><span class="fl-em">${AMB_LOOK[a.id][0]}</span><div><div class="fl-tn">${esc(a.n)}</div><div class="fl-td">${esc(a.d)}</div></div></div>
-    <div class="fl-cards">${list.map(feelCard).join('')}</div>`;
+  return `${a.em ? `<button type="button" class="btn btn-ghost btn-sm exo-back" onclick="feelBack()">&#8592; Suites d’accords</button><h2 class="fl-sh">${esc(a.n)}</h2>` : feelChips()}
+    <div class="fl-cards fl-c2s">${list.map(feelCard).join('')}</div>`;
 }
 function feelPlayerHTML() {
   const p = feelProg(), a = feelHead(p), names = feelNames(p), m = feelMeter(), isR = p.sec === 'riffs', isO = p.sec === 'ouverts';

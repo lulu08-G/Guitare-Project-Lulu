@@ -22,18 +22,23 @@ addEventListener('resize', () => { tbPillOn = false; const on = document.querySe
 function goTrain() { go(SPACE_OF[curView] === 'train' ? curView : 'blocs'); }
 let curView = 'home';
 const SUBNAV = {
-  train: [['blocs','Débloque ton jeu'],['exo','Jouer']]
+  train: [['blocs', 'Murs'], ['exo:feel', 'Suites d’accords'], ['exo:rhy', 'Rythmes']]
 };
 function renderSubnav(v) {
   curView = v;
-  document.querySelectorAll('.subnav').forEach(e => e.remove());
+  document.querySelectorAll('.subnav,.tr-head').forEach(e => e.remove());
   const sp = SPACE_OF[v], items = SUBNAV[sp]; if (!items) return;
-  const el = document.createElement('div'); el.className = 'subnav'; el.setAttribute('role', 'tablist');
-  el.innerHTML = items.map(([k, l]) => `<button type="button" role="tab" aria-selected="${k === v}" class="${k === v ? 'on' : ''}" onclick="${k === 'cours' ? 'coursList()' : `go('${k}')`}">${l}</button>`).join('');
-  if (sp === 'train') el.classList.add('seg-big');
-  const view = $('v-' + v); view.insertBefore(el, view.firstChild);
+  const view = $('v-' + v);
+  const cur = v === 'exo' ? 'exo:' + (typeof exoMode !== 'undefined' && exoMode === 'rhy' ? 'rhy' : 'feel') : v;
+  const el = document.createElement('div'); el.className = 'subnav seg-big tr-seg'; el.setAttribute('role', 'tablist');
+  el.innerHTML = items.map(([k, l]) => { const [vv, m] = k.split(':'), on = k === cur;
+    const act = m ? `rccStop();feelStop();exoCur=null;exoMode='${m}';${m === 'rhy' ? 'rcz.cur=null;' : ''}go('exo');exoRender()` : `go('${vv}')`;
+    return `<button type="button" role="tab" aria-selected="${on}" class="${on ? 'on' : ''}" onclick="${act}">${l}</button>`; }).join('');
+  const hd = document.createElement('div'); hd.className = 'tr-head';
+  hd.innerHTML = `<h1>Débloque ton jeu</h1><button type="button" class="btn-icon tr-metro" onclick="go('metro')" aria-label="Métronome"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 H16 L20 21 H4 Z"/><path class="o" d="M12 16 L17 6"/></svg></button>`;
+  view.insertBefore(el, view.firstChild); view.insertBefore(hd, el);
 }
-// Mode admin (Lucas) : ouvrir l'app avec ?admin dans l'adresse l'active et il est retenu ; ?admin=0 le coupe.
+// Moi : outils, mes fiches, l'appli
 const IS_ADMIN = (() => { try { const q = new URLSearchParams(location.search); if (q.has('admin')) LS.set('gms_admin', q.get('admin') !== '0'); } catch (e) {} return !!LS.get('gms_admin', false); })();
 function renderPlus() {
   const ic = d => `<svg viewBox="0 0 24 24">${d}</svg>`;
