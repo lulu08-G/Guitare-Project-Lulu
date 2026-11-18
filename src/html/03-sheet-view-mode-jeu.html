@@ -11,14 +11,14 @@
           <button type="button" class="btn-icon" onclick="svMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>
           <div class="pop">
             <button type="button" id="sv-edit">Modifier la fiche</button>
-            <button type="button" id="sv-aa" onclick="toggleNames()">Noms des accords</button>
+            <button type="button" id="sv-aa" onclick="toggleNames()">Afficher les doigtés</button>
             <button type="button" id="sv-lyr-m" onclick="svMenuClose();svToggleLyrics()">Afficher les paroles</button>
             <button type="button" onclick="svMenuClose();svOriginal()">Écouter l’original</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="sv-hero"><h2 id="sv-title"></h2><p class="sv-meta"><span id="sv-artist"></span><span id="sv-capo"></span><span id="sv-stats"></span></p></div>
+    <div class="sv-hero"><h2 id="sv-title"></h2><p class="sv-meta"><span id="sv-artist"></span></p><div class="sv-chips"><span id="sv-capo"></span><span id="sv-stats"></span><button type="button" class="sv-mj" onclick="mjOpen()"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2 L16 9 L4 16 Z"/></svg>Mode jeu</button></div></div>
     <div class="sv-body">
       <div class="sv-tabs" id="sv-tabs"></div>
       <div class="parts-view" id="sv-parts"></div>

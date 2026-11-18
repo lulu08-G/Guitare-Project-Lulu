@@ -2454,6 +2454,91 @@ h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
 .ed-rcard .ed-alt button{min-height:40px;padding:0 14px;border-radius:20px;background:var(--card2);color:var(--cream);font-size:14px;font-weight:600}
 .ed-rcard .ed-rec .ed-rec-dot{flex:0 0 34px;width:34px;height:34px;padding:0;margin:0;background:var(--ink)}
 .ed-rcard .ed-rec b{flex:none;font:inherit}
+
+/* ── La fiche ── */
+#v-sheet .sv-head{background:var(--bg);min-height:64px}
+#v-sheet .sv-back{width:44px;height:44px;padding:0;justify-content:center;border:0;border-radius:22px;background:var(--card)}
+#v-sheet .sv-back span{display:none}
+#v-sheet .sv-head .btn-icon,#v-sheet .sv-pdf{width:44px;height:44px;border:0;border-radius:22px;background:var(--card);color:var(--cream);box-shadow:none}
+#v-sheet .sv-pdf{padding:0;justify-content:center;font-size:0}
+#v-sheet .sv-pdf svg{width:20px;height:20px}
+#sv-fav.on{color:var(--gold)}
+#v-sheet .sv-hero{padding:6px 0 14px}
+#v-sheet .sv-hero h2{font:800 36px/1 var(--display);letter-spacing:-.025em;color:var(--cream)}
+#v-sheet .sv-meta{margin-top:6px;font-size:15px;color:var(--cream3)}
+.sv-chips{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.sv-chips>span{display:contents}
+.sv-chip{height:36px;padding:0 12px;border-radius:18px;background:var(--card);border:0;color:var(--cream);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.sv-chip span{color:var(--cream3)}
+.sv-chip b{font-weight:600}
+.sv-mj{margin-left:auto;height:44px;padding:0 18px 0 14px;border-radius:22px;background:var(--gold);color:var(--ink);font:700 15px var(--sans);display:inline-flex;align-items:center;gap:8px}
+.sv-mj svg{width:14px;height:14px;fill:var(--ink)}
+#v-sheet #sv-tabs{display:none}
+#v-sheet .parts-view .pv-block,#v-sheet.all .parts-view .pv-block{display:block;background:var(--card);border:0;border-radius:26px;padding:16px;margin-bottom:14px;box-shadow:none}
+#v-sheet .parts-view .pv-block>.pv-hdr,#v-sheet.all .parts-view .pv-block>.pv-hdr{display:flex;align-items:center;justify-content:space-between;background:none;border:0;padding:0 0 12px}
+#v-sheet.solo .parts-view .pv-block>.pv-hdr .pv-name{visibility:hidden}
+#v-sheet .parts-view .pv-name{font:600 14px var(--sans)!important;text-transform:none!important;letter-spacing:0!important;color:var(--cream3)}
+#v-sheet .pv-edit{width:auto;height:32px;padding:0 10px;border:0;background:none;color:var(--cream3);font-size:13px;font-weight:600}
+#v-sheet .pv-edit::after{display:none}
+#v-sheet .chords-row,#v-sheet.compact .chords-row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+body:not(.diag-on) #v-sheet .parts-view .chord-cell{background:none!important;border:0!important;border-radius:0;padding:0!important;box-shadow:none!important;min-width:0;width:auto}
+#v-sheet .parts-view .chord-cell .cn{font:800 28px/1.1 var(--display)!important;letter-spacing:-.02em;color:var(--cream);margin:0}
+#v-sheet .chord-cell.now{box-shadow:none}#v-sheet .chord-cell.now .cn{color:var(--gold)}
+body:not(.diag-on) #v-sheet .chord-cell svg{display:none}
+body.diag-on #v-sheet .chords-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+body.diag-on #v-sheet .chord-cell{background:var(--card2);border-radius:18px;padding:8px 4px}
+#v-sheet .pv-way{margin-top:14px;gap:10px}
+#v-sheet .pv-wl{display:none}
+#v-sheet .pv-pl{order:-1;width:44px;height:44px}
+#v-sheet .pv-take{font-size:12px}
+#v-sheet .sv-more{border-top:0;margin-top:10px}
+#v-sheet .sv-more>summary{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-height:0;list-style:none}
+#v-sheet .sv-more>summary::-webkit-details-marker{display:none}
+#sv-more-t b{font:800 18px var(--display);color:var(--cream)}
+#sv-more-t>span{font-size:14px;font-weight:500;color:var(--cream3)}
+#sv-more-t .sv-medi{display:flex;align-items:center;gap:12px;border:2px dashed var(--card3);border-radius:22px;padding:12px 14px;color:var(--bulle-ink);line-height:1.4}
+#sv-more-t .sv-medi i{width:44px;height:44px;flex:none;border-radius:22px;background:var(--card2);color:var(--gold);font:700 22px var(--sans);font-style:normal;display:flex;align-items:center;justify-content:center}
+
+/* ── Mode jeu ── */
+#mj{position:fixed;inset:0;z-index:700;background:var(--bg);display:none;overflow-y:auto}
+#mj.on{display:block;animation:viewIn .25s var(--ease-out)}
+body.mj-on{overflow:hidden}
+.mj-in{max-width:520px;min-height:100%;margin:0 auto;padding:16px 20px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:16px;box-sizing:border-box}
+.mj-top{display:flex;align-items:center;gap:12px;min-height:52px}
+.mj-x{width:44px;height:44px;flex:none;border-radius:22px;background:var(--card);display:flex;align-items:center;justify-content:center}
+.mj-x svg{width:16px;height:16px;stroke:var(--cream);stroke-width:2;stroke-linecap:round}
+.mj-t{display:flex;flex-direction:column;flex:1;min-width:0}
+.mj-t b{font:800 20px var(--display);color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mj-t small{font-size:13px;color:var(--cream3)}
+.mj-lyr{height:40px;padding:0 14px;border-radius:20px;background:var(--card);color:var(--cream);font-size:14px;font-weight:600}
+.mj-lyr.on{background:var(--cream);color:var(--bg)}
+.mj-parts{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.mj-parts button{flex:none;height:36px;padding:0 14px;border-radius:18px;background:var(--card);color:var(--cream);font-size:14px;font-weight:600}
+.mj-parts button.on{background:var(--cream);color:var(--bg);font-weight:700}
+.mj-prog{display:flex;gap:6px}
+.mj-prog span{flex:1;min-width:0;height:44px;border-radius:14px;background:var(--card2);color:var(--cream);font:800 17px var(--display);display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;transition:background .15s,color .15s}
+.mj-prog span.on{background:var(--gold);color:var(--ink)}
+.mj-now{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:260px}
+.mj-big{font:800 112px/.9 var(--display);letter-spacing:-.04em;color:var(--gold);animation:mjIn .22s var(--ease-out)}
+@keyframes mjIn{from{transform:translateX(18px) scale(.96);opacity:.4}}
+.mj-now svg{width:120px;height:auto}
+.mj-next{font-size:15px;color:var(--cream3)}.mj-next b{font:800 20px var(--display);color:var(--cream)}
+.mj-lyrics{background:var(--card);border-radius:20px;padding:14px;font-size:15px;line-height:1.6;color:var(--cream2);max-height:30vh;overflow-y:auto}
+.mj-rh .rg,.mj-rh svg{max-width:100%}
+.mj-norh{text-align:center;color:var(--cream3);font-size:14px}
+.mj-bar{display:flex;align-items:center;gap:12px}
+.mj-bpm{height:72px;border-radius:36px;background:var(--card);display:flex;align-items:center;padding:0 6px;gap:2px}
+.mj-bpm button{width:44px;height:44px;border-radius:22px;background:none;color:var(--cream);font:700 20px var(--sans)}
+.mj-bpm span{display:flex;flex-direction:column;align-items:center;line-height:1}
+.mj-bpm b{font:800 22px var(--display);color:var(--cream)}.mj-bpm small{font-size:10px;font-weight:600;color:var(--cream3)}
+.mj-play{flex:1;height:72px;border-radius:36px;background:var(--gold);color:var(--ink);font:800 18px var(--display);display:flex;align-items:center;justify-content:center;gap:10px}
+#mj.playing .mj-play{background:var(--cream);color:var(--bg)}
+.mj-play svg{width:18px;height:18px}
+.mj-play:disabled{opacity:.4}
+.medi.a-dance .mv{animation:mdDance calc(var(--beat,.69s)*2) linear infinite}
+@keyframes mdDance{0%{transform:translateY(0) rotate(-8deg) scale(1.1,.88)}12%{transform:translateY(0) rotate(-8deg) scale(.97,1.04)}30%{transform:translateY(-12px) rotate(-2deg)}50%{transform:translateY(0) rotate(8deg) scale(1.1,.88)}62%{transform:translateY(0) rotate(8deg) scale(.97,1.04)}80%{transform:translateY(-12px) rotate(2deg)}100%{transform:translateY(0) rotate(-8deg) scale(1.1,.88)}}
+#mj:not(.playing) .medi.a-dance .mv{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.medi.a-dance .mv,.mj-big{animation:none}}
 </style>
 </head>
 <body>
@@ -2543,14 +2628,14 @@ h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
           <button type="button" class="btn-icon" onclick="svMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>
           <div class="pop">
             <button type="button" id="sv-edit">Modifier la fiche</button>
-            <button type="button" id="sv-aa" onclick="toggleNames()">Noms des accords</button>
+            <button type="button" id="sv-aa" onclick="toggleNames()">Afficher les doigtés</button>
             <button type="button" id="sv-lyr-m" onclick="svMenuClose();svToggleLyrics()">Afficher les paroles</button>
             <button type="button" onclick="svMenuClose();svOriginal()">Écouter l’original</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="sv-hero"><h2 id="sv-title"></h2><p class="sv-meta"><span id="sv-artist"></span><span id="sv-capo"></span><span id="sv-stats"></span></p></div>
+    <div class="sv-hero"><h2 id="sv-title"></h2><p class="sv-meta"><span id="sv-artist"></span></p><div class="sv-chips"><span id="sv-capo"></span><span id="sv-stats"></span><button type="button" class="sv-mj" onclick="mjOpen()"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2 L16 9 L4 16 Z"/></svg>Mode jeu</button></div></div>
     <div class="sv-body">
       <div class="sv-tabs" id="sv-tabs"></div>
       <div class="parts-view" id="sv-parts"></div>
@@ -8204,6 +8289,71 @@ function renderHome() {
   }).join('');
 }
 
+/* ═══════ MODE JEU (refonte du 18/11/2026) : au ▶ « Mode jeu », l'accord en cours en très grand,
+   le suivant dessous, les cases du rythme qui s'allument, Médi qui danse sur le tempo.
+   Le son est celui du rythme de la partie (guitare de l'app) ; sans rythme, rien ne défile. */
+let mj = null;   // {i: partie jouée}
+function mjOpen(i) {
+  if (!cur) return;
+  const parts = cur.parts || [];
+  if (i == null) { const ok = q => q && q.chords.length && pHas(q); i = ok(parts[svPart]) && !svAll ? svPart : parts.findIndex(ok); if (i < 0) i = Math.max(0, parts.findIndex(q => q.chords.length)); }
+  stopPlay();
+  let el = $('mj');
+  if (!el) { el = document.createElement('div'); el.id = 'mj'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', 'Mode jeu'); document.body.appendChild(el); }
+  mj = {i, on: false};
+  el.classList.add('on'); document.body.classList.add('mj-on');
+  mjRender(); mjShow(0, null);
+  if (parts[i] && pHas(parts[i])) mjToggle();
+}
+function mjRender() {
+  const p = cur.parts[mj.i], bpm = cur.bpm || 90, multi = cur.parts.length > 1;
+  const meta = [multi ? (p.name || 'Partie ' + (mj.i + 1)) : '', cur.capo > 0 ? 'capo ' + cur.capo : ''].filter(Boolean).join(', ');
+  $('mj').innerHTML = `<div class="mj-in" style="--beat:${(60 / bpm).toFixed(3)}s">
+    <div class="mj-top">
+      <button type="button" class="mj-x" onclick="mjClose()" aria-label="Quitter le mode jeu"><svg viewBox="0 0 16 16"><path d="M3 3 L13 13 M13 3 L3 13"/></svg></button>
+      <div class="mj-t"><b>${esc(cur.title)}</b>${meta ? `<small>${esc(meta)}</small>` : ''}</div>
+      ${mediSVG('contente', {size: 52, anim: 'dance', label: 'Médi danse sur le tempo'})}
+      ${hasLyr(p) ? `<button type="button" class="mj-lyr${cur.showLyrics ? ' on' : ''}" onclick="mjLyrics()" aria-pressed="${!!cur.showLyrics}">Paroles</button>` : ''}
+    </div>
+    ${multi ? `<div class="mj-parts">${cur.parts.map((q, j) => `<button type="button" class="${j === mj.i ? 'on' : ''}" onclick="mjPart(${j})">${esc(q.name || 'Partie ' + (j + 1))}</button>`).join('')}</div>` : ''}
+    <div class="mj-prog" id="mj-prog">${p.chords.map((c, j) => `<span data-j="${j}">${esc(c.name)}</span>`).join('')}</div>
+    <div class="mj-now" id="mj-now"></div>
+    ${hasLyr(p) && cur.showLyrics ? `<div class="mj-lyrics">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
+    <div class="mj-rh" id="mj-rh">${pHas(p) ? svWayHTML(p, {chord: p.chords[0]}) : '<p class="mj-norh">Pas encore de rythme pour cette partie.</p>'}</div>
+    <div class="mj-bar">
+      <div class="mj-bpm"><button type="button" onclick="rhBpmStep(-1);mjBeat()" aria-label="Moins vite">−</button><span><b id="rh-bpm-mj">${bpm}</b><small>BPM</small></span><button type="button" onclick="rhBpmStep(1);mjBeat()" aria-label="Plus vite">+</button></div>
+      <button type="button" class="mj-play" id="mj-play" onclick="mjToggle()"${pHas(p) ? '' : ' disabled'}></button>
+    </div></div>`;
+  mjSyncBtn();
+}
+function mjShow(ci, step) {
+  const p = cur.parts[mj.i], n = p.chords.length; if (!n) { $('mj-now').innerHTML = ''; return; }
+  ci = Math.max(0, ci) % n;
+  if (mj.ci !== ci) {
+    mj.ci = ci;
+    const c = p.chords[ci], nx = p.chords[(ci + 1) % n];
+    $('mj-now').innerHTML = `<div class="mj-big">${esc(c.name)}</div>${chordSVG(c, {size: 1.6})}${n > 1 ? `<div class="mj-next">ensuite <b>${esc(nx.name)}</b></div>` : ''}`;
+    document.querySelectorAll('#mj-prog span').forEach(e => e.classList.toggle('on', +e.dataset.j === ci));
+  }
+  if (step != null && pHas(p)) $('mj-rh').innerHTML = svWayHTML(p, {cursor: step, chord: p.chords[ci]});
+}
+function mjOnStep(i, step, k, ci) { if (mj && i === mj.i && $('mj')) mjShow(ci < 0 ? 0 : ci, step); }
+function mjToggle() {
+  const p = cur.parts[mj.i]; if (!pHas(p)) return;
+  if (rhPlaying('v' + mj.i)) { rhStop(); mj.on = false; } else { playPartRhythm(mj.i); mj.on = true; }
+  mjSyncBtn();
+}
+function mjSyncBtn() {
+  const b = $('mj-play'); if (!b) return;
+  const on = mj && rhPlaying('v' + mj.i);
+  b.innerHTML = (on ? RH_PAUSE_SVG : RH_PLAY_SVG) + (on ? 'Pause' : 'Jouer');
+  $('mj').classList.toggle('playing', !!on);
+}
+function mjBeat() { const el = document.querySelector('#mj .mj-in'); if (el) el.style.setProperty('--beat', (60 / (cur.bpm || 90)).toFixed(3) + 's'); }
+function mjPart(j) { const was = rhPlaying('v' + mj.i); stopPlay(); mj = {i: j}; mjRender(); mjShow(0, null); if (was) mjToggle(); }
+function mjLyrics() { cur.showLyrics = !cur.showLyrics; const was = rhPlaying('v' + mj.i); mjRender(); mj.ci = -1; mjShow(0, null); mjSyncBtn(); if (was) mjSyncBtn(); }
+function mjClose() { stopPlay(); mj = null; const el = $('mj'); if (el) el.classList.remove('on'); document.body.classList.remove('mj-on'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && mj) mjClose(); });
 /* ═══════ SHEET VIEW ═══════ */
 let svPart = 0; // partie affichée en mode jeu (en vue « Tout » : partie active pour ▶ et Enregistrer)
 let svAll = false; // vue « Tout » : le morceau entier, parties empilées
@@ -8271,9 +8421,9 @@ async function viewSheet(id, keepPart) {
   $('sv-edit').onclick = () => { svMenuClose(); editSheet(id); };
   svRenderFavBtn();
 
-  $('sv-stats').innerHTML = [`<button type="button" class="sv-bpm-b" onclick="svTempo(event)" aria-label="Régler le tempo"><b id="rh-bpm-meta">${s.bpm || 90}</b> BPM</button>`, s.tuning && s.tuning !== 'Standard' ? esc(s.tuning) : '', s.difficulty ? esc(dispDiff(s.difficulty)) : ''].filter(Boolean).join(' · ');
+  $('sv-stats').innerHTML = `<button type="button" class="sv-bpm-b sv-chip" onclick="svTempo(event)" aria-label="Régler le tempo"><span>Tempo</span><b id="rh-bpm-meta">${s.bpm || 90}</b></button>` + (s.tuning && s.tuning !== 'Standard' ? `<span class="sv-chip">${esc(s.tuning)}</span>` : '');
   { const b = $('sv-lyr-m'); if (b) { b.style.display = (s.parts || []).some(hasLyr) ? '' : 'none'; b.textContent = s.showLyrics ? 'Masquer les paroles' : 'Afficher les paroles'; } }
-  $('sv-capo').textContent = s.capo > 0 ? 'Capo ' + s.capo : '';
+  $('sv-capo').innerHTML = s.capo > 0 ? `<span class="sv-chip"><span>Capo</span>${s.capo}</span>` : '';
   LS.set('gms_last', id); { const sn = LS.get('gms_seen', {}); sn[id] = Date.now(); LS.set('gms_seen', sn); } svMenuClose(); svAaLabel();
 
   const tabsHost = $('sv-tabs'), partsHost = $('sv-parts');
@@ -8305,7 +8455,7 @@ async function viewSheet(id, keepPart) {
     return `<div class="pv-block ${i===svPart?'on':''}" data-idx="${i}" id="pvb-${i}" ${svAll ? `onclick="svPick(${i})"` : ''}>
       <div class="pv-hdr"><div class="pv-name">${esc(p.name || 'Partie ' + (i+1))}${rep > 1 ? `<span class="pv-rep">×${rep}</span>` : ''}</div>
         ${p.rec ? `<span class="pv-take has"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>Ma prise</span>` : ''}
-        <div class="hm-menu pv-menu" id="pvm-${i}"><button type="button" class="pv-edit" onclick="pvMenu(${i},event)" aria-label="Modifier cette partie" aria-haspopup="true" title="Modifier cette partie"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg></button>
+        <div class="hm-menu pv-menu" id="pvm-${i}"><button type="button" class="pv-edit" onclick="pvMenu(${i},event)" aria-label="Modifier cette partie" aria-haspopup="true">modifier</button>
           <div class="pop" onclick="event.stopPropagation()">
             <button type="button" onclick="pvMenuClose();editSheet(cur.id)">Changer les accords</button>
             <button type="button" onclick="pvMenuClose();rbEditCur(${i})">${pWay(p) === 'arp' ? 'Changer l’arpège' : 'Saisir le rythme à la main'}</button>
@@ -8317,7 +8467,7 @@ async function viewSheet(id, keepPart) {
   $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s);
-  { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Perso · ${n} élément${n > 1 ? 's' : ''} (mes prises, enregistrements, tutos)` : 'Perso : enregistrer, mes tutos'; }
+  { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').innerHTML = n ? `<b>Perso</b><span>${n} élément${n > 1 ? 's' : ''} : mes prises, enregistrements, tutos</span>` : `<b>Perso</b><span class="sv-medi">${mediSVG('curieuse', {size: 40, anim: 'blink'})}<span>Filme-toi une fois. Dans trois mois, tu sauras exactement comment tu le jouais.</span><i aria-hidden="true">+</i></span>`; }
   svSync();
   if (!$('v-sheet').classList.contains('on')) go('sheet');
   if (matchMedia('(min-width:1200px)').matches) renderHome();   // PC large : la liste reste affichée à côté, fiche en cours marquée
@@ -8388,9 +8538,10 @@ function svSync() {
   $('rh-bpm-bar').textContent = cur.bpm || 90;
 }
 if (LS.get('gms_lefty', false)) document.body.classList.add('lefty');
-if (LS.get('gms_names_off', false)) document.body.classList.add('names-off');
-function toggleNames() { const off = document.body.classList.toggle('names-off'); LS.set('gms_names_off', off); svAaLabel(); svMenuClose(); }
-function svAaLabel() { const b = $('sv-aa'); if (b) b.textContent = document.body.classList.contains('names-off') ? 'Afficher les noms des accords' : 'Masquer les noms des accords'; }
+// refonte : les noms des accords en grand ; les doigtés s'affichent à la demande (menu ⋯), ou en touchant un accord
+if (LS.get('gms_diag_on', false)) document.body.classList.add('diag-on');
+function toggleNames() { const on = document.body.classList.toggle('diag-on'); LS.set('gms_diag_on', on); svAaLabel(); svMenuClose(); }
+function svAaLabel() { const b = $('sv-aa'); if (b) b.textContent = document.body.classList.contains('diag-on') ? 'Masquer les doigtés' : 'Afficher les doigtés'; }
 function svMenu(e) { e.stopPropagation(); $('sv-menu').classList.toggle('open'); }
 function svMenuClose() { const m = $('sv-menu'); if (m) m.classList.remove('open'); }
 document.addEventListener('click', e => { const m = $('sv-menu'); if (m && !m.contains(e.target)) m.classList.remove('open'); });
@@ -8519,6 +8670,7 @@ function rhRenderPlayer(i, step, k) {
     if (ci !== rhLastCi[i] && rhLastCi[i] != null) { const nc = document.querySelector(`#pvb-${i} .chord-cell.now`); mAnim(nc, [{transform: 'translateX(18px) scale(.96)', opacity: .4}, {transform: 'none', opacity: 1}], {duration: 220, easing: 'cubic-bezier(.22,.8,.3,1)'}); }
     rhLastCi[i] = ci;
   } else rhLastCi[i] = null;
+  if (typeof mjOnStep === 'function') mjOnStep(i, step, k, ci);
   svSync();
 }
 function playPartRhythm(i) {

@@ -65,9 +65,9 @@ async function viewSheet(id, keepPart) {
   $('sv-edit').onclick = () => { svMenuClose(); editSheet(id); };
   svRenderFavBtn();
 
-  $('sv-stats').innerHTML = [`<button type="button" class="sv-bpm-b" onclick="svTempo(event)" aria-label="Régler le tempo"><b id="rh-bpm-meta">${s.bpm || 90}</b> BPM</button>`, s.tuning && s.tuning !== 'Standard' ? esc(s.tuning) : '', s.difficulty ? esc(dispDiff(s.difficulty)) : ''].filter(Boolean).join(' · ');
+  $('sv-stats').innerHTML = `<button type="button" class="sv-bpm-b sv-chip" onclick="svTempo(event)" aria-label="Régler le tempo"><span>Tempo</span><b id="rh-bpm-meta">${s.bpm || 90}</b></button>` + (s.tuning && s.tuning !== 'Standard' ? `<span class="sv-chip">${esc(s.tuning)}</span>` : '');
   { const b = $('sv-lyr-m'); if (b) { b.style.display = (s.parts || []).some(hasLyr) ? '' : 'none'; b.textContent = s.showLyrics ? 'Masquer les paroles' : 'Afficher les paroles'; } }
-  $('sv-capo').textContent = s.capo > 0 ? 'Capo ' + s.capo : '';
+  $('sv-capo').innerHTML = s.capo > 0 ? `<span class="sv-chip"><span>Capo</span>${s.capo}</span>` : '';
   LS.set('gms_last', id); { const sn = LS.get('gms_seen', {}); sn[id] = Date.now(); LS.set('gms_seen', sn); } svMenuClose(); svAaLabel();
 
   const tabsHost = $('sv-tabs'), partsHost = $('sv-parts');
@@ -99,7 +99,7 @@ async function viewSheet(id, keepPart) {
     return `<div class="pv-block ${i===svPart?'on':''}" data-idx="${i}" id="pvb-${i}" ${svAll ? `onclick="svPick(${i})"` : ''}>
       <div class="pv-hdr"><div class="pv-name">${esc(p.name || 'Partie ' + (i+1))}${rep > 1 ? `<span class="pv-rep">×${rep}</span>` : ''}</div>
         ${p.rec ? `<span class="pv-take has"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>Ma prise</span>` : ''}
-        <div class="hm-menu pv-menu" id="pvm-${i}"><button type="button" class="pv-edit" onclick="pvMenu(${i},event)" aria-label="Modifier cette partie" aria-haspopup="true" title="Modifier cette partie"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg></button>
+        <div class="hm-menu pv-menu" id="pvm-${i}"><button type="button" class="pv-edit" onclick="pvMenu(${i},event)" aria-label="Modifier cette partie" aria-haspopup="true">modifier</button>
           <div class="pop" onclick="event.stopPropagation()">
             <button type="button" onclick="pvMenuClose();editSheet(cur.id)">Changer les accords</button>
             <button type="button" onclick="pvMenuClose();rbEditCur(${i})">${pWay(p) === 'arp' ? 'Changer l’arpège' : 'Saisir le rythme à la main'}</button>
@@ -111,7 +111,7 @@ async function viewSheet(id, keepPart) {
   $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s);
-  { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').textContent = n ? `Perso · ${n} élément${n > 1 ? 's' : ''} (mes prises, enregistrements, tutos)` : 'Perso : enregistrer, mes tutos'; }
+  { const n = (s.links || []).length + (s.media || []).length + (s.parts || []).filter(q => q.rec).length; $('sv-more').open = n > 0; $('sv-more-t').innerHTML = n ? `<b>Perso</b><span>${n} élément${n > 1 ? 's' : ''} : mes prises, enregistrements, tutos</span>` : `<b>Perso</b><span class="sv-medi">${mediSVG('curieuse', {size: 40, anim: 'blink'})}<span>Filme-toi une fois. Dans trois mois, tu sauras exactement comment tu le jouais.</span><i aria-hidden="true">+</i></span>`; }
   svSync();
   if (!$('v-sheet').classList.contains('on')) go('sheet');
   if (matchMedia('(min-width:1200px)').matches) renderHome();   // PC large : la liste reste affichée à côté, fiche en cours marquée
@@ -182,9 +182,10 @@ function svSync() {
   $('rh-bpm-bar').textContent = cur.bpm || 90;
 }
 if (LS.get('gms_lefty', false)) document.body.classList.add('lefty');
-if (LS.get('gms_names_off', false)) document.body.classList.add('names-off');
-function toggleNames() { const off = document.body.classList.toggle('names-off'); LS.set('gms_names_off', off); svAaLabel(); svMenuClose(); }
-function svAaLabel() { const b = $('sv-aa'); if (b) b.textContent = document.body.classList.contains('names-off') ? 'Afficher les noms des accords' : 'Masquer les noms des accords'; }
+// refonte : les noms des accords en grand ; les doigtés s'affichent à la demande (menu ⋯), ou en touchant un accord
+if (LS.get('gms_diag_on', false)) document.body.classList.add('diag-on');
+function toggleNames() { const on = document.body.classList.toggle('diag-on'); LS.set('gms_diag_on', on); svAaLabel(); svMenuClose(); }
+function svAaLabel() { const b = $('sv-aa'); if (b) b.textContent = document.body.classList.contains('diag-on') ? 'Masquer les doigtés' : 'Afficher les doigtés'; }
 function svMenu(e) { e.stopPropagation(); $('sv-menu').classList.toggle('open'); }
 function svMenuClose() { const m = $('sv-menu'); if (m) m.classList.remove('open'); }
 document.addEventListener('click', e => { const m = $('sv-menu'); if (m && !m.contains(e.target)) m.classList.remove('open'); });
@@ -313,6 +314,7 @@ function rhRenderPlayer(i, step, k) {
     if (ci !== rhLastCi[i] && rhLastCi[i] != null) { const nc = document.querySelector(`#pvb-${i} .chord-cell.now`); mAnim(nc, [{transform: 'translateX(18px) scale(.96)', opacity: .4}, {transform: 'none', opacity: 1}], {duration: 220, easing: 'cubic-bezier(.22,.8,.3,1)'}); }
     rhLastCi[i] = ci;
   } else rhLastCi[i] = null;
+  if (typeof mjOnStep === 'function') mjOnStep(i, step, k, ci);
   svSync();
 }
 function playPartRhythm(i) {
