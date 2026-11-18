@@ -172,11 +172,11 @@ function atPinLink(i) { const [u, l] = atLinkList[i]; atKeep(u, l); }
 function atKeyForm() { tuto.showKeys = true; go('tuto'); }
 function atRenderTutos() {
   const h = $('at-pan-t'); if (!h) return;
-  if (!tuto.title) { h.innerHTML = `<div class="at-empty"><b>Un morceau en tête ?</b>Tape son titre en haut : la fiche se crée toute seule, et les tutos arrivent ici.</div>`; return; }
+  if (!tuto.title) { h.innerHTML = mediBulle('neutre', 'Un morceau en tête ? Tape son titre en haut : je crée la fiche, et les tutos arrivent ici.', {size: 56, cls: 'at-medi'}); return; }
   const sel = (k, map, lab) => `<select class="at-chip" aria-label="${lab}" onchange="atOpt('${k}',this.value)">${Object.entries(map).map(([v, o]) => `<option value="${v}" ${tuto[k] === v ? 'selected' : ''}>${esc(typeof o === 'string' ? o : o.n)}</option>`).join('')}</select>`;
   atLinkList = [];
   const plats = tutoPlatforms();
-  let o = `<div class="at-chips3">${sel('lang', T_LANG, 'Langue')}${sel('lvl', T_LVL, 'Niveau')}${sel('kind', T_KIND, 'Type de tuto')}</div>
+  let o = mediBulle('clin', 'Choisis un tuto, je remplis ta fiche juste à côté (onglet « Fiche »).', {size: 48, cls: 'at-medi'}) + `<div class="at-chips3">${sel('lang', T_LANG, 'Langue')}${sel('lvl', T_LVL, 'Niveau')}${sel('kind', T_KIND, 'Type de tuto')}</div>
     <div class="at-tiles">${plats.map((p, i) => `<div class="at-tw"><a class="at-tile" style="background:${p.bg}" href="${p.links[0][1]}" target="_blank" rel="noopener" onclick="atExt()" oncontextmenu="atLinks(${i});return false"><b>${esc(p.n)}</b><small>${esc(p.links[0][0])}</small></a><button type="button" class="at-more" onclick="atLinks(${i})" aria-label="Autres liens ${esc(p.n)}" aria-expanded="${at.lk === i}">⋯</button></div>`).join('')}</div>`;
   if (at.lk >= 0 && plats[at.lk]) {
     const p = plats[at.lk];

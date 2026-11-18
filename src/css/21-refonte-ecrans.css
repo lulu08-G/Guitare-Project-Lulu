@@ -460,3 +460,16 @@ body.mj-on{overflow:hidden}
 #we .we-tool{border:0;border-radius:18px;background:var(--card)}
 #we .we-tool.on{background:var(--bulle);box-shadow:inset 0 0 0 2px var(--gold)}
 #we .we-listen{height:64px;border-radius:32px}
+
+/* ── Tutos (atelier) ── */
+.at-medi{margin:12px 0 14px}.at-medi .bulle{font-size:14px}
+#v-atelier .at-tile{background:var(--card)!important;color:var(--cream);border-radius:20px;border:0;box-shadow:none;text-shadow:none}
+#v-atelier .at-tile small{color:var(--cream3);opacity:1}
+#v-atelier .at-tile::before{content:'';display:block;width:30px;height:30px;border-radius:15px;margin-bottom:8px;background:var(--bulle) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M6 4 L14 9 L6 14 Z' fill='%23ff8a2a'/%3E%3C/svg%3E") center/14px no-repeat}
+#v-atelier .at-seg{background:var(--card);border-radius:22px}
+#v-atelier .at-seg button.on{background:var(--cream);color:var(--bg)}
+#v-atelier .at-chip{background:var(--card);border:0;border-radius:19px;color:var(--cream);font-weight:600}
+#v-atelier .at-card{background:none;border:0;border-radius:0;display:grid;grid-template-columns:132px minmax(0,1fr) auto;gap:6px 12px;align-items:start;padding:8px 0}
+#v-atelier .at-th{border-radius:14px;overflow:hidden}
+#v-atelier .at-ct b{font-size:15px;font-weight:700;color:var(--cream)}#v-atelier .at-ct small{color:var(--cream3)}
+#v-atelier .at-create{grid-column:2/4;justify-self:start;min-height:34px;border-radius:17px;font-size:13px;box-shadow:none}

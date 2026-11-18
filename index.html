@@ -2806,6 +2806,19 @@ body.mj-on{overflow:hidden}
 #we .we-tool{border:0;border-radius:18px;background:var(--card)}
 #we .we-tool.on{background:var(--bulle);box-shadow:inset 0 0 0 2px var(--gold)}
 #we .we-listen{height:64px;border-radius:32px}
+
+/* ── Tutos (atelier) ── */
+.at-medi{margin:12px 0 14px}.at-medi .bulle{font-size:14px}
+#v-atelier .at-tile{background:var(--card)!important;color:var(--cream);border-radius:20px;border:0;box-shadow:none;text-shadow:none}
+#v-atelier .at-tile small{color:var(--cream3);opacity:1}
+#v-atelier .at-tile::before{content:'';display:block;width:30px;height:30px;border-radius:15px;margin-bottom:8px;background:var(--bulle) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M6 4 L14 9 L6 14 Z' fill='%23ff8a2a'/%3E%3C/svg%3E") center/14px no-repeat}
+#v-atelier .at-seg{background:var(--card);border-radius:22px}
+#v-atelier .at-seg button.on{background:var(--cream);color:var(--bg)}
+#v-atelier .at-chip{background:var(--card);border:0;border-radius:19px;color:var(--cream);font-weight:600}
+#v-atelier .at-card{background:none;border:0;border-radius:0;display:grid;grid-template-columns:132px minmax(0,1fr) auto;gap:6px 12px;align-items:start;padding:8px 0}
+#v-atelier .at-th{border-radius:14px;overflow:hidden}
+#v-atelier .at-ct b{font-size:15px;font-weight:700;color:var(--cream)}#v-atelier .at-ct small{color:var(--cream3)}
+#v-atelier .at-create{grid-column:2/4;justify-self:start;min-height:34px;border-radius:17px;font-size:13px;box-shadow:none}
 </style>
 </head>
 <body>
@@ -7992,11 +8005,11 @@ function atPinLink(i) { const [u, l] = atLinkList[i]; atKeep(u, l); }
 function atKeyForm() { tuto.showKeys = true; go('tuto'); }
 function atRenderTutos() {
   const h = $('at-pan-t'); if (!h) return;
-  if (!tuto.title) { h.innerHTML = `<div class="at-empty"><b>Un morceau en tête ?</b>Tape son titre en haut : la fiche se crée toute seule, et les tutos arrivent ici.</div>`; return; }
+  if (!tuto.title) { h.innerHTML = mediBulle('neutre', 'Un morceau en tête ? Tape son titre en haut : je crée la fiche, et les tutos arrivent ici.', {size: 56, cls: 'at-medi'}); return; }
   const sel = (k, map, lab) => `<select class="at-chip" aria-label="${lab}" onchange="atOpt('${k}',this.value)">${Object.entries(map).map(([v, o]) => `<option value="${v}" ${tuto[k] === v ? 'selected' : ''}>${esc(typeof o === 'string' ? o : o.n)}</option>`).join('')}</select>`;
   atLinkList = [];
   const plats = tutoPlatforms();
-  let o = `<div class="at-chips3">${sel('lang', T_LANG, 'Langue')}${sel('lvl', T_LVL, 'Niveau')}${sel('kind', T_KIND, 'Type de tuto')}</div>
+  let o = mediBulle('clin', 'Choisis un tuto, je remplis ta fiche juste à côté (onglet « Fiche »).', {size: 48, cls: 'at-medi'}) + `<div class="at-chips3">${sel('lang', T_LANG, 'Langue')}${sel('lvl', T_LVL, 'Niveau')}${sel('kind', T_KIND, 'Type de tuto')}</div>
     <div class="at-tiles">${plats.map((p, i) => `<div class="at-tw"><a class="at-tile" style="background:${p.bg}" href="${p.links[0][1]}" target="_blank" rel="noopener" onclick="atExt()" oncontextmenu="atLinks(${i});return false"><b>${esc(p.n)}</b><small>${esc(p.links[0][0])}</small></a><button type="button" class="at-more" onclick="atLinks(${i})" aria-label="Autres liens ${esc(p.n)}" aria-expanded="${at.lk === i}">⋯</button></div>`).join('')}</div>`;
   if (at.lk >= 0 && plats[at.lk]) {
     const p = plats[at.lk];
