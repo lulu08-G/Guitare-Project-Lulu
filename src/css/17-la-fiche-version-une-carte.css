@@ -142,6 +142,6 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-tempo-mini::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 .rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
-/* Création : « Créer mon accord » (dessiner son propre doigté) */
-.ed-mine{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:2px;padding:0 4px;background:none;border:0;color:var(--gold);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
-.ed-mine svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Création : « Créer mon accord », première pastille de la ligne des accords proposés */
+#v-ed .qc-sugg button.qc-mine{display:inline-flex;align-items:center;gap:5px;color:var(--gold);border-style:dashed;border-color:var(--gold)}
+.qc-mine svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}

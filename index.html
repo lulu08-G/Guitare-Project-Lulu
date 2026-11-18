@@ -2084,9 +2084,9 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-tempo-mini::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 .rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
-/* Création : « Créer mon accord » (dessiner son propre doigté) */
-.ed-mine{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:2px;padding:0 4px;background:none;border:0;color:var(--gold);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
-.ed-mine svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Création : « Créer mon accord », première pastille de la ligne des accords proposés */
+#v-ed .qc-sugg button.qc-mine{display:inline-flex;align-items:center;gap:5px;color:var(--gold);border-style:dashed;border-color:var(--gold)}
+.qc-mine svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -8510,7 +8510,7 @@ function quickPartCustom() {
   if (n) quickPart(n.slice(0, 40));
 }
 function renderQuick() {
-  $('qc-sugg').innerHTML = QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
+  $('qc-sugg').innerHTML = `<button type="button" class="qc-mine" style="color:var(--gold)" onclick="openChordEditor(edRp(),-1)" aria-label="Créer mon accord"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg>Créer</button>` + QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
   $('f-capo').innerHTML = [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('');
   $('f-bpm').value = draft.bpm || '';
   $('f-tuning').value = draft.tuning || 'Standard';
@@ -8800,8 +8800,7 @@ function edChordsHTML(p, i) {
         <button type="button" class="ed-ctx" onclick="event.stopPropagation();rmChord(${i},${ci})" aria-label="Retirer ${esc(c.name || 'l’accord')}"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
         <b>${esc(c.name || '?')}</b>${chordSVG(c, {size:.86})}
         ${todo ? '<em>à compléter</em>' : c.arp && c.arp.length ? '<em>arpège</em>' : ''}</div>`; }).join('')}
-    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>
-    <button type="button" class="ed-mine" onclick="edRpSet(${i});openChordEditor(${i},-1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg>Créer mon accord</button>${open ? cpHTML('ed') : ''}`;
+    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>${open ? cpHTML('ed') : ''}`;
 }
 function edMoreHTML(p, i) {
   const hasLyr = typeof p.lyrics === 'string';
