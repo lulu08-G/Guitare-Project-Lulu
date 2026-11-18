@@ -2092,6 +2092,9 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ce-inline .ce-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px}
 .ce-inline .ce-base{font-size:12px;font-weight:600;color:var(--cream3)}
 .ce-inline .ce-add{min-height:46px;width:100%;max-width:320px;margin-top:4px}
+
+/* Créer un PDF */
+.pp-tip{margin:8px 0 0;font-size:13px;color:var(--cream3)}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -2279,11 +2282,11 @@ body:has(#v-ed.on) .toast{bottom:90px}
     <div class="hm-top">
       <h1><span class="hm-w">Fiches</span><small id="greet-count"></small></h1>
       <button type="button" class="btn-icon tun-btn hm-vol" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="btn-icon vol-btn hm-vol2" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
-      <button type="button" class="btn-icon hm-print" onclick="startPrintPick()" aria-label="Imprimer des fiches" title="Imprimer des fiches"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg></button>
+      <button type="button" class="btn-icon hm-print" onclick="startPrintPick()" aria-label="Créer un livret PDF" title="Créer un livret PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg></button>
       <div class="hm-menu" id="hm-menu">
         <button class="btn-icon" onclick="toggleHomeMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
         <div class="pop">
-          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Imprimer ou exporter des fiches</button>
+          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Créer un livret PDF ou exporter</button>
           <button onclick="closeHomeMenu();backupAll()">Sauvegarder toutes mes fiches</button>
           <button onclick="closeHomeMenu();document.getElementById('json-in').click()">Restaurer ou importer un fichier</button>
         </div>
@@ -2307,7 +2310,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
       <div class="spacer"></div>
       <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Annuler</button>
       <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" title="Enregistrer ces fiches dans un fichier">Exporter</button>
-      <button class="btn btn-primary btn-sm" onclick="openPrintModal()" id="btn-print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg><span id="btn-print-t">Imprimer</span></button>
+      <button class="btn btn-primary btn-sm" onclick="openPrintModal()" id="btn-print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg><span id="btn-print-t">Créer le PDF</span></button>
     </div>
     <div id="pinned-wrap" style="display:none"><div class="pinned-row" id="pinned-row"></div></div>
     <div class="grid" id="home-grid"></div>
@@ -2321,6 +2324,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
       <button type="button" class="sv-back" onclick="svExit()" aria-label="Quitter le mode jeu, retour aux fiches"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span>Fiches</span></button>
       <div class="sv-btns">
         <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+        <button type="button" class="btn-icon" onclick="printOne()" title="Créer un PDF" aria-label="Créer un PDF de cette fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg></button>
         <button type="button" class="btn-icon vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
         <div class="hm-menu" id="sv-menu">
           <button type="button" class="btn-icon" onclick="svMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>
@@ -2329,7 +2333,6 @@ body:has(#v-ed.on) .toast{bottom:90px}
             <button type="button" id="sv-aa" onclick="toggleNames()">Noms des accords</button>
             <button type="button" id="sv-lyr-m" onclick="svMenuClose();svToggleLyrics()">Afficher les paroles</button>
             <button type="button" onclick="svMenuClose();svOriginal()">Écouter l’original</button>
-            <button type="button" onclick="svMenuClose();printOne()">Imprimer</button>
           </div>
         </div>
       </div>
@@ -2345,7 +2348,6 @@ body:has(#v-ed.on) .toast{bottom:90px}
       <div id="sv-coffre"></div>
       <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--cream2)"><input type="checkbox" id="opt-lefty" onchange="setLefty(this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Mode gaucher : bouton Play à droite</label>
     </details>
-    <div class="sv-foot"><button type="button" class="btn btn-ghost btn-sm" onclick="printOne()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg>Imprimer cette fiche</button></div>
   </div>
   <div class="sv-bar" id="sv-bar"><div class="sv-bar-in">
     <div class="sv-live" id="sv-live">Rythme en boucle</div>
@@ -7876,10 +7878,10 @@ function renderHome() {
     .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : recentIds.has(s.id))
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   { const k = selIds.size;
-    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches à imprimer';
+    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches du livret';
     $('cahier-bar').style.display = selMode ? '' : 'none';
     $('btn-print').disabled = !k; $('btn-export').disabled = !k;
-    $('btn-print-t').textContent = k ? `Imprimer (${k})` : 'Imprimer';
+    $('btn-print-t').textContent = k ? `Créer le PDF (${k})` : 'Créer le PDF';
     $('sel-all-btn').textContent = sheets.length && sheets.every(x => selIds.has(x.id)) ? 'Tout décocher' : 'Tout cocher';
     document.body.classList.toggle('sel-on', selMode); }
   { const bn = $('backup-nag'); if (bn) bn.innerHTML = !selMode && backupDue() ? `<div class="bk-nag"><span><b>Pense à sauvegarder tes fiches</b>Elles ne sont gardées que sur cet appareil.</span><button type="button" class="btn btn-primary btn-sm" onclick="backupAll()">Sauvegarder</button></div>` : ''; }
@@ -7922,7 +7924,7 @@ function renderHome() {
       <div class="card-acts">
         <button onclick="event.stopPropagation();editSheet('${s.id}')">Modifier</button>
         <button onclick="event.stopPropagation();dupSheet('${s.id}')">Dupliquer</button>
-        <button onclick="event.stopPropagation();printSheet('${s.id}')">Imprimer</button>
+        <button onclick="event.stopPropagation();printSheet('${s.id}')">Créer un PDF</button>
         <button class="danger" onclick="event.stopPropagation();delSheet('${s.id}')">Supprimer</button>
       </div>
     </div>`;
@@ -9807,7 +9809,7 @@ function openPrintModal() {
 function renderPrintModal() {
   const n = selIds.size;
   $('m-print-body').innerHTML = `
-    <div class="modal-t">Aperçu avant impression · ${n} fiche${n>1?'s':''}</div>
+    <div class="modal-t">${n>1?`Ton livret PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
     <div class="frow">
       <div class="fg"><label>Style</label>
         <select id="pp-style" onchange="printOpts.style=this.value;refreshPrintPreview()">
@@ -9826,12 +9828,13 @@ function renderPrintModal() {
       <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
         <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numéroter les pages</label>
     </div>
+    <p class="pp-tip">Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ». Tu pourras aussi l’imprimer.</p>
     <div style="background:#5a5a5a;border-radius:10px;padding:14px;overflow:auto;max-height:52vh;margin-top:8px">
       <div id="pp-preview" style="zoom:.42"></div>
     </div>
     <div class="modal-f">
       <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
-      <button class="btn btn-primary btn-sm" onclick="doPrint()">Imprimer / PDF</button>
+      <button class="btn btn-primary btn-sm" onclick="doPrint()">Créer le PDF</button>
     </div>`;
   refreshPrintPreview();
 }
@@ -9858,6 +9861,9 @@ function buildPrintPages() {
 function doPrint() {
   $('print-root').innerHTML = buildPrintPages();
   $('m-print').classList.add('hide');
+  const t0 = document.title, one = selIds.size === 1 && sheets.find(x => selIds.has(x.id));
+  document.title = one ? one.title + (one.artist && one.artist !== '—' ? ' - ' + one.artist : '') : 'Livret de guitare';
+  window.addEventListener('afterprint', () => { document.title = t0; }, {once: true});
   setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
 }
 // façon de jouer imprimée : la ligne de groupes de la fiche, volontairement plus petite que les accords

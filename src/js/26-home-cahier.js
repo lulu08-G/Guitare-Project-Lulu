@@ -31,10 +31,10 @@ function renderHome() {
     .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : recentIds.has(s.id))
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   { const k = selIds.size;
-    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches à imprimer';
+    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches du livret';
     $('cahier-bar').style.display = selMode ? '' : 'none';
     $('btn-print').disabled = !k; $('btn-export').disabled = !k;
-    $('btn-print-t').textContent = k ? `Imprimer (${k})` : 'Imprimer';
+    $('btn-print-t').textContent = k ? `Créer le PDF (${k})` : 'Créer le PDF';
     $('sel-all-btn').textContent = sheets.length && sheets.every(x => selIds.has(x.id)) ? 'Tout décocher' : 'Tout cocher';
     document.body.classList.toggle('sel-on', selMode); }
   { const bn = $('backup-nag'); if (bn) bn.innerHTML = !selMode && backupDue() ? `<div class="bk-nag"><span><b>Pense à sauvegarder tes fiches</b>Elles ne sont gardées que sur cet appareil.</span><button type="button" class="btn btn-primary btn-sm" onclick="backupAll()">Sauvegarder</button></div>` : ''; }
@@ -77,7 +77,7 @@ function renderHome() {
       <div class="card-acts">
         <button onclick="event.stopPropagation();editSheet('${s.id}')">Modifier</button>
         <button onclick="event.stopPropagation();dupSheet('${s.id}')">Dupliquer</button>
-        <button onclick="event.stopPropagation();printSheet('${s.id}')">Imprimer</button>
+        <button onclick="event.stopPropagation();printSheet('${s.id}')">Créer un PDF</button>
         <button class="danger" onclick="event.stopPropagation();delSheet('${s.id}')">Supprimer</button>
       </div>
     </div>`;

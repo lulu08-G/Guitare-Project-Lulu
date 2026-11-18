@@ -14,7 +14,7 @@ function openPrintModal() {
 function renderPrintModal() {
   const n = selIds.size;
   $('m-print-body').innerHTML = `
-    <div class="modal-t">Aperçu avant impression · ${n} fiche${n>1?'s':''}</div>
+    <div class="modal-t">${n>1?`Ton livret PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
     <div class="frow">
       <div class="fg"><label>Style</label>
         <select id="pp-style" onchange="printOpts.style=this.value;refreshPrintPreview()">
@@ -33,12 +33,13 @@ function renderPrintModal() {
       <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
         <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numéroter les pages</label>
     </div>
+    <p class="pp-tip">Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ». Tu pourras aussi l’imprimer.</p>
     <div style="background:#5a5a5a;border-radius:10px;padding:14px;overflow:auto;max-height:52vh;margin-top:8px">
       <div id="pp-preview" style="zoom:.42"></div>
     </div>
     <div class="modal-f">
       <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
-      <button class="btn btn-primary btn-sm" onclick="doPrint()">Imprimer / PDF</button>
+      <button class="btn btn-primary btn-sm" onclick="doPrint()">Créer le PDF</button>
     </div>`;
   refreshPrintPreview();
 }
@@ -65,6 +66,9 @@ function buildPrintPages() {
 function doPrint() {
   $('print-root').innerHTML = buildPrintPages();
   $('m-print').classList.add('hide');
+  const t0 = document.title, one = selIds.size === 1 && sheets.find(x => selIds.has(x.id));
+  document.title = one ? one.title + (one.artist && one.artist !== '—' ? ' - ' + one.artist : '') : 'Livret de guitare';
+  window.addEventListener('afterprint', () => { document.title = t0; }, {once: true});
   setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
 }
 // façon de jouer imprimée : la ligne de groupes de la fiche, volontairement plus petite que les accords

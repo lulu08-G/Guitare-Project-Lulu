@@ -150,3 +150,6 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ce-inline .ce-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px}
 .ce-inline .ce-base{font-size:12px;font-weight:600;color:var(--cream3)}
 .ce-inline .ce-add{min-height:46px;width:100%;max-width:320px;margin-top:4px}
+
+/* Créer un PDF */
+.pp-tip{margin:8px 0 0;font-size:13px;color:var(--cream3)}

@@ -4,11 +4,11 @@
     <div class="hm-top">
       <h1><span class="hm-w">Fiches</span><small id="greet-count"></small></h1>
       <button type="button" class="btn-icon tun-btn hm-vol" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="btn-icon vol-btn hm-vol2" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
-      <button type="button" class="btn-icon hm-print" onclick="startPrintPick()" aria-label="Imprimer des fiches" title="Imprimer des fiches"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg></button>
+      <button type="button" class="btn-icon hm-print" onclick="startPrintPick()" aria-label="Créer un livret PDF" title="Créer un livret PDF"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg></button>
       <div class="hm-menu" id="hm-menu">
         <button class="btn-icon" onclick="toggleHomeMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
         <div class="pop">
-          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Imprimer ou exporter des fiches</button>
+          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Créer un livret PDF ou exporter</button>
           <button onclick="closeHomeMenu();backupAll()">Sauvegarder toutes mes fiches</button>
           <button onclick="closeHomeMenu();document.getElementById('json-in').click()">Restaurer ou importer un fichier</button>
         </div>
@@ -32,7 +32,7 @@
       <div class="spacer"></div>
       <button class="btn btn-ghost btn-sm" onclick="toggleSelectMode()" id="sel-mode-btn">Annuler</button>
       <button class="btn btn-ghost btn-sm" onclick="exportSel()" id="btn-export" title="Enregistrer ces fiches dans un fichier">Exporter</button>
-      <button class="btn btn-primary btn-sm" onclick="openPrintModal()" id="btn-print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg><span id="btn-print-t">Imprimer</span></button>
+      <button class="btn btn-primary btn-sm" onclick="openPrintModal()" id="btn-print"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg><span id="btn-print-t">Créer le PDF</span></button>
     </div>
     <div id="pinned-wrap" style="display:none"><div class="pinned-row" id="pinned-row"></div></div>
     <div class="grid" id="home-grid"></div>

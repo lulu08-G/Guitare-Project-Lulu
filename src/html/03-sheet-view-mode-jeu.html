@@ -5,6 +5,7 @@
       <button type="button" class="sv-back" onclick="svExit()" aria-label="Quitter le mode jeu, retour aux fiches"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span>Fiches</span></button>
       <div class="sv-btns">
         <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
+        <button type="button" class="btn-icon" onclick="printOne()" title="Créer un PDF" aria-label="Créer un PDF de cette fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg></button>
         <button type="button" class="btn-icon vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
         <div class="hm-menu" id="sv-menu">
           <button type="button" class="btn-icon" onclick="svMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>
@@ -13,7 +14,6 @@
             <button type="button" id="sv-aa" onclick="toggleNames()">Noms des accords</button>
             <button type="button" id="sv-lyr-m" onclick="svMenuClose();svToggleLyrics()">Afficher les paroles</button>
             <button type="button" onclick="svMenuClose();svOriginal()">Écouter l’original</button>
-            <button type="button" onclick="svMenuClose();printOne()">Imprimer</button>
           </div>
         </div>
       </div>
@@ -29,7 +29,6 @@
       <div id="sv-coffre"></div>
       <label style="display:flex;gap:10px;align-items:center;min-height:44px;font-size:14px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--cream2)"><input type="checkbox" id="opt-lefty" onchange="setLefty(this.checked)" style="width:22px;height:22px;accent-color:var(--gold)"> Mode gaucher : bouton Play à droite</label>
     </details>
-    <div class="sv-foot"><button type="button" class="btn btn-ghost btn-sm" onclick="printOne()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="9" rx="2"/><path d="M7 14h10v6.5H7z"/></svg>Imprimer cette fiche</button></div>
   </div>
   <div class="sv-bar" id="sv-bar"><div class="sv-bar-in">
     <div class="sv-live" id="sv-live">Rythme en boucle</div>
