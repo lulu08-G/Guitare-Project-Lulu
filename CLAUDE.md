@@ -4,6 +4,15 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 
 **Positionnement (Lucas, 17/11/2026)** : « L'app pour kiffer son apprentissage de la guitare en autodidacte : retenir facilement les morceaux appris sur le tas, et passer les murs qui séparent le débutant de celui qui sait jouer. » Deux piliers : **Retenir** (les fiches) et **Débloquer** (les blocs). Navigation validée le 17/11 : Découvrir · Fiches · Créer · S'entraîner · Plus. « Plus » est voué à disparaître (c'est le brouillon de S'entraîner, à repenser) ; l'**accordeur** est une icône à côté du volume (comme GuitarTuna) ; le métronome sera refait dans S'entraîner. Parcours guidé retiré. Cours de théorie uniquement dans « Comprendre ». **Admin liste toutes les vidéos** (pour les pubs) : toute nouvelle vidéo doit y apparaître.
 
+## Refonte « Médi » (validée par Lucas le 18/11/2026, en cours de code)
+- **Référence** : planche Design « Mascotte Guitar Memory », page « Refonte » (https://claude.ai/artifact/PNb2uUQ1GaVE1ZZ1PsbqRL). Lucas veut l'app **la plus fidèle possible** aux maquettes (encore moins épurée à ce jour : à reprendre ensemble).
+- **Sauvegarde avant refonte** : branche `sauvegarde/avant-refonte-2026-11-18` (commit f48915b).
+- **Système** : couleurs nuit `#121014`, surfaces `#1d1b21`/`#28252c`, craie `#f6f1ea`, brume `#a19ca8`, orange `#ff8a2a`, bulle de Médi `#2e1f12`/`#ffe2c6` ; titres, accords et chiffres en **Bricolage Grotesque** (`--display`), texte en Inter. Couches de code : `src/css/20-refonte-medi.css` (jetons, barre du bas, Médi, bulle) et `src/css/21-refonte-ecrans.css` (écrans) ; Médi en JS : `src/js/01-medi.js` (`mediSVG`, `mediBulle`).
+- **Navigation** : Découvrir · Fiches · **pilule « Créer »** (médiator encre penché de 14° + mot) · S'entraîner · **Moi** (ex-« Plus »).
+- **Médi** (mascotte, médiator penché de 14°, deux yeux) : une fois par écran, bulle de deux phrases max, tutoiement, jamais d'emoji. En mode jeu : petit, il danse sur le tempo. Aide « si besoin » dans sa bulle (accordeur : mauvaise corde 2 fois, 10 s sans son, appui long), jamais en fenêtre.
+- **Validé** : accordeur à aiguille (Médi penche avec l'aiguille, saute quand c'est juste), toutes les animations de la planche « Ce qui bouge », la bande du métronome (« Appeler la bande » : Boum à la batterie, Basile à la basse), les écrans à valider du bas de la page (Moi, mode jeu, accueil ×3, mur, accords, suites d'accords).
+- **Fait dans le code** : fondations, Découvrir, Mes fiches (rappel de sauvegarde retiré, Médi propose un morceau à rejouer), choix Créer, éditeur (carte « Le rythme » avec Médi). **Reste** : rythme/arpège à la main, créer mon accord, fiche, mode jeu, S'entraîner, accordeur, métronome + bande, tutos, Moi, accueil, animations.
+
 ## Gel des nouveautés (décision de Lucas, 13/11/2026)
 - **Plus aucune nouvelle fonction** tant que le cœur n'est pas validé par Lucas. Le cœur : **créer une fiche, puis la jouer** (accueil, création, fiche, mode jeu).
 - Le travail autorisé : polir ce parcours d'après ses retours en conditions réelles, cohérence visuelle, corrections de bugs.
