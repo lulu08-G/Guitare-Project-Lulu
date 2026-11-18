@@ -4,12 +4,12 @@
     <div class="ed-top">
       <button type="button" class="ed-x" onclick="edClose()" aria-label="Fermer sans enregistrer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <h2 id="ed-title">Nouvelle fiche</h2>
-      <button type="button" class="ed-save" id="ed-save" onclick="edSaveTap()"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Enregistrer</button>
+      <button type="button" class="ed-save" id="ed-save" onclick="edSaveTap()"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Terminé</button>
     </div>
 
     <div class="ed-ta">
-      <input type="text" id="f-title" class="ed-in ed-in-t" placeholder="Titre du morceau" aria-label="Titre du morceau" autocomplete="off" enterkeyhint="next" oninput="edSyncSave()" onkeydown="edNext(event,'f-artist')">
-      <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done">
+      <input type="text" id="f-title" class="ed-in ed-in-t" placeholder="Titre du morceau" aria-label="Titre du morceau" autocomplete="off" enterkeyhint="next" oninput="edSyncSave();edTlSugg()" onkeydown="edNext(event,'f-artist')">
+      <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done" oninput="edTlSugg()">
     </div>
 
     <div class="ed-meta" id="ed-meta"></div>
@@ -28,22 +28,26 @@
     <div id="ed-solo-rh"></div>
 
     <div class="ed-lab"><b>Tutos et liens</b><small>facultatif</small></div>
-    <details class="ed-row">
-      <summary><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg>Ajouter un lien<small>original, tuto…</small></summary>
-      <div class="ed-row-b">
-        <label for="f-orig">Version originale <span class="opt-tag">(YouTube, Spotify… pour « Écouter l’original »)</span></label>
-        <div class="qc-row">
-          <input type="url" id="f-orig" placeholder="https://…" autocomplete="off" inputmode="url" oninput="draft.original={url:this.value.trim()}">
-          <button type="button" class="btn btn-ghost" onclick="searchOriginal()">Chercher</button>
-        </div>
-        <button type="button" class="rb-lnk acc" style="margin-top:6px" onclick="edOpenCoffre('link-in')">Ajouter un tuto ou une vidéo ›</button>
+    <div class="ed-tl">
+      <div class="ed-tl-sugg" id="ed-tl-sugg"></div>
+      <div class="link-cards" id="ed-links"></div>
+      <div class="qc-row">
+        <input type="url" id="ed-link-in" placeholder="Coller un lien (YouTube, TikTok…)" aria-label="Coller le lien d’un tuto" autocomplete="off" inputmode="url" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();edAddLink()}">
+        <button type="button" class="btn btn-ghost" onclick="edAddLink()">Ajouter</button>
       </div>
-    </details>
-    <button type="button" class="ed-row ed-rowb" onclick="edOpenCoffre('draft-media-audio')"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><path d="M12 19v4"/></svg>Enregistrer une prise audio</button>
+      <button type="button" class="rb-lnk acc ed-tl-open" onclick="edTutoSearch()">Ouvrir la recherche de tutos ›</button>
+    </div>
 
     <details class="ed-more" id="more-opts">
       <summary>Plus d’options <span>BPM, accordage, difficulté, couleur, notes, Médias</span></summary>
       <div class="ed-more-b">
+        <div class="fg">
+          <label for="f-orig">Version originale <span class="opt-tag">(YouTube, Spotify… pour « Écouter l’original »)</span></label>
+          <div class="qc-row">
+            <input type="url" id="f-orig" placeholder="https://…" autocomplete="off" inputmode="url" oninput="draft.original={url:this.value.trim()}">
+            <button type="button" class="btn btn-ghost" onclick="searchOriginal()">Chercher</button>
+          </div>
+        </div>
         <div class="frow qc-meta">
           <div class="fg" style="margin-bottom:0"><label>BPM</label><input type="number" inputmode="numeric" min="30" max="300" id="f-bpm" placeholder="Ex : 90" oninput="draft.bpm=+this.value||0"></div>
           <div class="fg" style="margin-bottom:0"><label>Capo</label><select id="f-capo" onchange="draft.capo=+this.value;edCapoSync()"></select></div>

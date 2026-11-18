@@ -87,7 +87,7 @@ function openEditor(title) {
   $('more-opts').open = false;
   cp.ed = false; cp.pi = 0; edRpI = 0; edNaming.clear(); edLv.length = 0;
   document.querySelectorAll('#v-ed .ed-row[open]').forEach(d => d.open = false);
-  renderQuick();
+  renderQuick(); edTlSugg(); edLinksRender();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';
   $('color-row').innerHTML = COLORS.map(([k,c]) =>
     `<button class="btn-icon ${draft.color===k?'on':''}" data-col="${k}" onclick="pickColor('${k}')" style="background:${c};border-color:${c}"></button>`).join('');
@@ -165,6 +165,7 @@ function tapTempo(btn) {
   btn.textContent = tapTimes.length < 2 ? 'Encore...' : draft.bpm + ' BPM';
 }
 function renderLinks() {
+  edLinksRender();
   const host = $('link-list'); if (!host) return;
   host.innerHTML = (draft.links||[]).map(l => `<div class="link-card">
     <svg class="ico" viewBox="0 0 24 24" style="color:${ytId(l.url)?'var(--terra)':'var(--cream4)'}">${ytId(l.url)
@@ -179,6 +180,33 @@ function addLink() {
   draft.links = draft.links || [];
   draft.links.push({id:uid(), url:v, title: ytId(v) ? 'Video YouTube' : v.replace(/^https?:\/\//,'').slice(0,48)});
   $('link-in').value = ''; renderLinks();
+}
+/* « Tutos et liens » de la création : tutos proposés d'après le titre, coller un lien, ouvrir la recherche de tutos */
+function edTlSugg() {
+  const h = $('ed-tl-sugg'); if (!h) return;
+  const t = ($('f-title').value + ' ' + $('f-artist').value).trim();
+  if (!$('f-title').value.trim()) { h.innerHTML = `<p class="ed-tl-hint">Écris le titre : des tutos te seront proposés ici.</p>`; return; }
+  const q = encodeURIComponent(t), ext = '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+  const L = [['Tutos YouTube', 'https://www.youtube.com/results?search_query=' + q + '+tuto+guitare'], ['TikTok', 'https://www.tiktok.com/search?q=' + q + '%20guitare'], ['Grilles d’accords', 'https://www.google.com/search?q=' + q + '+accords+guitare']];
+  h.innerHTML = `<p class="ed-tl-hint">Tutos proposés pour « ${esc($('f-title').value.trim())} » : ouvre, copie le lien du bon tuto, colle-le dessous.</p><div class="ed-tl-chips">${L.map(([n, u]) => `<a class="btn btn-ghost btn-sm" href="${u}" target="_blank" rel="noopener">${n}${ext}</a>`).join('')}</div>`;
+}
+function edLinksRender() {
+  const h = $('ed-links'); if (!h || !draft) return;
+  h.innerHTML = (draft.links || []).map(l => `<div class="link-card"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ytId(l.url) ? '<polygon points="10 8 16 12 10 16" fill="currentColor" stroke="none"/><rect x="2" y="4" width="20" height="16" rx="4"/>' : '<path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/>'}</svg><span class="lc-t">${esc(l.title || l.url)}</span><button type="button" class="btn-icon" onclick="rmLink('${l.id}')" aria-label="Retirer ce lien"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>`).join('');
+}
+function edAddLink() {
+  const i = $('ed-link-in'), v = i.value.trim(); if (!v) return;
+  if (!/^https?:\/\//i.test(v)) { toast('Colle un lien qui commence par https://', true); return; }
+  draft.links = draft.links || [];
+  draft.links.push({id: uid(), url: v, title: ytId(v) ? 'Tuto YouTube' : v.replace(/^https?:\/\//, '').slice(0, 48)});
+  i.value = ''; renderLinks(); toast('Lien ajouté');
+}
+async function edTutoSearch() {
+  const t = $('f-title').value.trim(), a = $('f-artist').value.trim();
+  if (!t) { toast('Écris d’abord le titre', true); $('f-title').focus(); return; }
+  if (edOK()) { await saveSheet(); tutoOpenFor(t, a); return; }   // la fiche est gardée avant de partir
+  if (!confirm('Ta fiche n’a pas encore d’accord : elle ne sera pas gardée. Ouvrir quand même la recherche de tutos ?')) return;
+  edClose(); tutoOpenFor(t, a);
 }
 function rmLink(id) { draft.links = (draft.links||[]).filter(l => l.id !== id); renderLinks(); }
 async function renderDraftMedia() {

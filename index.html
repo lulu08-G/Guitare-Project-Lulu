@@ -2051,6 +2051,13 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .res-more summary::after{content:'›';font-size:18px;line-height:1;transition:transform .15s}
 .res-more[open] summary::after{transform:rotate(90deg)}
 .res-more .res-links{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:4px}
+/* Création : « Tutos et liens » */
+.ed-tl{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.ed-tl-hint{font-size:13px;color:var(--cream3);margin:0}
+.ed-tl-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.ed-tl .link-cards{display:flex;flex-direction:column;gap:6px}
+.ed-tl .link-cards:empty{display:none}
+.ed-tl-open{align-self:flex-start;min-height:44px}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -2343,12 +2350,12 @@ body:has(#v-ed.on) .toast{bottom:90px}
     <div class="ed-top">
       <button type="button" class="ed-x" onclick="edClose()" aria-label="Fermer sans enregistrer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <h2 id="ed-title">Nouvelle fiche</h2>
-      <button type="button" class="ed-save" id="ed-save" onclick="edSaveTap()"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Enregistrer</button>
+      <button type="button" class="ed-save" id="ed-save" onclick="edSaveTap()"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Terminé</button>
     </div>
 
     <div class="ed-ta">
-      <input type="text" id="f-title" class="ed-in ed-in-t" placeholder="Titre du morceau" aria-label="Titre du morceau" autocomplete="off" enterkeyhint="next" oninput="edSyncSave()" onkeydown="edNext(event,'f-artist')">
-      <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done">
+      <input type="text" id="f-title" class="ed-in ed-in-t" placeholder="Titre du morceau" aria-label="Titre du morceau" autocomplete="off" enterkeyhint="next" oninput="edSyncSave();edTlSugg()" onkeydown="edNext(event,'f-artist')">
+      <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done" oninput="edTlSugg()">
     </div>
 
     <div class="ed-meta" id="ed-meta"></div>
@@ -2367,22 +2374,26 @@ body:has(#v-ed.on) .toast{bottom:90px}
     <div id="ed-solo-rh"></div>
 
     <div class="ed-lab"><b>Tutos et liens</b><small>facultatif</small></div>
-    <details class="ed-row">
-      <summary><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg>Ajouter un lien<small>original, tuto…</small></summary>
-      <div class="ed-row-b">
-        <label for="f-orig">Version originale <span class="opt-tag">(YouTube, Spotify… pour « Écouter l’original »)</span></label>
-        <div class="qc-row">
-          <input type="url" id="f-orig" placeholder="https://…" autocomplete="off" inputmode="url" oninput="draft.original={url:this.value.trim()}">
-          <button type="button" class="btn btn-ghost" onclick="searchOriginal()">Chercher</button>
-        </div>
-        <button type="button" class="rb-lnk acc" style="margin-top:6px" onclick="edOpenCoffre('link-in')">Ajouter un tuto ou une vidéo ›</button>
+    <div class="ed-tl">
+      <div class="ed-tl-sugg" id="ed-tl-sugg"></div>
+      <div class="link-cards" id="ed-links"></div>
+      <div class="qc-row">
+        <input type="url" id="ed-link-in" placeholder="Coller un lien (YouTube, TikTok…)" aria-label="Coller le lien d’un tuto" autocomplete="off" inputmode="url" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();edAddLink()}">
+        <button type="button" class="btn btn-ghost" onclick="edAddLink()">Ajouter</button>
       </div>
-    </details>
-    <button type="button" class="ed-row ed-rowb" onclick="edOpenCoffre('draft-media-audio')"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><path d="M12 19v4"/></svg>Enregistrer une prise audio</button>
+      <button type="button" class="rb-lnk acc ed-tl-open" onclick="edTutoSearch()">Ouvrir la recherche de tutos ›</button>
+    </div>
 
     <details class="ed-more" id="more-opts">
       <summary>Plus d’options <span>BPM, accordage, difficulté, couleur, notes, Médias</span></summary>
       <div class="ed-more-b">
+        <div class="fg">
+          <label for="f-orig">Version originale <span class="opt-tag">(YouTube, Spotify… pour « Écouter l’original »)</span></label>
+          <div class="qc-row">
+            <input type="url" id="f-orig" placeholder="https://…" autocomplete="off" inputmode="url" oninput="draft.original={url:this.value.trim()}">
+            <button type="button" class="btn btn-ghost" onclick="searchOriginal()">Chercher</button>
+          </div>
+        </div>
         <div class="frow qc-meta">
           <div class="fg" style="margin-bottom:0"><label>BPM</label><input type="number" inputmode="numeric" min="30" max="300" id="f-bpm" placeholder="Ex : 90" oninput="draft.bpm=+this.value||0"></div>
           <div class="fg" style="margin-bottom:0"><label>Capo</label><select id="f-capo" onchange="draft.capo=+this.value;edCapoSync()"></select></div>
@@ -8495,7 +8506,7 @@ function openEditor(title) {
   $('more-opts').open = false;
   cp.ed = false; cp.pi = 0; edRpI = 0; edNaming.clear(); edLv.length = 0;
   document.querySelectorAll('#v-ed .ed-row[open]').forEach(d => d.open = false);
-  renderQuick();
+  renderQuick(); edTlSugg(); edLinksRender();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';
   $('color-row').innerHTML = COLORS.map(([k,c]) =>
     `<button class="btn-icon ${draft.color===k?'on':''}" data-col="${k}" onclick="pickColor('${k}')" style="background:${c};border-color:${c}"></button>`).join('');
@@ -8573,6 +8584,7 @@ function tapTempo(btn) {
   btn.textContent = tapTimes.length < 2 ? 'Encore...' : draft.bpm + ' BPM';
 }
 function renderLinks() {
+  edLinksRender();
   const host = $('link-list'); if (!host) return;
   host.innerHTML = (draft.links||[]).map(l => `<div class="link-card">
     <svg class="ico" viewBox="0 0 24 24" style="color:${ytId(l.url)?'var(--terra)':'var(--cream4)'}">${ytId(l.url)
@@ -8587,6 +8599,33 @@ function addLink() {
   draft.links = draft.links || [];
   draft.links.push({id:uid(), url:v, title: ytId(v) ? 'Video YouTube' : v.replace(/^https?:\/\//,'').slice(0,48)});
   $('link-in').value = ''; renderLinks();
+}
+/* « Tutos et liens » de la création : tutos proposés d'après le titre, coller un lien, ouvrir la recherche de tutos */
+function edTlSugg() {
+  const h = $('ed-tl-sugg'); if (!h) return;
+  const t = ($('f-title').value + ' ' + $('f-artist').value).trim();
+  if (!$('f-title').value.trim()) { h.innerHTML = `<p class="ed-tl-hint">Écris le titre : des tutos te seront proposés ici.</p>`; return; }
+  const q = encodeURIComponent(t), ext = '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+  const L = [['Tutos YouTube', 'https://www.youtube.com/results?search_query=' + q + '+tuto+guitare'], ['TikTok', 'https://www.tiktok.com/search?q=' + q + '%20guitare'], ['Grilles d’accords', 'https://www.google.com/search?q=' + q + '+accords+guitare']];
+  h.innerHTML = `<p class="ed-tl-hint">Tutos proposés pour « ${esc($('f-title').value.trim())} » : ouvre, copie le lien du bon tuto, colle-le dessous.</p><div class="ed-tl-chips">${L.map(([n, u]) => `<a class="btn btn-ghost btn-sm" href="${u}" target="_blank" rel="noopener">${n}${ext}</a>`).join('')}</div>`;
+}
+function edLinksRender() {
+  const h = $('ed-links'); if (!h || !draft) return;
+  h.innerHTML = (draft.links || []).map(l => `<div class="link-card"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ytId(l.url) ? '<polygon points="10 8 16 12 10 16" fill="currentColor" stroke="none"/><rect x="2" y="4" width="20" height="16" rx="4"/>' : '<path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/>'}</svg><span class="lc-t">${esc(l.title || l.url)}</span><button type="button" class="btn-icon" onclick="rmLink('${l.id}')" aria-label="Retirer ce lien"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>`).join('');
+}
+function edAddLink() {
+  const i = $('ed-link-in'), v = i.value.trim(); if (!v) return;
+  if (!/^https?:\/\//i.test(v)) { toast('Colle un lien qui commence par https://', true); return; }
+  draft.links = draft.links || [];
+  draft.links.push({id: uid(), url: v, title: ytId(v) ? 'Tuto YouTube' : v.replace(/^https?:\/\//, '').slice(0, 48)});
+  i.value = ''; renderLinks(); toast('Lien ajouté');
+}
+async function edTutoSearch() {
+  const t = $('f-title').value.trim(), a = $('f-artist').value.trim();
+  if (!t) { toast('Écris d’abord le titre', true); $('f-title').focus(); return; }
+  if (edOK()) { await saveSheet(); tutoOpenFor(t, a); return; }   // la fiche est gardée avant de partir
+  if (!confirm('Ta fiche n’a pas encore d’accord : elle ne sera pas gardée. Ouvrir quand même la recherche de tutos ?')) return;
+  edClose(); tutoOpenFor(t, a);
 }
 function rmLink(id) { draft.links = (draft.links||[]).filter(l => l.id !== id); renderLinks(); }
 async function renderDraftMedia() {
@@ -8697,7 +8736,7 @@ function edCapoStep(d) { draft.capo = Math.max(0, Math.min(9, (draft.capo || 0) 
 function edCapoHTML() {
   const v = draft.capo || 0;
   return `<div class="ed-capo${v ? ' on' : ''}" role="group" aria-label="Capo"><small>Capo</small>
-    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button><b>${v || '—'}</b>
+    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button><b>${v || 'sans'}</b>
     <button type="button" onclick="edCapoStep(1)" aria-label="Capo plus haut" ${v >= 9 ? 'disabled' : ''}>+</button></div>`;
 }
 // « Liens et enregistrements » : ouvre les Médias (vidéos, tutos, prises audio) dans « Plus d'options » et y amène
@@ -8776,7 +8815,7 @@ function renderParts() {
       </div></div>`;
   }).join('');
   $('ed-solo-rh').innerHTML = '';
-  $('ed-meta').innerHTML = edCapoHTML() + `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="—" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label><small>pour tout le morceau</small>`;
+  $('ed-meta').innerHTML = edCapoHTML() + `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label><small>pour tout le morceau</small>`;
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
   // un accord ajouté se pose (les accords déjà vus ne rejouent rien)

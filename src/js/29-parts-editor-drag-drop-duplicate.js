@@ -38,7 +38,7 @@ function edCapoStep(d) { draft.capo = Math.max(0, Math.min(9, (draft.capo || 0) 
 function edCapoHTML() {
   const v = draft.capo || 0;
   return `<div class="ed-capo${v ? ' on' : ''}" role="group" aria-label="Capo"><small>Capo</small>
-    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button><b>${v || '—'}</b>
+    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button><b>${v || 'sans'}</b>
     <button type="button" onclick="edCapoStep(1)" aria-label="Capo plus haut" ${v >= 9 ? 'disabled' : ''}>+</button></div>`;
 }
 // « Liens et enregistrements » : ouvre les Médias (vidéos, tutos, prises audio) dans « Plus d'options » et y amène
@@ -117,7 +117,7 @@ function renderParts() {
       </div></div>`;
   }).join('');
   $('ed-solo-rh').innerHTML = '';
-  $('ed-meta').innerHTML = edCapoHTML() + `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="—" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label><small>pour tout le morceau</small>`;
+  $('ed-meta').innerHTML = edCapoHTML() + `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label><small>pour tout le morceau</small>`;
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
   // un accord ajouté se pose (les accords déjà vus ne rejouent rien)
