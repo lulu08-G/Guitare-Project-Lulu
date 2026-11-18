@@ -302,7 +302,7 @@ const AT_ENH = {'E#':'F','B#':'C','Fb':'E','Cb':'B'};
 /* ── sélecteur d'accords visuel (diagrammes) : partagé Atelier / éditeur de fiche ── */
 const cp = {at:false, ed:false, pi:0, tab:'top', names:false};   // cp.pi : partie de l'éditeur de fiche qui reçoit les accords
 const CP_TOP = ['Em','C','G','D','Am','E','A','Dm','F','A7','D7','E7','Cadd9','Dsus4'];
-const CP_TABS = [['top','Les plus utilisés'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9']];
+const CP_TABS = [['top','Les plus utilisés'],['mine','Créer mon accord'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9']];
 function cpList() { return cp.tab === 'top' ? CP_TOP.map(findChord1).filter(Boolean) : LIB.filter(c => c.fam === cp.tab); }
 function cpTarget(ctx) { return ctx === 'at' ? (at.s ? atPart().chords : []) : (draft && draft.parts[cp.pi] ? draft.parts[cp.pi].chords : []); }
 function cpHTML(ctx) {
@@ -311,8 +311,8 @@ function cpHTML(ctx) {
   let h = ctx === 'ed' ? '' : `<button type="button" class="cp-open" onclick="cpToggle('${ctx}')" aria-expanded="${open}">${open ? '▲ Masquer les accords' : '+ Accord'}</button>`;   // éditeur : la tuile « + Accord » ouvre le panneau
   if (!open) return h;
   h += `<div class="cp-panel"><div class="cp-added">${last.length ? 'Dans la partie : <b>' + last.join('</b> · <b>') + '</b>' : 'Touche un diagramme pour l’ajouter.'}</div>
-    <div class="cp-tabs" role="tablist">${CP_TABS.map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')">${l}</button>`).join('')}</div>
-    <div class="cp-grid">${cpList().map(c => `<button type="button" class="cp-cell" onclick="cpPick('${ctx}','${esc(c.n)}')" aria-label="Ajouter ${esc(c.n)}">${chordSVG({frets:c.f, fingers:c.g}, {size:.72})}<span>${esc(c.n)}</span></button>`).join('')}</div>
+    <div class="cp-tabs" role="tablist">${CP_TABS.filter(([k]) => k !== 'mine' || ctx === 'ed').map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')"${k === 'mine' ? ' class="cp-mine"' : ''}>${l}</button>`).join('')}</div>
+    ${cp.tab === 'mine' && ctx === 'ed' ? ceInlineHTML() : `<div class="cp-grid">${cpList().map(c => `<button type="button" class="cp-cell" onclick="cpPick('${ctx}','${esc(c.n)}')" aria-label="Ajouter ${esc(c.n)}">${chordSVG({frets:c.f, fingers:c.g}, {size:.72})}<span>${esc(c.n)}</span></button>`).join('')}</div>`}
     <button type="button" class="cp-close" onclick="cpToggle('${ctx}')">Fermer</button></div>`;
   return h;
 }
@@ -321,7 +321,7 @@ function cpRefresh(ctx) {
   renderParts();   // la grille garde son défilement (renderParts)
 }
 function cpToggle(ctx, pi) { if (pi != null) { if (cp[ctx] && cp.pi === pi) cp[ctx] = false; else { cp[ctx] = true; cp.pi = pi; } } else cp[ctx] = !cp[ctx]; cpRefresh(ctx); }
-function cpTab(ctx, t) { cp.tab = t; cpRefresh(ctx); }
+function cpTab(ctx, t) { cp.tab = t; if (t === 'mine' && (!ceState || !ceState.inline)) ceState = {pi: cp.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true}; cpRefresh(ctx); }
 function cpPick(ctx, name) {
   try { playChord(newChord(name), ctx === 'at' ? (at.s && at.s.capo) || 0 : (draft && draft.capo) || 0, 'D'); } catch (e) {}
   if (ctx === 'at') atAdd([name]); else addChordLine(name);

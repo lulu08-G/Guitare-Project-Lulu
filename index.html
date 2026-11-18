@@ -2084,9 +2084,14 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-tempo-mini::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 .rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
-/* Création : « Créer mon accord », première pastille de la ligne des accords proposés */
-#v-ed .qc-sugg button.qc-mine{display:inline-flex;align-items:center;gap:5px;color:var(--gold);border-style:dashed;border-color:var(--gold)}
-.qc-mine svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Création : onglet « Créer mon accord » du panneau des accords, à la place de la grille */
+.cp-tabs .cp-mine{color:var(--gold)}
+.ce-inline{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 4px}
+.ce-inline input{width:100%;max-width:320px}
+.ce-inline .ce-tip{font-size:12px;color:var(--cream3);text-align:center;margin:0}
+.ce-inline .ce-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px}
+.ce-inline .ce-base{font-size:12px;font-weight:600;color:var(--cream3)}
+.ce-inline .ce-add{min-height:46px;width:100%;max-width:320px;margin-top:4px}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -7366,7 +7371,7 @@ const AT_ENH = {'E#':'F','B#':'C','Fb':'E','Cb':'B'};
 /* ── sélecteur d'accords visuel (diagrammes) : partagé Atelier / éditeur de fiche ── */
 const cp = {at:false, ed:false, pi:0, tab:'top', names:false};   // cp.pi : partie de l'éditeur de fiche qui reçoit les accords
 const CP_TOP = ['Em','C','G','D','Am','E','A','Dm','F','A7','D7','E7','Cadd9','Dsus4'];
-const CP_TABS = [['top','Les plus utilisés'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9']];
+const CP_TABS = [['top','Les plus utilisés'],['mine','Créer mon accord'],['maj','Majeurs'],['min','Mineurs'],['7','Septièmes'],['sus','Sus'],['add','Add9']];
 function cpList() { return cp.tab === 'top' ? CP_TOP.map(findChord1).filter(Boolean) : LIB.filter(c => c.fam === cp.tab); }
 function cpTarget(ctx) { return ctx === 'at' ? (at.s ? atPart().chords : []) : (draft && draft.parts[cp.pi] ? draft.parts[cp.pi].chords : []); }
 function cpHTML(ctx) {
@@ -7375,8 +7380,8 @@ function cpHTML(ctx) {
   let h = ctx === 'ed' ? '' : `<button type="button" class="cp-open" onclick="cpToggle('${ctx}')" aria-expanded="${open}">${open ? '▲ Masquer les accords' : '+ Accord'}</button>`;   // éditeur : la tuile « + Accord » ouvre le panneau
   if (!open) return h;
   h += `<div class="cp-panel"><div class="cp-added">${last.length ? 'Dans la partie : <b>' + last.join('</b> · <b>') + '</b>' : 'Touche un diagramme pour l’ajouter.'}</div>
-    <div class="cp-tabs" role="tablist">${CP_TABS.map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')">${l}</button>`).join('')}</div>
-    <div class="cp-grid">${cpList().map(c => `<button type="button" class="cp-cell" onclick="cpPick('${ctx}','${esc(c.n)}')" aria-label="Ajouter ${esc(c.n)}">${chordSVG({frets:c.f, fingers:c.g}, {size:.72})}<span>${esc(c.n)}</span></button>`).join('')}</div>
+    <div class="cp-tabs" role="tablist">${CP_TABS.filter(([k]) => k !== 'mine' || ctx === 'ed').map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')"${k === 'mine' ? ' class="cp-mine"' : ''}>${l}</button>`).join('')}</div>
+    ${cp.tab === 'mine' && ctx === 'ed' ? ceInlineHTML() : `<div class="cp-grid">${cpList().map(c => `<button type="button" class="cp-cell" onclick="cpPick('${ctx}','${esc(c.n)}')" aria-label="Ajouter ${esc(c.n)}">${chordSVG({frets:c.f, fingers:c.g}, {size:.72})}<span>${esc(c.n)}</span></button>`).join('')}</div>`}
     <button type="button" class="cp-close" onclick="cpToggle('${ctx}')">Fermer</button></div>`;
   return h;
 }
@@ -7385,7 +7390,7 @@ function cpRefresh(ctx) {
   renderParts();   // la grille garde son défilement (renderParts)
 }
 function cpToggle(ctx, pi) { if (pi != null) { if (cp[ctx] && cp.pi === pi) cp[ctx] = false; else { cp[ctx] = true; cp.pi = pi; } } else cp[ctx] = !cp[ctx]; cpRefresh(ctx); }
-function cpTab(ctx, t) { cp.tab = t; cpRefresh(ctx); }
+function cpTab(ctx, t) { cp.tab = t; if (t === 'mine' && (!ceState || !ceState.inline)) ceState = {pi: cp.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true}; cpRefresh(ctx); }
 function cpPick(ctx, name) {
   try { playChord(newChord(name), ctx === 'at' ? (at.s && at.s.capo) || 0 : (draft && draft.capo) || 0, 'D'); } catch (e) {}
   if (ctx === 'at') atAdd([name]); else addChordLine(name);
@@ -8510,7 +8515,7 @@ function quickPartCustom() {
   if (n) quickPart(n.slice(0, 40));
 }
 function renderQuick() {
-  $('qc-sugg').innerHTML = `<button type="button" class="qc-mine" style="color:var(--gold)" onclick="openChordEditor(edRp(),-1)" aria-label="Créer mon accord"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h8"/><path d="M16.5 4.5a2 2 0 013 3L8 19l-4 1 1-4z"/></svg>Créer</button>` + QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
+  $('qc-sugg').innerHTML = QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
   $('f-capo').innerHTML = [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('');
   $('f-bpm').value = draft.bpm || '';
   $('f-tuning').value = draft.tuning || 'Standard';
@@ -9365,8 +9370,29 @@ function openChordEditor(pi, ci) {
   $('m-chord').classList.remove('hide');
   renderCE();
 }
+/* « Créer mon accord » : onglet du panneau des accords, à la place de la grille (pas de fenêtre) */
+function ceInlineHTML() {
+  if (!ceState || !ceState.inline) ceState = {pi: cp.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true};
+  ceState.pi = cp.pi;
+  const c = ceState.chord;
+  return `<div class="ce-inline">
+    <input type="text" id="ce-name" value="${esc(c.name)}" placeholder="Nom de l’accord (ex : Mon G)" aria-label="Nom de l’accord" autocomplete="off" oninput="ceName(this.value)">
+    <div class="ce-grid" id="ce-grid">${chordEditorSVG(c)}</div>
+    <p class="ce-tip">Touche une case = un doigt · au-dessus du sillet = à vide (O) ou muette (X)</p>
+    <div class="ce-row"><button type="button" class="btn btn-ghost btn-xs" onclick="ceBase(-1)" aria-label="Remonter d’une case">← case</button><span class="ce-base">Case ${c.base}</span><button type="button" class="btn btn-ghost btn-xs" onclick="ceBase(1)" aria-label="Descendre d’une case">case →</button><button type="button" class="btn btn-ghost btn-xs" onclick="ceClear()">Effacer</button><button type="button" class="btn btn-ghost btn-xs" onclick="playChord(ceState.chord, draft.capo)">Écouter</button></div>
+    <button type="button" class="btn btn-primary ce-add" onclick="ceInlineAdd()">Ajouter cet accord</button></div>`;
+}
+function ceInlineAdd() {
+  const c = ceState.chord;
+  if (c.frets.every(f => f === -1)) { toast('Place au moins un doigt ou une corde à vide', true); return; }
+  if (!c.name.trim()) c.name = 'Mon accord';
+  draft.parts[ceState.pi].chords.push(c);
+  ceState = {pi: ceState.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true};
+  toast('Accord ajouté'); renderParts();
+}
 function closeCE() { $('m-chord').classList.add('hide'); ceState = null; }
 function renderCE() {
+  if (ceState && ceState.inline) { cpRefresh('ed'); return; }   // « Créer mon accord » dans le panneau des accords
   const c = ceState.chord;
   $('m-chord-body').innerHTML = `
     <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l’accord' : 'Créer mon accord'}</div>

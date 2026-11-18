@@ -142,6 +142,11 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-tempo-mini::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 .rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
-/* Création : « Créer mon accord », première pastille de la ligne des accords proposés */
-#v-ed .qc-sugg button.qc-mine{display:inline-flex;align-items:center;gap:5px;color:var(--gold);border-style:dashed;border-color:var(--gold)}
-.qc-mine svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* Création : onglet « Créer mon accord » du panneau des accords, à la place de la grille */
+.cp-tabs .cp-mine{color:var(--gold)}
+.ce-inline{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 4px}
+.ce-inline input{width:100%;max-width:320px}
+.ce-inline .ce-tip{font-size:12px;color:var(--cream3);text-align:center;margin:0}
+.ce-inline .ce-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px}
+.ce-inline .ce-base{font-size:12px;font-weight:600;color:var(--cream3)}
+.ce-inline .ce-add{min-height:46px;width:100%;max-width:320px;margin-top:4px}

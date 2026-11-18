@@ -6,8 +6,29 @@ function openChordEditor(pi, ci) {
   $('m-chord').classList.remove('hide');
   renderCE();
 }
+/* « Créer mon accord » : onglet du panneau des accords, à la place de la grille (pas de fenêtre) */
+function ceInlineHTML() {
+  if (!ceState || !ceState.inline) ceState = {pi: cp.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true};
+  ceState.pi = cp.pi;
+  const c = ceState.chord;
+  return `<div class="ce-inline">
+    <input type="text" id="ce-name" value="${esc(c.name)}" placeholder="Nom de l’accord (ex : Mon G)" aria-label="Nom de l’accord" autocomplete="off" oninput="ceName(this.value)">
+    <div class="ce-grid" id="ce-grid">${chordEditorSVG(c)}</div>
+    <p class="ce-tip">Touche une case = un doigt · au-dessus du sillet = à vide (O) ou muette (X)</p>
+    <div class="ce-row"><button type="button" class="btn btn-ghost btn-xs" onclick="ceBase(-1)" aria-label="Remonter d’une case">← case</button><span class="ce-base">Case ${c.base}</span><button type="button" class="btn btn-ghost btn-xs" onclick="ceBase(1)" aria-label="Descendre d’une case">case →</button><button type="button" class="btn btn-ghost btn-xs" onclick="ceClear()">Effacer</button><button type="button" class="btn btn-ghost btn-xs" onclick="playChord(ceState.chord, draft.capo)">Écouter</button></div>
+    <button type="button" class="btn btn-primary ce-add" onclick="ceInlineAdd()">Ajouter cet accord</button></div>`;
+}
+function ceInlineAdd() {
+  const c = ceState.chord;
+  if (c.frets.every(f => f === -1)) { toast('Place au moins un doigt ou une corde à vide', true); return; }
+  if (!c.name.trim()) c.name = 'Mon accord';
+  draft.parts[ceState.pi].chords.push(c);
+  ceState = {pi: ceState.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true};
+  toast('Accord ajouté'); renderParts();
+}
 function closeCE() { $('m-chord').classList.add('hide'); ceState = null; }
 function renderCE() {
+  if (ceState && ceState.inline) { cpRefresh('ed'); return; }   // « Créer mon accord » dans le panneau des accords
   const c = ceState.chord;
   $('m-chord-body').innerHTML = `
     <div class="modal-t">${ceState.ci >= 0 ? 'Modifier l’accord' : 'Créer mon accord'}</div>
