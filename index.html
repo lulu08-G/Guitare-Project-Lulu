@@ -9366,7 +9366,7 @@ function lyricsPreviewHTML(text) {
 let ceState = null; // {pi, ci, chord}
 function openChordEditor(pi, ci) {
   const chord = ci >= 0 ? clone(draft.parts[pi].chords[ci]) : newChord('');
-  ceState = {pi, ci, chord, arpMode: !!(chord.arp && chord.arp.length)};
+  ceState = {pi, ci, chord, arpMode: !!(chord.arp && chord.arp.length), nameManual: ci >= 0 && !!chord.name};
   $('m-chord').classList.remove('hide');
   renderCE();
 }
@@ -9376,7 +9376,7 @@ function ceInlineHTML() {
   ceState.pi = cp.pi;
   const c = ceState.chord;
   return `<div class="ce-inline">
-    <input type="text" id="ce-name" value="${esc(c.name)}" placeholder="Nom de l’accord (ex : Mon G)" aria-label="Nom de l’accord" autocomplete="off" oninput="ceName(this.value)">
+    <input type="text" id="ce-name" value="${esc(c.name)}" placeholder="Pose tes doigts : le nom se trouve tout seul" aria-label="Nom de l’accord" autocomplete="off" oninput="ceName(this.value)">
     <div class="ce-grid" id="ce-grid">${chordEditorSVG(c)}</div>
     <p class="ce-tip">Touche une case = un doigt · au-dessus du sillet = à vide (O) ou muette (X)</p>
     <div class="ce-row"><button type="button" class="btn btn-ghost btn-xs" onclick="ceBase(-1)" aria-label="Remonter d’une case">← case</button><span class="ce-base">Case ${c.base}</span><button type="button" class="btn btn-ghost btn-xs" onclick="ceBase(1)" aria-label="Descendre d’une case">case →</button><button type="button" class="btn btn-ghost btn-xs" onclick="ceClear()">Effacer</button><button type="button" class="btn btn-ghost btn-xs" onclick="playChord(ceState.chord, draft.capo)">Écouter</button></div>
@@ -9439,7 +9439,36 @@ function renderCE() {
     </div>`;
   renderCEHits(c.name);
 }
+// Reconnaît l'accord posé sur le manche (cordes de Mi grave à Mi aigu, cases absolues).
+const CG_N = ['C','C#','D','Eb','E','F','F#','G','G#','A','Bb','B'];
+const CG_T = [['',[0,4,7]],['m',[0,3,7]],['7',[0,4,7,10]],['m7',[0,3,7,10]],['maj7',[0,4,7,11]],['5',[0,7]],
+  ['sus4',[0,5,7]],['sus2',[0,2,7]],['6',[0,4,7,9]],['m6',[0,3,7,9]],['add9',[0,2,4,7]],['7sus4',[0,5,7,10]],
+  ['9',[0,2,4,7,10]],['m9',[0,2,3,7,10]],['dim',[0,3,6]],['dim7',[0,3,6,9]],['m7b5',[0,3,6,10]],['aug',[0,4,8]]];
+function chordGuess(frets) {
+  const open = [4,9,2,7,11,4], pcs = [];
+  frets.forEach((f, i) => { if (f >= 0) pcs.push((open[i] + f) % 12); });
+  if (pcs.length < 2) return '';
+  const set = [...new Set(pcs)], bass = pcs[0];
+  let best = null;
+  set.forEach(r => {
+    const iv = set.map(n => (n - r + 12) % 12);
+    CG_T.forEach(([suf, t], k) => {
+      const ok = iv.every(x => t.includes(x)) && t.every(x => iv.includes(x) || (x === 7 && t.length > 2 && suf !== 'aug'));
+      if (!ok) return;
+      const score = k + (r === bass ? 0 : 20) + (iv.includes(7) || !t.includes(7) ? 0 : 3);
+      if (!best || score < best.score) best = {score, name: CG_N[r] + suf + (r === bass ? '' : '/' + CG_N[bass])};
+    });
+  });
+  return best ? best.name : '';
+}
+function ceAutoName() {
+  if (!ceState || ceState.nameManual) return;
+  const g = chordGuess(ceState.chord.frets);
+  ceState.chord.name = g;
+  const el = $('ce-name'); if (el && document.activeElement !== el) el.value = g;
+}
 function ceName(v) {
+  ceState.nameManual = !!String(v).trim();
   ceState.chord.name = v;
   renderCEHits(v);
   const lib = findChord(v);
@@ -9514,6 +9543,7 @@ function ceClick(e) {
   }
   $('ce-grid').innerHTML = chordEditorSVG(c);
   const arpHost = $('ce-arp'); if (arpHost) arpHost.innerHTML = arpTimelineHTML(c);
+  ceAutoName();
 }
 function autoFinger(c, si, abs) {
   const others = c.frets.map((f,i) => ({f,i})).filter(o => o.f > 0 && o.i !== si);
@@ -9526,9 +9556,9 @@ function ceBase(d) {
   const shift = nb - c.base;
   c.base = nb;
   c.frets = c.frets.map(f => f > 0 ? Math.max(1, f + shift) : f);
-  renderCE();
+  ceAutoName(); renderCE();
 }
-function ceClear() { ceState.chord.frets = [-1,-1,-1,-1,-1,-1]; ceState.chord.fingers = [0,0,0,0,0,0]; ceState.chord.arp = []; renderCE(); }
+function ceClear() { ceState.chord.frets = [-1,-1,-1,-1,-1,-1]; ceState.chord.fingers = [0,0,0,0,0,0]; ceState.chord.arp = []; ceAutoName(); renderCE(); }
 function saveCE() {
   const c = ceState.chord;
   if (!c.name.trim()) c.name = 'Accord';
