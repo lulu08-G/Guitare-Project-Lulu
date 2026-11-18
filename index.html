@@ -2819,6 +2819,19 @@ body.mj-on{overflow:hidden}
 #v-atelier .at-th{border-radius:14px;overflow:hidden}
 #v-atelier .at-ct b{font-size:15px;font-weight:700;color:var(--cream)}#v-atelier .at-ct small{color:var(--cream3)}
 #v-atelier .at-create{grid-column:2/4;justify-self:start;min-height:34px;border-radius:17px;font-size:13px;box-shadow:none}
+
+/* ── animations clés ── */
+.launch{position:fixed;inset:0;z-index:2000;background:var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none;transition:opacity .4s}
+.launch.out{opacity:0}
+.launch .medi .mb{fill:var(--ink)}.launch .medi .me{fill:var(--gold)}
+.ln-m{animation:lnDrop .9s cubic-bezier(.4,0,.6,1) both}
+@keyframes lnDrop{0%{transform:translateY(-190px) scale(.95,1.08)}55%{transform:translateY(0) scale(1.18,.8)}70%{transform:translateY(-14px) scale(.96,1.05)}85%{transform:translateY(0) scale(1.05,.95)}100%{transform:none}}
+.launch b{font:800 28px var(--display);color:var(--ink);letter-spacing:-.02em;animation:lnTitle .5s .55s var(--ease-out) both}
+@keyframes lnTitle{from{opacity:0;transform:translateY(8px)}}
+.rg-card{position:fixed;left:50%;top:45%;z-index:1500;transform:translate(-50%,-50%);width:220px;padding:14px;border-radius:18px;background:var(--card2);display:flex;flex-direction:column;gap:6px;pointer-events:none;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.rg-card b{font:800 18px var(--display);color:var(--cream)}.rg-card span{font:700 14px var(--display);color:var(--gold)}
+.rg-badge{position:absolute;top:2px;left:calc(50% + 6px);height:18px;padding:0 5px;border-radius:9px;background:var(--cream);color:var(--bg);font-size:11px;font-weight:800;display:flex;align-items:center;animation:rgBadge 1.4s var(--ease-out) both;pointer-events:none}
+@keyframes rgBadge{0%{transform:scale(0)}15%{transform:scale(1.2)}25%,80%{transform:scale(1)}100%{transform:scale(0)}}
 </style>
 </head>
 <body>
@@ -10523,7 +10536,7 @@ async function saveSheet() {
   }
   i >= 0 ? sheets[i] = clone(draft) : sheets.push(clone(draft));
   await DB.put('sheets', clone(draft));
-  toast('Fiche enregistrée');
+  toast('Fiche enregistrée'); if (i < 0) animRangee(draft.title, sheetChords(draft));   // nouvelle fiche : elle file se ranger dans Fiches
   viewSheet(draft.id);
 }
 async function delSheet(id) {
@@ -10887,6 +10900,36 @@ function onbRender() {
   </div>`;
 }
 function onbEnd() { LS.set('gms_onboarded', true); const el = $('onb'); if (el) el.remove(); }
+/* ═══════ ANIMATIONS CLÉS DE LA REFONTE (planche « Ce qui bouge », validée le 18/11/2026) ═══════
+   Lancement : Médi tombe, s'écrase, rebondit, le nom apparaît (une fois par ouverture).
+   Fiche enregistrée : la fiche file se ranger dans l'onglet Fiches, qui rebondit avec un +1.
+   (Créer qui gratte, gestes des onglets, corde juste, mur passé : dans leurs fichiers.) */
+function launchSplash() {
+  try { if (sessionStorage.getItem('gms_splash')) return; sessionStorage.setItem('gms_splash', '1'); } catch (e) {}
+  if (mReduced() || !document.body) return;
+  const el = document.createElement('div'); el.className = 'launch'; el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = `<div class="ln-m">${mediSVG('neutre', {size: 120, anim: 'blink'})}</div><b>Guitar Memory</b>`;
+  document.body.appendChild(el);
+  setTimeout(() => el.classList.add('out'), 1250); setTimeout(() => el.remove(), 1700);
+}
+function animRangee(title, chords) {
+  if (mReduced()) return;
+  const tab = [$('tb-fiches'), $('nl-fiches')].find(b => b && b.offsetParent); if (!tab) return;
+  const card = document.createElement('div'); card.className = 'rg-card'; card.setAttribute('aria-hidden', 'true');
+  card.innerHTML = `<b>${esc(title || 'Ma fiche')}</b><span>${esc((chords || []).slice(0, 4).join(' '))}</span>`;
+  document.body.appendChild(card);
+  const r = card.getBoundingClientRect(), t = tab.getBoundingClientRect();
+  const dx = t.left + t.width / 2 - (r.left + r.width / 2), dy = t.top + 14 - (r.top + r.height / 2);
+  const a = card.animate([{transform: 'translate(-50%,-50%) scale(1)', opacity: 1}, {transform: 'translate(-50%,-56%) scale(1.05)', opacity: 1, offset: .2},
+    {transform: `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(.12)`, opacity: .9}], {duration: 650, easing: 'cubic-bezier(.5,0,.3,1)'});
+  a.onfinish = () => {
+    card.remove();
+    const ic = tab.querySelector('svg:not([style*="none"])') || tab;
+    ic.animate([{transform: 'scale(1)'}, {transform: 'scale(1.35) translateY(-4px)'}, {transform: 'scale(1)'}], {duration: 380, easing: 'cubic-bezier(.3,.7,.4,1)'});
+    const bd = document.createElement('span'); bd.className = 'rg-badge'; bd.textContent = '+1'; tab.style.position = 'relative'; tab.appendChild(bd);
+    setTimeout(() => bd.remove(), 1400);
+  };
+}
 /* ═══════ MODAL BACKDROP CLOSE ═══════ */
 ['m-chord','m-print','m-media'].forEach(id => {
   const el = $(id); if (el) el.addEventListener('click', e => { if (e.target === el) { if (id === 'm-media' && svFull) svFullStop(false); el.classList.add('hide'); } });
@@ -10897,6 +10940,7 @@ document.addEventListener('keydown', e => {
 
 /* ═══════ BOOT ═══════ */
 (async function boot() {
+  launchSplash();
   try { await DB.open(); } catch (e) { toast('Stockage indisponible', true); return; }
   sheets = await DB.all('sheets');
   const hadSheets = sheets.length > 0;

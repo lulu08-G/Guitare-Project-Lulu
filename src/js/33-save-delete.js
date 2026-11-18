@@ -37,7 +37,7 @@ async function saveSheet() {
   }
   i >= 0 ? sheets[i] = clone(draft) : sheets.push(clone(draft));
   await DB.put('sheets', clone(draft));
-  toast('Fiche enregistrée');
+  toast('Fiche enregistrée'); if (i < 0) animRangee(draft.title, sheetChords(draft));   // nouvelle fiche : elle file se ranger dans Fiches
   viewSheet(draft.id);
 }
 async function delSheet(id) {

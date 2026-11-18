@@ -473,3 +473,16 @@ body.mj-on{overflow:hidden}
 #v-atelier .at-th{border-radius:14px;overflow:hidden}
 #v-atelier .at-ct b{font-size:15px;font-weight:700;color:var(--cream)}#v-atelier .at-ct small{color:var(--cream3)}
 #v-atelier .at-create{grid-column:2/4;justify-self:start;min-height:34px;border-radius:17px;font-size:13px;box-shadow:none}
+
+/* ── animations clés ── */
+.launch{position:fixed;inset:0;z-index:2000;background:var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none;transition:opacity .4s}
+.launch.out{opacity:0}
+.launch .medi .mb{fill:var(--ink)}.launch .medi .me{fill:var(--gold)}
+.ln-m{animation:lnDrop .9s cubic-bezier(.4,0,.6,1) both}
+@keyframes lnDrop{0%{transform:translateY(-190px) scale(.95,1.08)}55%{transform:translateY(0) scale(1.18,.8)}70%{transform:translateY(-14px) scale(.96,1.05)}85%{transform:translateY(0) scale(1.05,.95)}100%{transform:none}}
+.launch b{font:800 28px var(--display);color:var(--ink);letter-spacing:-.02em;animation:lnTitle .5s .55s var(--ease-out) both}
+@keyframes lnTitle{from{opacity:0;transform:translateY(8px)}}
+.rg-card{position:fixed;left:50%;top:45%;z-index:1500;transform:translate(-50%,-50%);width:220px;padding:14px;border-radius:18px;background:var(--card2);display:flex;flex-direction:column;gap:6px;pointer-events:none;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.rg-card b{font:800 18px var(--display);color:var(--cream)}.rg-card span{font:700 14px var(--display);color:var(--gold)}
+.rg-badge{position:absolute;top:2px;left:calc(50% + 6px);height:18px;padding:0 5px;border-radius:9px;background:var(--cream);color:var(--bg);font-size:11px;font-weight:800;display:flex;align-items:center;animation:rgBadge 1.4s var(--ease-out) both;pointer-events:none}
+@keyframes rgBadge{0%{transform:scale(0)}15%{transform:scale(1.2)}25%,80%{transform:scale(1)}100%{transform:scale(0)}}

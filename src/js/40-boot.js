@@ -1,5 +1,6 @@
 /* ═══════ BOOT ═══════ */
 (async function boot() {
+  launchSplash();
   try { await DB.open(); } catch (e) { toast('Stockage indisponible', true); return; }
   sheets = await DB.all('sheets');
   const hadSheets = sheets.length > 0;
