@@ -162,8 +162,14 @@ async function rcStopped(me) {
   if (me.buf.duration < .4) { toast('Trop court, réessaie', true); if (me.inline) { rcClose(); edBar(); return; } me.stage = 'idle'; rcRender(); return; }
   me.start = 0; me.end = me.buf.duration; me.isNew = true; me.peaks = rcPeaks(me.buf); me.stage = 'trim';
   if (me.inline) {   // éditeur : la prise entière est gardée tout de suite, et le rythme est proposé en flèches s'il n'y en a pas encore
-    try { const pp = rbPart(me.ctx, me.part); if (pp && wayOf(pp) === 'rh' && !rhHas(pp.rhythm)) { const r = rhFromTake(me.buf, draft && draft.bpm); if (r) { pp.rhythm = r.rhythm; if (draft && !draft.bpm) draft.bpm = r.bpm; toast('Rythme retrouvé : touche-le pour corriger une flèche'); } } } catch (e) {}
-    rcSave(); return; }
+    let heard = false, old = null;   // le rythme entendu remplace l'ancien ; « × » dans l'écran de correction remet l'ancien
+    try { const pp = rbPart(me.ctx, me.part); if (pp && wayOf(pp) === 'rh') { const r = rhFromTake(me.buf, draft && draft.bpm); if (r) { heard = true; old = pp.rhythm ? clone(pp.rhythm) : null; pp.rhythm = r.rhythm; if (draft && !draft.bpm) draft.bpm = r.bpm; } } } catch (e) {}
+    const ctx = me.ctx, part = me.part;
+    rcSave().then(() => {
+      if (!heard) { toast('Ta prise est gardée. Je n’ai pas reconnu les coups : saisis le rythme à la main si besoin'); return; }
+      weOpen(ctx, part); if (we) { we.heard = true; we.snap.rhythm = old; weRender(); }
+    });
+    return; }
   rcRender();
 }
 function rcAgain() { if (!rc) return; rcPreviewStop(); Object.assign(rc, {stage: 'idle', isNew: true, blob: null, buf: null}); rcRender(); }

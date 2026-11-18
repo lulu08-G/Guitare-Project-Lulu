@@ -162,7 +162,7 @@ function weRender() {
         <div class="rb-sels" id="we-sets" ${we.sets ? '' : 'hidden'}>
           <label>Mesure<select onchange="weOpt('mes',this.value)">${['4/4', '3/4', '6/8'].map(m => `<option ${r.mes === m ? 'selected' : ''}>${m}</option>`).join('')}</select></label>
           <label>Subdivision<select onchange="weOpt('res',+this.value)">${[[8, 'Croches'], [12, 'Triolets'], [16, 'Doubles croches']].map(([v, t]) => `<option value="${v}" ${r.res === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label></div></div>
-      <div class="we-hint"><b>Touche</b> un temps pour poser un coup, <b>glisse</b> pour en poser plusieurs. Retouche pour l’enlever.</div>
+      <div class="we-hint">${we.heard ? '<b>Voilà ce que j’ai entendu.</b> Une flèche ne colle pas ? ' : ''}<b>Touche</b> une case : bas, puis haut, puis rien. <b>Glisse</b> pour en poser plusieurs.</div>
       <div class="we-tools" role="group" aria-label="Pinceau">${WE_TOOLS.map(([k, t, ic]) => `<button type="button" class="we-tool${we.tool === k ? ' on' : ''}" aria-pressed="${we.tool === k}" onclick="weTool('${k}')"><span>${ic}</span>${t}</button>`).join('')}</div>
       ${play}<div class="we-mm"><span>Son</span>${mmBtn('learn')}</div>`;
   } else {
@@ -219,7 +219,7 @@ function weRibDown(e) {
   const c = e.target.closest('.rgc[data-k]'); if (!c) return;
   e.preventDefault();
   const r = rhNorm(wePart().rhythm), k = +c.dataset.k, b = weBrush(r, k), x = r.cells[k];
-  we.drag = {erase: !b || !!(x && x.d === b.d && x.a === b.a), seen: new Set()};   // retoucher la même case = l'enlever (et glisser enlève en série)
+  we.drag = {erase: !b || !!(x && x.d === b.d && x.a === b.a), seen: new Set(), cyc: we.tool === 'coup' ? k : -1};   // « Coup » : toucher une case la fait tourner (vide → ↓/↑ → l'autre sens → vide)
   weApplyCell(k);
   try { $('we-rib').setPointerCapture(e.pointerId); } catch (er) {}
 }
@@ -232,7 +232,12 @@ function weRibUp() { if (we) we.drag = null; }
 function weApplyCell(k) {
   const d = we.drag; if (!d || d.seen.has(k)) return;
   d.seen.add(k);
-  const r = rhNorm(wePart().rhythm); r.cells[k] = d.erase ? null : weBrush(r, k);
+  const r = rhNorm(wePart().rhythm);
+  if (k === d.cyc && d.seen.size === 1) {   // la case touchée tourne ; si on glisse ensuite, les autres cases prennent le même sort (posé ou vidé)
+    const x = r.cells[k], auto = weBrush(r, k).d, other = auto === 'D' ? 'U' : 'D';
+    r.cells[k] = !x ? {d: auto, a: 1} : x.d === auto ? {d: other, a: x.a} : null;
+    d.erase = !r.cells[k];
+  } else r.cells[k] = d.erase ? null : weBrush(r, k);
   weRibRefresh(); weChanged();
   if (d.seen.size === 1) mAnim(document.querySelector(`#we-rib [data-k="${k}"]`), [{transform: 'scale(.86)'}, {transform: 'none'}], {duration: 150, easing: 'cubic-bezier(.22,.8,.3,1)'});
 }

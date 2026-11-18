@@ -85,7 +85,7 @@ function openEditor(title) {
   $('f-chords').value = '';
   $('f-orig').value = (draft.original && draft.original.url) || '';
   $('more-opts').open = false;
-  cp.ed = false; cp.pi = 0; edRpI = 0; edNaming.clear(); edLv.length = 0;
+  cp.ed = false; cp.pi = 0; edRpI = 0; edTempoOpen = false; edNaming.clear(); edLv.length = 0;
   document.querySelectorAll('#v-ed .ed-row[open]').forEach(d => d.open = false);
   renderQuick(); edTlSugg(); edLinksRender();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';

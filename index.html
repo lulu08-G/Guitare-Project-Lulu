@@ -2058,6 +2058,31 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-tl .link-cards{display:flex;flex-direction:column;gap:6px}
 .ed-tl .link-cards:empty{display:none}
 .ed-tl-open{align-self:flex-start;min-height:44px}
+/* Création : suggestions d'accords sur une seule ligne qui défile, jamais à la ligne */
+.qc-sugg{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.qc-sugg::-webkit-scrollbar{display:none}
+.qc-sugg button{flex:none}
+/* Enregistreur « les coups tombent » */
+.ed-live{margin:10px 0 12px}
+.ed-live-bar{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
+.ed-lc{height:74px;border-radius:12px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 0 6px;box-sizing:border-box}
+.ed-lc.b{background:var(--card2)}
+.ed-lc i{font-style:normal;font-size:12px;color:var(--cream3)}
+.ed-lc.b i{color:var(--cream);font-weight:700}
+.ed-la{height:36px;display:flex;align-items:center}
+.ed-la b{display:block;width:16px;height:30px;animation:edDrop .32s cubic-bezier(.3,1.4,.5,1)}
+.ed-la svg{width:16px;height:30px;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ed-la .d svg{stroke:var(--cream)}
+.ed-la .u svg{stroke:var(--gold);transform:rotate(180deg)}
+.ed-lh{position:absolute;top:-4px;bottom:-4px;width:2px;border-radius:1px;background:var(--gold);pointer-events:none}
+@keyframes edDrop{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.ed-la b{animation:none}}
+/* Création : capo vide = petit « ø », tempo replié en petit bouton */
+.ed-capo b.none{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--cream3)}
+.ed-tempo-mini{position:relative;height:32px;padding:0 12px;border:1px dashed var(--border2);border-radius:99px;background:none;color:var(--cream3);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.ed-tempo-mini:hover{color:var(--cream);border-color:var(--cream3)}
+.ed-tempo-mini::after{content:'';position:absolute;left:50%;top:50%;width:max(100%,44px);height:44px;transform:translate(-50%,-50%)}
+.ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -7589,8 +7614,14 @@ async function rcStopped(me) {
   if (me.buf.duration < .4) { toast('Trop court, réessaie', true); if (me.inline) { rcClose(); edBar(); return; } me.stage = 'idle'; rcRender(); return; }
   me.start = 0; me.end = me.buf.duration; me.isNew = true; me.peaks = rcPeaks(me.buf); me.stage = 'trim';
   if (me.inline) {   // éditeur : la prise entière est gardée tout de suite, et le rythme est proposé en flèches s'il n'y en a pas encore
-    try { const pp = rbPart(me.ctx, me.part); if (pp && wayOf(pp) === 'rh' && !rhHas(pp.rhythm)) { const r = rhFromTake(me.buf, draft && draft.bpm); if (r) { pp.rhythm = r.rhythm; if (draft && !draft.bpm) draft.bpm = r.bpm; toast('Rythme retrouvé : touche-le pour corriger une flèche'); } } } catch (e) {}
-    rcSave(); return; }
+    let heard = false, old = null;   // le rythme entendu remplace l'ancien ; « × » dans l'écran de correction remet l'ancien
+    try { const pp = rbPart(me.ctx, me.part); if (pp && wayOf(pp) === 'rh') { const r = rhFromTake(me.buf, draft && draft.bpm); if (r) { heard = true; old = pp.rhythm ? clone(pp.rhythm) : null; pp.rhythm = r.rhythm; if (draft && !draft.bpm) draft.bpm = r.bpm; } } } catch (e) {}
+    const ctx = me.ctx, part = me.part;
+    rcSave().then(() => {
+      if (!heard) { toast('Ta prise est gardée. Je n’ai pas reconnu les coups : saisis le rythme à la main si besoin'); return; }
+      weOpen(ctx, part); if (we) { we.heard = true; we.snap.rhythm = old; weRender(); }
+    });
+    return; }
   rcRender();
 }
 function rcAgain() { if (!rc) return; rcPreviewStop(); Object.assign(rc, {stage: 'idle', isNew: true, blob: null, buf: null}); rcRender(); }
@@ -8504,7 +8535,7 @@ function openEditor(title) {
   $('f-chords').value = '';
   $('f-orig').value = (draft.original && draft.original.url) || '';
   $('more-opts').open = false;
-  cp.ed = false; cp.pi = 0; edRpI = 0; edNaming.clear(); edLv.length = 0;
+  cp.ed = false; cp.pi = 0; edRpI = 0; edTempoOpen = false; edNaming.clear(); edLv.length = 0;
   document.querySelectorAll('#v-ed .ed-row[open]').forEach(d => d.open = false);
   renderQuick(); edTlSugg(); edLinksRender();
   $('ed-del').style.display = sheets.some(s => s.id === draft.id) ? '' : 'none';
@@ -8733,10 +8764,13 @@ function edCapoSync() {
 }
 function edCapoStep(d) { draft.capo = Math.max(0, Math.min(9, (draft.capo || 0) + d)); edCapoSync(); }
 // capo : − / + (frette 0 à 9, « — » = sans capo)
+// Tempo : petit bouton tant qu'il n'est pas réglé ; un toucher le déplie en champ
+let edTempoOpen = false;
+function edTempoShow() { edTempoOpen = true; renderParts(); const i = document.querySelector('#ed-meta .ed-tempo input'); if (i) i.focus(); }
 function edCapoHTML() {
   const v = draft.capo || 0;
   return `<div class="ed-capo${v ? ' on' : ''}" role="group" aria-label="Capo"><small>Capo</small>
-    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button><b>${v || 'sans'}</b>
+    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button>${v ? `<b>${v}</b>` : '<b class="none" aria-label="sans capo">ø</b>'}
     <button type="button" onclick="edCapoStep(1)" aria-label="Capo plus haut" ${v >= 9 ? 'disabled' : ''}>+</button></div>`;
 }
 // « Liens et enregistrements » : ouvre les Médias (vidéos, tutos, prises audio) dans « Plus d'options » et y amène
@@ -8815,7 +8849,7 @@ function renderParts() {
       </div></div>`;
   }).join('');
   $('ed-solo-rh').innerHTML = '';
-  $('ed-meta').innerHTML = edCapoHTML() + `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label><small>pour tout le morceau</small>`;
+  $('ed-meta').innerHTML = edCapoHTML() + (edTempoOpen || draft.bpm ? `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label>` : `<button type="button" class="ed-tempo-mini" onclick="edTempoShow()" aria-label="Régler le tempo">Tempo</button>`) + `<small>pour tout le morceau</small>`;
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
   // un accord ajouté se pose (les accords déjà vus ne rejouent rien)
@@ -8843,7 +8877,7 @@ function edBar() {
       <button type="button" class="ed-rcb ghost" onclick="edRecCancel()">Annuler</button></div>`;
   } else if (rc && rc.inline && rc.stage === 'rec') {
     h = `<div class="ed-rc live"><div class="ed-rc-h"><i class="ed-gauge" aria-hidden="true"></i><span class="ed-dot"></span><b>Enregistrement…</b><span class="ed-rc-t" id="ed-rc-t">0:00</span></div>
-      ${edWaveBars(edLv.slice(-ED_WAVE_N), 'live')}
+      ${edLiveHTML()}
       <button type="button" class="ed-rcb stop" onclick="rcStop()"><i>${RH_STOP_SVG}</i>Arrêter</button></div>`;
   } else if (p && p.rec) {
     const d = (p.rec.end - p.rec.start).toFixed(1).replace('.', ',');
@@ -8871,7 +8905,48 @@ function edBar() {
     if (a) a.currentTime = performance.now() - rc.t0;
   }
   edBarPlay();
+  if (st === 'rec') edLiveRun();
   $('v-ed').style.setProperty('--dock-h', host.offsetHeight + 'px');
+}
+/* Enregistreur « les coups tombent » : pendant la prise, chaque coup entendu tombe dans sa case
+   (une mesure de 4/4 en croches, calée sur le tempo et le décompte ; ↓ sur le temps, ↑ entre les temps, comme rhFromTake) */
+const ED_CNT = ['1', 'et', '2', 'et', '3', 'et', '4', 'et'];
+const ED_AR = '<svg viewBox="0 0 16 28" aria-hidden="true"><path d="M8 2v23"/><path d="M2 18l6 7 6-7"/></svg>';
+function edLiveHTML() {
+  return `<div class="ed-live" id="ed-live" aria-hidden="true"><div class="ed-live-bar">${ED_CNT.map((n, k) => `<div class="ed-lc${k % 2 ? '' : ' b'}" data-k="${k}"><span class="ed-la"></span><i>${n}</i></div>`).join('')}<span class="ed-lh" id="ed-lh"></span></div></div>`;
+}
+let edLiveRaf = 0;
+function edLiveRun() {
+  cancelAnimationFrame(edLiveRaf);
+  const me = rc; if (!me || !me.inline) return;
+  const bpm = (draft && draft.bpm) || 90, cell = 30000 / bpm, bar = cell * 8;
+  const buf = me.an ? new Uint8Array(me.an.fftSize) : null;
+  let env = 0, lastHit = -1e9, lastK = -1;
+  const step = () => {
+    if (rc !== me || me.stage !== 'rec') return;
+    const box = $('ed-live');
+    if (box && me.t0) {
+      const t = performance.now() - me.t0, b = Math.floor(t / bar), pos = (t % bar) / bar, kNow = Math.floor(pos * 8);
+      const h = $('ed-lh'); if (h) h.style.left = (pos * 100) + '%';
+      if (kNow !== lastK) {   // le curseur entre dans une case : un coup d'une mesure précédente s'efface
+        lastK = kNow; const a = box.querySelector(`[data-k="${kNow}"] .ed-la`);
+        if (a && a.dataset.b !== undefined && +a.dataset.b < b) { a.innerHTML = ''; delete a.dataset.b; }
+      }
+      if (buf) {
+        me.an.getByteTimeDomainData(buf); let m = 0;
+        for (let k = 0; k < buf.length; k++) m = Math.max(m, Math.abs(buf[k] - 128));
+        const lv = Math.min(1, m / 128 * 1.6);
+        if (lv > .1 && lv > env * 1.5 && t - lastHit > 110) {   // une attaque : on la cale sur la croche la plus proche
+          lastHit = t;
+          const idx = Math.round(t / cell), k = ((idx % 8) + 8) % 8, a = box.querySelector(`[data-k="${k}"] .ed-la`);
+          if (a) { a.dataset.b = Math.floor(idx / 8); a.innerHTML = `<b class="${k % 2 ? 'u' : 'd'}">${ED_AR}</b>`; }
+        }
+        env = Math.max(lv, env * .9);
+      }
+    }
+    edLiveRaf = requestAnimationFrame(step);
+  };
+  edLiveRaf = requestAnimationFrame(step);
 }
 function edBarPlay() {
   const b = $('ed-reco'); if (!b) return;
@@ -9089,7 +9164,7 @@ function weRender() {
         <div class="rb-sels" id="we-sets" ${we.sets ? '' : 'hidden'}>
           <label>Mesure<select onchange="weOpt('mes',this.value)">${['4/4', '3/4', '6/8'].map(m => `<option ${r.mes === m ? 'selected' : ''}>${m}</option>`).join('')}</select></label>
           <label>Subdivision<select onchange="weOpt('res',+this.value)">${[[8, 'Croches'], [12, 'Triolets'], [16, 'Doubles croches']].map(([v, t]) => `<option value="${v}" ${r.res === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label></div></div>
-      <div class="we-hint"><b>Touche</b> un temps pour poser un coup, <b>glisse</b> pour en poser plusieurs. Retouche pour l’enlever.</div>
+      <div class="we-hint">${we.heard ? '<b>Voilà ce que j’ai entendu.</b> Une flèche ne colle pas ? ' : ''}<b>Touche</b> une case : bas, puis haut, puis rien. <b>Glisse</b> pour en poser plusieurs.</div>
       <div class="we-tools" role="group" aria-label="Pinceau">${WE_TOOLS.map(([k, t, ic]) => `<button type="button" class="we-tool${we.tool === k ? ' on' : ''}" aria-pressed="${we.tool === k}" onclick="weTool('${k}')"><span>${ic}</span>${t}</button>`).join('')}</div>
       ${play}<div class="we-mm"><span>Son</span>${mmBtn('learn')}</div>`;
   } else {
@@ -9146,7 +9221,7 @@ function weRibDown(e) {
   const c = e.target.closest('.rgc[data-k]'); if (!c) return;
   e.preventDefault();
   const r = rhNorm(wePart().rhythm), k = +c.dataset.k, b = weBrush(r, k), x = r.cells[k];
-  we.drag = {erase: !b || !!(x && x.d === b.d && x.a === b.a), seen: new Set()};   // retoucher la même case = l'enlever (et glisser enlève en série)
+  we.drag = {erase: !b || !!(x && x.d === b.d && x.a === b.a), seen: new Set(), cyc: we.tool === 'coup' ? k : -1};   // « Coup » : toucher une case la fait tourner (vide → ↓/↑ → l'autre sens → vide)
   weApplyCell(k);
   try { $('we-rib').setPointerCapture(e.pointerId); } catch (er) {}
 }
@@ -9159,7 +9234,12 @@ function weRibUp() { if (we) we.drag = null; }
 function weApplyCell(k) {
   const d = we.drag; if (!d || d.seen.has(k)) return;
   d.seen.add(k);
-  const r = rhNorm(wePart().rhythm); r.cells[k] = d.erase ? null : weBrush(r, k);
+  const r = rhNorm(wePart().rhythm);
+  if (k === d.cyc && d.seen.size === 1) {   // la case touchée tourne ; si on glisse ensuite, les autres cases prennent le même sort (posé ou vidé)
+    const x = r.cells[k], auto = weBrush(r, k).d, other = auto === 'D' ? 'U' : 'D';
+    r.cells[k] = !x ? {d: auto, a: 1} : x.d === auto ? {d: other, a: x.a} : null;
+    d.erase = !r.cells[k];
+  } else r.cells[k] = d.erase ? null : weBrush(r, k);
   weRibRefresh(); weChanged();
   if (d.seen.size === 1) mAnim(document.querySelector(`#we-rib [data-k="${k}"]`), [{transform: 'scale(.86)'}, {transform: 'none'}], {duration: 150, easing: 'cubic-bezier(.22,.8,.3,1)'});
 }

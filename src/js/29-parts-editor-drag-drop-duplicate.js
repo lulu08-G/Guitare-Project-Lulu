@@ -35,10 +35,13 @@ function edCapoSync() {
 }
 function edCapoStep(d) { draft.capo = Math.max(0, Math.min(9, (draft.capo || 0) + d)); edCapoSync(); }
 // capo : − / + (frette 0 à 9, « — » = sans capo)
+// Tempo : petit bouton tant qu'il n'est pas réglé ; un toucher le déplie en champ
+let edTempoOpen = false;
+function edTempoShow() { edTempoOpen = true; renderParts(); const i = document.querySelector('#ed-meta .ed-tempo input'); if (i) i.focus(); }
 function edCapoHTML() {
   const v = draft.capo || 0;
   return `<div class="ed-capo${v ? ' on' : ''}" role="group" aria-label="Capo"><small>Capo</small>
-    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button><b>${v || 'sans'}</b>
+    <button type="button" onclick="edCapoStep(-1)" aria-label="Capo plus bas" ${v <= 0 ? 'disabled' : ''}>−</button>${v ? `<b>${v}</b>` : '<b class="none" aria-label="sans capo">ø</b>'}
     <button type="button" onclick="edCapoStep(1)" aria-label="Capo plus haut" ${v >= 9 ? 'disabled' : ''}>+</button></div>`;
 }
 // « Liens et enregistrements » : ouvre les Médias (vidéos, tutos, prises audio) dans « Plus d'options » et y amène
@@ -117,7 +120,7 @@ function renderParts() {
       </div></div>`;
   }).join('');
   $('ed-solo-rh').innerHTML = '';
-  $('ed-meta').innerHTML = edCapoHTML() + `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label><small>pour tout le morceau</small>`;
+  $('ed-meta').innerHTML = edCapoHTML() + (edTempoOpen || draft.bpm ? `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label>` : `<button type="button" class="ed-tempo-mini" onclick="edTempoShow()" aria-label="Régler le tempo">Tempo</button>`) + `<small>pour tout le morceau</small>`;
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
   // un accord ajouté se pose (les accords déjà vus ne rejouent rien)
@@ -145,7 +148,7 @@ function edBar() {
       <button type="button" class="ed-rcb ghost" onclick="edRecCancel()">Annuler</button></div>`;
   } else if (rc && rc.inline && rc.stage === 'rec') {
     h = `<div class="ed-rc live"><div class="ed-rc-h"><i class="ed-gauge" aria-hidden="true"></i><span class="ed-dot"></span><b>Enregistrement…</b><span class="ed-rc-t" id="ed-rc-t">0:00</span></div>
-      ${edWaveBars(edLv.slice(-ED_WAVE_N), 'live')}
+      ${edLiveHTML()}
       <button type="button" class="ed-rcb stop" onclick="rcStop()"><i>${RH_STOP_SVG}</i>Arrêter</button></div>`;
   } else if (p && p.rec) {
     const d = (p.rec.end - p.rec.start).toFixed(1).replace('.', ',');
@@ -173,7 +176,48 @@ function edBar() {
     if (a) a.currentTime = performance.now() - rc.t0;
   }
   edBarPlay();
+  if (st === 'rec') edLiveRun();
   $('v-ed').style.setProperty('--dock-h', host.offsetHeight + 'px');
+}
+/* Enregistreur « les coups tombent » : pendant la prise, chaque coup entendu tombe dans sa case
+   (une mesure de 4/4 en croches, calée sur le tempo et le décompte ; ↓ sur le temps, ↑ entre les temps, comme rhFromTake) */
+const ED_CNT = ['1', 'et', '2', 'et', '3', 'et', '4', 'et'];
+const ED_AR = '<svg viewBox="0 0 16 28" aria-hidden="true"><path d="M8 2v23"/><path d="M2 18l6 7 6-7"/></svg>';
+function edLiveHTML() {
+  return `<div class="ed-live" id="ed-live" aria-hidden="true"><div class="ed-live-bar">${ED_CNT.map((n, k) => `<div class="ed-lc${k % 2 ? '' : ' b'}" data-k="${k}"><span class="ed-la"></span><i>${n}</i></div>`).join('')}<span class="ed-lh" id="ed-lh"></span></div></div>`;
+}
+let edLiveRaf = 0;
+function edLiveRun() {
+  cancelAnimationFrame(edLiveRaf);
+  const me = rc; if (!me || !me.inline) return;
+  const bpm = (draft && draft.bpm) || 90, cell = 30000 / bpm, bar = cell * 8;
+  const buf = me.an ? new Uint8Array(me.an.fftSize) : null;
+  let env = 0, lastHit = -1e9, lastK = -1;
+  const step = () => {
+    if (rc !== me || me.stage !== 'rec') return;
+    const box = $('ed-live');
+    if (box && me.t0) {
+      const t = performance.now() - me.t0, b = Math.floor(t / bar), pos = (t % bar) / bar, kNow = Math.floor(pos * 8);
+      const h = $('ed-lh'); if (h) h.style.left = (pos * 100) + '%';
+      if (kNow !== lastK) {   // le curseur entre dans une case : un coup d'une mesure précédente s'efface
+        lastK = kNow; const a = box.querySelector(`[data-k="${kNow}"] .ed-la`);
+        if (a && a.dataset.b !== undefined && +a.dataset.b < b) { a.innerHTML = ''; delete a.dataset.b; }
+      }
+      if (buf) {
+        me.an.getByteTimeDomainData(buf); let m = 0;
+        for (let k = 0; k < buf.length; k++) m = Math.max(m, Math.abs(buf[k] - 128));
+        const lv = Math.min(1, m / 128 * 1.6);
+        if (lv > .1 && lv > env * 1.5 && t - lastHit > 110) {   // une attaque : on la cale sur la croche la plus proche
+          lastHit = t;
+          const idx = Math.round(t / cell), k = ((idx % 8) + 8) % 8, a = box.querySelector(`[data-k="${k}"] .ed-la`);
+          if (a) { a.dataset.b = Math.floor(idx / 8); a.innerHTML = `<b class="${k % 2 ? 'u' : 'd'}">${ED_AR}</b>`; }
+        }
+        env = Math.max(lv, env * .9);
+      }
+    }
+    edLiveRaf = requestAnimationFrame(step);
+  };
+  edLiveRaf = requestAnimationFrame(step);
 }
 function edBarPlay() {
   const b = $('ed-reco'); if (!b) return;
