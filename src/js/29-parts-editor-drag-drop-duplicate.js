@@ -115,11 +115,12 @@ function renderParts() {
     return `<div class="part-card pc ${p.collapsed ? 'collapsed' : ''} ${solo ? 'solo' : ''}" data-i="${i}">${head}
       <div class="pc-b">
         ${edChordsHTML(p, i)}
-        ${bare ? '' : `<div class="ed-lab in"><b>Rythme</b></div>${rbHTML('draft', i)}`}
+        ${bare || solo ? '' : `<div class="ed-lab in"><b>Rythme</b></div>${rbHTML('draft', i)}`}
         ${edMoreHTML(p, i)}
       </div></div>`;
   }).join('');
   $('ed-solo-rh').innerHTML = '';
+  { const p0 = draft.parts[0]; $('ed-solo-way').innerHTML = solo && p0 && !(wayOf(p0) === 'rh' && !rhHas(p0.rhythm)) ? rbHTML('draft', 0) : ''; }   // une seule partie : l'aperçu se pose sous « Rythme », au-dessus de l'enregistreur
   $('ed-meta').innerHTML = edCapoHTML() + (edTempoOpen || draft.bpm ? `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label>` : `<button type="button" class="ed-tempo-mini" onclick="edTempoShow()" aria-label="Régler le tempo">Tempo</button>`) + `<small>pour tout le morceau</small>`;
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
@@ -163,7 +164,7 @@ function edBar() {
     h = `<button type="button" class="ed-rec" onclick="edRecStart()"><svg class="ed-rec-pick" viewBox="0 0 38 38" aria-hidden="true"><path d="M19 5c7.5 0 13 2.800 13 8.400 0 7-6.800 15-13 19.100-6.200-4.100-13-12.100-13-19.100C6 7.800 11.500 5 19 5z"/><circle cx="19" cy="15.5" r="4.200"/></svg>
       <span><b>Enregistrer mon rythme</b><small>Gratte une ou deux mesures</small></span>
       <svg class="ed-rec-ar" viewBox="0 0 66 34" aria-hidden="true"><path class="l" d="M2 31H64"/>${[[8, 24, 'd'], [20, 15, 'd'], [29, 11, 'u'], [41, 13, 'u'], [50, 22, 'd'], [59, 10, 'u']].map(([x, h, c]) => `<rect class="${c}" x="${x - 2.5}" y="${31 - h}" width="5" height="${h}" rx="2.5"/>`).join('')}</svg></button>
-      ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Le saisir à la main</button><button type="button" onclick="rbWay('draft',${i},'arp')">Arpège</button></div>` : ''}`;
+      ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Le saisir à la main</button><button type="button" onclick="weOpen('draft',${i},'arp')">Arpège</button></div>` : ''}`;
   }
   host.innerHTML = pick + h;
   const st = rc && rc.inline && (rc.stage === 'count' || rc.stage === 'rec') ? rc.stage : (p && p.rec ? 'done' : 'idle');

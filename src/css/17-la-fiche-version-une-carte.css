@@ -143,7 +143,6 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 .rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
 /* Création : onglet « Créer mon accord » du panneau des accords, à la place de la grille */
-.cp-tabs .cp-mine{color:var(--gold)}
 .ce-inline{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 4px}
 .ce-inline input{width:100%;max-width:320px}
 .ce-inline .ce-tip{font-size:12px;color:var(--cream3);text-align:center;margin:0}
@@ -153,3 +152,11 @@ body:has(#v-ed.on) .toast{bottom:90px}
 
 /* Créer un PDF */
 .pp-tip{margin:8px 0 0;font-size:13px;color:var(--cream3)}
+
+/* + Accord : deux choix bien visibles */
+.cp-mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 10px}
+.cp-mode button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:0 8px;border-radius:14px;border:1.5px solid var(--border);background:var(--card2);color:var(--cream);font:700 14px var(--sans);white-space:nowrap;cursor:pointer}
+.cp-mode button svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cp-mode button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.cp-mode button:last-child[aria-pressed="false"]{border-color:var(--gold);color:var(--gold)}
+#ed-solo-way .rb{margin-bottom:10px}

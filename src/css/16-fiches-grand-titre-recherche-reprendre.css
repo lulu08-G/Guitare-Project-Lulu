@@ -171,7 +171,6 @@
 .hm-cahier:active{transform:scale(.97)}
 .hm-cahier svg{width:17px;height:17px}
 .hm-print.hm-cahier{width:auto;margin-left:0}
-.hm-cahier i{font-style:normal}.cah-m{display:none}
-@media(max-width:899px){.hm-cahier svg{display:none}.hm-cahier{padding:0 13px;font-size:13.5px}.cah-m{display:inline}}
-@media(max-width:340px){.hm-cahier{padding:0 10px}}
+
+.sv-pdf{height:36px;padding:0 12px 0 9px;margin-right:4px}
 @media(min-width:900px){.hm-print.hm-cahier{margin-left:auto}}

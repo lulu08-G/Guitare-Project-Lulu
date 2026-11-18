@@ -31,7 +31,7 @@ function renderHome() {
     .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : recentIds.has(s.id))
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   { const k = selIds.size;
-    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches de ton cahier';
+    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches à mettre dans le PDF';
     $('cahier-bar').style.display = selMode ? '' : 'none';
     $('btn-print').disabled = !k; $('btn-export').disabled = !k;
     $('btn-print-t').textContent = k ? `Créer le PDF (${k})` : 'Créer le PDF';

@@ -1947,9 +1947,8 @@ nav{background:var(--nav-bg);border-bottom:0;height:54px;padding:0 20px}
 .hm-cahier:active{transform:scale(.97)}
 .hm-cahier svg{width:17px;height:17px}
 .hm-print.hm-cahier{width:auto;margin-left:0}
-.hm-cahier i{font-style:normal}.cah-m{display:none}
-@media(max-width:899px){.hm-cahier svg{display:none}.hm-cahier{padding:0 13px;font-size:13.5px}.cah-m{display:inline}}
-@media(max-width:340px){.hm-cahier{padding:0 10px}}
+
+.sv-pdf{height:36px;padding:0 12px 0 9px;margin-right:4px}
 @media(min-width:900px){.hm-print.hm-cahier{margin-left:auto}}
 /* ── La fiche, version « une carte par partie » : accords puis rythme dans la même carte ; plus de barre du bas ── */
 #v-sheet .sv-wrap{padding-bottom:60px}
@@ -2096,7 +2095,6 @@ body:has(#v-ed.on) .toast{bottom:90px}
 .ed-lc:not(.b){background:color-mix(in srgb,var(--card2) 50%,transparent)}
 .rb-auto{font-size:12px;color:var(--cream3);margin:6px 2px 0}
 /* Création : onglet « Créer mon accord » du panneau des accords, à la place de la grille */
-.cp-tabs .cp-mine{color:var(--gold)}
 .ce-inline{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 4px}
 .ce-inline input{width:100%;max-width:320px}
 .ce-inline .ce-tip{font-size:12px;color:var(--cream3);text-align:center;margin:0}
@@ -2106,6 +2104,14 @@ body:has(#v-ed.on) .toast{bottom:90px}
 
 /* Créer un PDF */
 .pp-tip{margin:8px 0 0;font-size:13px;color:var(--cream3)}
+
+/* + Accord : deux choix bien visibles */
+.cp-mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 10px}
+.cp-mode button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:0 8px;border-radius:14px;border:1.5px solid var(--border);background:var(--card2);color:var(--cream);font:700 14px var(--sans);white-space:nowrap;cursor:pointer}
+.cp-mode button svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cp-mode button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.cp-mode button:last-child[aria-pressed="false"]{border-color:var(--gold);color:var(--gold)}
+#ed-solo-way .rb{margin-bottom:10px}
 /* ── S'entraîner : sobre, sans emoji ── */
 .fl-em{display:none}
 .fl-lead{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cream3)}
@@ -2293,11 +2299,11 @@ body:has(#v-ed.on) .toast{bottom:90px}
     <div class="hm-top">
       <h1><span class="hm-w">Fiches</span><small id="greet-count"></small></h1>
       <button type="button" class="btn-icon tun-btn hm-vol" onclick="go('tuner')" aria-label="Accordeur" title="Accordeur"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0116 0"/><path d="M12 16l4-6"/><circle cx="12" cy="16" r="1.3"/></svg></button><button type="button" class="btn-icon vol-btn hm-vol2" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
-      <button type="button" class="hm-print hm-cahier" onclick="startPrintPick()" title="Créer un PDF de tes fiches"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg><span><i class="hide-m">Créer </i><i class="cah-m">M</i><i class="hide-m">m</i>on cahier</span></button>
+      <button type="button" class="hm-print hm-cahier" onclick="startPrintPick()" title="Créer un PDF de tes fiches" aria-label="Créer un PDF de tes fiches"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg><span>PDF</span></button>
       <div class="hm-menu" id="hm-menu">
         <button class="btn-icon" onclick="toggleHomeMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
         <div class="pop">
-          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Créer mon cahier PDF ou exporter</button>
+          <button onclick="closeHomeMenu();startPrintPick()" id="sel-menu-btn">Créer un PDF ou exporter</button>
           <button onclick="closeHomeMenu();backupAll()">Sauvegarder toutes mes fiches</button>
           <button onclick="closeHomeMenu();document.getElementById('json-in').click()">Restaurer ou importer un fichier</button>
         </div>
@@ -2334,8 +2340,8 @@ body:has(#v-ed.on) .toast{bottom:90px}
     <div class="sv-head">
       <button type="button" class="sv-back" onclick="svExit()" aria-label="Quitter le mode jeu, retour aux fiches"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span>Fiches</span></button>
       <div class="sv-btns">
+        <button type="button" class="hm-cahier sv-pdf" onclick="printOne()" title="Créer un PDF" aria-label="Créer un PDF de cette fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg><span>PDF</span></button>
         <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
-        <button type="button" class="btn-icon" onclick="printOne()" title="Créer un PDF" aria-label="Créer un PDF de cette fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg></button>
         <button type="button" class="btn-icon vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
         <div class="hm-menu" id="sv-menu">
           <button type="button" class="btn-icon" onclick="svMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>
@@ -2416,6 +2422,7 @@ body:has(#v-ed.on) .toast{bottom:90px}
     </div>
     <div id="parts-ed"></div>
     <div class="ed-lab" id="ed-rh-lab"><b>Rythme</b></div>
+    <div id="ed-solo-way"></div>
     <div class="ed-dock"><div id="ed-recbar"></div></div>
     <div class="qc-parts" id="qc-parts"></div>
     <div id="ed-solo-rh"></div>
@@ -7393,7 +7400,8 @@ function cpHTML(ctx) {
   let h = ctx === 'ed' ? '' : `<button type="button" class="cp-open" onclick="cpToggle('${ctx}')" aria-expanded="${open}">${open ? '▲ Masquer les accords' : '+ Accord'}</button>`;   // éditeur : la tuile « + Accord » ouvre le panneau
   if (!open) return h;
   h += `<div class="cp-panel"><div class="cp-added">${last.length ? 'Dans la partie : <b>' + last.join('</b> · <b>') + '</b>' : 'Touche un diagramme pour l’ajouter.'}</div>
-    <div class="cp-tabs" role="tablist">${CP_TABS.filter(([k]) => k !== 'mine' || ctx === 'ed').map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')"${k === 'mine' ? ' class="cp-mine"' : ''}>${l}</button>`).join('')}</div>
+    ${ctx === 'ed' ? `<div class="cp-mode" role="group" aria-label="Ajouter un accord"><button type="button" aria-pressed="${cp.tab !== 'mine'}" onclick="cpTab('ed',cp.last||'top')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Accords connus</button><button type="button" aria-pressed="${cp.tab === 'mine'}" onclick="cpTab('ed','mine')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Créer mon accord</button></div>` : ''}
+    ${cp.tab === 'mine' && ctx === 'ed' ? '' : `<div class="cp-tabs" role="tablist">${CP_TABS.filter(([k]) => k !== 'mine').map(([k, l]) => `<button type="button" role="tab" aria-pressed="${cp.tab === k}" onclick="cpTab('${ctx}','${k}')">${l}</button>`).join('')}</div>`}
     ${cp.tab === 'mine' && ctx === 'ed' ? ceInlineHTML() : `<div class="cp-grid">${cpList().map(c => `<button type="button" class="cp-cell" onclick="cpPick('${ctx}','${esc(c.n)}')" aria-label="Ajouter ${esc(c.n)}">${chordSVG({frets:c.f, fingers:c.g}, {size:.72})}<span>${esc(c.n)}</span></button>`).join('')}</div>`}
     <button type="button" class="cp-close" onclick="cpToggle('${ctx}')">Fermer</button></div>`;
   return h;
@@ -7403,7 +7411,7 @@ function cpRefresh(ctx) {
   renderParts();   // la grille garde son défilement (renderParts)
 }
 function cpToggle(ctx, pi) { if (pi != null) { if (cp[ctx] && cp.pi === pi) cp[ctx] = false; else { cp[ctx] = true; cp.pi = pi; } } else cp[ctx] = !cp[ctx]; cpRefresh(ctx); }
-function cpTab(ctx, t) { cp.tab = t; if (t === 'mine' && (!ceState || !ceState.inline)) ceState = {pi: cp.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true}; cpRefresh(ctx); }
+function cpTab(ctx, t) { if (t !== 'mine') cp.last = t; cp.tab = t; if (t === 'mine' && (!ceState || !ceState.inline)) ceState = {pi: cp.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true}; cpRefresh(ctx); }
 function cpPick(ctx, name) {
   try { playChord(newChord(name), ctx === 'at' ? (at.s && at.s.capo) || 0 : (draft && draft.capo) || 0, 'D'); } catch (e) {}
   if (ctx === 'at') atAdd([name]); else addChordLine(name);
@@ -7889,7 +7897,7 @@ function renderHome() {
     .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : recentIds.has(s.id))
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   { const k = selIds.size;
-    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches de ton cahier';
+    $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches à mettre dans le PDF';
     $('cahier-bar').style.display = selMode ? '' : 'none';
     $('btn-print').disabled = !k; $('btn-export').disabled = !k;
     $('btn-print-t').textContent = k ? `Créer le PDF (${k})` : 'Créer le PDF';
@@ -8863,11 +8871,12 @@ function renderParts() {
     return `<div class="part-card pc ${p.collapsed ? 'collapsed' : ''} ${solo ? 'solo' : ''}" data-i="${i}">${head}
       <div class="pc-b">
         ${edChordsHTML(p, i)}
-        ${bare ? '' : `<div class="ed-lab in"><b>Rythme</b></div>${rbHTML('draft', i)}`}
+        ${bare || solo ? '' : `<div class="ed-lab in"><b>Rythme</b></div>${rbHTML('draft', i)}`}
         ${edMoreHTML(p, i)}
       </div></div>`;
   }).join('');
   $('ed-solo-rh').innerHTML = '';
+  { const p0 = draft.parts[0]; $('ed-solo-way').innerHTML = solo && p0 && !(wayOf(p0) === 'rh' && !rhHas(p0.rhythm)) ? rbHTML('draft', 0) : ''; }   // une seule partie : l'aperçu se pose sous « Rythme », au-dessus de l'enregistreur
   $('ed-meta').innerHTML = edCapoHTML() + (edTempoOpen || draft.bpm ? `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label>` : `<button type="button" class="ed-tempo-mini" onclick="edTempoShow()" aria-label="Régler le tempo">Tempo</button>`) + `<small>pour tout le morceau</small>`;
   initDnD(host);
   const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
@@ -8911,7 +8920,7 @@ function edBar() {
     h = `<button type="button" class="ed-rec" onclick="edRecStart()"><svg class="ed-rec-pick" viewBox="0 0 38 38" aria-hidden="true"><path d="M19 5c7.5 0 13 2.800 13 8.400 0 7-6.800 15-13 19.100-6.200-4.100-13-12.100-13-19.100C6 7.800 11.500 5 19 5z"/><circle cx="19" cy="15.5" r="4.200"/></svg>
       <span><b>Enregistrer mon rythme</b><small>Gratte une ou deux mesures</small></span>
       <svg class="ed-rec-ar" viewBox="0 0 66 34" aria-hidden="true"><path class="l" d="M2 31H64"/>${[[8, 24, 'd'], [20, 15, 'd'], [29, 11, 'u'], [41, 13, 'u'], [50, 22, 'd'], [59, 10, 'u']].map(([x, h, c]) => `<rect class="${c}" x="${x - 2.5}" y="${31 - h}" width="5" height="${h}" rx="2.5"/>`).join('')}</svg></button>
-      ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Le saisir à la main</button><button type="button" onclick="rbWay('draft',${i},'arp')">Arpège</button></div>` : ''}`;
+      ${bareP ? `<div class="ed-alt"><button type="button" onclick="weOpen('draft',${i})">Le saisir à la main</button><button type="button" onclick="weOpen('draft',${i},'arp')">Arpège</button></div>` : ''}`;
   }
   host.innerHTML = pick + h;
   const st = rc && rc.inline && (rc.stage === 'count' || rc.stage === 'rec') ? rc.stage : (p && p.rec ? 'done' : 'idle');
@@ -9153,10 +9162,10 @@ const weSheet = () => we && rbSheet(we.ctx);
 const WE_START = [['folk2', 'Folk'], ['popsync', 'Pop'], ['ballade', 'Ballade'], ['feucamp', 'Feu de camp'], ['', 'Vide']];
 const WE_TOOLS = [['coup', 'Coup', rhArrow('D', 1)], ['fort', 'Fort', rhArrow('D', 2)], ['etouffe', 'Étouffé', rhArrow('X', 1)],
   ['gomme', 'Gomme', '<svg class="rga" viewBox="0 0 24 40" aria-hidden="true"><circle cx="12" cy="20" r="7" stroke-dasharray="3 3.6" stroke-width="2.2"/></svg>']];
-function weOpen(ctx, i) {
+function weOpen(ctx, i, k) {
   const p = rbPart(ctx, i); if (!p) return;
   stopPlay();
-  const kind = wayOf(p) === 'arp' ? 'arp' : 'rh';
+  const kind = k || (wayOf(p) === 'arp' ? 'arp' : 'rh');
   we = {ctx, i, kind, tool: 'coup', snap: clone({way: p.way === undefined ? null : p.way, rhythm: p.rhythm || null, arp: p.arp || null}), drag: null, sets: false};
   if (kind === 'arp') { if (!p.arp) p.arp = arpEmpty(); p.way = 'arp'; }
   else { p.rhythm = p.rhythm ? rhNorm(p.rhythm) : rbEmpty(); p.way = 'rh'; }
@@ -9820,7 +9829,7 @@ function openPrintModal() {
 function renderPrintModal() {
   const n = selIds.size;
   $('m-print-body').innerHTML = `
-    <div class="modal-t">${n>1?`Ton cahier PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
+    <div class="modal-t">${n>1?`Ton PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
     <div class="frow">
       <div class="fg"><label>Style</label>
         <select id="pp-style" onchange="printOpts.style=this.value;refreshPrintPreview()">
@@ -9873,7 +9882,7 @@ function doPrint() {
   $('print-root').innerHTML = buildPrintPages();
   $('m-print').classList.add('hide');
   const t0 = document.title, one = selIds.size === 1 && sheets.find(x => selIds.has(x.id));
-  document.title = one ? one.title + (one.artist && one.artist !== '—' ? ' - ' + one.artist : '') : 'Mon cahier de guitare';
+  document.title = one ? one.title + (one.artist && one.artist !== '—' ? ' - ' + one.artist : '') : 'Mes fiches de guitare';
   window.addEventListener('afterprint', () => { document.title = t0; }, {once: true});
   setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
 }

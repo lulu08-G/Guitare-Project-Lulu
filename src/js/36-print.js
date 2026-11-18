@@ -14,7 +14,7 @@ function openPrintModal() {
 function renderPrintModal() {
   const n = selIds.size;
   $('m-print-body').innerHTML = `
-    <div class="modal-t">${n>1?`Ton cahier PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
+    <div class="modal-t">${n>1?`Ton PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
     <div class="frow">
       <div class="fg"><label>Style</label>
         <select id="pp-style" onchange="printOpts.style=this.value;refreshPrintPreview()">
@@ -67,7 +67,7 @@ function doPrint() {
   $('print-root').innerHTML = buildPrintPages();
   $('m-print').classList.add('hide');
   const t0 = document.title, one = selIds.size === 1 && sheets.find(x => selIds.has(x.id));
-  document.title = one ? one.title + (one.artist && one.artist !== '—' ? ' - ' + one.artist : '') : 'Mon cahier de guitare';
+  document.title = one ? one.title + (one.artist && one.artist !== '—' ? ' - ' + one.artist : '') : 'Mes fiches de guitare';
   window.addEventListener('afterprint', () => { document.title = t0; }, {once: true});
   setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
 }

@@ -4,8 +4,8 @@
     <div class="sv-head">
       <button type="button" class="sv-back" onclick="svExit()" aria-label="Quitter le mode jeu, retour aux fiches"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span>Fiches</span></button>
       <div class="sv-btns">
+        <button type="button" class="hm-cahier sv-pdf" onclick="printOne()" title="Créer un PDF" aria-label="Créer un PDF de cette fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg><span>PDF</span></button>
         <button type="button" class="btn-icon" id="sv-fav" onclick="toggleFavCur()" title="Favori" aria-label="Favori"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg></button>
-        <button type="button" class="btn-icon" onclick="printOne()" title="Créer un PDF" aria-label="Créer un PDF de cette fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6.5A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h11a1.5 1.5 0 001.5-1.5V8z"/><path d="M14 3v5h5"/><path d="M12 11v6"/><path d="M9 14.5l3 3 3-3"/></svg></button>
         <button type="button" class="btn-icon vol-btn" onclick="volPop(this,event)" aria-label="Volume" title="Volume"></button>
         <div class="hm-menu" id="sv-menu">
           <button type="button" class="btn-icon" onclick="svMenu(event)" aria-label="Plus d’actions" aria-haspopup="true" title="Plus d’actions"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></button>

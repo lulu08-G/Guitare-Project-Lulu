@@ -132,10 +132,10 @@ const weSheet = () => we && rbSheet(we.ctx);
 const WE_START = [['folk2', 'Folk'], ['popsync', 'Pop'], ['ballade', 'Ballade'], ['feucamp', 'Feu de camp'], ['', 'Vide']];
 const WE_TOOLS = [['coup', 'Coup', rhArrow('D', 1)], ['fort', 'Fort', rhArrow('D', 2)], ['etouffe', 'Étouffé', rhArrow('X', 1)],
   ['gomme', 'Gomme', '<svg class="rga" viewBox="0 0 24 40" aria-hidden="true"><circle cx="12" cy="20" r="7" stroke-dasharray="3 3.6" stroke-width="2.2"/></svg>']];
-function weOpen(ctx, i) {
+function weOpen(ctx, i, k) {
   const p = rbPart(ctx, i); if (!p) return;
   stopPlay();
-  const kind = wayOf(p) === 'arp' ? 'arp' : 'rh';
+  const kind = k || (wayOf(p) === 'arp' ? 'arp' : 'rh');
   we = {ctx, i, kind, tool: 'coup', snap: clone({way: p.way === undefined ? null : p.way, rhythm: p.rhythm || null, arp: p.arp || null}), drag: null, sets: false};
   if (kind === 'arp') { if (!p.arp) p.arp = arpEmpty(); p.way = 'arp'; }
   else { p.rhythm = p.rhythm ? rhNorm(p.rhythm) : rbEmpty(); p.way = 'rh'; }
