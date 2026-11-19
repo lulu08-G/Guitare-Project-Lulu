@@ -263,25 +263,26 @@ body.mj-on{overflow:hidden}
 .mt2{display:flex;flex-direction:column;gap:18px;padding-bottom:40px}
 .mt-solo,.mt-bandv{display:flex;flex-direction:column;gap:18px;align-items:center}
 #v-metro.band .mt-solo{display:none}
-#v-metro .mt-stage{width:220px;height:220px;margin:10px auto 0;padding:0;display:block;position:relative}
+#v-metro .mt-stage{width:170px;height:170px;margin:4px auto 0;padding:0;display:block;position:relative}
 #v-metro .mt-core{position:absolute;inset:0;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;box-shadow:none}
 #v-metro .mt-core::after{content:'';position:absolute;inset:0;border-radius:50%;border:4px solid var(--gold);opacity:0}
-#v-metro.playing .mt-core::after{animation:mtRing var(--beat,.6s) ease-out infinite}
+
 @keyframes mtRing{0%{transform:scale(.75);opacity:.8}70%,100%{transform:scale(1.12);opacity:0}}
-#mt-medi .medi{width:130px;height:auto}
-#v-metro .medi.a-hop .mv,#v-metro .medi.a-nod .mv{animation:none}
-#v-metro.playing .medi.a-hop .mv{animation:mdHop var(--beat,.6s) linear infinite}
-#v-metro.playing .medi.a-nod .mv{animation:mdNod var(--beat,.6s) ease-in-out infinite}
+#mt-medi .medi{width:104px;height:auto}
+#v-metro .medi .mv,.mt-pal .pv{transform-box:fill-box;transform-origin:50% 100%}
+
 @keyframes mdNod{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.mt-dots{display:flex;gap:14px;align-items:center;height:22px}
-.mt-dots i{width:14px;height:14px;border-radius:7px;background:var(--cream);opacity:.25;transition:opacity .08s}
-.mt-dots i.a{width:22px;height:22px;border-radius:11px;background:var(--gold)}
-.mt-dots i.on{opacity:1}
+/* les temps, numérotés (19/11) : le 1 en orange */
+.mt-beats{display:flex;gap:10px;align-items:center;justify-content:center}
+.mt-beats i{width:40px;height:40px;border-radius:20px;background:var(--card2);color:var(--cream3);font:800 18px/40px var(--display);font-style:normal;text-align:center;transition:background .05s,color .05s,transform .05s}
+.mt-beats i.a{color:var(--gold)}
+.mt-beats i.on{background:var(--cream);color:var(--bg);transform:scale(1.14)}
+.mt-beats i.a.on{background:var(--gold);color:var(--ink);transform:scale(1.24)}
 .mt-tempo2{display:flex;align-items:center;gap:22px}
 .mt-tempo2 .mt-step{width:56px;height:56px;border-radius:28px;background:var(--card);display:flex;align-items:center;justify-content:center;border:0}
 .mt-tempo2 .mt-step svg{width:20px;height:20px;stroke:var(--cream);stroke-width:2.6;stroke-linecap:round;fill:none}
 .mt-bv{display:flex;flex-direction:column;align-items:center}
-.mt-bv b{font:800 88px/.9 var(--display);letter-spacing:-.04em;color:var(--cream)}
+.mt-bv b{font:800 76px/.9 var(--display);letter-spacing:-.04em;color:var(--cream)}
 .mt-bv>span{font-size:14px;font-weight:600;color:var(--cream3)}
 .mt-tempo2.sm{gap:6px;background:var(--card);border-radius:36px;padding:6px}
 .mt-tempo2.sm .mt-step{width:44px;height:44px;background:none}
@@ -300,8 +301,9 @@ body.mj-on{overflow:hidden}
 .mt-chips button.on{background:var(--cream);color:var(--bg)}
 #mt-bass-chips button.on{background:#45cbb2;color:#0d2a25}
 .mt-acts{display:flex;gap:12px;align-items:center}
-.mt-tap{flex:1;height:72px;border-radius:36px;border:2px solid var(--card3);background:none;color:var(--cream);font-size:16px;font-weight:700}
-#v-metro .mt-play{width:auto;min-width:140px;height:72px;padding:0 24px;border-radius:36px;background:var(--gold);color:var(--ink);font:800 18px var(--display);display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:none}
+@media(max-width:899px){.mt-acts{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom));z-index:6;background:var(--bg);padding:10px 0 12px;margin:-10px 0 0}}
+.mt-tap{flex:1;height:64px;border-radius:36px;border:2px solid var(--card3);background:none;color:var(--cream);font-size:16px;font-weight:700}
+#v-metro .mt-play{width:auto;min-width:140px;height:64px;padding:0 24px;border-radius:36px;background:var(--gold);color:var(--ink);font:800 18px var(--display);display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:none}
 #v-metro .mt-play svg{width:18px;height:18px}
 #v-metro .mt-play.on{background:var(--cream);color:var(--bg)}
 #v-metro.band .mt-tap{display:none}#v-metro.band .mt-play{flex:1}
@@ -309,20 +311,37 @@ body.mj-on{overflow:hidden}
 .mt-bh h2{font:800 22px var(--display);color:var(--cream)}
 .mt-back{width:44px;height:44px;border-radius:22px;background:var(--card);display:flex;align-items:center;justify-content:center}
 .mt-back svg{width:10px;height:16px;fill:none;stroke:var(--cream);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.mt-scene{width:100%;background:var(--card);border-radius:32px;padding:18px 12px 14px;display:flex;flex-direction:column;gap:14px}
+.mt-scene{width:100%;background:var(--card);border-radius:28px;padding:14px 10px 12px;display:flex;flex-direction:column;gap:10px}
 .mt-bb{border-radius:18px;text-align:center;margin:0 8px}
 .mt-floor{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;border-bottom:3px solid var(--card3);padding-bottom:6px}
-.mt-mate{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;min-height:170px;background:none;border:0;color:var(--cream);padding:0}
+.mt-mate{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;min-height:150px;background:none;border:0;color:var(--cream);padding:0}
 .mt-mate b{font:800 16px var(--display);margin-top:6px}.mt-mate small{font-size:12px;color:var(--cream3)}
-.mt-mate .mt-pal.boum{width:104px;height:104px}.mt-mate .mt-pal.basile{width:88px;height:136px}
+.mt-mate .mt-pal.boum{width:84px;height:84px}.mt-mate .mt-pal.basile{width:66px;height:104px}
+.mt-mate.lead .medi{width:110px;height:auto}
 .mt-mate.off .mt-pal{opacity:.4}
 .mt-pal .pv{transform-box:fill-box;transform-origin:50% 100%}
-#v-metro.playing .mt-mate:not(.off) .boum .pv{animation:bandHop var(--beat,.6s) linear infinite}
-#v-metro.playing .mt-mate:not(.off) .basile .pv{animation:bandSway calc(var(--beat,.6s)*2) ease-in-out infinite}
+
 @keyframes bandHop{0%{transform:translateY(0) scale(1.12,.86)}15%{transform:scale(.97,1.04)}45%{transform:translateY(-14px) scale(.98,1.03)}85%{transform:translateY(-1px)}100%{transform:translateY(0) scale(1.12,.86)}}
 @keyframes bandSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
-.mt-styles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.mt-styles button{height:48px;border-radius:16px;background:var(--card);color:var(--cream);font:700 16px var(--display);border:0}
+.mt-styles{width:100%;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.mt-styles::-webkit-scrollbar{display:none}
+.mt-styles button{flex:none;height:44px;padding:0 16px;border-radius:22px;background:var(--card);color:var(--cream);font:700 15px var(--display);border:0}
+/* le motif de la bande (19/11) */
+.mt-motif{width:100%;display:flex;flex-direction:column;gap:10px}
+.mt-mh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.mt-mh h3{margin:0;font:800 18px var(--display);color:var(--cream)}.mt-mh small{font-size:12px;color:var(--cream3);text-align:right}
+#metro-grid-host{display:flex;flex-direction:column;gap:12px}
+.mtg{display:grid;grid-template-columns:50px repeat(var(--n),minmax(0,1fr));gap:4px;align-items:center}
+.mtg-h{font-size:11px;font-weight:600;color:var(--cream4);text-align:center}.mtg-h.bt{color:var(--cream);font:800 13px var(--display)}
+.mtg-l{font:800 13px var(--display)}.mtg-l.boum{color:#8b95ff}.mtg-l.basile{color:#45cbb2}
+.mtg-c{height:44px;min-width:0;border-radius:12px;background:var(--card);border:0;padding:0;display:flex;align-items:center;justify-content:center;transition:box-shadow .05s}
+.mtg-c.bt{background:var(--card2)}
+.mtg-c i{width:6px;height:6px;border-radius:3px;background:var(--card3);display:block}
+.mtg-c.d.k i{width:18px;height:18px;border-radius:9px;background:#8b95ff}
+.mtg-c.d.s i{width:12px;height:12px;border-radius:6px;background:#c9ceff}
+.mtg-c.b.on{background:#1f3a35}.mtg-c.b.on i{width:18px;height:6px;background:#45cbb2}
+.mtg-c.now{box-shadow:inset 0 0 0 2px var(--cream)}
+.mt-low{justify-content:flex-start}.mt-low .mt-tempo2.sm{margin-left:auto}
 .mt-styles button.on{background:var(--cream);color:var(--bg);font-weight:800}
 .mt-pat{width:100%}
 @media(prefers-reduced-motion:reduce){#v-metro .mt-core::after,.mt-pal .pv{animation:none!important}}

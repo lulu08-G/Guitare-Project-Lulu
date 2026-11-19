@@ -57,13 +57,13 @@ let metroTapTimes = [];
 function buildMetroPattern() {
   const sigCfg = METRO_SIGS[metroState.sig];
   const total = sigCfg.beats * sigCfg.sub;
-  const preset = METRO_PRESETS[metroState.preset];
+  const preset = METRO_PRESETS[metroState.preset] || METRO_PRESETS.rock;
   const steps = [];
   for (let i = 0; i < total; i++) {
     const b = preset.base[i % preset.base.length];
-    steps.push({k: !!b.k, s: !!b.s, h: !!b.h});
+    steps.push({k: !!b.k, s: !!b.s, h: !!b.h, b: b.b != null ? !!b.b : !!b.k}); // b : notes de Basile (par défaut sur la grosse caisse)
   }
-  metroState.pattern = steps;
+  metroState.pattern = steps; metroState.custom = false;
   metroState.sigCfg = sigCfg;
 }
 
@@ -123,7 +123,7 @@ function stopMetro() {
   if (metroTimerId) clearTimeout(metroTimerId);
   metroTimerId = null;
   metroRenderToggleBtn();
-  document.querySelectorAll('.metro-cell.now').forEach(e => e.classList.remove('now'));
+  document.querySelectorAll('#v-metro .mtg-c.now').forEach(e => e.classList.remove('now'));
 }
 function metroRenderToggleBtn() {
   const b = $('metro-toggle'); if (!b) return;
@@ -137,7 +137,7 @@ function metroRenderToggleBtn() {
   const v = $('v-metro'); if (v) v.classList.toggle('playing', metroPlaying);
   if (band) renderMetroBand();
   if (metroPlaying) { if (!metroRaf) metroRaf = requestAnimationFrame(metroVisLoop); }
-  else { metroVis = []; metroDialReset(); }
+  else { metroVis = []; metroDialReset(); document.querySelectorAll('#v-metro .mt-beats i.on,#v-metro .mtg-c.now').forEach(e => e.classList.remove('on', 'now')); }
 }
 function metroSchedulerTick() {
   if (!metroPlaying) return;
@@ -166,24 +166,36 @@ function scheduleMetroStep(step, time, total) {
   if (st.layers.kick && p.k) metroKick(time);
   if (st.layers.snare && p.s) metroSnare(time);
   if (st.layers.hihat && p.h) metroHihat(time);
-  if (st.layers.bass && p.k) metroBass(time);
+  if (st.layers.bass && p.b) metroBass(time);
   const delay = Math.max(0, (time - metroCtxRef.currentTime) * 1000);
   setTimeout(() => {
     flashMetroStep(step);
     if (isBeatStart) flashMetroBeat(beatIdx, accent, 60 / st.bpm);
+    metroBandHit(p, (60 / st.bpm) / sig.sub);
   }, delay);
 }
 function flashMetroStep(step) {
-  document.querySelectorAll('.metro-cell.now').forEach(e => e.classList.remove('now'));
-  document.querySelectorAll('.metro-cells').forEach(row => {
-    const cell = row.children[step]; if (cell) cell.classList.add('now');
-  });
+  document.querySelectorAll('#v-metro .mtg-c.now').forEach(e => e.classList.remove('now'));
+  document.querySelectorAll(`#v-metro .mtg-c[data-i="${step}"]`).forEach(e => e.classList.add('now'));
+}
+// un saut calé sur le son (Médi sur les temps, Boum et Basile sur leurs coups)
+function metroBump(el, h, ms, sq) {
+  if (!el || !el.animate || mReduced()) return;
+  el.animate([{transform: `translateY(0) scale(${1 + sq},${1 - sq})`}, {transform: `translateY(${-h}px) scale(.97,1.04)`, offset: .4}, {transform: 'none'}],
+    {duration: ms, easing: 'cubic-bezier(.3,.7,.4,1)'});
+}
+function metroBandHit(p, stepSec) {
+  if (!metroState.improMode) return;
+  const L = metroState.layers, ms = Math.max(140, Math.min(380, stepSec * 1800));
+  if ((L.kick && p.k) || (L.snare && p.s)) metroBump(document.querySelector('#mt-floor .boum .pv'), p.s ? 16 : 9, ms, p.k ? .14 : .06);
+  if (L.bass && p.b) metroBump(document.querySelector('#mt-floor .basile .pv'), 10, ms, .1);
 }
 function flashMetroBeat(beatIdx, accent, beatDurSec) {
   document.querySelectorAll('#mt-svg .mt-arc').forEach((a, i) => a.classList.toggle('done', i < beatIdx));
   document.querySelectorAll('#mt-svg .mt-mark').forEach((m, i) => { m.classList.remove('hit'); if (i === beatIdx) { void m.getBoundingClientRect(); m.classList.add('hit'); } });
   document.querySelectorAll('#mt-svg .mt-num').forEach((n, i) => n.classList.toggle('on', i === beatIdx));
-  document.querySelectorAll('#mt-dots i').forEach((d, i) => { d.classList.toggle('on', i === beatIdx); });
+  document.querySelectorAll('#v-metro .mt-beats i').forEach((d, i) => { d.classList.toggle('on', i === beatIdx); });
+  document.querySelectorAll('#mt-medi .mv, #mt-floor .lead .mv').forEach(m => metroBump(m, accent ? 26 : 16, Math.min(420, beatDurSec * 900), accent ? .16 : .1));
   const core = $('mt-core');
   if (core && core.animate && !mReduced()) core.animate(
     [{transform: `scale(${accent ? 1.075 : 1.04})`}, {transform: 'scale(1)'}],
@@ -268,32 +280,40 @@ function renderMetroLights() {   // le cadran : un arc par temps, des repères p
   for (let k = 0; k < total; k++) { const b = k % metroState.sigCfg.sub === 0, [x, y] = pt(k * 360 / total, R + 13); h += `<circle class="mt-tick${b ? ' b' : ''}" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${b ? 2.6 : 1.5}"/>`; }
   h += marks + `<g id="mt-orb"><circle cx="150" cy="${150 - R}" r="5"/></g>`;
   svg.innerHTML = h;
-  const dt = $('mt-dots'); if (dt) dt.innerHTML = Array.from({length: N}, (_, i) => `<i class="${i ? '' : 'a'}"></i>`).join('');
+  const beats = Array.from({length: N}, (_, i) => `<i class="${i ? '' : 'a'}">${i + 1}</i>`).join('');
+  ['mt-dots', 'mt-beats-b'].forEach(id => { const dt = $(id); if (dt) dt.innerHTML = beats; });
   const sg = $('mt-sigs'); if (sg) sg.innerHTML = Object.keys(METRO_SIGS).sort().map(k => `<button type="button" class="${metroState.sig === k ? 'on' : ''}" aria-pressed="${metroState.sig === k}" onclick="metroChangeSig('${k}')">${k}</button>`).join('');
 }
+// le motif de la bande : Boum (rien → grosse caisse → caisse claire) et Basile (note ou rien), une case par double-croche
 function renderMetroGrid() {
-  const total = metroState.pattern.length;
-  const rows = [
-    {key:'k', label:'Grosse caisse', active: metroState.layers.kick},
-    {key:'s', label:'Caisse claire', active: metroState.layers.snare},
-    {key:'h', label:'Charleston',    active: metroState.layers.hihat},
-  ];
-  let h = `<div class="metro-grid-wrap"><div class="metro-grid">`;
-  rows.forEach(r => {
-    h += `<div class="metro-row ${r.active?'':'dim'}"><div class="metro-row-lbl">${r.label}</div><div class="metro-cells">`;
-    for (let i = 0; i < total; i++) {
-      const on = metroState.pattern[i][r.key];
-      const beat = i % metroState.sigCfg.sub === 0;
-      h += `<button type="button" class="metro-cell ${on?'on':''} ${beat?'beat':''}" onclick="metroToggleCell(${i},'${r.key}')"></button>`;
-    }
-    h += `</div></div>`;
-  });
-  $('metro-grid-host').innerHTML = h + `</div></div>`;
+  const host = $('metro-grid-host'); if (!host || !metroState.pattern) return;
+  const pat = metroState.pattern, sub = metroState.sigCfg.sub, total = pat.length;
+  const per = total > 8 ? total / 2 : total, SUBN = sub === 4 ? ['', 'e', 'et', 'a'] : ['', 'et'];
+  let h = '';
+  for (let a = 0; a < total; a += per) {
+    const idx = Array.from({length: per}, (_, j) => a + j), bt = i => i % sub ? '' : ' bt';
+    h += `<div class="mtg" style="--n:${per}"><span></span>${idx.map(i => `<span class="mtg-h${bt(i)}">${i % sub ? SUBN[i % sub] : i / sub + 1}</span>`).join('')}`
+      + `<span class="mtg-l boum">Boum</span>${idx.map(i => { const p = pat[i], v = p.k ? 'k' : p.s ? 's' : ''; return `<button type="button" class="mtg-c d ${v}${bt(i)}" data-i="${i}" aria-label="Boum, case ${i + 1} : ${v === 'k' ? 'grosse caisse' : v === 's' ? 'caisse claire' : 'rien'}" onclick="metroDrumCycle(${i})"><i></i></button>`; }).join('')}`
+      + `<span class="mtg-l basile">Basile</span>${idx.map(i => `<button type="button" class="mtg-c b${pat[i].b ? ' on' : ''}${bt(i)}" data-i="${i}" aria-pressed="${pat[i].b}" aria-label="Basile, case ${i + 1}" onclick="metroBassCell(${i})"><i></i></button>`).join('')}</div>`;
+  }
+  host.innerHTML = h;
+}
+function metroDrumCycle(i) {
+  const p = metroState.pattern[i];
+  if (p.k) { p.k = false; p.s = true; } else if (p.s) p.s = false; else p.k = true;
+  metroState.custom = true; renderMetroPresetSelect(); renderMetroGrid();
+  if (!metroPlaying && (p.k || p.s)) { const t = audio().currentTime + .01; p.k ? metroKick(t) : metroSnare(t); metroState.improMode && metroBandHit({k: p.k, s: p.s}, .15); }
+}
+function metroBassCell(i) {
+  const p = metroState.pattern[i]; p.b = !p.b;
+  metroState.custom = true; renderMetroPresetSelect(); renderMetroGrid();
+  if (!metroPlaying && p.b) { metroBass(audio().currentTime + .01); metroBandHit({b: true}, .15); }
 }
 function renderMetroPresetSelect() {
   const h = $('mt-styles'); if (!h) return;
   h.innerHTML = Object.entries(METRO_PRESETS).map(([k,v]) =>
-    `<button type="button" class="${metroState.preset===k?'on':''}" aria-pressed="${metroState.preset===k}" onclick="metroSelectPreset('${k}')">${v.name.replace(/ \(.*\)/, '')}</button>`).join('');
+    `<button type="button" class="${metroState.preset===k&&!metroState.custom?'on':''}" aria-pressed="${metroState.preset===k&&!metroState.custom}" onclick="metroSelectPreset('${k}')">${v.name.replace(/ \(.*\)/, '')}</button>`).join('')
+    + (metroState.custom ? '<button type="button" class="on" aria-pressed="true" disabled>Le mien</button>' : '');
 }
 function renderMetroLayerButtons() {
   const defs = [['click','Clic'],['kick','Grosse caisse'],['snare','Caisse claire'],['hihat','Charleston'],['bass','Basse']];
@@ -322,14 +342,14 @@ function renderMetroBand() {
   const fl = $('mt-floor'); if (!fl) return;
   const L = metroState.layers, boum = !!(L.kick || L.snare || L.hihat), basile = !!L.bass;
   fl.innerHTML = `<button type="button" class="mt-mate${boum ? '' : ' off'}" aria-pressed="${boum}" aria-label="Boum, la batterie" onclick="metroBandToggle('boum')">${BOUM_SVG(boum, 'boum')}<b>Boum</b><small>${boum ? 'batterie' : 'se tait'}</small></button>
-    <div class="mt-mate lead">${mediSVG('contente', {size: 92, anim: 'nod', label: 'Médi mène la bande'})}<b>Médi</b><small>mène</small></div>
+    <div class="mt-mate lead">${mediSVG('contente', {size: 110, anim: 'still', label: 'Médi compte les temps'})}<b>Médi</b><small>les temps</small></div>
     <button type="button" class="mt-mate${basile ? '' : ' off'}" aria-pressed="${basile}" aria-label="Basile, la basse" onclick="metroBandToggle('basile')">${BASILE_SVG(basile, 'basile')}<b>Basile</b><small>${basile ? 'basse' : 'se tait'}</small></button>`;
-  const bb = $('mt-bb'); if (bb) bb.textContent = !metroPlaying ? 'J’ai appelé Boum et Basile. Lance la bande et joue par-dessus.' : !boum && !basile ? 'Plus personne ne joue. Rappelle Boum ou Basile.' : 'Touche un pote pour le faire taire, touche-le encore pour qu’il revienne.';
+  const bb = $('mt-bb'); if (bb) bb.textContent = !metroPlaying ? 'J’ai appelé Boum et Basile. Lance la bande et joue par-dessus.' : !boum && !basile ? 'Plus personne ne joue. Rappelle Boum ou Basile.' : 'Je compte les temps, eux dansent sur leurs coups. Touche un pote pour le faire taire.';
   const bc = $('mt-bass-chips'); if (bc) bc.innerHTML = ['Mi', 'La', 'Ré', 'Sol'].map((n, i) => `<button type="button" class="${metroState.bassString === i ? 'on' : ''}" aria-pressed="${metroState.bassString === i}" onclick="metroChangeBassString(${i})">${n}</button>`).join('');
   const mm = $('mt-mates'); if (mm && !mm.innerHTML) mm.innerHTML = BOUM_SVG(true) + BASILE_SVG(true);
 }
 function renderMetroAll() {
-  { const m = $('mt-medi'); if (m && !m.innerHTML) m.innerHTML = mediSVG('neutre', {size: 130, anim: 'hop', label: 'Médi saute sur chaque temps'}); }
+  { const m = $('mt-medi'); if (m && !m.innerHTML) m.innerHTML = mediSVG('neutre', {size: 110, anim: 'still', label: 'Médi saute sur chaque temps'}); }
   if (!metroState.pattern) buildMetroPattern();
   renderMetroPresetSelect(); renderMetroLights(); renderMetroGrid();
   renderMetroLayerButtons(); renderMetroBassSelect(); metroRenderToggleBtn(); metroPaintBpm();

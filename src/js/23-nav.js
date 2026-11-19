@@ -3,6 +3,7 @@ function go(v) {
   if (v !== 'atelier' && atOn()) { atFlush(); atPause(); }
   stopPlay();
   if (v !== 'tuner') stopTuner();
+  if (v !== 'metro' && metroPlaying) stopMetro();   // quitter le métronome coupe le son (19/11)
   if (v !== 'import') stopCapture();
   coursStop();
   exoStop();

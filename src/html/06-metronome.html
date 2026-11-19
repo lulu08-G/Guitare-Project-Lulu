@@ -1,4 +1,4 @@
-<!-- ══ METRONOME (refonte : Médi saute sur chaque temps ; « Appeler la bande » : Boum à la batterie, Basile à la basse) ══ -->
+<!-- ══ METRONOME (refonte : Médi saute sur chaque temps, les temps sont numérotés ; « Appeler la bande » : Boum et Basile ne bougent que sur leurs coups, motif à toucher ; « Jouer » reste sous le pouce) ══ -->
 <div class="view" id="v-metro">
   <div class="wrap-narrow mt2">
     <section class="mt-solo">
@@ -6,31 +6,37 @@
         <div class="mt-core" id="mt-core" role="button" tabindex="0" aria-label="Touche Médi en rythme pour donner le tempo" onclick="metroTapTempo()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();metroTapTempo()}"><div id="mt-medi"></div></div>
         <svg id="mt-svg" viewBox="0 0 300 300" hidden aria-hidden="true"></svg>
       </div>
-      <div class="mt-dots" id="mt-dots" aria-hidden="true"></div>
+      <div class="mt-beats" id="mt-dots" aria-hidden="true"></div>
       <div class="mt-tempo2">
         <button type="button" class="mt-step" onpointerdown="metroHold(-1)" onkeydown="if(event.key==='Enter')metroBpmStep(-1)" aria-label="Moins vite"><svg viewBox="0 0 20 20"><path d="M4 10 H16"/></svg></button>
         <div class="mt-bv"><b id="mt-bpm">100</b><span><span>BPM, </span><span id="mt-name">Andante</span></span></div>
         <button type="button" class="mt-step" onpointerdown="metroHold(1)" onkeydown="if(event.key==='Enter')metroBpmStep(1)" aria-label="Plus vite"><svg viewBox="0 0 20 20"><path d="M4 10 H16 M10 4 V16"/></svg></button>
       </div>
       <input type="range" id="metro-bpm-range" class="mt-range" min="30" max="280" value="100" oninput="metroSetBpmFromRange(this.value)" aria-label="Tempo en battements par minute">
-      <button type="button" class="mt-call" onclick="metroSetImpro(true)"><span class="mt-mates" id="mt-mates"></span><span class="mt-ct"><b>Appeler la bande</b><small>Batterie et basse jouent avec toi</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>
       <div class="mt-row"><span class="mt-lbl">Mesure</span><div class="mt-chips" id="mt-sigs"></div></div>
+      <button type="button" class="mt-call" onclick="metroSetImpro(true)"><span class="mt-mates" id="mt-mates"></span><span class="mt-ct"><b>Appeler la bande</b><small>Batterie et basse jouent avec toi</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>
     </section>
 
     <section class="mt-bandv" id="mt-band" style="display:none">
       <div class="mt-bh"><button type="button" class="mt-back" onclick="metroSetImpro(false)" aria-label="Retour au métronome"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><h2>La bande</h2></div>
       <div class="mt-scene">
-        <div class="bulle mt-bb" id="mt-bb"></div>
+        <div class="mt-beats" id="mt-beats-b" aria-hidden="true"></div>
         <div class="mt-floor" id="mt-floor"></div>
+        <div class="bulle mt-bb" id="mt-bb"></div>
       </div>
-      <div class="mt-row col"><span class="mt-lbl">Style</span><div class="mt-styles" id="mt-styles"></div></div>
-      <div class="mt-row"><span class="mt-lbl">Basile joue en</span><div class="mt-chips" id="mt-bass-chips"></div></div>
-      <div class="mt-tempo2 sm">
-        <button type="button" class="mt-step" onpointerdown="metroHold(-1)" aria-label="Moins vite"><svg viewBox="0 0 20 20"><path d="M4 10 H16"/></svg></button>
-        <div class="mt-bv"><b data-bpm>100</b><span>BPM</span></div>
-        <button type="button" class="mt-step" onpointerdown="metroHold(1)" aria-label="Plus vite"><svg viewBox="0 0 20 20"><path d="M4 10 H16 M10 4 V16"/></svg></button>
+      <div class="mt-styles" id="mt-styles" role="group" aria-label="Style"></div>
+      <section class="mt-motif" aria-label="Le motif">
+        <div class="mt-mh"><h3>Le motif</h3><small>touche une case : ils dansent sur leurs coups</small></div>
+        <div id="metro-grid-host"></div>
+      </section>
+      <div class="mt-row mt-low">
+        <span class="mt-lbl">Basile en</span><div class="mt-chips" id="mt-bass-chips"></div>
+        <div class="mt-tempo2 sm">
+          <button type="button" class="mt-step" onpointerdown="metroHold(-1)" aria-label="Moins vite"><svg viewBox="0 0 20 20"><path d="M4 10 H16"/></svg></button>
+          <div class="mt-bv"><b data-bpm>100</b><span>BPM</span></div>
+          <button type="button" class="mt-step" onpointerdown="metroHold(1)" aria-label="Plus vite"><svg viewBox="0 0 20 20"><path d="M4 10 H16 M10 4 V16"/></svg></button>
+        </div>
       </div>
-      <details class="mt-pat"><summary>Modifier le motif<small>touche une case pour l’allumer ou l’éteindre</small></summary><div id="metro-grid-host"></div></details>
       <div hidden>
         <button type="button" id="metro-mode-simple"></button><button type="button" id="metro-mode-impro"></button>
         <div id="metro-layers"></div>
