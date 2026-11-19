@@ -28,7 +28,7 @@ function renderHome() {
   document.querySelectorAll('#home-filters .filt').forEach(b => b.classList.toggle('on', b.dataset.f === homeFilter));
   const list = sheets
     .filter(s => !q || s.title.toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
-    .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : recentIds.has(s.id))
+    .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : homeFilter === 'know' ? sheetKnow(s) : homeFilter === 'learn' ? !sheetKnow(s) : recentIds.has(s.id))
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   { const k = selIds.size;
     $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches à mettre dans le PDF';
@@ -39,6 +39,8 @@ function renderHome() {
     document.body.classList.toggle('sel-on', selMode); }
   { const bn = $('backup-nag'); if (bn) bn.innerHTML = ''; }   // le rappel de sauvegarde est retiré (refonte du 18/11) : la sauvegarde reste dans le menu ⋯
   $('filt-all').textContent = sheets.length ? `Toutes · ${sheets.length}` : 'Toutes';
+  { const nk = sheets.filter(sheetKnow).length, fk = $('filt-know'), fl = $('filt-learn');
+    if (fk) fk.textContent = `Je sais · ${nk}`; if (fl) fl.textContent = `J’apprends · ${sheets.length - nk}`; }
   { // Médi propose un morceau à retravailler : pas ouvert depuis au moins 4 jours (les favoris d'abord)
     const seen = LS.get('gms_seen', {}), now = Date.now(), DAY = 864e5;
     const old = !selMode && !q && homeFilter === 'all' && sheets.length > 2 ? sheets
@@ -49,9 +51,9 @@ function renderHome() {
       <button type="button" class="btn btn-primary btn-sm" onclick="viewSheet('${old.s.id}')">Le rejouer</button></div></section>` : ''; }
   const g = $('home-grid');
   if (!list.length) {
-    const q0 = q, favE = !q0 && homeFilter === 'fav', recE = !q0 && homeFilter !== 'all' && homeFilter !== 'fav';
-    const emT = !sheets.length ? 'Le cahier est vide' : favE ? 'Pas encore de favori' : recE ? 'Rien d’ouvert récemment' : 'Aucun résultat';
-    const emP = !sheets.length ? 'Crée ta première fiche : un titre et trois accords suffisent.' : favE ? 'Touche le cœur d’une fiche pour la retrouver ici.' : recE ? 'Les fiches que tu ouvres apparaîtront ici.' : 'Essaie un autre mot ou un autre filtre.';
+    const q0 = q, favE = !q0 && homeFilter === 'fav', knE = !q0 && homeFilter === 'know', leE = !q0 && homeFilter === 'learn', recE = !q0 && homeFilter === 'recent';
+    const emT = !sheets.length ? 'Le cahier est vide' : knE ? 'Rien dans « Je sais » pour l’instant' : leE ? 'Rien en cours d’apprentissage' : favE ? 'Pas encore de favori' : recE ? 'Rien d’ouvert récemment' : 'Aucun résultat';
+    const emP = !sheets.length ? 'Crée ta première fiche : un titre et trois accords suffisent.' : knE ? 'Sur une fiche, touche « Je sais la jouer » quand tu la maîtrises.' : leE ? 'Une fiche avec un tuto arrive ici tant que tu ne la sais pas.' : favE ? 'Touche le cœur d’une fiche pour la retrouver ici.' : recE ? 'Les fiches que tu ouvres apparaîtront ici.' : 'Essaie un autre mot ou un autre filtre.';
     g.innerHTML = `<div class="empty">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--cream4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>
       <h3>${emT}</h3>

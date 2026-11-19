@@ -68,6 +68,7 @@ async function viewSheet(id, keepPart) {
   $('sv-stats').innerHTML = `<button type="button" class="sv-bpm-b sv-chip" onclick="svTempo(event)" aria-label="Régler le tempo"><span>Tempo</span><b id="rh-bpm-meta">${s.bpm || 90}</b></button>` + (s.tuning && s.tuning !== 'Standard' ? `<span class="sv-chip">${esc(s.tuning)}</span>` : '');
   { const b = $('sv-lyr-m'); if (b) { b.style.display = (s.parts || []).some(hasLyr) ? '' : 'none'; b.textContent = s.showLyrics ? 'Masquer les paroles' : 'Afficher les paroles'; } }
   $('sv-capo').innerHTML = s.capo > 0 ? `<span class="sv-chip"><span>Capo</span>${s.capo}</span>` : '';
+  svKnowRender(); svTutoRender();
   LS.set('gms_last', id); { const sn = LS.get('gms_seen', {}); sn[id] = Date.now(); LS.set('gms_seen', sn); } svMenuClose(); svAaLabel();
 
   const tabsHost = $('sv-tabs'), partsHost = $('sv-parts');
@@ -463,8 +464,10 @@ function coffreViewHTML(s) {
 
   h += `<div class="coffre-sec"><div class="coffre-sec-t">Tutos utiles</div>`;
   if (links.length) {
+    const top = svTutoLink(s);
     h += links.map(l => {
       const id = ytId(l.url);
+      if (top && l === top) return `<div class="coffre-empty">${esc(l.title && l.title !== 'Video' ? l.title : 'Le tuto')} se lit en haut de la fiche.</div>`;
       return id
         ? `<div class="yt-embed" style="margin-bottom:10px"><iframe src="https://www.youtube.com/embed/${id}" title="${esc(l.title||'Video')}" allowfullscreen loading="lazy"></iframe></div>`
         : `<a class="link-card" href="${esc(l.url)}" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg><span class="lc-t">${esc(l.title || l.url)}</span></a>`;

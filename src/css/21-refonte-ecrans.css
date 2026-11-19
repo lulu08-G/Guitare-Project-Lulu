@@ -537,3 +537,18 @@ body.mj-on{overflow:hidden}
 @media(prefers-reduced-motion:reduce){#cp-sheet .cp-sheet-in{animation:none}}
 #v-ed .qc-sugg{display:flex;align-items:center;gap:8px;margin:10px 0 0}
 #v-ed .qc-lbl{flex:none;font-size:13px;color:var(--cream3);font-weight:600}
+/* ── Carnet (19/11) : j'apprends / je sais, tuto lu dans la fiche ── */
+.sv-know{display:grid;grid-template-columns:1fr 1fr;height:44px;margin-top:14px;padding:4px;border-radius:22px;background:var(--card);max-width:420px;box-sizing:border-box}
+.sv-know button{border:0;border-radius:18px;background:none;color:var(--cream3);font:600 14px var(--sans)}
+.sv-know button.on{background:var(--cream);color:var(--bg);font-weight:700}
+#sv-tuto:empty{display:none}
+.ytp{margin:0 0 16px;display:flex;flex-direction:column;gap:8px}
+.ytp .yt-embed{border-radius:18px;overflow:hidden}
+.ytp-ctl{display:flex;gap:8px;flex-wrap:wrap}
+.ytp-ctl button{height:40px;padding:0 14px;border:0;border-radius:20px;background:var(--card);color:var(--cream);font:700 14px var(--sans);display:flex;align-items:center;gap:8px}
+.ytp-ctl button.on{background:var(--bulle);color:var(--bulle-ink)}
+.ytp-ctl svg{width:16px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ytp-add{margin:0 0 16px;background:var(--card);border-radius:22px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.ytp-add b{display:block;font:800 17px var(--display);color:var(--cream)}.ytp-add small{font-size:13px;color:var(--cream3)}
+.ytp-add-b{display:flex;gap:8px;flex-wrap:wrap}
+#home-filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#home-filters::-webkit-scrollbar{display:none}#home-filters .filt{flex:none}
