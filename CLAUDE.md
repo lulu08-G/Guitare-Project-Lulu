@@ -18,6 +18,12 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 - **Fait le 19/11** : accordeur stable (YIN + médiane + attaque ignorée + tolérance avec hystérésis, testé sur sons simulés, à valider sur vraie guitare) et fête « corde juste » (arc, ondes, ding, case cochée, « Guitare accordée ») ; métronome (temps numérotés, Médi saute sur les temps, Boum/Basile seulement sur leurs coups, motif à toucher sous la scène, « Jouer » toujours sous le pouce, le son s'arrête en quittant) ; création (Entrée sur l'artiste ferme le clavier, plus de champ texte d'accords : panneau du bas qui se ferme au choix + accord qui vole, « Souvent ensuite ») ; carnet (`src/js/27-3-carnet-tuto.js` : « J'apprends / Je sais la jouer » sur la fiche et en filtres dans Fiches, tuto YouTube lu en haut de la fiche avec −10 s, vitesse, boucle A → B, « Coller le lien », partage depuis YouTube via `share_target` du manifeste).
 - **Reste** : « Enregistrer ma version » (maquette N5 : clic, on touche l'accord quand on change), renommer Fiches en « Carnet » (à confirmer), une base de morceaux pour le référencement (pages publiques titre + accords, sans paroles : à cadrer).
 
+## Rythme, bande et Médi (discussion du 19/11, pas encore codé)
+- **Les fiches restent le cœur de l'app.** Le système « bande + Médi + ta ligne » sert le **métronome** (avec ou sans bande, motif modifiable) et les **cours de rythme** (S'entraîner), pas le centre.
+- Lecture des rythmes sans flèches : la main fait l'aller-retour en continu, on ne montre que les cases où l'on gratte (maquettes E1 à E5, B1 à B3, V1 à V6 sur la planche).
+- Bande jouée sur une fiche : Lucas n'y croit pas trop (le rythme d'un morceau sonne rarement comme l'original) ; plutôt jouer par-dessus sa prise ou un audio. **À trancher par une batterie de tests** (utile, fun, compris sans aide, encombrant, marche ou pas) avant d'investir.
+- Médi qui écoute pendant que la bande joue : ne pas écouter le son du téléphone (anti-écho du téléphone + l'app ignore ses propres coups qu'elle connaît à la milliseconde + courte calibration). À prouver sur le téléphone de Lucas en premier.
+
 ## Gel des nouveautés (décision de Lucas, 13/11/2026)
 - **Plus aucune nouvelle fonction** tant que le cœur n'est pas validé par Lucas. Le cœur : **créer une fiche, puis la jouer** (accueil, création, fiche, mode jeu).
 - Le travail autorisé : polir ce parcours d'après ses retours en conditions réelles, cohérence visuelle, corrections de bugs.
