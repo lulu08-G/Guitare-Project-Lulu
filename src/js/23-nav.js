@@ -3,7 +3,8 @@ function go(v) {
   if (v !== 'atelier' && atOn()) { atFlush(); atPause(); }
   stopPlay();
   if (v !== 'tuner') stopTuner();
-  if (v !== 'metro' && metroPlaying) stopMetro();   // quitter le métronome coupe le son (19/11)
+  if (v !== 'metro' && metroPlaying) stopMetro();
+  if (v !== 'ed' && cp.ed) { cp.ed = false; const sh = $('cp-sheet'); if (sh) { sh.classList.remove('on'); sh.innerHTML = ''; } }   // quitter le métronome coupe le son (19/11)
   if (v !== 'import') stopCapture();
   coursStop();
   exoStop();

@@ -325,7 +325,7 @@ function cpToggle(ctx, pi) { if (pi != null) { if (cp[ctx] && cp.pi === pi) cp[c
 function cpTab(ctx, t) { if (t !== 'mine') cp.last = t; cp.tab = t; if (t === 'mine' && (!ceState || !ceState.inline)) ceState = {pi: cp.pi, ci: -1, chord: newChord(''), arpMode: false, inline: true}; cpRefresh(ctx); }
 function cpPick(ctx, name) {
   try { playChord(newChord(name), ctx === 'at' ? (at.s && at.s.capo) || 0 : (draft && draft.capo) || 0, 'D'); } catch (e) {}
-  if (ctx === 'at') atAdd([name]); else addChordLine(name);
+  if (ctx === 'at') atAdd([name]); else edAddChordFly(name);   // éditeur : le panneau se ferme, l'accord vole dans la ligne
 }
 function atKbName() { const k = at.kb; if (!k.root) return ''; const r = AT_ENH[k.root + k.acc] || k.root + k.acc; return r + k.q1 + k.q2 + k.q3; }
 function atKb(f, v) {

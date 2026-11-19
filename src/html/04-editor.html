@@ -9,18 +9,12 @@
 
     <div class="ed-ta">
       <input type="text" id="f-title" class="ed-in ed-in-t" placeholder="Titre du morceau" aria-label="Titre du morceau" autocomplete="off" enterkeyhint="next" oninput="edSyncSave();edTlSugg()" onkeydown="edNext(event,'f-artist')">
-      <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done" oninput="edTlSugg()">
+      <input type="text" id="f-artist" class="ed-in ed-in-a" placeholder="Artiste" aria-label="Artiste (facultatif)" autocomplete="off" enterkeyhint="done" oninput="edTlSugg()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">
     </div>
 
     <div class="ed-meta" id="ed-meta"></div>
     <div class="ed-lab"><b>Les accords</b></div>
-    <div class="ed-chords">
-      <div class="qc-row">
-        <input type="text" id="f-chords" placeholder="Taper les accords (Em G D…)" aria-label="Taper les accords, séparés par des espaces" autocomplete="off" autocapitalize="off" enterkeyhint="done" onkeydown="if(event.key==='Enter'){event.preventDefault();addChordLine()}">
-        <button type="button" class="btn btn-ghost" onclick="addChordLine()">Ajouter</button>
-      </div>
-      <div class="qc-sugg" id="qc-sugg"></div>
-    </div>
+    <input type="hidden" id="f-chords" value="">
     <div id="parts-ed"></div>
     <div class="ed-lab" id="ed-rh-lab"><b>Le rythme</b></div>
     <div id="ed-solo-way"></div>

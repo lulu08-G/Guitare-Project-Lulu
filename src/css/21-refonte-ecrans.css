@@ -522,3 +522,18 @@ body.mj-on{overflow:hidden}
 .rg-card b{font:800 18px var(--display);color:var(--cream)}.rg-card span{font:700 14px var(--display);color:var(--gold)}
 .rg-badge{position:absolute;top:2px;left:calc(50% + 6px);height:18px;padding:0 5px;border-radius:9px;background:var(--cream);color:var(--bg);font-size:11px;font-weight:800;display:flex;align-items:center;animation:rgBadge 1.4s var(--ease-out) both;pointer-events:none}
 @keyframes rgBadge{0%{transform:scale(0)}15%{transform:scale(1.2)}25%,80%{transform:scale(1)}100%{transform:scale(0)}}
+/* ── Ajouter un accord (19/11) : panneau du bas, se ferme au choix ── */
+#cp-sheet{display:none}
+#cp-sheet.on{display:block;position:fixed;inset:0;z-index:400}
+#cp-sheet .cp-back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+#cp-sheet .cp-sheet-in{position:absolute;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;max-height:80vh;overflow-y:auto;overscroll-behavior:contain;background:var(--card);border-radius:28px 28px 0 0;padding:10px 16px calc(20px + env(safe-area-inset-bottom));box-sizing:border-box;animation:cpUp .28s var(--ease-out)}
+#cp-sheet .cp-grab{display:block;width:40px;height:5px;border-radius:3px;background:var(--card3);margin:0 auto 12px}
+#cp-sheet h3{margin:0 0 8px;font:800 20px var(--display);color:var(--cream)}
+#cp-sheet .cp-panel{margin:0;border:0;background:none;padding:0;box-shadow:none}
+#cp-sheet .cp-grid{max-height:none;overflow:visible}
+#cp-sheet .cp-cell{background:var(--card2);border:0}
+#cp-sheet .cp-cell span{font:800 17px var(--display)}
+@keyframes cpUp{from{transform:translateY(100%)}}
+@media(prefers-reduced-motion:reduce){#cp-sheet .cp-sheet-in{animation:none}}
+#v-ed .qc-sugg{display:flex;align-items:center;gap:8px;margin:10px 0 0}
+#v-ed .qc-lbl{flex:none;font-size:13px;color:var(--cream3);font-weight:600}

@@ -70,7 +70,7 @@ function edChordsHTML(p, i) {
         <button type="button" class="ed-ctx" onclick="event.stopPropagation();rmChord(${i},${ci})" aria-label="Retirer ${esc(c.name || 'l’accord')}"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg></button>
         <b>${esc(c.name || '?')}</b>${chordSVG(c, {size:.86})}
         ${todo ? '<em>à compléter</em>' : c.arp && c.arp.length ? '<em>arpège</em>' : ''}</div>`; }).join('')}
-    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>${open ? cpHTML('ed') : ''}`;
+    <button type="button" class="ed-ct add" onclick="edRpSet(${i});cpToggle('ed',${i})" aria-expanded="${open}"><span>${open ? '×' : '+'}</span>${open ? 'Fermer' : 'Accord'}</button></div>${i === Math.min(cp.pi, draft.parts.length - 1) ? '<div class="qc-sugg" id="qc-sugg"></div>' : ''}`;   // la grille d'accords s'ouvre en panneau du bas (edCpSheet)
 }
 function edMoreHTML(p, i) {
   const hasLyr = typeof p.lyrics === 'string';
@@ -93,7 +93,7 @@ function edMoreHTML(p, i) {
 let edSeen = new Set(), edSeenFor = null;
 function renderParts() {
   const host = $('parts-ed'), solo = draft.parts.length === 1;
-  const g0 = host.querySelector('.cp-grid'), gy = g0 ? g0.scrollTop : 0;
+  const g0 = document.querySelector('#cp-sheet .cp-sheet-in'), gy = g0 ? g0.scrollTop : 0;
   host.innerHTML = draft.parts.map((p, i) => {
     const nC = p.chords.length;
     const summary = p.collapsed
@@ -123,7 +123,7 @@ function renderParts() {
   { const p0 = draft.parts[0]; $('ed-solo-way').innerHTML = solo && p0 && !(wayOf(p0) === 'rh' && !rhHas(p0.rhythm)) ? rbHTML('draft', 0) : ''; }   // une seule partie : l'aperçu se pose sous « Rythme », au-dessus de l'enregistreur
   $('ed-meta').innerHTML = edCapoHTML() + (edTempoOpen || draft.bpm ? `<label class="ed-tempo">Tempo<input type="number" inputmode="numeric" min="30" max="300" value="${draft.bpm || ''}" placeholder="?" aria-label="Tempo en BPM" oninput="draft.bpm=+this.value||0;$('f-bpm').value=this.value"></label>` : `<button type="button" class="ed-tempo-mini" onclick="edTempoShow()" aria-label="Régler le tempo">Tempo</button>`) + `<small>pour tout le morceau</small>`;
   initDnD(host);
-  const g1 = host.querySelector('.cp-grid'); if (g1) g1.scrollTop = gy;
+  edCpSheet(gy); renderQuickSugg();
   // un accord ajouté se pose (les accords déjà vus ne rejouent rien)
   if (edSeenFor !== draft) { edSeenFor = draft; edSeen = new Set(); host.querySelectorAll('.ed-ct[data-cid]').forEach(e => edSeen.add(e.dataset.cid)); }
   else host.querySelectorAll('.ed-ct[data-cid]').forEach(e => { if (!edSeen.has(e.dataset.cid)) { edSeen.add(e.dataset.cid); if (!mReduced()) e.classList.add('landing'); } });
@@ -272,3 +272,39 @@ function initDnD(host) {
   };
 }
 
+
+/* ── Ajouter un accord (19/11) : un panneau monte du bas, on touche un accord, il se ferme
+   et l'accord vole dans la ligne. Plus de champ texte pour les accords. ── */
+function edCpSheet(gy) {
+  let host = $('cp-sheet');
+  if (!host) { host = document.createElement('div'); host.id = 'cp-sheet'; document.body.appendChild(host); }
+  const open = cp.ed && curView === 'ed';
+  host.classList.toggle('on', open);
+  if (!open) { host.innerHTML = ''; return; }
+  host.innerHTML = `<div class="cp-back" onclick="cpToggle('ed')"></div><div class="cp-sheet-in" role="dialog" aria-modal="true" aria-label="Ajouter un accord"><span class="cp-grab" aria-hidden="true"></span><h3>Touche un accord</h3>${cpHTML('ed')}</div>`;
+  if (gy) host.querySelector('.cp-sheet-in').scrollTop = gy;
+}
+// l'accord ajouté arrive d'en bas, en tournant un peu, puis se pose
+function edChordFly(pi) {
+  const row = document.querySelectorAll('#parts-ed .ed-chs')[pi]; if (!row) return;
+  const tiles = row.querySelectorAll('.ed-ct:not(.add)'), t = tiles[tiles.length - 1];
+  if (!t || !t.animate || mReduced()) return;
+  t.animate([{transform: 'translateY(240px) scale(.5) rotate(-14deg)', opacity: .2, background: 'var(--gold)'},
+    {transform: 'translateY(-8px) scale(1.06) rotate(3deg)', opacity: 1, background: 'var(--gold)', offset: .7},
+    {transform: 'none', opacity: 1}], {duration: 520, easing: 'cubic-bezier(.2,.9,.3,1.2)'});
+}
+function edAddChordFly(name) {
+  const pi = Math.min(cp.pi, Math.max(0, draft.parts.length - 1));
+  cp.ed = false; addChordLine(name); edChordFly(pi);
+}
+// « Souvent ensuite » : 3 accords qui suivent souvent le dernier, ajoutés d'un geste
+const ED_NEXT = {G: ['D', 'C', 'Em'], C: ['G', 'F', 'Am'], D: ['G', 'A', 'Em'], Em: ['C', 'G', 'D'], Am: ['F', 'C', 'G'], F: ['C', 'G', 'Dm'],
+  E: ['A', 'B7', 'C#m'], A: ['D', 'E', 'F#m'], Dm: ['G', 'C', 'Am'], Bm: ['G', 'A', 'D'], 'F#m': ['D', 'A', 'E'], B7: ['E', 'Em', 'A'],
+  Em7: ['G', 'Dsus4', 'A7sus4'], Dsus4: ['A7sus4', 'Em7', 'G'], A7sus4: ['Em7', 'G', 'C'], Cadd9: ['G', 'D', 'Em']};
+function renderQuickSugg() {
+  const h = $('qc-sugg'); if (!h || !draft) return;
+  const p = draft.parts[Math.min(cp.pi, draft.parts.length - 1)], last = p && p.chords.length ? p.chords[p.chords.length - 1].name : '';
+  const base = last ? (ED_NEXT[last] || ED_NEXT[last.replace(/7|maj7|sus\d|add9/g, '')] || ['G', 'C', 'D']) : ['G', 'C', 'D', 'Em', 'Am'];
+  const list = base.filter(n => n !== last).slice(0, last ? 3 : 5);
+  h.innerHTML = `<span class="qc-lbl">${last ? 'Souvent ensuite' : 'Les plus joués'}</span>` + list.map(n => `<button type="button" onclick="edAddChordFly('${n}')">+ ${esc(n)}</button>`).join('');
+}

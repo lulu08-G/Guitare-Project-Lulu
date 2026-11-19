@@ -62,7 +62,7 @@ function quickPartCustom() {
   if (n) quickPart(n.slice(0, 40));
 }
 function renderQuick() {
-  $('qc-sugg').innerHTML = QUICK_CHORDS.map(n => `<button type="button" onclick="addChordLine('${n}')">${n}</button>`).join('');
+  renderQuickSugg();
   $('f-capo').innerHTML = [0,1,2,3,4,5,6,7,8,9].map(i => `<option value="${i}" ${draft.capo===i?'selected':''}>${i?'Frette '+i:'Sans capo'}</option>`).join('');
   $('f-bpm').value = draft.bpm || '';
   $('f-tuning').value = draft.tuning || 'Standard';
