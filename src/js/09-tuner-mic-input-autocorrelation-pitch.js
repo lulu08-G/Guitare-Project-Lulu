@@ -1,8 +1,7 @@
-/* ═══════ TUNER — mic input, autocorrelation pitch detection ═══════
-   Senior note: FFT peak-picking is too coarse for a single plucked string
-   (harmonics fool it easily). Time-domain autocorrelation with parabolic
-   interpolation is the standard choice for monophonic guitar tuners and is
-   cheap enough to run several times a second in plain JS. */
+/* ═══════ TUNER — mic input, pitch detection (YIN since 19/11) ═══════
+   FFT peak-picking is too coarse for a single plucked string (harmonics fool it).
+   YIN, plus a median filter and an attack guard (tnTrack), keeps the reading
+   steady when the same string is plucked again and again. */
 const STRING_LABELS_FULL = ['Mi grave (6e)','La (5e)','Ré (4e)','Sol (3e)','Si (2e)','Mi aigu (1re)'];
 const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 let tunerStream = null, tunerAnalyser = null, tunerBuf = null, tunerRAF = null, tunerLastRun = 0;
@@ -13,7 +12,7 @@ const TN_FR = ['Mi', 'La', 'Ré', 'Sol', 'Si', 'Mi'];
 const TN_MIC_ON = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>Arrêter l’écoute';
 const TN_MIC_OFF = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3"/></svg>Écouter ma guitare';
 // état de l'accordeur : auto (corde la plus proche) ou corde choisie ; cordes justes ; aide de Médi
-const tn = {init: false, auto: true, target: 0, tuned: new Set(), wrong: 0, wrongT: 0, okT: 0, silentT: 0, expr: '', helpK: '', helpOff: false, helped: {}};
+const tn = {pop: -1, init: false, auto: true, target: 0, tuned: new Set(), wrong: 0, wrongT: 0, okT: 0, silentT: 0, expr: '', helpK: '', helpOff: false, helped: {}};
 async function toggleTuner() {
   if (tunerStream) { stopTuner(); return; }
   let stream;
@@ -41,39 +40,57 @@ function stopTuner() {
 }
 function tunerLoop(ts) {
   tunerRAF = requestAnimationFrame(tunerLoop);
-  if (ts - tunerLastRun < 80) return; // ~12/s is plenty for a tuner, keeps CPU light
+  if (ts - tunerLastRun < 50) return; // ~20 lectures/s
   tunerLastRun = ts;
   tunerAnalyser.getFloatTimeDomainData(tunerBuf);
-  renderTunerReading(autoCorrelate(tunerBuf, audio().sampleRate));
+  const f = tnTrack(tunerBuf, audio().sampleRate, ts);
+  if (f === 'wait') { tn.silentT = performance.now(); return; }
+  renderTunerReading(f);
 }
-function autoCorrelate(buf, sampleRate) {
-  const SIZE = buf.length;
-  let rms = 0;
-  for (let i = 0; i < SIZE; i++) rms += buf[i]*buf[i];
-  rms = Math.sqrt(rms / SIZE);
-  if (rms < 0.01) return null; // silence / noise floor
-
-  let r1 = 0, r2 = SIZE - 1;
-  const thres = 0.2;
-  for (let i = 0; i < SIZE/2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
-  for (let i = 1; i < SIZE/2; i++) if (Math.abs(buf[SIZE-i]) < thres) { r2 = SIZE - i; break; }
-  const b = buf.slice(r1, r2);
-  const n = b.length;
-  if (n < 8) return null;
-
-  const c = new Float32Array(n);
-  for (let lag = 0; lag < n; lag++) { let sum = 0; for (let i = 0; i < n - lag; i++) sum += b[i]*b[i+lag]; c[lag] = sum; }
-  let d = 0; while (d < n-1 && c[d] > c[d+1]) d++;
-  let maxVal = -1, T0 = -1;
-  for (let i = d; i < n; i++) if (c[i] > maxVal) { maxVal = c[i]; T0 = i; }
-  if (T0 <= 0) return null;
-  if (T0 > 0 && T0 < n-1) { // parabolic interpolation for sub-sample precision
-    const x1 = c[T0-1], x2 = c[T0], x3 = c[T0+1];
-    const a = (x1 + x3 - 2*x2)/2, bb = (x3 - x1)/2;
-    if (a) T0 = T0 - bb/(2*a);
+/* Lecture stable (19/11) : on ignore le claquement de l'attaque, on prend la médiane des
+   dernières lectures (les erreurs d'octave et les valeurs folles sautent), puis on lisse.
+   La détection elle-même passe à YIN, bien moins sujet aux erreurs d'octave. */
+const tnF = {hist: [], ema: 0, rmsAvg: 0, onsetT: -1e9};
+function tnTrack(buf, sr, now) {
+  let rms = 0; for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / buf.length);
+  if (rms < 0.006) { tnF.hist = []; tnF.rmsAvg *= .5; return null; }
+  if (rms > tnF.rmsAvg * 1.6 + 0.004) { tnF.onsetT = now; tnF.hist = []; } // nouvelle attaque
+  tnF.rmsAvg = tnF.rmsAvg * .7 + rms * .3;
+  if (now - tnF.onsetT < 110) return 'wait';
+  const f = yinPitch(buf, sr);
+  if (!f) return 'wait';
+  const m = 12 * Math.log2(f / 440), h = tnF.hist;
+  h.push(m); if (h.length > 5) h.shift();
+  if (h.length < 3) return 'wait';
+  const med = h.slice().sort((a, b) => a - b)[h.length >> 1];
+  if (Math.abs(m - med) > .5) { h.pop(); if (h.length < 3) return 'wait'; }
+  tnF.ema = h.length === 3 ? med : tnF.ema * .55 + med * .45;
+  return 440 * Math.pow(2, tnF.ema / 12);
+}
+// YIN (de Cheveigné et Kawahara, 2002), sur un signal ramené à ~24 kHz pour rester léger
+let tnYin = null, tnDec = null;
+function yinPitch(buf, sr) {
+  let x = buf, rate = sr;
+  if (sr > 32000) {
+    const n = buf.length >> 1; if (!tnDec || tnDec.length !== n) tnDec = new Float32Array(n);
+    for (let i = 0; i < n; i++) tnDec[i] = (buf[2 * i] + buf[2 * i + 1]) * .5;
+    x = tnDec; rate = sr / 2;
   }
-  const freq = sampleRate / T0;
-  return (freq > 50 && freq < 1200) ? freq : null;
+  const W = x.length >> 1, tMin = Math.floor(rate / 1100), tMax = Math.min(W - 1, Math.ceil(rate / 60));
+  if (!tnYin || tnYin.length !== tMax + 1) tnYin = new Float32Array(tMax + 1);
+  const d = tnYin; d[0] = 1; let run = 0;
+  for (let t = 1; t <= tMax; t++) {
+    let s = 0; for (let j = 0; j < W; j++) { const v = x[j] - x[j + t]; s += v * v; }
+    run += s; d[t] = run ? s * t / run : 1;
+  }
+  let tau = -1;
+  for (let t = tMin; t <= tMax; t++) if (d[t] < .15) { while (t < tMax && d[t + 1] < d[t]) t++; tau = t; break; }
+  if (tau < 0) { let mn = 1; for (let t = tMin; t <= tMax; t++) if (d[t] < mn) { mn = d[t]; tau = t; } if (mn > .3) return null; }
+  let T = tau;
+  if (tau > 1 && tau < tMax) { const a = d[tau - 1], b = d[tau], c = d[tau + 1], den = a + c - 2 * b; if (den > 0) T = tau + (a - c) / (2 * den); }
+  const f = rate / T;
+  return f > 55 && f < 1100 ? f : null;
 }
 function freqToNote(freq) {
   const midi = 69 + 12*Math.log2(freq/440);
@@ -149,13 +166,16 @@ function renderTunerReading(freq) {
   }
   tn.wrong = 0;
   tnPoint(cents);
-  const inTune = Math.abs(cents) <= 5;
+  // tolérance avec hystérésis : on entre dans « juste » à ±4 cents, on n'en sort qu'au-delà de ±7
+  const inTune = Math.abs(cents) <= (tn.inT ? 7 : 4); tn.inT = inTune;
   note.innerHTML = `<span class="tn-n${inTune ? ' ok' : ''}">${name}</span><span class="tn-s">${sub}<b class="${inTune ? '' : 'c'}">${inTune ? 'juste' : (cents > 0 ? '+' : '−') + Math.abs(cents)}</b></span>`;
   if (inTune) {
     if (!tn.okT) tn.okT = now;
-    if (now - tn.okT > 450 && !tn.tuned.has(str.si)) tnJuste(str.si);
+    tn.outT = 0;
+    if (now - tn.okT > 400 && !tn.tuned.has(str.si)) tnJuste(str.si);
   } else {
-    tn.okT = 0;
+    if (!tn.outT) tn.outT = now;
+    if (now - tn.outT > 200) tn.okT = 0; // un écart bref ne remet pas le compteur à zéro
     tnSay(Math.abs(cents) > 25 ? `Encore trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} un peu plus la mécanique.` : `Un peu trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} doucement la mécanique.`, 'concentree', 'look');
   }
 }
@@ -164,10 +184,29 @@ function tnJuste(si) {
   const nx = [0, 1, 2, 3, 4, 5].find(i => !tn.tuned.has(i));
   if (navigator.vibrate) try { navigator.vibrate(30); } catch (e) {}
   const r = $('tn-ring'); if (r) { r.classList.remove('go'); void r.getBoundingClientRect(); r.classList.add('go'); }
-  tn.expr = ''; tnMedi('contente', 'jump');
-  if (!tn.helpK) $('tn-help').innerHTML = `<div class="bulle tn-b">${nx == null ? 'Tout est juste. Ta guitare est prête !' : `Juste ! On passe au ${TN_FR[nx]}${nx === 5 ? ' aigu' : ''}.`}</div>`;
+  // la fête « corde juste » (19/11) : l'arc se remplit, double onde, étincelles, ding, la case se coche
+  const st = document.querySelector('#v-tuner .tn-stage');
+  if (st) { st.classList.remove('win'); void st.offsetWidth; st.classList.add('win'); clearTimeout(tn.winT); tn.winT = setTimeout(() => st.classList.remove('win'), 1400); }
+  const n = document.querySelector('#tn-note .tn-n'); if (n) n.classList.add('win');
+  tnDing(nx == null);
+  tn.expr = ''; tnMedi('contente', nx == null ? 'dance' : 'jump');
+  if (!tn.helpK) $('tn-help').innerHTML = `<div class="bulle tn-b${nx == null ? ' tn-fin' : ''}">${nx == null ? '<b>Guitare accordée !</b> Les six cordes sont justes, à toi de jouer.' : `<b>${TN_FR[si]}${si === 0 ? ' grave' : si === 5 ? ' aigu' : ''} : juste !</b> On passe au ${TN_FR[nx]}${nx === 5 ? ' aigu' : ''}.`}</div>`;
   if (!tn.auto && nx != null) tn.target = nx;
+  tn.pop = si;
   renderTunerStrings();
+  tn.pop = -1;
+}
+function tnDing(big) {   // petit carillon, deux notes si tout est juste
+  try {
+    const ac = audio(); if (ac.state === 'suspended') ac.resume();
+    const t = ac.currentTime + .01;
+    (big ? [[1318.5, 0], [1975.5, .12], [2637, .24]] : [[1318.5, 0], [1975.5, 0]]).forEach(([f, d], i) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0, t + d); g.gain.linearRampToValueAtTime(i && !big ? .05 : .12, t + d + .008); g.gain.exponentialRampToValueAtTime(.0001, t + d + .7);
+      o.connect(g); g.connect(ac.destination); o.start(t + d); o.stop(t + d + .75);
+    });
+  } catch (e) {}
 }
 function tnAutoToggle() {
   tn.auto = !tn.auto; LS.set('gms_tn_auto', tn.auto);
@@ -187,7 +226,7 @@ function renderTunerStrings() {
   const b = $('tn-auto'); if (b) { b.setAttribute('aria-pressed', tn.auto); b.classList.toggle('on', tn.auto); }
   host.innerHTML = tunerTargets().map((t, i) => {
     const on = !tn.auto && tn.target === i, ok = tn.tuned.has(i);
-    return `<button type="button" class="${on ? 'on' : ''}${ok ? ' ok' : ''}" aria-label="${STRING_LABELS_FULL[i]}${ok ? ', juste' : ''} (appui long : où est-elle ?)" aria-pressed="${on}" onpointerdown="tnDown(${i})" onpointerup="tnUp(${i},event)" onpointerleave="clearTimeout(tnPress)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tnPick(${i})}"><b>${TN_FR[i]}</b>${ok ? '<svg viewBox="0 0 12 10" aria-hidden="true"><path d="M1.5 5 L4.5 8 L10.5 2"/></svg>' : `<small>${6 - i}</small>`}</button>`;
+    return `<button type="button" class="${on ? 'on' : ''}${ok ? ' ok' : ''}${tn.pop === i ? ' pop' : ''}" aria-label="${STRING_LABELS_FULL[i]}${ok ? ', juste' : ''} (appui long : où est-elle ?)" aria-pressed="${on}" onpointerdown="tnDown(${i})" onpointerup="tnUp(${i},event)" onpointerleave="clearTimeout(tnPress)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tnPick(${i})}"><b>${TN_FR[i]}</b>${ok ? '<svg viewBox="0 0 12 10" aria-hidden="true"><path d="M1.5 5 L4.5 8 L10.5 2"/></svg>' : `<small>${6 - i}</small>`}</button>`;
   }).join('');
   if (!$('tuner-toggle').innerHTML) $('tuner-toggle').innerHTML = tunerStream ? TN_MIC_ON : TN_MIC_OFF;
   if (!$('tn-medi').innerHTML) { tnMedi('concentree', 'tilt'); tnSay('Touche « Écouter ma guitare » et joue une corde.'); }
