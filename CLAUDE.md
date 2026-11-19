@@ -22,6 +22,7 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 - **Les fiches restent le cœur de l'app.** Le système « bande + Médi + ta ligne » sert le **métronome** (avec ou sans bande, motif modifiable) et les **cours de rythme** (S'entraîner), pas le centre.
 - Lecture des rythmes sans flèches : la main fait l'aller-retour en continu, on ne montre que les cases où l'on gratte (maquettes E1 à E5, B1 à B3, V1 à V6 sur la planche).
 - Bande jouée sur une fiche : Lucas n'y croit pas trop (le rythme d'un morceau sonne rarement comme l'original) ; plutôt jouer par-dessus sa prise ou un audio. **À trancher par une batterie de tests** (utile, fun, compris sans aide, encombrant, marche ou pas) avant d'investir.
+- **Labo de tests (fait le 19/11)** : `src/js/39-8-labo.js` + `src/css/22-labo.css`, vue `labo`, caché : ouvrir l'app avec `?beta` (retenu sur l'appareil, `?beta=0` le coupe ; ligne « Labo de tests » dans Moi). 6 tests (Médi écoute avec la bande, balle ou sur place, lire sans flèches, variante hammer, devine le rythme, morceau : bande / ma version / audio), avis Oui/Bof/Non sur utile, fun, compris, encombrant, ça marche + remarque, gardés dans `gms_labo`, « Envoyer mes réponses » les partage en texte. Ne touche pas aux fiches.
 - Médi qui écoute pendant que la bande joue : ne pas écouter le son du téléphone (anti-écho du téléphone + l'app ignore ses propres coups qu'elle connaît à la milliseconde + courte calibration). À prouver sur le téléphone de Lucas en premier.
 
 ## Gel des nouveautés (décision de Lucas, 13/11/2026)

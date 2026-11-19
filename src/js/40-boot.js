@@ -80,8 +80,9 @@
     }
   } catch (e) { console.warn('seed', e); }
   renderHome(); go('disc');
-  if (!hadSheets && !LS.get('gms_onboarded', false)) onbShow();
-  gmsShareIn();   // vidéo partagée depuis YouTube (19/11)   // nouvelle installation : 3 écrans d'accueil, une seule fois // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
+  if (!hadSheets && !LS.get('gms_onboarded', false)) onbShow();   // nouvelle installation : 3 écrans d'accueil, une seule fois // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
+  gmsShareIn();   // vidéo partagée depuis YouTube (19/11)
+  if (LAB_OPEN && !LAB_Q.has('url')) go('labo');   // lien de test : on ouvre le labo
 })();
 
 // App installable : le service de fonctionnement hors ligne ne s'active que sur un vrai site (pas en fichier local ni dans un aperçu)

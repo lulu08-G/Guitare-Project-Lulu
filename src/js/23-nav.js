@@ -4,6 +4,7 @@ function go(v) {
   stopPlay();
   if (v !== 'tuner') stopTuner();
   if (v !== 'metro' && metroPlaying) stopMetro();
+  if (v !== 'labo') labStop();
   if (v !== 'ed' && cp.ed) { cp.ed = false; const sh = $('cp-sheet'); if (sh) { sh.classList.remove('on'); sh.innerHTML = ''; } }   // quitter le métronome coupe le son (19/11)
   if (v !== 'import') stopCapture();
   coursStop();
@@ -34,6 +35,7 @@ function go(v) {
   if (v === 'tuner') renderTunerStrings();
   if (v === 'plus') renderPlus();
   if (v === 'admin') renderAdmin();
+  if (v === 'labo') { lab.view = 'home'; labRender(); }
   renderSubnav(v);
 }
 
