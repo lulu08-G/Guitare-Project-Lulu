@@ -552,3 +552,5 @@ body.mj-on{overflow:hidden}
 .ytp-add b{display:block;font:800 17px var(--display);color:var(--cream)}.ytp-add small{font-size:13px;color:var(--cream3)}
 .ytp-add-b{display:flex;gap:8px;flex-wrap:wrap}
 #home-filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#home-filters::-webkit-scrollbar{display:none}#home-filters .filt{flex:none}
+.tn-lvl{width:120px;height:6px;border-radius:3px;background:var(--card);overflow:hidden;margin:-4px auto 0}
+.tn-lvl i{display:block;height:100%;background:var(--gold);transform:scaleX(0);transform-origin:0 50%;transition:transform .08s linear}

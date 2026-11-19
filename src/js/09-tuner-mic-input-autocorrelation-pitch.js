@@ -36,6 +36,7 @@ function stopTuner() {
   tunerRAF = null;
   if (tunerStream) tunerStream.getTracks().forEach(t => t.stop());
   tunerStream = null; tunerAnalyser = null;
+  const lv = $('tn-lvl'); if (lv) lv.style.transform = 'scaleX(0)';
   const btn = $('tuner-toggle'); if (btn) { btn.innerHTML = TN_MIC_OFF; btn.classList.remove('on'); }
 }
 function tunerLoop(ts) {
@@ -44,16 +45,23 @@ function tunerLoop(ts) {
   tunerLastRun = ts;
   tunerAnalyser.getFloatTimeDomainData(tunerBuf);
   const f = tnTrack(tunerBuf, audio().sampleRate, ts);
-  if (f === 'wait') { tn.silentT = performance.now(); return; }
+  // niveau du micro : on voit qu'il entend, même du bruit (19/11)
+  const lv = $('tn-lvl'); if (lv) lv.style.transform = `scaleX(${Math.min(1, tnF.rms / .12).toFixed(3)})`;
+  if (f === 'wait') {
+    const now = performance.now(); tn.silentT = now;
+    if (tnF.rms > .02) { if (!tn.noiseT) tn.noiseT = now; else if (now - tn.noiseT > 1800 && !tn.noiseSaid) { tn.noiseSaid = true; tnSay('J’entends du bruit, pas une note. Gratte une seule corde, ou fredonne un son tenu.', 'curieuse', 'tilt'); } }
+    return;
+  }
+  if (typeof f === 'number') { tn.noiseT = 0; tn.noiseSaid = false; }
   renderTunerReading(f);
 }
 /* Lecture stable (19/11) : on ignore le claquement de l'attaque, on prend la médiane des
    dernières lectures (les erreurs d'octave et les valeurs folles sautent), puis on lisse.
    La détection elle-même passe à YIN, bien moins sujet aux erreurs d'octave. */
-const tnF = {hist: [], ema: 0, rmsAvg: 0, onsetT: -1e9};
+const tnF = {hist: [], ema: 0, rms: 0, rmsAvg: 0, onsetT: -1e9};
 function tnTrack(buf, sr, now) {
   let rms = 0; for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i];
-  rms = Math.sqrt(rms / buf.length);
+  rms = Math.sqrt(rms / buf.length); tnF.rms = rms;
   if (rms < 0.006) { tnF.hist = []; tnF.rmsAvg *= .5; return null; }
   if (rms > tnF.rmsAvg * 1.6 + 0.004) { tnF.onsetT = now; tnF.hist = []; } // nouvelle attaque
   tnF.rmsAvg = tnF.rmsAvg * .7 + rms * .3;
