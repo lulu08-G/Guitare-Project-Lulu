@@ -232,9 +232,15 @@ body.mj-on{overflow:hidden}
 .tn-strings button{height:64px;border-radius:18px;background:var(--card);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;touch-action:manipulation;-webkit-user-select:none;user-select:none}
 .tn-strings b{font:800 17px var(--display)}.tn-strings small{font-size:10px;font-weight:600;color:var(--cream3)}
 .tn-strings button.on{background:var(--gold);color:var(--ink)}.tn-strings button.on small{color:var(--ink)}
-.tn-strings button.ok{background:var(--gold);color:var(--ink)}
-.tn-strings svg{width:16px;height:13px;fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+/* 20/11 : seule la corde entendue (ou choisie) est orange ; une corde juste garde juste sa coche */
+.tn-strings button{transition:background .15s,color .15s,transform .2s var(--ease-out),box-shadow .2s}
+.tn-strings button.ok{background:var(--card);color:var(--cream)}
+.tn-strings button.hear{background:var(--gold);color:var(--ink);transform:translateY(-4px);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--gold),0 8px 22px rgba(255,138,42,.4)}
+.tn-strings button.hear small{color:var(--ink)}
+.tn-strings svg{width:16px;height:13px;fill:none;stroke:var(--gold);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.tn-strings button.on svg,.tn-strings button.hear svg{stroke:var(--ink)}
 .tn-strings button.pop{animation:tnPop .5s cubic-bezier(.2,.9,.3,1.4)}
+@media (prefers-reduced-motion:reduce){.tn-strings button.hear{transform:none}}
 @keyframes tnPop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:none}}
 /* corde juste (19/11) : arc rempli, double onde, étincelles */
 #tn-fill,.tn-wave,.tn-sp{opacity:0;pointer-events:none}

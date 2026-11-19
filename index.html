@@ -2578,9 +2578,15 @@ body.mj-on{overflow:hidden}
 .tn-strings button{height:64px;border-radius:18px;background:var(--card);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;touch-action:manipulation;-webkit-user-select:none;user-select:none}
 .tn-strings b{font:800 17px var(--display)}.tn-strings small{font-size:10px;font-weight:600;color:var(--cream3)}
 .tn-strings button.on{background:var(--gold);color:var(--ink)}.tn-strings button.on small{color:var(--ink)}
-.tn-strings button.ok{background:var(--gold);color:var(--ink)}
-.tn-strings svg{width:16px;height:13px;fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+/* 20/11 : seule la corde entendue (ou choisie) est orange ; une corde juste garde juste sa coche */
+.tn-strings button{transition:background .15s,color .15s,transform .2s var(--ease-out),box-shadow .2s}
+.tn-strings button.ok{background:var(--card);color:var(--cream)}
+.tn-strings button.hear{background:var(--gold);color:var(--ink);transform:translateY(-4px);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--gold),0 8px 22px rgba(255,138,42,.4)}
+.tn-strings button.hear small{color:var(--ink)}
+.tn-strings svg{width:16px;height:13px;fill:none;stroke:var(--gold);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.tn-strings button.on svg,.tn-strings button.hear svg{stroke:var(--ink)}
 .tn-strings button.pop{animation:tnPop .5s cubic-bezier(.2,.9,.3,1.4)}
+@media (prefers-reduced-motion:reduce){.tn-strings button.hear{transform:none}}
 @keyframes tnPop{0%{transform:scale(.7)}60%{transform:scale(1.15)}100%{transform:none}}
 /* corde juste (19/11) : arc rempli, double onde, étincelles */
 #tn-fill,.tn-wave,.tn-sp{opacity:0;pointer-events:none}
@@ -4697,7 +4703,7 @@ const TN_FR = ['Mi', 'La', 'Ré', 'Sol', 'Si', 'Mi'];
 const TN_MIC_ON = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>Arrêter l’écoute';
 const TN_MIC_OFF = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3"/></svg>Écouter ma guitare';
 // état de l'accordeur : auto (corde la plus proche) ou corde choisie ; cordes justes ; aide de Médi
-const tn = {pop: -1, init: false, auto: true, target: 0, tuned: new Set(), wrong: 0, wrongT: 0, okT: 0, silentT: 0, expr: '', helpK: '', helpOff: false, helped: {}};
+const tn = {pop: -1, hear: -1, hearT: 0, armed: '', init: false, auto: true, target: 0, tuned: new Set(), wrong: 0, wrongT: 0, okT: 0, silentT: 0, expr: '', helpK: '', helpOff: false, helped: {}};
 async function toggleTuner() {
   if (tunerStream) { stopTuner(); return; }
   let stream;
@@ -4708,7 +4714,7 @@ async function toggleTuner() {
   const ac = audio(); if (ac.state === 'suspended') ac.resume();
   const src = ac.createMediaStreamSource(stream);
   tunerAnalyser = ac.createAnalyser();
-  tunerAnalyser.fftSize = 4096;
+  tunerAnalyser.fftSize = 8192;
   src.connect(tunerAnalyser);
   tunerBuf = new Float32Array(tunerAnalyser.fftSize);
   $('tuner-toggle').innerHTML = TN_MIC_ON; $('tuner-toggle').classList.add('on');
@@ -4720,7 +4726,7 @@ function stopTuner() {
   if (tunerRAF) cancelAnimationFrame(tunerRAF);
   tunerRAF = null;
   if (tunerStream) tunerStream.getTracks().forEach(t => t.stop());
-  tunerStream = null; tunerAnalyser = null;
+  tunerStream = null; tunerAnalyser = null; tnHear(-1, 0);
   const btn = $('tuner-toggle'); if (btn) { btn.innerHTML = TN_MIC_OFF; btn.classList.remove('on'); }
 }
 function tunerLoop(ts) {
@@ -4735,24 +4741,32 @@ function tunerLoop(ts) {
 /* Lecture stable (19/11) : on ignore le claquement de l'attaque, on prend la médiane des
    dernières lectures (les erreurs d'octave et les valeurs folles sautent), puis on lisse.
    La détection elle-même passe à YIN, bien moins sujet aux erreurs d'octave. */
-const tnF = {hist: [], ema: 0, rmsAvg: 0, onsetT: -1e9};
+const tnF = {hist: [], ema: 0, rmsAvg: 0, onsetT: -1e9, alt: null};
 function tnTrack(buf, sr, now) {
-  let rms = 0; for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i];
-  rms = Math.sqrt(rms / buf.length);
-  if (rms < 0.006) { tnF.hist = []; tnF.rmsAvg *= .5; return null; }
-  if (rms > tnF.rmsAvg * 1.6 + 0.004) { tnF.onsetT = now; tnF.hist = []; } // nouvelle attaque
+  let rms = 0; for (let i = buf.length - 2048; i < buf.length; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / 2048);   // niveau sur les ~40 dernières ms : on voit tout de suite le nouveau coup
+  if (rms < 0.003) { tnF.hist = []; tnF.alt = null; tnF.rmsAvg *= .5; return null; }
+  if (rms > tnF.rmsAvg * 1.6 + 0.004) tnF.onsetT = now;   // nouvelle attaque : on laisse passer le claquement
   tnF.rmsAvg = tnF.rmsAvg * .7 + rms * .3;
-  if (now - tnF.onsetT < 110) return 'wait';
+  if (now - tnF.onsetT < 60) return 'wait';
   const f = yinPitch(buf, sr);
   if (!f) return 'wait';
-  const m = 12 * Math.log2(f / 440), h = tnF.hist;
+  const m = 12 * Math.log2(f / 440);
+  let h = tnF.hist;
+  const shown = h.length >= 2 ? 440 * Math.pow(2, tnF.ema / 12) : 'wait';
+  // 20/11 : on ne vide plus l'historique à chaque coup (l'aiguille restait figée 0,3 s).
+  // Une lecture très différente n'est crue que si la suivante la confirme (changement de corde).
+  if (h.length && Math.abs(m - tnMed(h)) > .5) {
+    if (tnF.alt != null && Math.abs(m - tnF.alt) < .3) { tnF.hist = h = [tnF.alt]; tnF.alt = null; }
+    else { tnF.alt = m; return shown; }
+  } else tnF.alt = null;
   h.push(m); if (h.length > 5) h.shift();
-  if (h.length < 3) return 'wait';
-  const med = h.slice().sort((a, b) => a - b)[h.length >> 1];
-  if (Math.abs(m - med) > .5) { h.pop(); if (h.length < 3) return 'wait'; }
-  tnF.ema = h.length === 3 ? med : tnF.ema * .55 + med * .45;
+  if (h.length < 2) return 'wait';
+  const med = tnMed(h);
+  tnF.ema = h.length === 2 ? med : tnF.ema * .5 + med * .5;
   return 440 * Math.pow(2, tnF.ema / 12);
 }
+function tnMed(h) { const a = h.slice().sort((x, y) => x - y), n = a.length; return n % 2 ? a[n >> 1] : (a[n / 2 - 1] + a[n / 2]) / 2; }
 // YIN (de Cheveigné et Kawahara, 2002), sur un signal ramené à ~24 kHz pour rester léger
 let tnYin = null, tnDec = null;
 function yinPitch(buf, sr) {
@@ -4762,6 +4776,21 @@ function yinPitch(buf, sr) {
     for (let i = 0; i < n; i++) tnDec[i] = (buf[2 * i] + buf[2 * i + 1]) * .5;
     x = tnDec; rate = sr / 2;
   }
+  // 1er passage rapide sur les ~85 dernières ms ; les cordes graves (< 150 Hz) sont relues
+  // sur toute la fenêtre (~170 ms) : trop peu de périodes sinon, la lecture tremblait de ±7 cents
+  const f0 = yinRun(x.length > 2048 ? x.subarray(x.length - 2048) : x, rate);
+  if (!f0) return null;
+  if (f0 > 150 && x.length > 2048) x = x.subarray(x.length - 2048);
+  // 2e passage (20/11) : on adoucit les aigus juste au-dessus de la fondamentale. Les partiels
+  // d'une vraie corde sont un peu trop hauts (inharmonicité) et tiraient la lecture de ~8 cents.
+  if (!tnLp || tnLp.length < x.length) tnLp = new Float32Array(x.length);
+  const a = 1 - Math.exp(-2 * Math.PI * f0 * 1.25 / rate);
+  let y1 = 0, y2 = 0;
+  for (let i = 0; i < x.length; i++) { y1 += a * (x[i] - y1); y2 += a * (y1 - y2); tnLp[i] = y2; }
+  return yinRun(tnLp.subarray(Math.min(x.length >> 2, Math.ceil(6 / a)), x.length), rate) || f0;   // on saute la mise en route du filtre
+}
+let tnLp = null;
+function yinRun(x, rate) {
   const W = x.length >> 1, tMin = Math.floor(rate / 1100), tMax = Math.min(W - 1, Math.ceil(rate / 60));
   if (!tnYin || tnYin.length !== tMax + 1) tnYin = new Float32Array(tMax + 1);
   const d = tnYin; d[0] = 1; let run = 0;
@@ -4832,6 +4861,7 @@ function tnPoint(cents) {   // aiguille et Médi penchent ensemble
 function renderTunerReading(freq) {
   const now = performance.now();
   if (!freq) {
+    if (now - tn.hearT > 1500) tnHear(-1, now);
     if (now - tn.silentT > 10000) { tn.silentT = now; tnHelp('silence', null, 'Je n’entends rien. Approche le téléphone de la guitare et gratte une seule corde, bien franchement.'); }
     return;
   }
@@ -4850,21 +4880,30 @@ function renderTunerReading(freq) {
     return;
   }
   tn.wrong = 0;
+  tnHear(str.si, now);
+  if (tn.armed && tn.armed !== str.si + 'x') tn.armed = '';   // autre corde : la fête pourra rejouer en revenant
   tnPoint(cents);
-  // tolérance avec hystérésis : on entre dans « juste » à ±4 cents, on n'en sort qu'au-delà de ±7
-  const inTune = Math.abs(cents) <= (tn.inT ? 7 : 4); tn.inT = inTune;
+  // tolérance avec hystérésis : on entre dans « juste » à ±3 cents, on n'en sort qu'au-delà de ±6
+  const inTune = Math.abs(cents) <= (tn.inT ? 6 : 3); tn.inT = inTune;
   note.innerHTML = `<span class="tn-n${inTune ? ' ok' : ''}">${name}</span><span class="tn-s">${sub}<b class="${inTune ? '' : 'c'}">${inTune ? 'juste' : (cents > 0 ? '+' : '−') + Math.abs(cents)}</b></span>`;
   if (inTune) {
     if (!tn.okT) tn.okT = now;
     tn.outT = 0;
-    if (now - tn.okT > 400 && !tn.tuned.has(str.si)) tnJuste(str.si);
+    if (now - tn.okT > 400 && tn.armed !== str.si + 'x') { tn.armed = str.si + 'x'; tnJuste(str.si); }
   } else {
     if (!tn.outT) tn.outT = now;
-    if (now - tn.outT > 200) tn.okT = 0; // un écart bref ne remet pas le compteur à zéro
+    if (now - tn.outT > 200) { tn.okT = 0; if (tn.armed === str.si + 'x') tn.armed = ''; } // un écart bref ne remet pas le compteur à zéro
     tnSay(Math.abs(cents) > 25 ? `Encore trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} un peu plus la mécanique.` : `Un peu trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} doucement la mécanique.`, 'concentree', 'look');
   }
 }
+// la corde entendue s'allume dans la rangée (comme la mécanique dans GuitarTuna)
+function tnHear(si, now) {
+  if (si >= 0) tn.hearT = now;
+  if (tn.hear === si) return; tn.hear = si;
+  document.querySelectorAll('#tuner-strings button').forEach((b, i) => b.classList.toggle('hear', i === si));
+}
 function tnJuste(si) {
+  const again = tn.tuned.has(si);
   tn.tuned.add(si);
   const nx = [0, 1, 2, 3, 4, 5].find(i => !tn.tuned.has(i));
   if (navigator.vibrate) try { navigator.vibrate(30); } catch (e) {}
@@ -4873,9 +4912,9 @@ function tnJuste(si) {
   const st = document.querySelector('#v-tuner .tn-stage');
   if (st) { st.classList.remove('win'); void st.offsetWidth; st.classList.add('win'); clearTimeout(tn.winT); tn.winT = setTimeout(() => st.classList.remove('win'), 1400); }
   const n = document.querySelector('#tn-note .tn-n'); if (n) n.classList.add('win');
-  tnDing(nx == null);
-  tn.expr = ''; tnMedi('contente', nx == null ? 'dance' : 'jump');
-  if (!tn.helpK) $('tn-help').innerHTML = `<div class="bulle tn-b${nx == null ? ' tn-fin' : ''}">${nx == null ? '<b>Guitare accordée !</b> Les six cordes sont justes, à toi de jouer.' : `<b>${TN_FR[si]}${si === 0 ? ' grave' : si === 5 ? ' aigu' : ''} : juste !</b> On passe au ${TN_FR[nx]}${nx === 5 ? ' aigu' : ''}.`}</div>`;
+  tnDing(nx == null && !again);
+  tn.expr = ''; tnMedi('contente', nx == null && !again ? 'dance' : 'jump');
+  if (!tn.helpK) $('tn-help').innerHTML = `<div class="bulle tn-b${nx == null && !again ? ' tn-fin' : ''}">${again ? `<b>${TN_FR[si]}${si === 0 ? ' grave' : si === 5 ? ' aigu' : ''} : juste !</b> ${nx == null ? 'Tout est juste.' : `Il reste le ${TN_FR[nx]}${nx === 5 ? ' aigu' : ''}.`}` : nx == null ? '<b>Guitare accordée !</b> Les six cordes sont justes, à toi de jouer.' : `<b>${TN_FR[si]}${si === 0 ? ' grave' : si === 5 ? ' aigu' : ''} : juste !</b> On passe au ${TN_FR[nx]}${nx === 5 ? ' aigu' : ''}.`}</div>`;
   if (!tn.auto && nx != null) tn.target = nx;
   tn.pop = si;
   renderTunerStrings();
@@ -4911,7 +4950,7 @@ function renderTunerStrings() {
   const b = $('tn-auto'); if (b) { b.setAttribute('aria-pressed', tn.auto); b.classList.toggle('on', tn.auto); }
   host.innerHTML = tunerTargets().map((t, i) => {
     const on = !tn.auto && tn.target === i, ok = tn.tuned.has(i);
-    return `<button type="button" class="${on ? 'on' : ''}${ok ? ' ok' : ''}${tn.pop === i ? ' pop' : ''}" aria-label="${STRING_LABELS_FULL[i]}${ok ? ', juste' : ''} (appui long : où est-elle ?)" aria-pressed="${on}" onpointerdown="tnDown(${i})" onpointerup="tnUp(${i},event)" onpointerleave="clearTimeout(tnPress)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tnPick(${i})}"><b>${TN_FR[i]}</b>${ok ? '<svg viewBox="0 0 12 10" aria-hidden="true"><path d="M1.5 5 L4.5 8 L10.5 2"/></svg>' : `<small>${6 - i}</small>`}</button>`;
+    return `<button type="button" class="${on ? 'on' : ''}${ok ? ' ok' : ''}${tn.hear === i ? ' hear' : ''}${tn.pop === i ? ' pop' : ''}" aria-label="${STRING_LABELS_FULL[i]}${ok ? ', juste' : ''} (appui long : où est-elle ?)" aria-pressed="${on}" onpointerdown="tnDown(${i})" onpointerup="tnUp(${i},event)" onpointerleave="clearTimeout(tnPress)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tnPick(${i})}"><b>${TN_FR[i]}</b>${ok ? '<svg viewBox="0 0 12 10" aria-hidden="true"><path d="M1.5 5 L4.5 8 L10.5 2"/></svg>' : `<small>${6 - i}</small>`}</button>`;
   }).join('');
   if (!$('tuner-toggle').innerHTML) $('tuner-toggle').innerHTML = tunerStream ? TN_MIC_ON : TN_MIC_OFF;
   if (!$('tn-medi').innerHTML) { tnMedi('concentree', 'tilt'); tnSay('Touche « Écouter ma guitare » et joue une corde.'); }
