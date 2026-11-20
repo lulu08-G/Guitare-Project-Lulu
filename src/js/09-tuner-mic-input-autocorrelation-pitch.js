@@ -12,7 +12,7 @@ const TN_FR = ['Mi', 'La', 'Ré', 'Sol', 'Si', 'Mi'];
 const TN_MIC_ON = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>Arrêter l’écoute';
 const TN_MIC_OFF = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3"/></svg>Écouter ma guitare';
 // état de l'accordeur : auto (corde la plus proche) ou corde choisie ; cordes justes ; aide de Médi
-const tn = {pop: -1, hear: -1, hearT: 0, armed: '', lock: -1, lastT: 0, lastF: 0, farT: 0, init: false, auto: true, target: 0, tuned: new Set(), wrong: 0, wrongT: 0, okT: 0, silentT: 0, expr: '', helpK: '', helpOff: false, helped: {}};
+const tn = {pop: -1, hear: -1, hearT: 0, armed: '', lock: -1, lockOn: 0, lastT: 0, lastF: 0, farT: 0, init: false, auto: true, target: 0, tuned: new Set(), wrong: 0, wrongT: 0, okT: 0, silentT: 0, expr: '', helpK: '', helpOff: false, helped: {}};
 async function toggleTuner() {
   if (tunerStream) { stopTuner(); return; }
   let stream;
@@ -50,14 +50,19 @@ function tunerLoop(ts) {
 /* Lecture stable (19/11) : on ignore le claquement de l'attaque, on prend la médiane des
    dernières lectures (les erreurs d'octave et les valeurs folles sautent), puis on lisse.
    La détection elle-même passe à YIN, bien moins sujet aux erreurs d'octave. */
-const tnF = {hist: [], ema: 0, rmsAvg: 0, onsetT: -1e9, alt: null};
+const tnF = {hist: [], ema: 0, rmsAvg: 0, onsetT: -1e9, alt: null, ons: []};
 function tnTrack(buf, sr, now) {
   let rms = 0; for (let i = buf.length - 2048; i < buf.length; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / 2048);   // niveau sur les ~40 dernières ms : on voit tout de suite le nouveau coup
   // 20/11 : seuil bien plus bas (on suit la corde tant qu'elle sonne, comme les accordeurs connus) ;
   // c'est la régularité du signal (YIN) qui trie la guitare du bruit, pas le volume
   if (rms < 0.0008) { tnF.hist = []; tnF.alt = null; tnF.rmsAvg *= .5; return null; }
-  if (rms > tnF.rmsAvg * 1.6 + 0.004) { tnF.onsetT = now; tnF.rmsAvg = rms; }   // nouvelle attaque
+  // nouvelle attaque : le niveau bondit, ou (21/11) les ~20 dernières ms sont bien plus fortes que celles
+  // d'il y a ~60 ms (un coup redonné sur une corde qui sonne encore passait inaperçu)
+  let a = 0, b = 0; for (let i = buf.length - 1024; i < buf.length; i++) a += buf[i] * buf[i];
+  for (let i = buf.length - 4096; i < buf.length - 2048; i++) b += buf[i] * buf[i];
+  a = Math.sqrt(a / 1024); b = Math.sqrt(b / 2048);
+  if (rms > tnF.rmsAvg * 1.6 + 0.004 || (a > b * 1.8 + .002 && now - tnF.onsetT > 150)) { tnF.onsetT = now; tnF.rmsAvg = rms; tnF.ons = tnF.ons.filter(t => now - t < 2500).concat(now); }
   else tnF.rmsAvg = tnF.rmsAvg * .7 + rms * .3;
   if (now - tnF.onsetT < 40) return 'wait';   // on laisse passer le claquement du médiator
   const f = yinPitch(buf, sr);
@@ -71,6 +76,11 @@ function tnTrack(buf, sr, now) {
     if (tnF.alt != null && Math.abs(m - tnF.alt) < .3) { tnF.hist = h = [tnF.alt]; tnF.alt = null; }
     else { tnF.alt = m; return shown; }
   } else tnF.alt = null;
+  // 21/11 : une corde grattée fort part quelques cents trop haut, puis redescend (~0,2 s). En grattant
+  // en continu, on ne lisait que ce début trop haut : « pas bon », alors qu'un seul coup disait « juste ».
+  // Pendant l'attaque, si la note n'a pas changé d'un demi-ton, on garde la valeur posée (sans rien
+  // mémoriser : la toute première lecture mélange encore l'ancien son et le nouveau coup).
+  if (now - tnF.onsetT < 230 && h.length >= 2 && Math.abs(m - tnF.ema) < .5) return shown;
   h.push(m); if (h.length > 5) h.shift();
   if (h.length < 2) return 'wait';
   const med = tnMed(h);
@@ -79,7 +89,7 @@ function tnTrack(buf, sr, now) {
 }
 function tnMed(h) { const a = h.slice().sort((x, y) => x - y), n = a.length; return n % 2 ? a[n >> 1] : (a[n / 2 - 1] + a[n / 2]) / 2; }
 // YIN (de Cheveigné et Kawahara, 2002), sur un signal ramené à ~24 kHz pour rester léger
-let tnYin = null, tnDec = null, tnQ = 1;   // tnQ : irrégularité du dernier signal (0 = parfaitement périodique)
+let tnYin = null, tnRaw = null, tnDec = null, tnQ = 1;   // tnQ : irrégularité du dernier signal (0 = parfaitement périodique)
 function yinPitch(buf, sr) {
   let x = buf, rate = sr;
   if (sr > 32000) {
@@ -89,7 +99,7 @@ function yinPitch(buf, sr) {
   }
   // 1er passage rapide sur les ~85 dernières ms ; les cordes graves (< 150 Hz) sont relues
   // sur toute la fenêtre (~170 ms) : trop peu de périodes sinon, la lecture tremblait de ±7 cents
-  const f0 = yinRun(x.length > 2048 ? x.subarray(x.length - 2048) : x, rate);
+  const f0 = yinRun(x.length > 2048 ? x.subarray(x.length - 2048) : x, rate, true);
   if (!f0) return null;
   if (f0 > 150 && x.length > 2048) x = x.subarray(x.length - 2048);
   // 2e passage (20/11) : on adoucit les aigus juste au-dessus de la fondamentale. Les partiels
@@ -101,17 +111,27 @@ function yinPitch(buf, sr) {
   return yinRun(tnLp.subarray(Math.min(x.length >> 2, Math.ceil(6 / a)), x.length), rate) || f0;   // on saute la mise en route du filtre
 }
 let tnLp = null;
-function yinRun(x, rate) {
+function yinRun(x, rate, harm) {
   const W = x.length >> 1, tMin = Math.floor(rate / 1100), tMax = Math.min(W - 1, Math.ceil(rate / 60));
-  if (!tnYin || tnYin.length !== tMax + 1) tnYin = new Float32Array(tMax + 1);
-  const d = tnYin; d[0] = 1; let run = 0;
+  if (!tnYin || tnYin.length !== tMax + 1) { tnYin = new Float32Array(tMax + 1); tnRaw = new Float32Array(tMax + 1); }
+  const d = tnYin, r = tnRaw; d[0] = 1; let run = 0;
   for (let t = 1; t <= tMax; t++) {
     let s = 0; for (let j = 0; j < W; j++) { const v = x[j] - x[j + t]; s += v * v; }
-    run += s; d[t] = run ? s * t / run : 1;
+    r[t] = s; run += s; d[t] = run ? s * t / run : 1;
   }
   let tau = -1;
   for (let t = tMin; t <= tMax; t++) if (d[t] < .15) { while (t < tMax && d[t + 1] < d[t]) t++; tau = t; break; }
   if (tau < 0) { let mn = 1; for (let t = tMin; t <= tMax; t++) if (d[t] < mn) { mn = d[t]; tau = t; } if (mn > .3) return null; }
+  // 21/11 : le premier creux peut être celui d'une harmonique (2e, 3e, 4e…), surtout quand la note
+  // s'éteint ou au micro du téléphone qui capte mal les graves : un La lu comme un Mi aigu (3e harmonique).
+  // La vraie période se répète exactement : à 2, 3, 4 ou 5 fois tau, l'écart brut (non normalisé, sinon
+  // les multiples d'une vraie période paraissent meilleurs qu'elle) tombe à moins de la moitié.
+  // (1er passage seulement : le 2e, filtré vers le grave, grossirait une corde voisine qui résonne)
+  if (harm) for (let k = 2, t0 = tau; k <= 5; k++) {
+    const c = Math.round(t0 * k); if (c + 2 > tMax) break;
+    let m = c - 2; for (let j = c - 1; j <= c + 2; j++) if (r[j] < r[m]) m = j;
+    if (d[tau] > .05 && r[m] < r[tau] * .85 && d[m] < d[tau] * .8) tau = m;   // creux déjà très net : vraie période (une corde voisine qui résonne crée aussi un creux plus loin)
+  }
   tnQ = d[tau];
   let T = tau;
   if (tau > 1 && tau < tMax) { const a = d[tau - 1], b = d[tau], c = d[tau + 1], den = a + c - 2 * b; if (den > 0) T = tau + (a - c) / (2 * den); }
@@ -194,9 +214,14 @@ function renderTunerReading(freq) {
     }
     str = closestString(freq);
     if (tn.lock >= 0 && str.si !== tn.lock) {
-      const lk = tunerTargets()[tn.lock];
-      if (Math.abs(1200 * Math.log2(freq / lk.freq)) - Math.abs(1200 * Math.log2(freq / str.freq)) < 120) str = lk;
+      const lk = tunerTargets()[tn.lock], dl = Math.abs(1200 * Math.log2(freq / lk.freq));
+      // 21/11 : une autre corde commence forcément par un coup. Sans nouvelle attaque, c'est la même corde
+      // qu'on tourne (on la garde), ou une harmonique / une corde voisine qui résonne (on ne bouge pas).
+      if (tnF.onsetT === tn.lockOn && now - (tn.otherT || now) < 800) { if (!tn.otherT) tn.otherT = now; if (dl > 600) return; str = lk; }
+      else if (dl - Math.abs(1200 * Math.log2(freq / str.freq)) < 120) str = lk;
     }
+    if (str.si !== tn.lock) tn.lockOn = tnF.onsetT;
+    if (str.si === closestString(freq).si) tn.otherT = 0;   // (au-delà de 0,8 s d'une autre corde sans attaque entendue, on la croit)
     tn.lock = str.si; tn.lastF = freq;
   } else {
     str = tunerTargets()[tn.target];
@@ -233,7 +258,9 @@ function renderTunerReading(freq) {
   } else {
     if (!tn.outT) tn.outT = now;
     if (now - tn.outT > 200) { tn.okT = 0; if (tn.armed === str.si + 'x') tn.armed = ''; } // un écart bref ne remet pas le compteur à zéro
-    tnSay(Math.abs(cents) > 25 ? `Encore trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} un peu plus la mécanique.` : `Un peu trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} doucement la mécanique.`, 'concentree', 'look');
+    // grattée sans arrêt, la corde reste un peu trop haute (elle ne se pose qu'en sonnant) : Médi le dit
+    if (cents > 0 && cents < 25 && tnF.ons.filter(t => now - t < 2500).length >= 3) tnSay('Gratte une seule fois, doucement, et laisse sonner : la note se pose.', 'concentree', 'look');
+    else tnSay(Math.abs(cents) > 25 ? `Encore trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} un peu plus la mécanique.` : `Un peu trop ${cents > 0 ? 'haut' : 'bas'}. ${cents > 0 ? 'Desserre' : 'Serre'} doucement la mécanique.`, 'concentree', 'look');
   }
 }
 // la corde entendue s'allume dans la rangée (comme la mécanique dans GuitarTuna)
