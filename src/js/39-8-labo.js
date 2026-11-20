@@ -39,6 +39,7 @@ function labRoot(name) {   // fondamentale de l'accord, à l'octave de la basse 
 
 /* ── le moteur : Médi compte une mesure, puis la bande joue ; ta ligne défile ── */
 function labStop(keepMic) {
+  if (!keepMic) { rpStop(); if (typeof lvStop === 'function') lvStop(); }
   clearTimeout(lab.timer); lab.timer = null; lab.s = null;
   if (!keepMic) labMicOff();
   if (lab.audioEl) { try { lab.audioEl.pause(); } catch (e) {} }
@@ -157,16 +158,17 @@ function labMicOff() { const M = lab.mic; if (!M) return; cancelAnimationFrame(M
 /* ── écrans ── */
 function labRender() {
   const h = $('lab-body'); if (!h) return;
-  if (lab.view === 'home') { h.innerHTML = labHomeHTML(); return; }
+  if (lab.view === 'home') { rpRender(); return; }   // S'entraîner v2 (39-9)
+  if (lab.view === 'tests') { h.innerHTML = labHomeHTML(); return; }
   const T = LAB_TESTS.find(x => x.id === lab.view);
-  h.innerHTML = `<div class="lab-top"><button type="button" class="mt-back" onclick="labGo('home')" aria-label="Retour au labo"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><div><small>Labo · test ${LAB_TESTS.indexOf(T) + 1} sur ${LAB_TESTS.length}</small><h1>${T.t}</h1></div></div>
+  h.innerHTML = `<div class="lab-top"><button type="button" class="mt-back" onclick="labGo('tests')" aria-label="Retour aux tests"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><div><small>Labo · test ${LAB_TESTS.indexOf(T) + 1} sur ${LAB_TESTS.length}</small><h1>${T.t}</h1></div></div>
     <div id="lab-test">${labTestHTML(T.id)}</div>${labFormHTML(T)}`;
   labAfterRender(T.id);
 }
 function labGo(v) { labStop(); lab.view = v; labRender(); window.scrollTo(0, 0); }
 function labHomeHTML() {
   const A = labAns(), n = LAB_TESTS.filter(t => A[t.id]).length;
-  return `<div class="hm-top"><h1>Labo</h1></div>
+  return `<div class="rp-top"><button type="button" class="mt-back" onclick="labGo('home')" aria-label="Retour à S’entraîner">${RP_BACK}</button><div><small>Labo</small><h1>Les tests du 19/11</h1></div></div>
     ${mediBulle('curieuse', 'Ici on essaie des idées. Fais chaque test, puis dis ce que tu en penses : sans pitié !', {size: 56, cls: 'lab-medi-b'})}
     <div class="lab-list">${LAB_TESTS.map((t, k) => `<button type="button" class="lab-card${A[t.id] ? ' done' : ''}" onclick="labGo('${t.id}')"><span class="lab-n">${A[t.id] ? '<svg viewBox="0 0 12 10" aria-hidden="true"><path d="M1.5 5 L4.5 8 L10.5 2"/></svg>' : k + 1}</span><span class="lab-ct"><b>${t.t}</b><small>${t.d}</small></span></button>`).join('')}</div>
     <div class="lab-foot"><span>${n} test${n > 1 ? 's' : ''} sur ${LAB_TESTS.length} faits</span>
@@ -314,11 +316,11 @@ function labSave(id) {
   if (id === 'devine' && lab.dv) A[id].score = lab.dv.score;
   LS.set('gms_labo', A); toast('Merci, avis enregistré !');
   const k = LAB_TESTS.findIndex(t => t.id === id), nx = LAB_TESTS.slice(k + 1).find(t => !A[t.id]);
-  labGo(nx ? nx.id : 'home');
+  labGo(nx ? nx.id : 'tests');
 }
 async function labExport() {
   const A = labAns();
-  const txt = 'Guitar Memory, labo de tests\n' + (navigator.userAgent || '') + '\n\n' + LAB_TESTS.filter(t => A[t.id]).map(t => {
+  const txt = 'Guitar Memory, labo de tests\n' + (navigator.userAgent || '') + '\n\n' + LAB_TESTS.concat(RP_AVIS).filter(t => A[t.id]).map(t => {
     const a = A[t.id];
     return `■ ${t.t}\n` + (a.choix ? `  Préféré : ${a.choix}\n` : '') + LAB_QS.map(([k, l]) => a[k] ? `  ${l} ${a[k]}\n` : '').join('')
       + (a.score != null ? `  Score : ${a.score}/3\n` : '') + (a.mesures ? `  Mesures : ${JSON.stringify(a.mesures)}\n` : '') + (a.note ? `  Remarque : ${a.note}\n` : '');
