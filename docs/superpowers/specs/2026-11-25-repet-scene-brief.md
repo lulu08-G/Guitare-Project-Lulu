@@ -21,7 +21,7 @@ Refaire l'écran Répèt' de S'entraîner (aujourd'hui bêta cachée `?beta`, `s
 
 ## Ce qui existe déjà (réutiliser)
 - Personnages : `BOUM_SVG`, `BASILE_SVG` (`src/js/08-metronome…js`), `TCHIK_SVG` (`src/js/39-8-labo.js`), Médi `mediSVG` (`src/js/01-medi.js`, ne pas modifier son dessin ; les autres peuvent être retouchés). Couleurs bande : `:root` de `src/css/23-repet.css`.
-- Moteur de jeu : `rpPlay` dans `39-9-repet-jeux.js` (bande, croches, accords par mesure, visuels calés sur l'audio) ; sons `metroKick/metroSnare/metroHihat`, schémas `chordSVG(newChord(x))` (`src/js/02-svg-chord-diagram.js`).
+- Moteur de jeu : `rpPlay` dans `39-9-repet-jeux.js` (bande, croches, accords par mesure, visuels calés sur l'audio) ; sons `metroKick/metroSnare/metroHihat`, schémas `chordSVG` (`src/js/02-svg-chord-diagram.js`) + `newChord` (`src/js/01-debut.js`).
 - Données : `RHYTHMS` (`src/js/04-rhythm-model.js`, motifs `pat` D/U/X/d/u/-), `FEEL_PROGS` + `AMBIANCES` (`src/js/17-au-feeling…js`).
 - Jetons et polices de la refonte : `src/css/20-refonte-medi.css` (Bricolage Grotesque pour titres/accords/chiffres).
 
