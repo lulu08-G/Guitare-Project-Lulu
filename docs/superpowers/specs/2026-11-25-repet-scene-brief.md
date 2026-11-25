@@ -25,8 +25,11 @@ Refaire l'écran Répèt' de S'entraîner (aujourd'hui bêta cachée `?beta`, `s
 - Données : `RHYTHMS` (`src/js/04-rhythm-model.js`, motifs `pat` D/U/X/d/u/-), `FEEL_PROGS` + `AMBIANCES` (`src/js/17-au-feeling…js`).
 - Jetons et polices de la refonte : `src/css/20-refonte-medi.css` (Bricolage Grotesque pour titres/accords/chiffres).
 
-## Maquettes (référence visuelle, dans le scratchpad de la session, peuvent avoir disparu)
-`repet-bande.html` (la plus récente : rôles + cercle/tapis/arc), `repet-fixe.html` (onglets + pop-ups, proposition 1 retenue).
+## Maquettes (planches de Lucas, à lire avec l'outil Artifact, action « read »)
+- **Référence principale** : https://claude.ai/artifact/Nt5mcC3dhEkCu2F7H41KQX (rôles de la bande, rythme autour de Médi : cercle / tapis / arc, conseils, carte d'arrivée).
+- Écran fixe + onglets + pop-ups (proposition 1 retenue) : https://claude.ai/artifact/L5Z8CHPkswB8778gqeQuJv
+- Disposition de la scène (variante D, pancarte) : https://claude.ai/artifact/L55ACsDHdkckyGtin3CCDM
+Lire seulement la première en entier ; les autres si un doute. Les maquettes sont des pages autonomes : en reprendre l'idée et les calculs, pas le code tel quel.
 
 ## Hors périmètre
 Jeux, déclics des murs, fiches. Garder la Répèt' derrière `?beta` tant que Lucas ne l'a pas testée sur téléphone.
