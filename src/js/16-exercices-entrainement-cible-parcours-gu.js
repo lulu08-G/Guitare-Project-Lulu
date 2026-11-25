@@ -268,26 +268,29 @@ const exoSt = {perm:{p:'1324', f:5}, omc:{pair:'Em-Am', left:60, phase:'idle'}, 
 const exoBpmOf = id => exoBpm[id] || exoProg.best[id] || (EXO[id] && EXO[id].bpm ? EXO[id].bpm[0] : 70);
 
 /* ── looping player (tabs, strums, subdivisions) ── */
-let exoTimer = null, exoPlaying = null, omcTimer = null;
+let exoPlaying = null, omcTimer = null;
 const PLAY_HTML = '<svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Jouer en boucle';
 const STOP_HTML = '<svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg> Stop';
-function exoStop() {
-  if (exoTimer) clearInterval(exoTimer);
-  exoTimer = null;
+function exoLoopOff() {   // la boucle d'exercice s'arrête (bouton, case en cours, curseur de tablature)
+  mtStop('exo');
   if (exoPlaying) { const b = $('pb-' + exoPlaying); if (b) b.innerHTML = PLAY_HTML; }
   exoPlaying = null;
   document.querySelectorAll('.exo-now').forEach(e => e.classList.remove('exo-now'));
   document.querySelectorAll('.tab-cur').forEach(e => e.setAttribute('opacity', '0'));
+}
+function exoStop() {
+  exoLoopOff();
   if (omcTimer) { clearInterval(omcTimer); omcTimer = null; exoSt.omc.phase = 'idle'; exoSt.omc.left = 60; }
 }
-function exoLoop(id, stepSec, tick) {
+// boucle jouée par le moteur unique (07-5-moteur-grille.js) : snd(k, t) pose les sons de la case k à l'instant t,
+// vis(k) met l'écran à jour quand le son sort
+function exoLoop(id, stepSec, snd, vis) {
   if (exoPlaying === id) { exoStop(); return; }
-  exoStop(); audioReady();
+  exoStop();
   exoPlaying = id;
   const b = $('pb-' + id); if (b) b.innerHTML = STOP_HTML;
-  let k = 0;
-  const run = () => tick(k++);
-  run(); exoTimer = setInterval(run, stepSec * 1000);
+  mtPlay({owner: 'exo', key: id, start: .01, dur: () => stepSec, step: (k, t) => snd(k, t), vis: vis ? k => vis(k) : null,
+    onKill: () => { if (exoPlaying === id) exoLoopOff(); }});
 }
 
 /* ── tab DSL → SVG ── */
@@ -350,14 +353,15 @@ function tabBlock(id, b, exId) {
 function exoPlayTab(id) {
   const R = TABREG[id]; if (!R) return;
   const play = R.cols.map((c, i) => ({c, i})).filter(o => !o.c.bar), sub = R.sub;
-  exoLoop(id, 60 / exoBpmOf(R.ex) / sub, k => {
-    const o = play[k % play.length], t = audio().currentTime + 0.01;
+  exoLoop(id, 60 / exoBpmOf(R.ex) / sub, (k, t) => {
+    const o = play[k % play.length];
     if (k % sub === 0) click(t, k % (sub*4) === 0);
     o.c.notes.forEach(n => {
       const bm = n.txt.match(/b(\d+)/), f = bm ? +bm[1] : parseInt(n.txt);
       if (!isNaN(f)) pluck(fretFreq(6 - n.s, f, 0), t, o.c.lbl === 'PM' ? .14 : 1.1, o.c.lbl === 'PM' ? .1 : .14);
     });
-    const cur = $(id + '-cur');
+  }, k => {
+    const o = play[k % play.length], cur = $(id + '-cur');
     if (cur) { cur.setAttribute('x', R.pos[o.i] - 12); cur.setAttribute('opacity', '.25'); }
   });
 }
@@ -384,14 +388,13 @@ function strumBlock(id, b, exId) {
 function exoPlayStrum(id) {
   const R = STRUMREG[id]; if (!R) return;
   const len = R.pat.length, chords = R.chords.map(c => newChord(c));
-  exoLoop(id, 60 / exoBpmOf(R.ex) / 2, k => {
-    const i = k % len, ch = R.pat[i], chord = chords[Math.floor(k / len) % chords.length], t = audio().currentTime + 0.01;
+  exoLoop(id, 60 / exoBpmOf(R.ex) / 2, (k, t) => {
+    const i = k % len, ch = R.pat[i], chord = chords[Math.floor(k / len) % chords.length];
     if (i % 2 === 0) click(t, i === 0);
     const mm = mmOn('learn');
     if (ch === 'X') { if (mm) muteHit(t, chord, 0, 'D', 1, {x: 1}); else chuckSound(t, chord, 0); }
     else if ('DdUu'.includes(ch)) { const lv = ch === 'D' || ch === 'U' ? 2 : 0; if (mm) muteHit(t, chord, 0, ch.toUpperCase(), lv); else strumChord(chord, 0, ch.toUpperCase(), t, lv); }
-    for (let j = 0; j < len; j++) { const el = $(id + '-' + j); if (el) el.classList.toggle('exo-now', j === i); }
-  });
+  }, k => { const i = k % len; for (let j = 0; j < len; j++) { const el = $(id + '-' + j); if (el) el.classList.toggle('exo-now', j === i); } });
 }
 
 /* ── other visual blocks ── */
@@ -597,11 +600,8 @@ function eiAnswer(s) {
   exoRender();
 }
 function exoPlaySub(n) {
-  exoLoop('sd' + n, 60 / exoBpmOf('subdiv') / n, k => {
-    const i = k % (4*n), t = audio().currentTime + .01;
-    click(t, i % n === 0);
-    for (let j = 0; j < 4*n; j++) { const el = $(`sd${n}-${j}`); if (el) el.classList.toggle('exo-now', j === i); }
-  });
+  exoLoop('sd' + n, 60 / exoBpmOf('subdiv') / n, (k, t) => click(t, k % (4*n) % n === 0),
+    k => { const i = k % (4*n); for (let j = 0; j < 4*n; j++) { const el = $(`sd${n}-${j}`); if (el) el.classList.toggle('exo-now', j === i); } });
 }
 function gapStart() {
   const [on, off] = GAPS[exoSt.gap];

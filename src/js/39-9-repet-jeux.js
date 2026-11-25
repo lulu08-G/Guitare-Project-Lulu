@@ -1,7 +1,7 @@
 /* ═══════ S'ENTRAÎNER v2 : RÉPÉT' + JEUX (bêta cachée, 20/11) ═══════
    Vit dans le labo (?beta) à la place de son accueil ; les tests du 19/11 restent dans « Les tests du 19/11 ».
    Maquettes : planche Design, page Refonte, rangées « S'entraîner × la bande » et « S'entraîner v2 ».
-   Un seul moteur (rpPlay) : la bande (Boum, Tchik, Basile) ou Médi seul (= le métronome), ta ligne, les accords.
+   rpPlay (joué par le moteur unique, 07-5-moteur-grille.js) : la bande (Boum, Tchik, Basile) ou Médi seul (= le métronome), ta ligne, les accords.
    Rien ici ne touche aux fiches (sauf « En faire une fiche », qui ouvre l'éditeur comme « Au feeling »). */
 const RP_STYLES = [['pop', 'Pop'], ['rock', 'Rock'], ['reggae', 'Reggae'], ['funk', 'Funk'], ['shuffle', 'Shuffle'], ['valse', 'Valse']];
 const RP_CHSETS = [['G', 'C'], ['G', 'D', 'Em', 'C'], ['Am', 'E'], ['C', 'Am', 'F', 'G']];
@@ -30,10 +30,9 @@ function rpLine(pat, n) {   // « D-DU-UDU » → [{d, a} | 0] ; X = étouffé, 
   });
 }
 const rpRhythms = () => RHYTHMS.filter(r => r.res === 8 && (r.mes === '4/4' || r.mes === '3/4'));
-function rpDrums(style, beats) {
-  const P = (METRO_PRESETS[style] || METRO_PRESETS.pop).base, n = beats * 2, D = {k: [], s: [], h: []};
-  for (let i = 0; i < n; i++) { const st = P[(i * 2) % P.length]; D.k.push(st.k); D.s.push(st.s); D.h.push(st.h); }
-  return D;
+function rpDrums(style, beats) {   // la bande du style, calculée par la grille du moteur (Basile sur la grosse caisse et sur le 1)
+  const g = grBand(grNew(beats === 3 ? '3/4' : '4/4', 8, 1), style, {one: true});
+  return {k: g.boum.k, s: g.boum.s, h: g.tchik, b: g.basile};
 }
 function rpDeclics() {   // les cartes des murs qui ont un exercice en rythme (8 croches, 4/4)
   const out = [];
@@ -51,47 +50,39 @@ const rpStyleBeats = s => s === 'valse' ? 3 : 4;
 function rpStop() {
   clearTimeout(rp.timer); rp.timer = null;
   const S = rp.S; rp.S = null;
+  mtStop('rp');
   if (S && S.raf) cancelAnimationFrame(S.raf);
   if (rp.g && rp.g.raf) { cancelAnimationFrame(rp.g.raf); rp.g.raf = 0; }
   if (rp.g && rp.g.timers) { rp.g.timers.forEach(clearTimeout); rp.g.timers = []; }
   document.querySelectorAll('#lab-body .now').forEach(e => e.classList.remove('now'));
   rpPaintPlay();
 }
-function rpPlay(cfg) {
+function rpPlay(cfg) {   // joué par le moteur unique (07-5-moteur-grille.js)
   rpStop();
   const ac = audioReady();
   const S = Object.assign({bpm: rp.bpm, beats: rp.beats, band: rp.band, tchik: rp.tchik, style: rp.style, line: null, chords: ['G'], demo: false,
     count: true, bars: 0, total: 0, next: ac.currentTime + .15, expect: []}, cfg);
   S.n = S.beats * 2; S.drums = rpDrums(S.style, S.beats); S.start = S.next;
-  rp.S = S; rpTick(); rpPaintPlay();
+  rp.S = S;
+  const cnt = S.count ? 1 : 0;
+  S.T = mtPlay({owner: 'rp', at: S.next, dur: () => 60 / S.bpm / 2, cells: S.bars ? (S.bars + cnt) * S.n : 0, endDelay: 60,
+    step: (k, t, d) => {
+      const i = k % S.n, b = Math.floor(k / S.n) - cnt;
+      S.total = k; S.next = t; rpStep(S, i, b, t, d); S.total = k + 1; S.next = t + d;
+      return b;
+    },
+    vis: (k, t, d, T, b) => { if (rp.S === S) rpVis(S, k % S.n, b, d * 2); },
+    onEnd: () => { if (rp.S === S) { rp.S = null; rpPaintPlay(); if (S.onEnd) S.onEnd(S); } },
+    onKill: () => { if (rp.S === S) rpStop(); }});
+  rpPaintPlay();
   return S;
-}
-function rpTick() {
-  const S = rp.S; if (!S) return;
-  const ac = audio();
-  while (S.next < ac.currentTime + .12) {
-    const dur = 60 / S.bpm / 2, i = S.total % S.n, bar = Math.floor(S.total / S.n), cnt = S.count ? 1 : 0;
-    if (S.bars && bar >= S.bars + cnt) {
-      const end = S.next;
-      rp.timer = setTimeout(() => { if (rp.S === S) { rp.S = null; rpPaintPlay(); if (S.onEnd) S.onEnd(S); } }, Math.max(0, (end - ac.currentTime) * 1000) + 60);
-      return;
-    }
-    rpStep(S, i, bar - cnt, S.next, dur);
-    S.next += dur; S.total++;
-  }
-  rp.timer = setTimeout(rpTick, 25);
 }
 function rpStep(S, i, b, t, dur) {
   const chord = S.chords && S.chords.length ? S.chords[Math.max(0, b) % S.chords.length] : null;
   if (b < 0) { if (i % 2 === 0) metroClick(t, i === 0); }
   else {
-    if (S.band) {
-      const D = S.drums;
-      if (D.k[i]) metroKick(t);
-      if (D.s[i]) metroSnare(t);
-      if (D.h[i] && S.tchik) metroHihat(t);
-      if (chord && (D.k[i] || i === 0)) pluck(labRoot(chord), t, .5, .2);
-    } else if (i % 2 === 0) metroClick(t, i === 0);
+    if (S.band) { const D = S.drums; mtBandHit({k: D.k[i], s: D.s[i], h: D.h[i], b: D.b[i]}, t, chord, {tchik: !!S.tchik, needChord: true}); }
+    else if (i % 2 === 0) metroClick(t, i === 0);
     const v = S.line && S.line[i];
     if (v) {
       S.expect.push(t);
@@ -99,7 +90,6 @@ function rpStep(S, i, b, t, dur) {
     }
   }
   if (S.onSched) S.onSched(S, i, b, t);
-  setTimeout(() => { if (rp.S === S) rpVis(S, i, b, dur * 2); }, Math.max(0, (t - audio().currentTime) * 1000));
 }
 function rpVis(S, i, b, beatSec) {
   document.querySelectorAll('#rp-lane .lc.now').forEach(e => e.classList.remove('now'));

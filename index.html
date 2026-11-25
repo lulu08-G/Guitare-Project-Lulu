@@ -4241,6 +4241,110 @@ function pWayHTML(p, light, opt) {
   return w === 'arp' ? arpRibbonHTML(p.arp, light, opt) : w === 'rh' ? rhythmSVG(p.rhythm, light, opt) : '';
 }
 
+/* ═══════ MOTEUR UNIQUE + GRILLE (25/11, étape 1 de « Guitar Memory — la direction ») ═══════
+   Un seul transport pour toute l'app : fiche, mode jeu, éditeur, Au feeling, rythmes, métronome, Répét', Labo, exercices.
+   · Planificateur à anticipation sur l'horloge Web Audio (minuteur 25 ms, fenêtre 120 ms) : chaque son est posé à
+     l'avance à son instant exact ; aucun minuteur JavaScript ne déclenche de son, rien ne dérive.
+   · Une seule lecture à la fois : en lancer une arrête la précédente, dont le lecteur remet son écran à zéro (onKill).
+   · Les visuels sont appelés quand le son sort, case par case, sur une seule boucle d'image.
+   Un lecteur = des réglages : mtPlay({owner, key, start | at, dur, off, step, vis, cells, onEnd, endDelay, onKill}).
+     dur(T) : durée d'une case (lue à chaque case : changer le tempo en route ne fait pas de saut) ;
+     off(k, d) : décalage d'une case (swing) ; step(k, t, d, T) : pose les sons de la case k à l'instant t et peut rendre
+     une valeur, repassée à vis(k, t, d, T, valeur) au moment où le son sort ; cells : nombre de cases à jouer (0 = sans fin),
+     puis onEnd(T) une fois la dernière case finie (+ endDelay ms). mtStop(owner | transport) ; mtOn(owner, key). */
+let MT = null;   // la lecture en cours (une seule dans toute l'app)
+function mtHalt(kill) {
+  const T = MT; if (!T) return;
+  MT = null; T.done = true;
+  clearTimeout(T.timer); clearTimeout(T.endT); cancelAnimationFrame(T.raf);
+  if (kill && T.onKill) T.onKill(T);
+}
+const mtStop = x => { if (MT && (!x || MT === x || MT.owner === x)) mtHalt(false); };
+const mtOn = (owner, key) => !!MT && MT.owner === owner && (key == null || MT.key === key);
+function mtPlay(o) {
+  mtHalt(true);   // la lecture d'avant s'arrête et son lecteur remet son écran à zéro
+  const ac = audioReady(), T = Object.assign({k: 0, q: [], timer: 0, raf: 0, endT: 0, done: false, ac}, o);
+  T.next = T.at != null ? T.at : ac.currentTime + (T.start != null ? T.start : .08);
+  T.t0 = T.next; MT = T;
+  const tick = () => {
+    if (MT !== T || T.done) return;
+    for (;;) {
+      if (T.cells && T.k >= T.cells) { mtEnd(T); return; }
+      const d = T.dur(T), t = T.next + (T.off ? T.off(T.k, d) : 0);
+      if (t >= ac.currentTime + .12) break;
+      const v = T.step(T.k, t, d, T);
+      if (T.vis) T.q.push([t, T.k, d, v]);
+      T.k++; T.next += d;
+    }
+    T.timer = setTimeout(tick, 25);
+  };
+  const draw = () => {
+    if (MT !== T) return;
+    mtFlush(T, ac.currentTime);
+    if (MT === T) T.raf = requestAnimationFrame(draw);
+  };
+  tick(); if (T.vis && MT === T) draw();
+  return T;
+}
+// les images dont le son est sorti ; au retour d'un onglet caché, on ne rejoue pas celles en retard, seulement la dernière
+function mtFlush(T, now) {
+  const due = [];
+  while (T.q.length && T.q[0][0] <= now) due.push(T.q.shift());
+  if (!due.length) return;
+  let fresh = now === Infinity ? due : due.filter(x => x[0] > now - .25);
+  if (!fresh.length) fresh = due.slice(-1);
+  fresh.forEach(x => { if (MT === T) T.vis(x[1], x[0], x[2], T, x[3]); });
+}
+function mtEnd(T) {
+  T.done = true;
+  T.endT = setTimeout(() => {
+    if (MT !== T) return;
+    if (T.vis) mtFlush(T, Infinity);
+    MT = null; cancelAnimationFrame(T.raf);
+    if (T.onEnd) T.onEnd(T);
+  }, Math.max(0, (T.next - T.ac.currentTime) * 1000) + (T.endDelay || 0));
+}
+
+/* ── la Grille ──
+   {mes, res, bars, per (cases par mesure), spb (cases par temps), beats, n (cases), swing,
+    gtr : [case du rythme v2 {d, a} | null] × n (ta ligne de guitare), chords : [un accord par mesure, en boucle],
+    boum : {k : grosse caisse, s : caisse claire} × per, tchik : charley × per, basile : basse × per (0 | 1 par case)}
+   Boum, Tchik et Basile sont calculés (style + accords de la grille), jamais stockés : changer un accord change la basse. */
+function grNew(mes, res, bars) {
+  mes = mes || '4/4'; res = res || 8; bars = bars || 1;
+  const per = rhPerBar(mes, res), spb = rhSpb(mes, res);
+  return {mes, res, bars, per, spb, beats: per / spb, n: per * bars, swing: 0, gtr: Array(per * bars).fill(null), chords: []};
+}
+function grFromRhythm(rh, chords) {   // une partie de fiche (ou un rythme d'exercice) → sa grille
+  rh = rhNorm(rh);
+  const g = grNew(rh.mes, rh.res, rh.bars);
+  g.gtr = rh.cells; g.n = rh.cells.length; g.swing = rh.swing || 0; g.chords = chords || [];
+  return g;
+}
+const grFromPat = (pat, mes, res, bars) => grFromRhythm(rhFromPat(pat, mes, res, bars));
+// la bande d'un style (motifs du métronome), ramenée à la résolution de la grille ; Basile joue sur la grosse caisse
+// (et sur le 1 avec o.one) ; o.drums = {k, s, h} pour un motif écrit à la main
+function grBand(g, style, o) {
+  o = o || {};
+  const P = (METRO_PRESETS[style] || METRO_PRESETS.pop).base, r = 4 / g.spb, D = o.drums;
+  g.boum = {k: [], s: []}; g.tchik = []; g.basile = [];
+  for (let i = 0; i < g.per; i++) {
+    const st = D ? {k: D.k[i], s: D.s[i], h: D.h[i]} : P[Math.floor(i * r) % P.length];
+    g.boum.k.push(st.k); g.boum.s.push(st.s); g.tchik.push(st.h);
+    g.basile.push(st.k || (o.one && i === 0) ? 1 : 0);
+  }
+  return g;
+}
+/* La bande joue une case : Boum (grosse caisse, caisse claire), Tchik (charley), Basile (fondamentale de l'accord ;
+   sans accord, la corde à vide du métronome). L = couches allumées {kick, snare, tchik, basile}, toutes par défaut. */
+function mtBandHit(p, t, chord, L) {
+  L = L || {};
+  if (p.k && L.kick !== false) metroKick(t);
+  if (p.s && L.snare !== false) metroSnare(t);
+  if (p.h && L.tchik !== false) metroHihat(t);
+  if (p.b && L.basile !== false) { if (chord) pluck(labRoot(chord), t, .5, .2); else if (!L.needChord) metroBass(t); }
+}
+const mtBand = (g, i, t, chord, L) => mtBandHit({k: g.boum.k[i], s: g.boum.s[i], h: g.tchik[i], b: g.basile[i]}, t, chord, Object.assign({needChord: true}, L));
 /* ═══════ WEB AUDIO ═══════ */
 /* Moteur de guitare : vrais échantillons de guitare acoustique (bloc SAMPLES GUITARE en fin de fichier, décodés une fois
    au premier geste), joués à la bonne hauteur par playbackRate ; grattage réaliste (cordes décalées, humanisation),
@@ -4467,20 +4571,16 @@ function click(t, hi) {
   g.gain.setValueAtTime(.09, t); g.gain.exponentialRampToValueAtTime(.0001, t+0.04);
   o.connect(g); g.connect(OUT(ac)); o.start(t); o.stop(t+0.05);
 }
-let rhP = null; // lecture en cours : {key, ctx, rh, bpm, chord, capo, k, k0, t0, timer, raf, q, onStep, click}
+let rhP = null; // lecture en cours : {key, rh, grid, bpm, chord, chords, capo, k, onStep, onCell, mute, T}
 function stopPlay() {
   rhStop(); recStopPlay();
   document.querySelectorAll('.play-on').forEach(e => e.classList.remove('play-on'));
 }
-/* Moteur de rythme : planificateur à anticipation sur l'horloge Web Audio (même principe que le métronome :
-   timer 25 ms, fenêtre 120 ms), temps absolu t = t0 + (k-k0) × durée de case → aucune dérive cumulée.
-   Boucle sans fin jusqu'à rhStop(). Points d'extension : rhPlayCell (rendu d'une case) et opt.onCell (hook
-   appelé par case planifiée, avec son temps audio) pour l'enregistrement au tap / le mode jeu. */
+/* Lecteur de rythme (fiche, mode jeu, éditeur, Au feeling, rythmes) : la partie devient une grille, jouée par le moteur
+   unique (07-5-moteur-grille.js) : Médi (le clic) sur les temps, ta ligne de guitare, un accord par mesure.
+   Boucle sans fin jusqu'à rhStop(). Points d'extension : rhPlayCell (rendu d'une case), opt.cellFn (rendu sur mesure),
+   opt.onCell (appelé par case planifiée, avec son temps audio) pour l'enregistrement au tap / le mode jeu. */
 const rhCellDur = (rh, bpm) => 60 / bpm / rhSpb(rh.mes, rh.res);
-const rhCellTime = (P, k) => {
-  const rh = P.rh, off = (rh.swing && rhSpb(rh.mes, rh.res) === 2 && k % 2 === 1) ? rh.swing*rhCellDur(rh, P.bpm) : 0;
-  return P.t0 + (k - P.k0)*rhCellDur(rh, P.bpm) + off;
-};
 function rhPlayCell(c, t, chord, capo, pm, mm) {
   if (!c) return;
   if (c.d === 'X') { if (mm) muteHit(t, chord, capo, 'D', 1, {x: 1}); else chuckSound(t, chord, capo); return; }
@@ -4492,58 +4592,40 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   rhStop();
   rh = rhNorm(rh); if (!rhHas(rh)) return false;
   opt = opt || {};
-  const ac = audio(); if (ac.state === 'suspended') ac.resume();
   recStopPlay();
-  const P = rhP = {key: opt.key || '', ctx: ac, rh, chords: opt.chords && opt.chords.length ? opt.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
-    k: 0, k0: 0, t0: ac.currentTime + 0.08, q: [], onStep, onCell: opt.onCell, mute: !!opt.mute, timer: null, raf: 0};
-  const tick = () => {
-    if (rhP !== P) return;
-    const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res);
-    while (rhCellTime(P, P.k) < ac.currentTime + 0.12) {
-      const i = P.k % rh.cells.length, t = rhCellTime(P, P.k), inBar = i % per;
+  const g = grFromRhythm(rh, opt.chords && opt.chords.length ? opt.chords : null), per = g.per, spb = g.spb;
+  const P = rhP = {key: opt.key || '', rh, grid: g, chords: g.chords.length ? g.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
+    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute};
+  P.T = mtPlay({owner: 'rh', key: P.key, start: .08,
+    dur: () => rhCellDur(rh, P.bpm),
+    off: (k, d) => rh.swing && spb === 2 && k % 2 === 1 ? rh.swing * d : 0,
+    step: (k, t) => {
+      P.k = k;
+      const i = k % g.n, inBar = i % per;
       if (!P.mute && inBar % spb === 0) click(t, inBar === 0);
       // 1 accord = 1 mesure : la suite d'accords de la partie défile, mesure après mesure
-      const ch = P.chords ? P.chords[Math.floor(P.k/per) % P.chords.length] : P.chord;
-      if (opt.cellFn) opt.cellFn(rh.cells[i], t, ch, i, P.k, P); else rhPlayCell(rh.cells[i], t, ch, P.capo, false, mmOn(opt.mm));
-      if (P.onCell) P.onCell(i, t, P.k);
-      P.q.push({i, t, k: P.k}); P.k++;
-    }
-    P.timer = setTimeout(tick, 25);
-  };
-  const draw = () => {
-    if (rhP !== P) return;
-    let cur = null;
-    while (P.q.length && P.q[0].t <= ac.currentTime) cur = P.q.shift();
-    if (cur && P.onStep) P.onStep(cur.i, cur.k);
-    P.raf = requestAnimationFrame(draw);
-  };
-  tick(); draw();
+      const ch = P.chords ? P.chords[Math.floor(k / per) % P.chords.length] : P.chord;
+      if (opt.cellFn) opt.cellFn(g.gtr[i], t, ch, i, k, P); else rhPlayCell(g.gtr[i], t, ch, P.capo, false, mmOn(opt.mm));
+      if (P.onCell) P.onCell(i, t, k);
+      P.k = k + 1;
+    },
+    vis: onStep ? k => onStep(k % g.n, k) : null,
+    onKill: () => { if (rhP === P) { rhP = null; if (P.onStep) P.onStep(null); } }});
   return true;
 }
-// Changer le tempo en cours de lecture sans saut : on ré-ancre la grille sur la prochaine case à planifier
-function rhSetBpm(bpm) {
-  const P = rhP; if (!P) return;
-  P.t0 = rhCellTime(P, P.k); P.k0 = P.k; P.bpm = bpm;
-}
+// Changer le tempo en cours de lecture sans saut : le moteur lit le tempo à chaque case
+function rhSetBpm(bpm) { if (rhP) rhP.bpm = bpm; }
 function rhStop() {
   const P = rhP; if (!P) return;
-  rhP = null;
-  clearTimeout(P.timer); cancelAnimationFrame(P.raf);
+  rhP = null; mtStop(P.T);
   if (P.onStep) P.onStep(null);
 }
 const rhPlaying = key => !!rhP && rhP.key === key;
 document.addEventListener('visibilitychange', () => { if (document.hidden) rhStop(); });
 
 /* ═══════ METRONOME — visual pendulum + step-sequencer backing band ═══════
-   Senior note: setInterval alone drifts (JS event loop jitter), which is
-   unacceptable for something claiming to be a real metronome. This uses the
-   standard Web Audio "lookahead scheduler" pattern: a cheap setTimeout tick
-   scans ahead and books precise audio-clock times, while a matched setTimeout
-   fires the *visual* update at the wall-clock delay to that same instant —
-   audio timing stays sample-accurate, visuals stay close enough to be felt
-   as in-sync. The metronome deliberately keeps running when you leave this
-   tab: it's meant to double as a backing loop while you look at a chord
-   sheet elsewhere, which is the whole point of "mode impro". */
+   Joué par le moteur unique (07-5-moteur-grille.js) : les sons sont posés à l'avance sur l'horloge audio, les visuels
+   arrivent quand le son sort. Le métronome s'arrête en quittant son écran (23-nav.js) et dès qu'une autre lecture démarre. */
 const METRO_SIGS = {
   '4/4': {beats:4, sub:4},
   '3/4': {beats:3, sub:4},
@@ -4587,7 +4669,7 @@ let metroState = {
   pattern: null, sigCfg: METRO_SIGS['4/4'], gap: null,
 };
 let metroStepTotal = 0;
-let metroPlaying = false, metroTimerId = null, metroCtxRef = null, metroNextTime = 0, metroStepIdx = 0;
+let metroPlaying = false, metroCtxRef = null, metroStepIdx = 0;
 let metroTapTimes = [];
 
 function buildMetroPattern() {
@@ -4648,16 +4730,19 @@ function metroBass(t) { pluck(fretFreq(metroState.bassString, 0, 0)/2, t, 0.7, .
 function toggleMetro() { metroPlaying ? stopMetro() : startMetro(); }
 function startMetro() {
   if (!metroState.pattern) buildMetroPattern();
-  const ac = audio(); if (ac.state === 'suspended') ac.resume();
-  metroCtxRef = ac; metroStepIdx = 0; metroStepTotal = 0; metroNextTime = ac.currentTime + 0.05;
+  const ac = audioReady();
+  metroCtxRef = ac; metroStepIdx = 0; metroStepTotal = 0;
+  mtStop('metro');   // relancer le métronome ne passe pas par onKill (qui l'arrêterait)
+  mtPlay({owner: 'metro', start: .05, dur: () => (60 / metroState.bpm) / metroState.sigCfg.sub,
+    step: (k, t) => { const v = scheduleMetroStep(metroStepIdx, t, metroStepTotal++); metroStepIdx = (metroStepIdx + 1) % metroState.pattern.length; return v; },
+    vis: (k, t, d, T, v) => metroStepVis(v),
+    onKill: () => { if (metroPlaying) stopMetro(); }});
   metroPlaying = true;
   metroRenderToggleBtn();
-  metroSchedulerTick();
 }
 function stopMetro() {
   metroPlaying = false;
-  if (metroTimerId) clearTimeout(metroTimerId);
-  metroTimerId = null;
+  mtStop('metro');
   metroRenderToggleBtn();
   document.querySelectorAll('#v-metro .mtg-c.now').forEach(e => e.classList.remove('now'));
 }
@@ -4675,16 +4760,6 @@ function metroRenderToggleBtn() {
   if (metroPlaying) { if (!metroRaf) metroRaf = requestAnimationFrame(metroVisLoop); }
   else { metroVis = []; metroDialReset(); document.querySelectorAll('#v-metro .mt-beats i.on,#v-metro .mtg-c.now').forEach(e => e.classList.remove('on', 'now')); }
 }
-function metroSchedulerTick() {
-  if (!metroPlaying) return;
-  while (metroNextTime < metroCtxRef.currentTime + 0.12) {
-    scheduleMetroStep(metroStepIdx, metroNextTime, metroStepTotal++);
-    const stepDur = (60 / metroState.bpm) / metroState.sigCfg.sub;
-    metroNextTime += stepDur;
-    metroStepIdx = (metroStepIdx + 1) % metroState.pattern.length;
-  }
-  metroTimerId = setTimeout(metroSchedulerTick, 25);
-}
 function scheduleMetroStep(step, time, total) {
   const st = metroState, sig = st.sigCfg, p = st.pattern[step];
   const isBeatStart = step % sig.sub === 0;
@@ -4694,21 +4769,18 @@ function scheduleMetroStep(step, time, total) {
   const bar = Math.floor((total || 0) / st.pattern.length);
   metroVis.push({t: time, step, d: (60 / st.bpm) / sig.sub}); if (metroVis.length > 64) metroVis.shift();
   const muted = !!st.gap && (bar % (st.gap.on + st.gap.off)) >= st.gap.on;
-  if (st.gap && step === 0) setTimeout(() => {
-    document.querySelectorAll('#gap-bars .gb').forEach((e, i) => e.classList.toggle('now', i === bar % (st.gap.on + st.gap.off)));
-  }, Math.max(0, (time - metroCtxRef.currentTime) * 1000));
-  if (muted) return;
+  const v = {step, isBeatStart, beatIdx, accent, p, bpm: st.bpm, sub: sig.sub, gapBar: st.gap && step === 0 ? bar % (st.gap.on + st.gap.off) : null, muted};
+  if (muted) return v;
   if (st.layers.click && isBeatStart) metroClick(time, accent);
-  if (st.layers.kick && p.k) metroKick(time);
-  if (st.layers.snare && p.s) metroSnare(time);
-  if (st.layers.hihat && p.h) metroHihat(time);
-  if (st.layers.bass && p.b) metroBass(time);
-  const delay = Math.max(0, (time - metroCtxRef.currentTime) * 1000);
-  setTimeout(() => {
-    flashMetroStep(step);
-    if (isBeatStart) flashMetroBeat(beatIdx, accent, 60 / st.bpm);
-    metroBandHit(p, (60 / st.bpm) / sig.sub);
-  }, delay);
+  mtBandHit(p, time, null, {kick: !!st.layers.kick, snare: !!st.layers.snare, tchik: !!st.layers.hihat, basile: !!st.layers.bass});
+  return v;
+}
+function metroStepVis(v) {   // quand le son de la case sort : la case, le temps, Médi, et Boum / Basile sur leurs coups
+  if (v.gapBar != null) document.querySelectorAll('#gap-bars .gb').forEach((e, i) => e.classList.toggle('now', i === v.gapBar));
+  if (v.muted) return;
+  flashMetroStep(v.step);
+  if (v.isBeatStart) flashMetroBeat(v.beatIdx, v.accent, 60 / v.bpm);
+  metroBandHit(v.p, (60 / v.bpm) / v.sub);
 }
 function flashMetroStep(step) {
   document.querySelectorAll('#v-metro .mtg-c.now').forEach(e => e.classList.remove('now'));
@@ -6633,26 +6705,29 @@ const exoSt = {perm:{p:'1324', f:5}, omc:{pair:'Em-Am', left:60, phase:'idle'}, 
 const exoBpmOf = id => exoBpm[id] || exoProg.best[id] || (EXO[id] && EXO[id].bpm ? EXO[id].bpm[0] : 70);
 
 /* ── looping player (tabs, strums, subdivisions) ── */
-let exoTimer = null, exoPlaying = null, omcTimer = null;
+let exoPlaying = null, omcTimer = null;
 const PLAY_HTML = '<svg class="ico" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21"/></svg> Jouer en boucle';
 const STOP_HTML = '<svg class="ico" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/></svg> Stop';
-function exoStop() {
-  if (exoTimer) clearInterval(exoTimer);
-  exoTimer = null;
+function exoLoopOff() {   // la boucle d'exercice s'arrête (bouton, case en cours, curseur de tablature)
+  mtStop('exo');
   if (exoPlaying) { const b = $('pb-' + exoPlaying); if (b) b.innerHTML = PLAY_HTML; }
   exoPlaying = null;
   document.querySelectorAll('.exo-now').forEach(e => e.classList.remove('exo-now'));
   document.querySelectorAll('.tab-cur').forEach(e => e.setAttribute('opacity', '0'));
+}
+function exoStop() {
+  exoLoopOff();
   if (omcTimer) { clearInterval(omcTimer); omcTimer = null; exoSt.omc.phase = 'idle'; exoSt.omc.left = 60; }
 }
-function exoLoop(id, stepSec, tick) {
+// boucle jouée par le moteur unique (07-5-moteur-grille.js) : snd(k, t) pose les sons de la case k à l'instant t,
+// vis(k) met l'écran à jour quand le son sort
+function exoLoop(id, stepSec, snd, vis) {
   if (exoPlaying === id) { exoStop(); return; }
-  exoStop(); audioReady();
+  exoStop();
   exoPlaying = id;
   const b = $('pb-' + id); if (b) b.innerHTML = STOP_HTML;
-  let k = 0;
-  const run = () => tick(k++);
-  run(); exoTimer = setInterval(run, stepSec * 1000);
+  mtPlay({owner: 'exo', key: id, start: .01, dur: () => stepSec, step: (k, t) => snd(k, t), vis: vis ? k => vis(k) : null,
+    onKill: () => { if (exoPlaying === id) exoLoopOff(); }});
 }
 
 /* ── tab DSL → SVG ── */
@@ -6715,14 +6790,15 @@ function tabBlock(id, b, exId) {
 function exoPlayTab(id) {
   const R = TABREG[id]; if (!R) return;
   const play = R.cols.map((c, i) => ({c, i})).filter(o => !o.c.bar), sub = R.sub;
-  exoLoop(id, 60 / exoBpmOf(R.ex) / sub, k => {
-    const o = play[k % play.length], t = audio().currentTime + 0.01;
+  exoLoop(id, 60 / exoBpmOf(R.ex) / sub, (k, t) => {
+    const o = play[k % play.length];
     if (k % sub === 0) click(t, k % (sub*4) === 0);
     o.c.notes.forEach(n => {
       const bm = n.txt.match(/b(\d+)/), f = bm ? +bm[1] : parseInt(n.txt);
       if (!isNaN(f)) pluck(fretFreq(6 - n.s, f, 0), t, o.c.lbl === 'PM' ? .14 : 1.1, o.c.lbl === 'PM' ? .1 : .14);
     });
-    const cur = $(id + '-cur');
+  }, k => {
+    const o = play[k % play.length], cur = $(id + '-cur');
     if (cur) { cur.setAttribute('x', R.pos[o.i] - 12); cur.setAttribute('opacity', '.25'); }
   });
 }
@@ -6749,14 +6825,13 @@ function strumBlock(id, b, exId) {
 function exoPlayStrum(id) {
   const R = STRUMREG[id]; if (!R) return;
   const len = R.pat.length, chords = R.chords.map(c => newChord(c));
-  exoLoop(id, 60 / exoBpmOf(R.ex) / 2, k => {
-    const i = k % len, ch = R.pat[i], chord = chords[Math.floor(k / len) % chords.length], t = audio().currentTime + 0.01;
+  exoLoop(id, 60 / exoBpmOf(R.ex) / 2, (k, t) => {
+    const i = k % len, ch = R.pat[i], chord = chords[Math.floor(k / len) % chords.length];
     if (i % 2 === 0) click(t, i === 0);
     const mm = mmOn('learn');
     if (ch === 'X') { if (mm) muteHit(t, chord, 0, 'D', 1, {x: 1}); else chuckSound(t, chord, 0); }
     else if ('DdUu'.includes(ch)) { const lv = ch === 'D' || ch === 'U' ? 2 : 0; if (mm) muteHit(t, chord, 0, ch.toUpperCase(), lv); else strumChord(chord, 0, ch.toUpperCase(), t, lv); }
-    for (let j = 0; j < len; j++) { const el = $(id + '-' + j); if (el) el.classList.toggle('exo-now', j === i); }
-  });
+  }, k => { const i = k % len; for (let j = 0; j < len; j++) { const el = $(id + '-' + j); if (el) el.classList.toggle('exo-now', j === i); } });
 }
 
 /* ── other visual blocks ── */
@@ -6962,11 +7037,8 @@ function eiAnswer(s) {
   exoRender();
 }
 function exoPlaySub(n) {
-  exoLoop('sd' + n, 60 / exoBpmOf('subdiv') / n, k => {
-    const i = k % (4*n), t = audio().currentTime + .01;
-    click(t, i % n === 0);
-    for (let j = 0; j < 4*n; j++) { const el = $(`sd${n}-${j}`); if (el) el.classList.toggle('exo-now', j === i); }
-  });
+  exoLoop('sd' + n, 60 / exoBpmOf('subdiv') / n, (k, t) => click(t, k % (4*n) % n === 0),
+    k => { const i = k % (4*n); for (let j = 0; j < 4*n; j++) { const el = $(`sd${n}-${j}`); if (el) el.classList.toggle('exo-now', j === i); } });
 }
 function gapStart() {
   const [on, off] = GAPS[exoSt.gap];
@@ -11592,6 +11664,7 @@ const LAB_L = {
 };
 const LAB_NAMES = {temps: 'Sur le temps', feu: 'Le feu de camp', double: 'Doubler les coups', reggae: 'Reggae'};
 const LAB_DRUMS = {k: [1, 0, 0, 0, 1, 1, 0, 0], s: [0, 0, 1, 0, 0, 0, 1, 0], h: [1, 1, 1, 1, 1, 1, 1, 1]};
+const labGrid = () => grBand(grNew('4/4', 8, 1), null, {drums: LAB_DRUMS});   // la bande du labo, dans une grille du moteur
 const LAB_SUB = ['1', 'et', '2', 'et', '3', 'et', '4', 'et'];
 const TCHIK_SVG = cls => `<svg class="mt-pal ${cls || ''}" viewBox="0 0 200 200" aria-hidden="true"><g class="pv"><ellipse cx="100" cy="34" rx="70" ry="12" fill="#ffe7a3"/><ellipse cx="100" cy="50" rx="70" ry="12" fill="#ffd166"/><rect x="96" y="50" width="8" height="40" fill="#ffd166"/><circle cx="100" cy="140" r="58" fill="#ffd166"/><rect x="76" y="122" width="14" height="28" rx="7" fill="#1a0d02"/><rect x="110" y="122" width="14" height="28" rx="7" fill="#1a0d02"/></g></svg>`;
 
@@ -11607,42 +11680,34 @@ function labRoot(name) {   // fondamentale de l'accord, à l'octave de la basse 
 function labStop(keepMic) {
   if (!keepMic) { rpStop(); if (typeof lvStop === 'function') lvStop(); }
   clearTimeout(lab.timer); lab.timer = null; lab.s = null;
+  mtStop('lab');
   if (!keepMic) labMicOff();
   if (lab.audioEl) { try { lab.audioEl.pause(); } catch (e) {} }
   if (lab.src) { try { lab.src.stop(); } catch (e) {} lab.src = null; }
   document.querySelectorAll('#v-labo .now').forEach(e => e.classList.remove('now'));
 }
-function labPlay(cfg) {
+function labPlay(cfg) {   // joué par le moteur unique (07-5-moteur-grille.js)
   labStop(true);   // le micro de « Médi écoute » reste ouvert
   const ac = audioReady();
-  lab.s = Object.assign({bpm: 70, bars: 4, count: true, band: true, chords: ['Am'], line: LAB_L.temps, demo: false, mode: 'ball',
+  const S = lab.s = Object.assign({bpm: 70, bars: 4, count: true, band: true, chords: ['Am'], line: LAB_L.temps, demo: false, mode: 'ball',
     total: 0, next: ac.currentTime + .15, start: ac.currentTime + .15, expect: [], bandHits: []}, cfg);
-  labPlace(0); labTick();
-}
-function labTick() {
-  const S = lab.s; if (!S) return;
-  const ac = audio(), dur = 60 / S.bpm / 2, nBars = S.bars + (S.count ? 1 : 0);
-  while (S.next < ac.currentTime + .12) {
-    const i = S.total % 8, bar = Math.floor(S.total / 8);
-    if (bar >= nBars) {
-      const end = S.next;
-      lab.timer = setTimeout(() => { const f = S.onEnd; if (lab.s === S) { lab.s = null; if (f) f(S); } }, Math.max(0, (end - ac.currentTime) * 1000) + 80);
-      return;
-    }
-    labStep(S, i, bar, S.next, dur);
-    S.next += dur; S.total++;
-  }
-  lab.timer = setTimeout(labTick, 25);
+  S.grid = labGrid();
+  labPlace(0);
+  mtPlay({owner: 'lab', at: S.next, dur: () => 60 / S.bpm / 2, cells: (S.bars + (S.count ? 1 : 0)) * 8, endDelay: 80,
+    step: (k, t, d) => { S.total = k; S.next = t; const v = labStep(S, k % 8, Math.floor(k / 8), t, d); S.total = k + 1; S.next = t + d; return v; },
+    vis: (k, t, d, T, v) => { if (lab.s === S) labVis(S, k % 8, v.b, v.isCount, d * 2); },
+    onEnd: () => { const f = S.onEnd; if (lab.s === S) { lab.s = null; if (f) f(S); } },
+    onKill: () => { if (lab.s === S) labStop(true); }});
 }
 function labStep(S, i, bar, t, dur) {
   const isCount = S.count && bar === 0, b = bar - (S.count ? 1 : 0), chord = S.chords[Math.max(0, b) % S.chords.length];
   if (isCount) { if (i % 2 === 0) metroClick(t, i === 0); }
   else {
     if (S.band) {
-      if (LAB_DRUMS.k[i]) { metroKick(t); S.bandHits.push(t); }
-      if (LAB_DRUMS.s[i]) { metroSnare(t); S.bandHits.push(t); }
-      if (LAB_DRUMS.h[i]) metroHihat(t);
-      if (LAB_DRUMS.k[i]) pluck(labRoot(chord), t, .5, .2);
+      const g = S.grid;
+      mtBand(g, i, t, chord);
+      if (g.boum.k[i]) S.bandHits.push(t);
+      if (g.boum.s[i]) S.bandHits.push(t);
     } else if (i % 2 === 0) metroClick(t, i === 0);
     const v = S.line[i];
     if (v === 1) {
@@ -11652,8 +11717,7 @@ function labStep(S, i, bar, t, dur) {
       pluck(fretFreq(2, 0, 0), t, .45, .16); pluck(fretFreq(2, 2, 0), t + dur * .5, .6, .13);
     }
   }
-  const delay = Math.max(0, (t - audio().currentTime) * 1000);
-  setTimeout(() => { if (lab.s === S) labVis(S, i, b, isCount, dur * 2); }, delay);
+  return {b, isCount};
 }
 function labVis(S, i, b, isCount, beatSec) {
   document.querySelectorAll('#lab-lane .now').forEach(e => e.classList.remove('now'));
@@ -11897,7 +11961,7 @@ async function labExport() {
 /* ═══════ S'ENTRAÎNER v2 : RÉPÉT' + JEUX (bêta cachée, 20/11) ═══════
    Vit dans le labo (?beta) à la place de son accueil ; les tests du 19/11 restent dans « Les tests du 19/11 ».
    Maquettes : planche Design, page Refonte, rangées « S'entraîner × la bande » et « S'entraîner v2 ».
-   Un seul moteur (rpPlay) : la bande (Boum, Tchik, Basile) ou Médi seul (= le métronome), ta ligne, les accords.
+   rpPlay (joué par le moteur unique, 07-5-moteur-grille.js) : la bande (Boum, Tchik, Basile) ou Médi seul (= le métronome), ta ligne, les accords.
    Rien ici ne touche aux fiches (sauf « En faire une fiche », qui ouvre l'éditeur comme « Au feeling »). */
 const RP_STYLES = [['pop', 'Pop'], ['rock', 'Rock'], ['reggae', 'Reggae'], ['funk', 'Funk'], ['shuffle', 'Shuffle'], ['valse', 'Valse']];
 const RP_CHSETS = [['G', 'C'], ['G', 'D', 'Em', 'C'], ['Am', 'E'], ['C', 'Am', 'F', 'G']];
@@ -11926,10 +11990,9 @@ function rpLine(pat, n) {   // « D-DU-UDU » → [{d, a} | 0] ; X = étouffé, 
   });
 }
 const rpRhythms = () => RHYTHMS.filter(r => r.res === 8 && (r.mes === '4/4' || r.mes === '3/4'));
-function rpDrums(style, beats) {
-  const P = (METRO_PRESETS[style] || METRO_PRESETS.pop).base, n = beats * 2, D = {k: [], s: [], h: []};
-  for (let i = 0; i < n; i++) { const st = P[(i * 2) % P.length]; D.k.push(st.k); D.s.push(st.s); D.h.push(st.h); }
-  return D;
+function rpDrums(style, beats) {   // la bande du style, calculée par la grille du moteur (Basile sur la grosse caisse et sur le 1)
+  const g = grBand(grNew(beats === 3 ? '3/4' : '4/4', 8, 1), style, {one: true});
+  return {k: g.boum.k, s: g.boum.s, h: g.tchik, b: g.basile};
 }
 function rpDeclics() {   // les cartes des murs qui ont un exercice en rythme (8 croches, 4/4)
   const out = [];
@@ -11947,47 +12010,39 @@ const rpStyleBeats = s => s === 'valse' ? 3 : 4;
 function rpStop() {
   clearTimeout(rp.timer); rp.timer = null;
   const S = rp.S; rp.S = null;
+  mtStop('rp');
   if (S && S.raf) cancelAnimationFrame(S.raf);
   if (rp.g && rp.g.raf) { cancelAnimationFrame(rp.g.raf); rp.g.raf = 0; }
   if (rp.g && rp.g.timers) { rp.g.timers.forEach(clearTimeout); rp.g.timers = []; }
   document.querySelectorAll('#lab-body .now').forEach(e => e.classList.remove('now'));
   rpPaintPlay();
 }
-function rpPlay(cfg) {
+function rpPlay(cfg) {   // joué par le moteur unique (07-5-moteur-grille.js)
   rpStop();
   const ac = audioReady();
   const S = Object.assign({bpm: rp.bpm, beats: rp.beats, band: rp.band, tchik: rp.tchik, style: rp.style, line: null, chords: ['G'], demo: false,
     count: true, bars: 0, total: 0, next: ac.currentTime + .15, expect: []}, cfg);
   S.n = S.beats * 2; S.drums = rpDrums(S.style, S.beats); S.start = S.next;
-  rp.S = S; rpTick(); rpPaintPlay();
+  rp.S = S;
+  const cnt = S.count ? 1 : 0;
+  S.T = mtPlay({owner: 'rp', at: S.next, dur: () => 60 / S.bpm / 2, cells: S.bars ? (S.bars + cnt) * S.n : 0, endDelay: 60,
+    step: (k, t, d) => {
+      const i = k % S.n, b = Math.floor(k / S.n) - cnt;
+      S.total = k; S.next = t; rpStep(S, i, b, t, d); S.total = k + 1; S.next = t + d;
+      return b;
+    },
+    vis: (k, t, d, T, b) => { if (rp.S === S) rpVis(S, k % S.n, b, d * 2); },
+    onEnd: () => { if (rp.S === S) { rp.S = null; rpPaintPlay(); if (S.onEnd) S.onEnd(S); } },
+    onKill: () => { if (rp.S === S) rpStop(); }});
+  rpPaintPlay();
   return S;
-}
-function rpTick() {
-  const S = rp.S; if (!S) return;
-  const ac = audio();
-  while (S.next < ac.currentTime + .12) {
-    const dur = 60 / S.bpm / 2, i = S.total % S.n, bar = Math.floor(S.total / S.n), cnt = S.count ? 1 : 0;
-    if (S.bars && bar >= S.bars + cnt) {
-      const end = S.next;
-      rp.timer = setTimeout(() => { if (rp.S === S) { rp.S = null; rpPaintPlay(); if (S.onEnd) S.onEnd(S); } }, Math.max(0, (end - ac.currentTime) * 1000) + 60);
-      return;
-    }
-    rpStep(S, i, bar - cnt, S.next, dur);
-    S.next += dur; S.total++;
-  }
-  rp.timer = setTimeout(rpTick, 25);
 }
 function rpStep(S, i, b, t, dur) {
   const chord = S.chords && S.chords.length ? S.chords[Math.max(0, b) % S.chords.length] : null;
   if (b < 0) { if (i % 2 === 0) metroClick(t, i === 0); }
   else {
-    if (S.band) {
-      const D = S.drums;
-      if (D.k[i]) metroKick(t);
-      if (D.s[i]) metroSnare(t);
-      if (D.h[i] && S.tchik) metroHihat(t);
-      if (chord && (D.k[i] || i === 0)) pluck(labRoot(chord), t, .5, .2);
-    } else if (i % 2 === 0) metroClick(t, i === 0);
+    if (S.band) { const D = S.drums; mtBandHit({k: D.k[i], s: D.s[i], h: D.h[i], b: D.b[i]}, t, chord, {tchik: !!S.tchik, needChord: true}); }
+    else if (i % 2 === 0) metroClick(t, i === 0);
     const v = S.line && S.line[i];
     if (v) {
       S.expect.push(t);
@@ -11995,7 +12050,6 @@ function rpStep(S, i, b, t, dur) {
     }
   }
   if (S.onSched) S.onSched(S, i, b, t);
-  setTimeout(() => { if (rp.S === S) rpVis(S, i, b, dur * 2); }, Math.max(0, (t - audio().currentTime) * 1000));
 }
 function rpVis(S, i, b, beatSec) {
   document.querySelectorAll('#rp-lane .lc.now').forEach(e => e.classList.remove('now'));

@@ -26,6 +26,7 @@ const LAB_L = {
 };
 const LAB_NAMES = {temps: 'Sur le temps', feu: 'Le feu de camp', double: 'Doubler les coups', reggae: 'Reggae'};
 const LAB_DRUMS = {k: [1, 0, 0, 0, 1, 1, 0, 0], s: [0, 0, 1, 0, 0, 0, 1, 0], h: [1, 1, 1, 1, 1, 1, 1, 1]};
+const labGrid = () => grBand(grNew('4/4', 8, 1), null, {drums: LAB_DRUMS});   // la bande du labo, dans une grille du moteur
 const LAB_SUB = ['1', 'et', '2', 'et', '3', 'et', '4', 'et'];
 const TCHIK_SVG = cls => `<svg class="mt-pal ${cls || ''}" viewBox="0 0 200 200" aria-hidden="true"><g class="pv"><ellipse cx="100" cy="34" rx="70" ry="12" fill="#ffe7a3"/><ellipse cx="100" cy="50" rx="70" ry="12" fill="#ffd166"/><rect x="96" y="50" width="8" height="40" fill="#ffd166"/><circle cx="100" cy="140" r="58" fill="#ffd166"/><rect x="76" y="122" width="14" height="28" rx="7" fill="#1a0d02"/><rect x="110" y="122" width="14" height="28" rx="7" fill="#1a0d02"/></g></svg>`;
 
@@ -41,42 +42,34 @@ function labRoot(name) {   // fondamentale de l'accord, à l'octave de la basse 
 function labStop(keepMic) {
   if (!keepMic) { rpStop(); if (typeof lvStop === 'function') lvStop(); }
   clearTimeout(lab.timer); lab.timer = null; lab.s = null;
+  mtStop('lab');
   if (!keepMic) labMicOff();
   if (lab.audioEl) { try { lab.audioEl.pause(); } catch (e) {} }
   if (lab.src) { try { lab.src.stop(); } catch (e) {} lab.src = null; }
   document.querySelectorAll('#v-labo .now').forEach(e => e.classList.remove('now'));
 }
-function labPlay(cfg) {
+function labPlay(cfg) {   // joué par le moteur unique (07-5-moteur-grille.js)
   labStop(true);   // le micro de « Médi écoute » reste ouvert
   const ac = audioReady();
-  lab.s = Object.assign({bpm: 70, bars: 4, count: true, band: true, chords: ['Am'], line: LAB_L.temps, demo: false, mode: 'ball',
+  const S = lab.s = Object.assign({bpm: 70, bars: 4, count: true, band: true, chords: ['Am'], line: LAB_L.temps, demo: false, mode: 'ball',
     total: 0, next: ac.currentTime + .15, start: ac.currentTime + .15, expect: [], bandHits: []}, cfg);
-  labPlace(0); labTick();
-}
-function labTick() {
-  const S = lab.s; if (!S) return;
-  const ac = audio(), dur = 60 / S.bpm / 2, nBars = S.bars + (S.count ? 1 : 0);
-  while (S.next < ac.currentTime + .12) {
-    const i = S.total % 8, bar = Math.floor(S.total / 8);
-    if (bar >= nBars) {
-      const end = S.next;
-      lab.timer = setTimeout(() => { const f = S.onEnd; if (lab.s === S) { lab.s = null; if (f) f(S); } }, Math.max(0, (end - ac.currentTime) * 1000) + 80);
-      return;
-    }
-    labStep(S, i, bar, S.next, dur);
-    S.next += dur; S.total++;
-  }
-  lab.timer = setTimeout(labTick, 25);
+  S.grid = labGrid();
+  labPlace(0);
+  mtPlay({owner: 'lab', at: S.next, dur: () => 60 / S.bpm / 2, cells: (S.bars + (S.count ? 1 : 0)) * 8, endDelay: 80,
+    step: (k, t, d) => { S.total = k; S.next = t; const v = labStep(S, k % 8, Math.floor(k / 8), t, d); S.total = k + 1; S.next = t + d; return v; },
+    vis: (k, t, d, T, v) => { if (lab.s === S) labVis(S, k % 8, v.b, v.isCount, d * 2); },
+    onEnd: () => { const f = S.onEnd; if (lab.s === S) { lab.s = null; if (f) f(S); } },
+    onKill: () => { if (lab.s === S) labStop(true); }});
 }
 function labStep(S, i, bar, t, dur) {
   const isCount = S.count && bar === 0, b = bar - (S.count ? 1 : 0), chord = S.chords[Math.max(0, b) % S.chords.length];
   if (isCount) { if (i % 2 === 0) metroClick(t, i === 0); }
   else {
     if (S.band) {
-      if (LAB_DRUMS.k[i]) { metroKick(t); S.bandHits.push(t); }
-      if (LAB_DRUMS.s[i]) { metroSnare(t); S.bandHits.push(t); }
-      if (LAB_DRUMS.h[i]) metroHihat(t);
-      if (LAB_DRUMS.k[i]) pluck(labRoot(chord), t, .5, .2);
+      const g = S.grid;
+      mtBand(g, i, t, chord);
+      if (g.boum.k[i]) S.bandHits.push(t);
+      if (g.boum.s[i]) S.bandHits.push(t);
     } else if (i % 2 === 0) metroClick(t, i === 0);
     const v = S.line[i];
     if (v === 1) {
@@ -86,8 +79,7 @@ function labStep(S, i, bar, t, dur) {
       pluck(fretFreq(2, 0, 0), t, .45, .16); pluck(fretFreq(2, 2, 0), t + dur * .5, .6, .13);
     }
   }
-  const delay = Math.max(0, (t - audio().currentTime) * 1000);
-  setTimeout(() => { if (lab.s === S) labVis(S, i, b, isCount, dur * 2); }, delay);
+  return {b, isCount};
 }
 function labVis(S, i, b, isCount, beatSec) {
   document.querySelectorAll('#lab-lane .now').forEach(e => e.classList.remove('now'));
