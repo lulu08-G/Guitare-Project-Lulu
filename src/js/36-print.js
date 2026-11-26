@@ -146,8 +146,8 @@ function pSongHTML(s, no) {
     <div class="pf2-c">${parts.map((p, i) => {
       const rep = +(p.repeat || p.reps || 0);
       return `<div class="pf2-row">${one ? '' : `<div class="pf2-pn"><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span>×${rep}</span>` : ''}</div>`}
-        <div class="pf2-b"><div class="pf2-chs">${p.chords.map(c => `<div class="pf2-ch"><b>${esc(c.name)}</b>${chordSVG(c, {size: big ? 1.05 : .75, light: pLight()})}</div>`).join('') || '<span class="pf2-no">—</span>'}</div>
-        ${pHas(p) ? `<div class="pf2-way">${pPrintWay(p, 0, !big)}</div>` : ''}
+        <div class="pf2-b"><div class="pf2-line"><div class="pf2-chs">${p.chords.map(c => `<div class="pf2-ch"><b>${esc(c.name)}</b>${chordSVG(c, {size: big ? .9 : .75, light: pLight()})}</div>`).join('') || '<span class="pf2-no">—</span>'}</div>
+        ${pHas(p) ? `<div class="pf2-way">${pPrintWay(p, 0, true)}</div>` : ''}</div>
         ${p.note ? `<div class="pf2-note">${esc(p.note)}</div>` : ''}</div></div>`;
     }).join('')}
     ${s.memo ? `<div class="pf2-row pf2-memo">${pMedi('neutre', 18)}<span>${esc(s.memo)}</span></div>` : ''}</div>
@@ -208,7 +208,7 @@ function pArpNotes(roles, ch, bass) {
 }
 function pArpLines(p, mini) {
   const a = p.arp, chs = p.chords.length ? p.chords : [null], steps = a.steps.length;
-  const dx = mini ? 7.5 : 14, gap = mini ? 8 : 13, L = mini ? 14 : 20, top = mini ? 14 : 18, rowN = 4;
+  const dx = mini ? 7.5 : 14, gap = mini ? 8 : 13, L = mini ? 14 : 20, top = mini ? 14 : 18, rowN = mini ? 2 : 4;
   let out = '';
   for (let r0 = 0; r0 < chs.length; r0 += rowN) {
     const row = chs.slice(r0, r0 + rowN), W = L + row.length * steps * dx + 6, H = top + 5 * gap + 4;

@@ -106,12 +106,16 @@
 .pf2-row:first-child{border-top:0}
 .pf2-pn{flex:none;width:72px;padding-top:4px;display:flex;flex-direction:column;gap:2px}
 .pf2-pn b{font:800 13px var(--display);color:var(--p-ink)}.pf2-pn span{font-size:11px;color:var(--p-mist)}
-.pf2-b{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+.pf2-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+/* le rythme toujours en petit, à droite des accords ; s'il n'y a pas la place, les accords passent sur deux rangées */
+.pf2-line{display:flex;align-items:center;gap:16px}
+.pf2-line .pf2-chs{flex:1 1 auto;min-width:0}
+.pf2-way{flex:none;margin-left:auto}
 .pf2-chs{display:flex;flex-wrap:wrap;gap:4px 10px}
 .pf2-ch{display:flex;flex-direction:column;align-items:center}
 .pf2-ch b{font:800 20px/1 var(--display);color:var(--p-ink);margin-bottom:-4px}
 .pf2-no{color:var(--p-mist)}
-.pf2-note{flex-basis:100%;font-size:12px;color:var(--p-mist)}
+.pf2-note{font-size:12px;color:var(--p-mist)}
 .pf2-memo{align-items:center;gap:8px;font-size:12px;color:var(--p-mist)}
 .pf2-memo .medi{flex:none}
 /* la taille « Grande » : même mise en page, en plus gros */

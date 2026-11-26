@@ -3353,12 +3353,16 @@ body.mj-on{overflow:hidden}
 .pf2-row:first-child{border-top:0}
 .pf2-pn{flex:none;width:72px;padding-top:4px;display:flex;flex-direction:column;gap:2px}
 .pf2-pn b{font:800 13px var(--display);color:var(--p-ink)}.pf2-pn span{font-size:11px;color:var(--p-mist)}
-.pf2-b{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+.pf2-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+/* le rythme toujours en petit, à droite des accords ; s'il n'y a pas la place, les accords passent sur deux rangées */
+.pf2-line{display:flex;align-items:center;gap:16px}
+.pf2-line .pf2-chs{flex:1 1 auto;min-width:0}
+.pf2-way{flex:none;margin-left:auto}
 .pf2-chs{display:flex;flex-wrap:wrap;gap:4px 10px}
 .pf2-ch{display:flex;flex-direction:column;align-items:center}
 .pf2-ch b{font:800 20px/1 var(--display);color:var(--p-ink);margin-bottom:-4px}
 .pf2-no{color:var(--p-mist)}
-.pf2-note{flex-basis:100%;font-size:12px;color:var(--p-mist)}
+.pf2-note{font-size:12px;color:var(--p-mist)}
 .pf2-memo{align-items:center;gap:8px;font-size:12px;color:var(--p-mist)}
 .pf2-memo .medi{flex:none}
 /* la taille « Grande » : même mise en page, en plus gros */
@@ -3442,6 +3446,17 @@ body.mj-on{overflow:hidden}
   .ppm-r{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
   .ppm-pv{flex:1 1 auto;height:auto;min-height:110px}
   .ppm.pv-big .ppm-l{display:none}.ppm.pv-big .ppm-pv{height:auto}
+  /* le haut plus serré (Lucas, 26/11) : une ligne par question, l'aperçu garde la moitié de l'écran */
+  .ppm .modal-t{font-size:18px}
+  .ppm-medi .medi{width:32px!important;height:auto!important}
+  .ppm-medi .bulle{font-size:12.5px;padding:6px 10px}
+  .ppm-q{flex-direction:row;align-items:center;gap:8px}
+  .ppm-ql{flex:none;width:74px;font-size:13px}
+  .ppm-os{flex:1;min-width:0;grid-template-columns:1fr 1fr;gap:6px}
+  .ppm-o{min-height:36px;padding:4px 10px;justify-content:center}
+  .ppm-o .ppm-v{display:none}
+  .ppm-t{grid-column:1 / -1;padding-right:48px}
+  .ppm-tg{right:8px}
 }
 :root{--boum:#8b95ff}   /* la couleur de Boum (celle de son dessin) */
 /* ═══════ LABO : LES TESTS DU 26/11 (39-95-labo-26-11.js, caché : ?beta) ═══════
@@ -12098,8 +12113,8 @@ function pSongHTML(s, no) {
     <div class="pf2-c">${parts.map((p, i) => {
       const rep = +(p.repeat || p.reps || 0);
       return `<div class="pf2-row">${one ? '' : `<div class="pf2-pn"><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span>×${rep}</span>` : ''}</div>`}
-        <div class="pf2-b"><div class="pf2-chs">${p.chords.map(c => `<div class="pf2-ch"><b>${esc(c.name)}</b>${chordSVG(c, {size: big ? 1.05 : .75, light: pLight()})}</div>`).join('') || '<span class="pf2-no">—</span>'}</div>
-        ${pHas(p) ? `<div class="pf2-way">${pPrintWay(p, 0, !big)}</div>` : ''}
+        <div class="pf2-b"><div class="pf2-line"><div class="pf2-chs">${p.chords.map(c => `<div class="pf2-ch"><b>${esc(c.name)}</b>${chordSVG(c, {size: big ? .9 : .75, light: pLight()})}</div>`).join('') || '<span class="pf2-no">—</span>'}</div>
+        ${pHas(p) ? `<div class="pf2-way">${pPrintWay(p, 0, true)}</div>` : ''}</div>
         ${p.note ? `<div class="pf2-note">${esc(p.note)}</div>` : ''}</div></div>`;
     }).join('')}
     ${s.memo ? `<div class="pf2-row pf2-memo">${pMedi('neutre', 18)}<span>${esc(s.memo)}</span></div>` : ''}</div>
@@ -12160,7 +12175,7 @@ function pArpNotes(roles, ch, bass) {
 }
 function pArpLines(p, mini) {
   const a = p.arp, chs = p.chords.length ? p.chords : [null], steps = a.steps.length;
-  const dx = mini ? 7.5 : 14, gap = mini ? 8 : 13, L = mini ? 14 : 20, top = mini ? 14 : 18, rowN = 4;
+  const dx = mini ? 7.5 : 14, gap = mini ? 8 : 13, L = mini ? 14 : 20, top = mini ? 14 : 18, rowN = mini ? 2 : 4;
   let out = '';
   for (let r0 = 0; r0 < chs.length; r0 += rowN) {
     const row = chs.slice(r0, r0 + rowN), W = L + row.length * steps * dx + 6, H = top + 5 * gap + 4;
