@@ -7,7 +7,8 @@ function openPrintModal() {
   printOpts.toc = printOpts.toc != null ? printOpts.toc : selIds.size > 2;
   printOpts.num = printOpts.num != null ? printOpts.num : true;
   printOpts.style = printOpts.style || 'fiche';
-  printOpts.theme = printOpts.theme || 'app';   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
+  printOpts.theme = printOpts.theme || 'app';
+  printOpts.chords = printOpts.chords || 'noms';   // dans chaque partie : 'noms' (les doigtés une fois en haut) ou 'schemas' (petits doigtés partout)   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
   document.querySelector('#m-print .modal').classList.add('wide');
   renderPrintModal();
   $('m-print').classList.remove('hide');
@@ -26,6 +27,11 @@ function renderPrintModal() {
         <select id="pp-theme" onchange="printOpts.theme=this.value;refreshPrintPreview()">
           <option value="app" ${printOpts.theme==='app'?'selected':''}>Comme l’appli (fond sombre)</option>
           <option value="nb" ${printOpts.theme==='nb'?'selected':''}>Noir et blanc (moins d’encre)</option>
+        </select></div>
+      <div class="fg"><label>Accords dans les parties</label>
+        <select id="pp-chords" onchange="printOpts.chords=this.value;refreshPrintPreview()">
+          <option value="noms" ${printOpts.chords==='noms'?'selected':''}>Noms seuls (doigtés en haut)</option>
+          <option value="schemas" ${printOpts.chords==='schemas'?'selected':''}>Petits schémas</option>
         </select></div>
       <div class="fg"><label>Mise en page</label>
         <select id="pp-mode" onchange="printOpts.mode=+this.value;refreshPrintPreview()">
@@ -55,6 +61,11 @@ function refreshPrintPreview() { $('pp-preview').innerHTML = buildPrintPages(); 
    'nb' (papier blanc, noir et gris, Médi au trait). En-tête avec Médi, doigtés une seule fois, chaque partie avec ses accords
    en grand et son rythme, les notes dans la bulle de Médi, pied de page avec Médi. Styles : 26-impression.css. */
 const pLight = () => !printOpts || printOpts.theme === 'nb';
+const pSchemas = () => !!printOpts && printOpts.chords === 'schemas';
+// les accords d'une partie : leurs noms en grand, ou chaque nom avec son petit doigté
+const pSeq = (p, sm) => !p.chords.length ? '' : pSchemas()
+  ? `<div class="pf-seq pf-sc${sm ? ' sm' : ''}">${p.chords.map(c => `<span><b>${esc(c.name)}</b>${chordSVG(c, {size: sm ? .45 : .62, light: pLight()})}</span>`).join('')}</div>`
+  : `<div class="pf-seq${sm ? ' sm' : ''}">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('')}</div>`;
 const pMedi = (expr, size) => mediSVG(expr, {size, anim: 'still'});
 const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi('contente', 18)}<b>Guitar Memory</b>${left ? `<i>${esc(left)}</i>` : ''}</span>${n ? `<span class="pf-n">${n}</span>` : ''}</div>`;
 function buildPrintPages() {
@@ -106,12 +117,12 @@ function pHead(s, compact) {
 function printSheetHTML(s, compact) {
   const uniq = pUniqueChords(s);
   return `${pHead(s, compact)}
-    ${uniq.length ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
+    ${uniq.length && !pSchemas() ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
     ${(s.parts||[]).map((p, i) => {
       const staff = tabStaffSVG(p.chords, pLight()), rep = +(p.repeat || p.reps || 0);
       return `<div class="pf-part">
         <div class="pf-pt"><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span class="pf-chip">×${rep}</span>` : ''}</div>
-        ${p.chords.length ? `<div class="pf-seq">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('')}</div>` : ''}
+        ${pSeq(p, compact)}
         ${pHas(p) ? `<div class="pf-way">${pPrintWay(p, compact ? 74 : 88)}</div>` : ''}
         ${staff && !compact ? `<div class="pf-tab">${staff}</div>` : ''}
         ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
@@ -125,8 +136,8 @@ function printSheetHTML(s, compact) {
 function printCahierHTML(s) {
   const uniq = pUniqueChords(s);
   return `<div class="pf-cahier">${pHead(s, true)}
-    ${uniq.length ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
+    ${uniq.length && !pSchemas() ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
     ${(s.parts||[]).map((p, i) => `<div class="pf-row"><span class="pf-i">${i + 1}</span><b class="pf-rn">${esc(p.name || 'Partie ' + (i + 1))}</b>
-      <div class="pf-seq sm">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('') || '—'}</div>
+      ${pSeq(p, true) || '<div class="pf-seq sm">—</div>'}
       ${pHas(p) ? `<div class="pf-rw">${pPrintWay(p, 62, true)}</div>` : ''}</div>`).join('')}</div>`;
 }

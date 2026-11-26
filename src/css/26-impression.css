@@ -71,3 +71,8 @@
 .pf-nb .rt-c{background:#f1f1f1;border-radius:7px;padding:4px 2px 5px}.pf-nb .rt-c.b{background:#e3e3e3}
 .pf-nb .rt-c i{font:600 9px var(--sans);color:#555}.pf-nb .rt-c.b i{font:800 10px var(--display);color:#111}
 .pf-nb .rt-c .d,.pf-nb .rt-c .u{stroke:#111}.pf-nb .rt-c .x{stroke:#555}.pf-nb .rt-c .o{fill:#aaa}
+/* option « Petits schémas » : chaque accord de la partie avec son doigté */
+.pf-seq.pf-sc{gap:6px 14px;align-items:flex-end}
+.pf-sc span{display:flex;flex-direction:column;align-items:center;gap:2px}
+.pf-sc span b{font:800 22px/1 var(--display);color:var(--p-ink)}
+.pf-sc.sm span b{font-size:14px}
