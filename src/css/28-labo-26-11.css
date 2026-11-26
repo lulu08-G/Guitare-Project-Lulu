@@ -120,3 +120,35 @@ body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
 #v-sheet.fb .chords-row,#v-sheet.fb.compact .chords-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:flex-start}
 #v-sheet.fb .parts-view .chord-cell{display:flex;flex-direction:column-reverse;align-items:center;gap:4px}
 #v-sheet.fb .chord-cell svg{width:56px;height:auto}
+/* ── les variantes (39-97-labo-variantes.js) ── */
+.l26-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0;margin:0 -2px}
+.l26-chips::-webkit-scrollbar{display:none}
+.l26-chips button{flex:none;min-height:40px;padding:0 14px;border:0;border-radius:20px;background:var(--card);color:var(--cream3);font:600 13px var(--sans);white-space:nowrap;cursor:pointer}
+.l26-chips button.on{background:var(--gold);color:var(--ink);font-weight:700}
+.l26-chips button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.l26-air{fill:none;stroke:var(--cream4);stroke-width:1.4;stroke-dasharray:3 4}
+.l26-air.on{stroke:var(--gold);stroke-dasharray:3 4}
+.l26-st{fill:none;stroke:currentColor;stroke-linecap:round}
+.l26-hd{fill:currentColor}
+.l26-medi .l26-mr{color:var(--gold)}
+.l26-rs{fill:none;stroke:var(--card3)}
+.l26-rs.on{stroke:var(--gold)}
+.l26-path{fill:none;stroke:var(--cream4);stroke-width:2;stroke-dasharray:4 4;stroke-linejoin:round}
+.l26-path.on{stroke:var(--gold);stroke-width:3;stroke-dasharray:none}
+.l26-col{fill:none;stroke:var(--card3)}
+.l26-col.on{stroke:var(--gold)}
+.l26-hit{stroke:var(--cream);stroke-width:2;stroke-linecap:round}
+.l26-fall circle{fill:currentColor}
+.l26-fall.bs circle{stroke:currentColor;stroke-width:3}
+.l26-fret{stroke:var(--card3);stroke-width:1.4}
+.l26-nut{stroke:var(--cream);stroke-width:4}
+.l26-acs{fill:none;stroke:var(--cream4);stroke-width:1.6}
+.l26-acs.on{stroke:var(--gold);stroke-width:2.6}
+.l26-adot{fill:var(--cream)}
+.l26-afg circle{fill:var(--gold)}
+.l26-acell{fill:var(--card2)}
+.l26-h.cur .l26-acell{fill:var(--gold)}
+.l26-acl{font:800 15px var(--sans);fill:var(--cream);text-anchor:middle}
+.l26-h.cur .l26-acl{fill:var(--ink)}
+.fb-dsel{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--cream3)}
+.fb-dsel select{min-height:36px;border-radius:12px;border:1px solid var(--border2);background:var(--card2);color:var(--cream);font:600 13px var(--sans);padding:0 10px}
