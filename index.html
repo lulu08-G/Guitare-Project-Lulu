@@ -2290,8 +2290,10 @@ h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
 .medi.a-hop .mv{animation:mdHop var(--beat,.6667s) linear infinite}
 .medi.a-vivant .mv{animation:mdJump 1.2s cubic-bezier(.3,.7,.4,1) .2s 1 both,mdVivant 8s ease-in-out 1.6s infinite}
 .medi.a-vivant .mc{animation:mdVivEyes 8s ease-in-out 1.6s infinite}
-.medi.a-vivant.poke .mv{animation:mdJump 1s cubic-bezier(.3,.7,.4,1) 1}
-.medi.a-vivant.poke .mc{animation:mdBlink .5s linear 1}
+svg.medi.poke .mv{animation:mdPoke .9s cubic-bezier(.3,.7,.4,1) 1}
+svg.medi.poke .mc{animation:mdPokeEyes .9s linear 1}
+@keyframes mdPoke{0%{transform:none}12%{transform:scale(1.12,.86)}38%{transform:translateY(-26px) rotate(-6deg) scale(.95,1.07)}60%{transform:scale(1.12,.86)}76%{transform:scale(.97,1.03)}100%{transform:none}}
+@keyframes mdPokeEyes{0%,100%{transform:none}10%,55%{transform:scaleY(.15)}}
 @keyframes mdVivant{0%,100%{transform:none}5%{transform:scale(1.08,.9)}11%{transform:translateY(-16px) scale(.96,1.05)}17%{transform:scale(1.1,.88)}21%{transform:none}26%{transform:translateY(-9px)}31%{transform:scale(1.05,.94)}35%,44%{transform:none}52%{transform:rotate(-8deg)}60%{transform:rotate(7deg)}67%{transform:rotate(-3deg)}72%{transform:none}86%{transform:translateY(-3px) scale(1.01,.99)}}
 @keyframes mdVivEyes{0%,2%,5%,40%,100%{transform:none}3.5%{transform:scaleY(.08)}46%,55%{transform:translateX(-9px)}62%,70%{transform:translateX(9px)}76%,83%,86%{transform:none}84.5%{transform:scaleY(.08)}}
 @keyframes mdBreathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-4px) scale(1.015,.985)}}
@@ -4400,12 +4402,12 @@ document.addEventListener('pointerdown', e => {
   b.classList.remove('strum'); void b.offsetWidth; b.classList.add('strum');
   clearTimeout(b._st); b._st = setTimeout(() => b.classList.remove('strum'), 500);
 });
-// Médi de Découvrir saute quand on le touche
+// Médi saute quand on le touche, partout (sauf quand il suit le tempo ou l'aiguille de l'accordeur)
 document.addEventListener('pointerdown', e => {
-  const m = e.target.closest && e.target.closest('.medi.a-vivant');
-  if (!m) return;
+  const m = e.target.closest && e.target.closest('svg.medi');
+  if (!m || m.matches('.a-still,.a-dance,.a-hop') || m.closest('.tn-medi,#print-root')) return;
   m.classList.remove('poke'); void m.getBoundingClientRect(); m.classList.add('poke');
-  clearTimeout(m._pk); m._pk = setTimeout(() => m.classList.remove('poke'), 1100);
+  clearTimeout(m._pk); m._pk = setTimeout(() => m.classList.remove('poke'), 950);
 });
 /* ═══════ SVG: CHORD DIAGRAM ═══════ */
 function chordSVG(ch, opt) {
@@ -6848,7 +6850,7 @@ function renderBlocs() {
     const nx = blocNext();
     let h = '';
     if (nx) { const k = nx.b.cards.findIndex(c => !dn[c.k]);
-      h += `<section class="bk-now">${mediBulle('neutre', nx.f ? `${esc(nx.b.n)} : tu en es à la moitié du chemin. On continue ?` : `« ${esc(nx.b.mur)} » ? On s’y attaque ensemble.`, {size: 62})}
+      h += `<section class="bk-now">${mediBulle('neutre', nx.f ? `${esc(nx.b.n)} : tu en es à la moitié du chemin. On continue ?` : `« ${esc(nx.b.mur)} » ? On s’y attaque ensemble.`, {size: 62, anim: 'vivant'})}
         <button type="button" class="bk-go" onclick="blocOpen('${nx.b.id}')"><span><b>${esc(nx.b.n)}</b><small>Vidéo ${k + 1} sur ${nx.n}</small></span><i>${PLAY_I}</i></button></section>`; }
     h += `<h2 class="bk-lt">Ce qui te bloque</h2><div class="bk-list2">` + BLOCS.map(b => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length, ok = n || b.to;
       return `<button type="button" class="bk-row${ok ? '' : ' soon'}"${ok ? ` onclick="blocOpen('${b.id}')"` : ' disabled'}>${b.to ? `<span class="bk-st to" aria-hidden="true">?</span>` : blocRing(f, n)}<span class="bk-tx"><b>${esc(b.mur)}</b><small>${esc(b.n)}${ok ? '' : ', bientôt'}</small></span></button>`; }).join('') + '</div>';
@@ -6861,7 +6863,7 @@ function renderBlocs() {
   const say = f >= n ? 'Mur passé ! Reviens quand tu veux revoir une vidéo.' : f ? `« ${esc(lastDone.t)} » est dans ta poche. On attaque « ${esc(b.cards[first].t)} » ?` : `On commence par « ${esc(b.cards[0].t)} » ?`;
   host.innerHTML = `<div class="bk-top"><button type="button" class="bk-back2" onclick="blocBack()" aria-label="Tous les murs"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><span>Mur ${bi + 1} sur ${BLOCS.length}</span></div>
     <div class="bk-hd"><h2>${esc(b.n)}</h2><p>« ${esc(b.mur)} »</p><div class="bk-pg"><span class="dc-pg"><i style="width:${Math.round(100 * f / n)}%"></i></span><small>${f} sur ${n}</small></div></div>
-    ${mediBulle(f >= n ? 'contente' : 'neutre', say, {size: 50})}
+    ${mediBulle(f >= n ? 'contente' : 'neutre', say, {size: 50, anim: 'vivant'})}
     <div class="bk-cards">` + b.cards.map((c, i) => {
       if (i !== open) return `<button type="button" class="bk-row" onclick="blocCardOpen=${i};renderBlocs()">${dn[c.k] ? `<span class="bk-st done">${BK_CHK}</span>` : `<span class="bk-st n">${i + 1}</span>`}<span class="bk-tx"><b>${esc(c.t)}</b><small>${dn[c.k] ? 'Fait' : 'Vidéo'}</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>`;
       return `<section class="bk-open${dn[c.k] ? ' done' : ''}">${lvCard(c.k, 'b')}
@@ -8242,7 +8244,7 @@ function feelChips() {
   return `<div class="fl-chips">${AMBIANCES.map(a => `<button type="button" class="${feel.amb === a.id ? 'on' : ''}" aria-pressed="${feel.amb === a.id}" onclick="feelPickAmb('${a.id}')">${esc(a.n)}</button>`).join('')}</div>`;
 }
 function feelTiles() {
-  return `${mediBulle('clin', 'Envie de quoi ce soir ? Choisis une ambiance, je te sors des suites qui sonnent.', {size: 50, cls: 'fl-medi'})}
+  return `${mediBulle('clin', 'Envie de quoi ce soir ? Choisis une ambiance, je te sors des suites qui sonnent.', {size: 50, cls: 'fl-medi', anim: 'vivant'})}
     ${feelChips()}
     <button type="button" class="fl-rand" onclick="feelSurprise()">Au hasard : une suite et un rythme</button>
     <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" onclick="feelPickAmb('${a.id}')">
@@ -9806,7 +9808,7 @@ function renderHome() {
     const old = !selMode && !q && homeFilter === 'all' && sheets.length > 2 ? sheets
       .map(s => ({s, t: seen[s.id] || s.updatedAt || now})).filter(x => now - x.t >= 4 * DAY)
       .sort((x, y) => (y.s.favorite ? 1 : 0) - (x.s.favorite ? 1 : 0) || x.t - y.t)[0] : null;
-    $('resume-wrap').innerHTML = old ? `<section class="hm-nudge">${mediSVG('neutre', {size: 52, anim: 'look', label: 'Médi cherche un morceau à rejouer'})}
+    $('resume-wrap').innerHTML = old ? `<section class="hm-nudge">${mediSVG('neutre', {size: 52, anim: 'vivant', label: 'Médi cherche un morceau à rejouer'})}
       <div><p>${esc(old.s.title)} t’attend depuis ${Math.floor((now - old.t) / DAY)} jours. Cinq minutes ce soir ?</p>
       <button type="button" class="btn btn-primary btn-sm" onclick="viewSheet('${old.s.id}')">Le rejouer</button></div></section>` : ''; }
   const g = $('home-grid');

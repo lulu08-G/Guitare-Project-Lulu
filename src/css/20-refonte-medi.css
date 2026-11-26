@@ -30,8 +30,10 @@ h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
 .medi.a-hop .mv{animation:mdHop var(--beat,.6667s) linear infinite}
 .medi.a-vivant .mv{animation:mdJump 1.2s cubic-bezier(.3,.7,.4,1) .2s 1 both,mdVivant 8s ease-in-out 1.6s infinite}
 .medi.a-vivant .mc{animation:mdVivEyes 8s ease-in-out 1.6s infinite}
-.medi.a-vivant.poke .mv{animation:mdJump 1s cubic-bezier(.3,.7,.4,1) 1}
-.medi.a-vivant.poke .mc{animation:mdBlink .5s linear 1}
+svg.medi.poke .mv{animation:mdPoke .9s cubic-bezier(.3,.7,.4,1) 1}
+svg.medi.poke .mc{animation:mdPokeEyes .9s linear 1}
+@keyframes mdPoke{0%{transform:none}12%{transform:scale(1.12,.86)}38%{transform:translateY(-26px) rotate(-6deg) scale(.95,1.07)}60%{transform:scale(1.12,.86)}76%{transform:scale(.97,1.03)}100%{transform:none}}
+@keyframes mdPokeEyes{0%,100%{transform:none}10%,55%{transform:scaleY(.15)}}
 @keyframes mdVivant{0%,100%{transform:none}5%{transform:scale(1.08,.9)}11%{transform:translateY(-16px) scale(.96,1.05)}17%{transform:scale(1.1,.88)}21%{transform:none}26%{transform:translateY(-9px)}31%{transform:scale(1.05,.94)}35%,44%{transform:none}52%{transform:rotate(-8deg)}60%{transform:rotate(7deg)}67%{transform:rotate(-3deg)}72%{transform:none}86%{transform:translateY(-3px) scale(1.01,.99)}}
 @keyframes mdVivEyes{0%,2%,5%,40%,100%{transform:none}3.5%{transform:scaleY(.08)}46%,55%{transform:translateX(-9px)}62%,70%{transform:translateX(9px)}76%,83%,86%{transform:none}84.5%{transform:scaleY(.08)}}
 @keyframes mdBreathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-4px) scale(1.015,.985)}}

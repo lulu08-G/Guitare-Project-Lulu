@@ -424,7 +424,7 @@ function feelChips() {
   return `<div class="fl-chips">${AMBIANCES.map(a => `<button type="button" class="${feel.amb === a.id ? 'on' : ''}" aria-pressed="${feel.amb === a.id}" onclick="feelPickAmb('${a.id}')">${esc(a.n)}</button>`).join('')}</div>`;
 }
 function feelTiles() {
-  return `${mediBulle('clin', 'Envie de quoi ce soir ? Choisis une ambiance, je te sors des suites qui sonnent.', {size: 50, cls: 'fl-medi'})}
+  return `${mediBulle('clin', 'Envie de quoi ce soir ? Choisis une ambiance, je te sors des suites qui sonnent.', {size: 50, cls: 'fl-medi', anim: 'vivant'})}
     ${feelChips()}
     <button type="button" class="fl-rand" onclick="feelSurprise()">Au hasard : une suite et un rythme</button>
     <div class="fl-secs">${FEEL_SECS.map(a => `<button type="button" class="fl-sec" onclick="feelPickAmb('${a.id}')">

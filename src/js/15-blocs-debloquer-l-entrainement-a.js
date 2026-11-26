@@ -184,7 +184,7 @@ function renderBlocs() {
     const nx = blocNext();
     let h = '';
     if (nx) { const k = nx.b.cards.findIndex(c => !dn[c.k]);
-      h += `<section class="bk-now">${mediBulle('neutre', nx.f ? `${esc(nx.b.n)} : tu en es à la moitié du chemin. On continue ?` : `« ${esc(nx.b.mur)} » ? On s’y attaque ensemble.`, {size: 62})}
+      h += `<section class="bk-now">${mediBulle('neutre', nx.f ? `${esc(nx.b.n)} : tu en es à la moitié du chemin. On continue ?` : `« ${esc(nx.b.mur)} » ? On s’y attaque ensemble.`, {size: 62, anim: 'vivant'})}
         <button type="button" class="bk-go" onclick="blocOpen('${nx.b.id}')"><span><b>${esc(nx.b.n)}</b><small>Vidéo ${k + 1} sur ${nx.n}</small></span><i>${PLAY_I}</i></button></section>`; }
     h += `<h2 class="bk-lt">Ce qui te bloque</h2><div class="bk-list2">` + BLOCS.map(b => { const n = b.cards.length, f = b.cards.filter(c => dn[c.k]).length, ok = n || b.to;
       return `<button type="button" class="bk-row${ok ? '' : ' soon'}"${ok ? ` onclick="blocOpen('${b.id}')"` : ' disabled'}>${b.to ? `<span class="bk-st to" aria-hidden="true">?</span>` : blocRing(f, n)}<span class="bk-tx"><b>${esc(b.mur)}</b><small>${esc(b.n)}${ok ? '' : ', bientôt'}</small></span></button>`; }).join('') + '</div>';
@@ -197,7 +197,7 @@ function renderBlocs() {
   const say = f >= n ? 'Mur passé ! Reviens quand tu veux revoir une vidéo.' : f ? `« ${esc(lastDone.t)} » est dans ta poche. On attaque « ${esc(b.cards[first].t)} » ?` : `On commence par « ${esc(b.cards[0].t)} » ?`;
   host.innerHTML = `<div class="bk-top"><button type="button" class="bk-back2" onclick="blocBack()" aria-label="Tous les murs"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><span>Mur ${bi + 1} sur ${BLOCS.length}</span></div>
     <div class="bk-hd"><h2>${esc(b.n)}</h2><p>« ${esc(b.mur)} »</p><div class="bk-pg"><span class="dc-pg"><i style="width:${Math.round(100 * f / n)}%"></i></span><small>${f} sur ${n}</small></div></div>
-    ${mediBulle(f >= n ? 'contente' : 'neutre', say, {size: 50})}
+    ${mediBulle(f >= n ? 'contente' : 'neutre', say, {size: 50, anim: 'vivant'})}
     <div class="bk-cards">` + b.cards.map((c, i) => {
       if (i !== open) return `<button type="button" class="bk-row" onclick="blocCardOpen=${i};renderBlocs()">${dn[c.k] ? `<span class="bk-st done">${BK_CHK}</span>` : `<span class="bk-st n">${i + 1}</span>`}<span class="bk-tx"><b>${esc(c.t)}</b><small>${dn[c.k] ? 'Fait' : 'Vidéo'}</small></span><svg class="chev" viewBox="0 0 10 16" aria-hidden="true"><path d="M2 2 L8 8 L2 14"/></svg></button>`;
       return `<section class="bk-open${dn[c.k] ? ' done' : ''}">${lvCard(c.k, 'b')}

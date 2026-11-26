@@ -46,7 +46,7 @@ function renderHome() {
     const old = !selMode && !q && homeFilter === 'all' && sheets.length > 2 ? sheets
       .map(s => ({s, t: seen[s.id] || s.updatedAt || now})).filter(x => now - x.t >= 4 * DAY)
       .sort((x, y) => (y.s.favorite ? 1 : 0) - (x.s.favorite ? 1 : 0) || x.t - y.t)[0] : null;
-    $('resume-wrap').innerHTML = old ? `<section class="hm-nudge">${mediSVG('neutre', {size: 52, anim: 'look', label: 'Médi cherche un morceau à rejouer'})}
+    $('resume-wrap').innerHTML = old ? `<section class="hm-nudge">${mediSVG('neutre', {size: 52, anim: 'vivant', label: 'Médi cherche un morceau à rejouer'})}
       <div><p>${esc(old.s.title)} t’attend depuis ${Math.floor((now - old.t) / DAY)} jours. Cinq minutes ce soir ?</p>
       <button type="button" class="btn btn-primary btn-sm" onclick="viewSheet('${old.s.id}')">Le rejouer</button></div></section>` : ''; }
   const g = $('home-grid');
