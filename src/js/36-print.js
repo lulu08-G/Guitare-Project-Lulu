@@ -1,7 +1,11 @@
 /* ═══════ PRINT ═══════ */
 function printOne() { printSheet(cur.id); }
 let printOpts = null;
+/* La nouvelle fiche imprimée (ce fichier) ne se voit qu'avec ?beta tant que Lucas ne l'a pas validée (26/11) ;
+   sans ?beta, c'est l'ancienne (35-9-print-ancien.js, fonctions « o… »). */
+const pNew = () => typeof IS_BETA !== 'undefined' && IS_BETA;
 function openPrintModal() {
+  if (!pNew()) return oOpenPrintModal();
   printOpts = printOpts || {};
   printOpts.mode = printOpts.mode || 1;
   printOpts.toc = printOpts.toc != null ? printOpts.toc : selIds.size > 2;
@@ -79,6 +83,7 @@ function ppToggle(k) {
 // sur téléphone, toucher l'aperçu l'agrandit (et le rétrécit)
 function ppBig() { if (innerWidth < 900) document.querySelector('#m-print .ppm').classList.toggle('pv-big'); }
 function refreshPrintPreview() {
+  if (!pNew()) return oRefreshPrintPreview();
   const pv = $('pp-preview'); pv.innerHTML = buildPrintPages();
   const n = pv.querySelectorAll('.pg').length, c = $('pp-count'); if (c) c.textContent = n + (n > 1 ? ' pages' : ' page');
   // le choix se voit tout de suite : l'aperçu revient en haut et s'allume un instant
@@ -89,12 +94,13 @@ function refreshPrintPreview() {
    deux thèmes, printOpts.theme = 'app' (fond sombre, cartes, Grille de rythme et doigtés comme à l'écran, pleine page) ou
    'nb' (papier blanc, noir et gris, Médi au trait). En-tête avec Médi, doigtés une seule fois, chaque partie avec ses accords
    en grand et son rythme, les notes dans la bulle de Médi, pied de page avec Médi. Styles : 26-impression.css. */
-const pLight = () => !printOpts || printOpts.theme === 'nb';
+const pLight = () => (!printOpts || printOpts.theme === 'nb') && 'nb';   // 'nb' : les doigtés au trait noir (02-, 03-)
 // les accords d'une partie : leurs noms en grand (les doigtés sont une fois en haut de la fiche)
 const pSeq = (p, sm) => !p.chords.length ? '' : `<div class="pf-seq${sm ? ' sm' : ''}">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('')}</div>`;
 const pMedi = (expr, size) => mediSVG(expr, {size, anim: 'still'});
 const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi('contente', 18)}<b>Guitar Memory</b>${left ? `<i>${esc(left)}</i>` : ''}</span>${n ? `<span class="pf-n">${n}</span>` : ''}</div>`;
 function buildPrintPages() {
+  if (!pNew()) return oBuildPrintPages();
   const {mode: perPage, toc, num, style} = printOpts;
   const list = sheets.filter(s => selIds.has(s.id)), th = pLight() ? 'pf-nb' : 'pf-app';
   let pages = [], pageNo = 0;
@@ -122,11 +128,70 @@ function doPrint() {
   window.addEventListener('afterprint', () => { document.title = t0; }, {once: true});
   setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
 }
-// façon de jouer imprimée : le rythme en cases (temps par temps), l'arpège en ruban
+/* Façon de jouer imprimée (26/11, choix de Lucas après 4 planches de croquis) :
+   le rythme = des blocs là où ça gratte (les pauses les séparent), une barre neutre par coup, plus haute si le coup
+   est fort, le compte dessous ; le premier et le dernier bloc en orange pâle (la fin se relie au début : aide au
+   changement d'accord). Pas de flèches : le sens se déduit de la place (bas sur les chiffres, haut sur les « et »).
+   L'arpège = les six cordes en lignes (1 = Mi aigu en haut … 6 = Mi grave en bas), un point par note, gros point = la basse. */
 function pPrintWay(p, h, mini) {
-  const L = pLight();
-  if (pWay(p) !== 'rh') return pWayHTML(p, L, mini ? {mini: true} : undefined);
-  return L ? `<div class="p-rh">${rhTimeHTML(p.rhythm)}</div>` : rhythmSVG(p.rhythm, false, {mini: true});   // l'appli : la Grille de la fiche
+  const w = pWay(p);
+  return w === 'rh' ? pRhBlocks(p.rhythm, mini) : w === 'arp' ? pArpLines(p, mini) : '';
+}
+const pF = v => Math.round(v * 10) / 10;
+// le compte sous une case : le chiffre sur le temps, « et » au milieu du temps, un point ailleurs (6/8 : 1 à 6)
+function pCount(c, per, spb, mes) {
+  const k = c % per;
+  if (mes === '6/8' && spb === 3) return {t: String(k + 1), b: k % 3 === 0};
+  if (k % spb === 0) return {t: String(k / spb + 1), b: true};
+  return {t: spb % 2 === 0 && k % spb === spb / 2 ? 'et' : '·', b: false};
+}
+function pRhBlocks(rh, mini) {
+  rh = rhNorm(JSON.parse(JSON.stringify(rh))); if (!rh || !rh.cells.length) return '';
+  const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res), n = rh.cells.length;
+  const cw = (spb > 2 ? 20 : 34) * (mini ? .66 : 1), m0 = 4, H = mini ? 28 : 40, cy = mini ? 34 : 50;
+  const W = m0 * 2 + n * cw, X = c => m0 + (c + .5) * cw, amp = a => a >= 2 ? 1 : a >= 1 ? .72 : .45;
+  // les blocs : les cases jouées qui se suivent (une barre de mesure coupe aussi le bloc)
+  const bl = []; let cu = null;
+  rh.cells.forEach((c, i) => { if (!c) { cu = null; return; } if (cu && i % per) cu.e = i; else bl.push(cu = {s: i, e: i}); });
+  let s = `<svg class="pfr${mini ? ' mini' : ''}" width="${pF(W)}" height="${cy + 4}" viewBox="0 0 ${pF(W)} ${cy + 4}" role="img" aria-label="Le rythme : des blocs là où ça gratte, une barre par coup">`;
+  for (let b = 1; b < n / per; b++) s += `<line class="pfr-bar" x1="${pF(m0 + b * per * cw)}" x2="${pF(m0 + b * per * cw)}" y1="0" y2="${H}"/>`;
+  bl.forEach((k, j) => {
+    const x0 = X(k.s) - cw / 2 + 1.5, x1 = X(k.e) + cw / 2 - 1.5, lk = j === 0 || j === bl.length - 1;
+    s += `<rect class="${lk ? 'pfr-lk' : 'pfr-b'}" x="${pF(x0)}" y="0" width="${pF(x1 - x0)}" height="${H}" rx="${mini ? 7 : 10}"/>`;
+    for (let c = k.s; c <= k.e; c++) {
+      const cell = rh.cells[c], x = X(c), my = H / 2;
+      if (cell.d === 'X') { const r = mini ? 3.5 : 5; s += `<path class="pfr-x" d="M${pF(x - r)} ${pF(my - r)}L${pF(x + r)} ${pF(my + r)}M${pF(x + r)} ${pF(my - r)}L${pF(x - r)} ${pF(my + r)}"/>`; continue; }
+      const a = amp(cell.a), bw = (3.6 + 2.4 * a) * (mini ? .8 : 1), bh = (10 + 22 * a) * (mini ? .7 : 1);
+      s += `<rect class="pfr-c" x="${pF(x - bw / 2)}" y="${pF(my - bh / 2)}" width="${pF(bw)}" height="${pF(bh)}" rx="${pF(bw / 2)}"/>`;
+    }
+  });
+  for (let c = 0; c < n; c++) { const t = pCount(c, per, spb, rh.mes); s += `<text class="pfr-n${t.b ? ' b' : ''}" x="${pF(X(c))}" y="${cy}">${t.t}</text>`; }
+  return s + '</svg>';
+}
+// les notes d'une colonne d'arpège : sur l'accord (corde réelle), ou sans accord, la corde du rôle (la basse sur la 5)
+function pArpNotes(roles, ch, bass) {
+  if (ch && ch.frets) return arpStepNotes(roles, ch, bass).map(o => ({n: 6 - o.si, bs: o.bs}));
+  return (roles || []).map(r => ({n: r === 'B' ? (+bass || 5) : +r, bs: r === 'B'}));
+}
+function pArpLines(p, mini) {
+  const a = p.arp, chs = p.chords.length ? p.chords : [null], steps = a.steps.length;
+  const dx = mini ? 7.5 : 14, gap = mini ? 8 : 13, L = mini ? 14 : 20, top = mini ? 14 : 18, rowN = 4;
+  let out = '';
+  for (let r0 = 0; r0 < chs.length; r0 += rowN) {
+    const row = chs.slice(r0, r0 + rowN), W = L + row.length * steps * dx + 6, H = top + 5 * gap + 4;
+    let s = `<svg class="pfa${mini ? ' mini' : ''}" width="${pF(W)}" height="${H}" viewBox="0 0 ${pF(W)} ${H}" role="img" aria-label="L'arpège sur les six cordes, un point par note">`;
+    for (let k = 0; k < 6; k++) { const y = top + k * gap; s += `<text class="pfa-s" x="2" y="${pF(y + (mini ? 2.6 : 3.5))}">${k + 1}</text><line class="pfa-l" x1="${L - 6}" x2="${pF(W - 2)}" y1="${y}" y2="${y}"/>`; }
+    row.forEach((ch, m) => {
+      const bx = L + m * steps * dx;
+      if (ch) s += `<text class="pfa-c" x="${pF(bx + 2)}" y="${top - (mini ? 5 : 8)}">${esc(ch.name)}</text>`;
+      if (m) s += `<line class="pfa-m" x1="${pF(bx - dx / 2 + 4)}" x2="${pF(bx - dx / 2 + 4)}" y1="${top - 2}" y2="${top + 5 * gap + 2}"/>`;
+      for (let i = 0; i < steps; i++) pArpNotes(a.steps[i], ch, a.bass).forEach(o => {
+        s += `<circle class="${o.bs ? 'pfa-bs' : 'pfa-d'}" cx="${pF(bx + i * dx + 6)}" cy="${top + (o.n - 1) * gap}" r="${(o.bs ? 4.2 : 3.2) * (mini ? .8 : 1)}"/>`;
+      });
+    });
+    out += s + '</svg>';
+  }
+  return `<div class="pfa-w">${out}${mini ? '' : '<div class="pfa-lg">1 = Mi aigu (en haut) … 6 = Mi grave (en bas). Gros point = la basse, au pouce.</div>'}</div>`;
 }
 // les accords du morceau, une seule fois (dans l'ordre d'apparition)
 function pUniqueChords(s) {
@@ -145,7 +210,7 @@ function printSheetHTML(s, compact) {
   return `${pHead(s, compact)}
     ${uniq.length ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
     ${(s.parts||[]).map((p, i) => {
-      const staff = tabStaffSVG(p.chords, pLight()), rep = +(p.repeat || p.reps || 0);
+      const staff = pWay(p) === 'arp' ? '' : tabStaffSVG(p.chords, pLight()), rep = +(p.repeat || p.reps || 0);
       return `<div class="pf-part">
         <div class="pf-pt"><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span class="pf-chip">×${rep}</span>` : ''}</div>
         ${pSeq(p, compact)}

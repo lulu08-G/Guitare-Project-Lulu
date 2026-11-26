@@ -72,3 +72,23 @@
 .pf-nb .rt-c i{font:600 9px var(--sans);color:#555}.pf-nb .rt-c.b i{font:800 10px var(--display);color:#111}
 .pf-nb .rt-c .d,.pf-nb .rt-c .u{stroke:#111}.pf-nb .rt-c .x{stroke:#555}.pf-nb .rt-c .o{fill:#aaa}
 /* option « Petits schémas » : chaque accord de la partie avec son doigté */
+/* le rythme imprimé (26/11, choix de Lucas : le n° 1) : blocs là où ça gratte, barres neutres, 1er et dernier bloc en orange pâle */
+.pg.pf-app{--p-blk:#2c2930;--p-lk:#4a2e17}
+.pg.pf-nb{--p-blk:#efebe5;--p-lk:#ffe2c6}
+.pfr,.pfa{display:block;max-width:100%;height:auto;overflow:visible}
+.pfr-b{fill:var(--p-blk)}.pfr-lk{fill:var(--p-lk)}
+.pfr-c{fill:var(--p-ink)}
+.pfr-x{stroke:var(--p-ink);stroke-width:2.2;stroke-linecap:round;fill:none}
+.pfr-bar{stroke:var(--p-mist);stroke-width:1}
+.pfr-n{text-anchor:middle;font:500 9px var(--sans);fill:var(--p-mist)}
+.pfr-n.b{font:800 12px var(--display);fill:var(--p-ink)}
+.pfr.mini .pfr-n{font-size:7px}.pfr.mini .pfr-n.b{font-size:9px}
+/* l'arpège imprimé (choix C) : les six cordes en lignes, un point par note, gros point = la basse */
+.pfa-w{display:flex;flex-direction:column;gap:6px}
+.pfa-l{stroke:var(--p-line);stroke-width:1}.pg.pf-nb .pfa-l{stroke:#cfc9c1}
+.pfa-s{font:800 10px var(--sans);fill:var(--p-ink)}
+.pfa-c{font:800 12px var(--display);fill:var(--p-ink)}
+.pfa-m{stroke:var(--p-mist);stroke-width:1}
+.pfa-d{fill:var(--p-ink)}.pfa-bs{fill:var(--p-acc)}
+.pfa.mini .pfa-s{font-size:7px}.pfa.mini .pfa-c{font-size:9px}
+.pfa-lg{font-size:9px;color:var(--p-mist)}
