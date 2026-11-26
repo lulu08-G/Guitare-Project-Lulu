@@ -269,10 +269,16 @@ Object.assign(L26_DRAW, {
    coup au-dessus, sans tracé ni barre de lecture ; il s'écrase un peu quand il touche les cordes ── */
 /* les coups au milieu des cordes (Lucas, 26/11 : « refais les médiators du milieu pour que ce soit plus lisible et
    épuré ») : 3 façons, à comparer dans le Labo (pastilles « Les coups ») ; les cordes s'effacent derrière la marque */
-const L26_COUPS = [['fleche', 'Flèches'], ['medi', 'Médiators'], ['rond', 'Ronds']];
-L26.coups = (() => { const v = LS.get('gms_l26_coups', 'fleche'); return L26_COUPS.some(c => c[0] === v) ? v : 'fleche'; })();
+// « les flèches ne vont jamais dans le bon sens » (Lucas, 26/11, sur sa prise : le sens d'un coup ne s'entend pas) → le coup
+// neutre par défaut : pas de sens, mais sa hauteur suit la force du coup (ce que le micro entend bien)
+const L26_COUPS = [['coup', 'Coups'], ['fleche', 'Flèches'], ['medi', 'Médiators'], ['rond', 'Ronds']];
+L26.coups = (() => { const v = LS.get('gms_l26_coup', 'coup'); return L26_COUPS.some(c => c[0] === v) ? v : 'coup'; })();   // nouvelle clé : le coup neutre pour tous
 function l26CoupHTML(h, x, mid, gap) {
   const up = h.d === 'U', k = L26.coups;
+  if (k === 'coup') {   // une barre arrondie à travers les cordes : plus le coup est fort, plus elle est haute et épaisse
+    const a = Math.max(.35, Math.min(1, h.a || .7)), hh = (1.3 + 3.5 * a) * gap / 2, w = 4.2 + 2.6 * a;
+    return `<rect x="${l26f(x - w / 2 - 3)}" y="${l26f(mid - hh - 3)}" width="${l26f(w + 6)}" height="${l26f(2 * hh + 6)}" rx="${l26f(w / 2 + 3)}" class="l26-ko"/><rect x="${l26f(x - w / 2)}" y="${l26f(mid - hh)}" width="${l26f(w)}" height="${l26f(2 * hh)}" rx="${l26f(w / 2)}" class="l26-cb"/>`;
+  }
   if (k === 'rond') return `<circle cx="${l26f(x)}" cy="${mid}" r="9" class="l26-ko"/><circle cx="${l26f(x)}" cy="${mid}" r="5.6" class="l26-cr${up ? ' up' : ''}"/>`;
   if (k === 'medi') return `<circle cx="${l26f(x)}" cy="${mid}" r="11" class="l26-ko"/>${l26Pick(x, mid, 19, up ? 180 : 0, false)}`;
   const y0 = mid - 1.5 * gap, y1 = mid + 1.5 * gap, tip = up ? y0 : y1, a = 4.6, s = up ? 1 : -1;   // la flèche : bas ou haut
@@ -280,7 +286,7 @@ function l26CoupHTML(h, x, mid, gap) {
     <path d="M${l26f(x)} ${up ? y1 : y0}V${tip}M${l26f(x - a)} ${l26f(tip + s * a)}L${l26f(x)} ${tip}L${l26f(x + a)} ${l26f(tip + s * a)}" class="l26-cm"/>`;
 }
 function l26Coups(k) {
-  const was = l26Playing(); L26.coups = k; LS.set('gms_l26_coups', k);
+  const was = l26Playing(); L26.coups = k; LS.set('gms_l26_coup', k);
   document.querySelectorAll('#v-labo .l26-mchips button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
   if (L26.tl && $('l26-draw') && L26.style === 'saute') { L26.live = l26Mount($('l26-draw'), 'saute', L26.tl); if (was) l26Loop(); }
 }
@@ -323,7 +329,7 @@ const L26_ARP_STYLES = [['accord', 'Sur l’accord'], ['arp', 'Les cordes'], ['a
 const L26_VSAY = {
   gratte: 'Je gratte les cordes à chaque coup : vers le bas ou vers le haut. En pointillé, ta main passe sans toucher.',
   bashaut: 'Un bas tombe sur les cordes graves, un haut sur les aiguës. Seules les cordes touchées vibrent.',
-  saute: 'Je saute sur chacun de tes coups. La marque sur les cordes donne le sens : vers le bas ou vers le haut.',
+  saute: 'Je saute sur chacun de tes coups. Plus la marque est haute, plus tu as frappé fort.',
   respire: 'Les cordes s’écartent quand c’est fort et se resserrent quand le son s’éteint.',
   arp: 'Chaque note fait vibrer sa corde, et la basse sonne plus longtemps. La lettre, c’est le doigt.',
   apince: 'Je saute de corde en corde avec toi : plus je monte, plus c’est aigu.',
