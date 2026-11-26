@@ -267,6 +267,24 @@ Object.assign(L26_DRAW, {
 /* ── RYTHME : LES CORDES + MÉDI SAUTE (Lucas, 26/11 : « corde seule mais avec Médi qui saute, sans ligne qui le suit,
    c'est ça qui rend brouillon ») : les cordes seules (un petit médiator par coup donne le sens), Médi saute de coup en
    coup au-dessus, sans tracé ni barre de lecture ; il s'écrase un peu quand il touche les cordes ── */
+/* les coups au milieu des cordes (Lucas, 26/11 : « refais les médiators du milieu pour que ce soit plus lisible et
+   épuré ») : 3 façons, à comparer dans le Labo (pastilles « Les coups ») ; les cordes s'effacent derrière la marque */
+const L26_COUPS = [['fleche', 'Flèches'], ['medi', 'Médiators'], ['rond', 'Ronds']];
+L26.coups = (() => { const v = LS.get('gms_l26_coups', 'fleche'); return L26_COUPS.some(c => c[0] === v) ? v : 'fleche'; })();
+function l26CoupHTML(h, x, mid, gap) {
+  const up = h.d === 'U', k = L26.coups;
+  if (k === 'rond') return `<circle cx="${l26f(x)}" cy="${mid}" r="9" class="l26-ko"/><circle cx="${l26f(x)}" cy="${mid}" r="5.6" class="l26-cr${up ? ' up' : ''}"/>`;
+  if (k === 'medi') return `<circle cx="${l26f(x)}" cy="${mid}" r="11" class="l26-ko"/>${l26Pick(x, mid, 19, up ? 180 : 0, false)}`;
+  const y0 = mid - 1.5 * gap, y1 = mid + 1.5 * gap, tip = up ? y0 : y1, a = 4.6, s = up ? 1 : -1;   // la flèche : bas ou haut
+  return `<rect x="${l26f(x - 5)}" y="${y0 - 2}" width="10" height="${y1 - y0 + 4}" rx="5" class="l26-ko"/>
+    <path d="M${l26f(x)} ${up ? y1 : y0}V${tip}M${l26f(x - a)} ${l26f(tip + s * a)}L${l26f(x)} ${tip}L${l26f(x + a)} ${l26f(tip + s * a)}" class="l26-cm"/>`;
+}
+function l26Coups(k) {
+  const was = l26Playing(); L26.coups = k; LS.set('gms_l26_coups', k);
+  document.querySelectorAll('#v-labo .l26-mchips button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+  if (L26.tl && $('l26-draw') && L26.style === 'saute') { L26.live = l26Mount($('l26-draw'), 'saute', L26.tl); if (was) l26Loop(); }
+}
+
 L26_DRAW.saute = {
   html(D) {
     const top = 58, gap = 12, hmax = 40, H = top + 5 * gap + 30, hp = l26Page(D); D.hp = hp; D.top = top; D.gap = gap; D.vamp = .5;
@@ -275,15 +293,17 @@ L26_DRAW.saute = {
     let s = l26StringsHTML(D, top, gap);   // épuré (Labo de Lucas, 26/11 : « pas assez épuré encore ») : pas de son dessiné à l'avance
     for (let k = 0; k < 6; k++) s += `<path class="l26-vib on" data-k="${k}" d="" style="stroke-width:${(1.1 + k * .3).toFixed(2)}px"/>`;
     const mid = top + 2.5 * gap;
-    hp.forEach(h => { s += `<g class="l26-h fut">${l26Pick(D.X(h.t), mid, 22 * (h.d === 'D' ? 1 : .8), h.d === 'D' ? 0 : 180, false)}</g>`; });
+    hp.forEach(h => { s += `<g class="l26-h fut">${l26CoupHTML(h, D.X(h.t), mid, gap)}</g>`; });
     s += l26Labels(D.tl, D.page, D.X, H - 4) + l26MediG();
     return `<svg class="l26-svg l26-ep" viewBox="0 0 ${D.W} ${H}" aria-hidden="true">${s}</svg>`;
   },
   frame(D, pos) {
-    const x = pos < 0 ? -4 : D.X(pos), ph = performance.now() / 1000 * 26, env = pos < 0 ? 0 : l26Env(D.tl, pos);
-    // les cordes vibrent sur toute leur longueur, seulement tant que le son sonne : rien ne reste derrière Médi
+    const x = pos < 0 ? -4 : D.X(pos), ph = performance.now() / 1000 * 26;
+    // un bref frisson des cordes à chaque coup, puis le calme : rien ne reste derrière Médi
+    const jh = pos < 0 ? -1 : l26Cur(D.tl.hits, pos), lh = jh >= 0 ? D.tl.hits[jh] : null;
+    const env = lh ? lh.a * Math.exp(-(pos - lh.t) / (D.tl.beat * .09)) : 0;
     D.el.querySelectorAll('.l26-vib.on').forEach(p => {
-      const k = +p.dataset.k, y0 = D.top + k * D.gap, a = env ** 2.5 * D.gap * .5; if (a < .3) { p.setAttribute('d', ''); return; }   // un frisson à chaque coup, puis le calme
+      const k = +p.dataset.k, y0 = D.top + k * D.gap, a = env * D.gap * .4; if (a < .35) { p.setAttribute('d', ''); return; }
       let d = ''; for (let xx = 0; xx <= D.W; xx += 4) d += `${d ? 'L' : 'M'}${xx} ${l26f(y0 + a * Math.sin(Math.PI * xx / D.W) * Math.sin(xx * (.11 + k * .012) + ph + k))}`;
       p.setAttribute('d', d);
     });
@@ -303,7 +323,7 @@ const L26_ARP_STYLES = [['accord', 'Sur l’accord'], ['arp', 'Les cordes'], ['a
 const L26_VSAY = {
   gratte: 'Je gratte les cordes à chaque coup : vers le bas ou vers le haut. En pointillé, ta main passe sans toucher.',
   bashaut: 'Un bas tombe sur les cordes graves, un haut sur les aiguës. Seules les cordes touchées vibrent.',
-  saute: 'Je saute sur chacun de tes coups. Le petit médiator donne le sens : vers le bas ou vers le haut.',
+  saute: 'Je saute sur chacun de tes coups. La marque sur les cordes donne le sens : vers le bas ou vers le haut.',
   respire: 'Les cordes s’écartent quand c’est fort et se resserrent quand le son s’éteint.',
   arp: 'Chaque note fait vibrer sa corde, et la basse sonne plus longtemps. La lettre, c’est le doigt.',
   apince: 'Je saute de corde en corde avec toi : plus je monte, plus c’est aigu.',
@@ -316,6 +336,6 @@ LAB_TESTS26[1].ask = L26_ARP_STYLES.map(s => s[1]); LAB_TESTS26[1].askq = 'Leque
 LAB_TESTS26[0].d = 'Huit dessins du son : lequel se lit le mieux en jouant ?';
 LAB_TESTS26[1].d = 'Cinq façons de dessiner l’arpège.';
 const l26ChipsHTML = (list, cur, fn) => `<div class="l26-chips" role="tablist">${list.map(([k, l]) => `<button type="button" role="tab" aria-selected="${cur === k}" class="${cur === k ? 'on' : ''}" data-k="${k}" onclick="${fn}('${k}')">${l}</button>`).join('')}</div>`;
-function l26ChipsOn(k) { document.querySelectorAll('#v-labo .l26-chips button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); }
+function l26ChipsOn(k) { document.querySelectorAll('#v-labo .l26-chips:not(.l26-mchips) button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); }
 // la légende des doigts sous l'arpège, et le choix de la notation (dessin « Sur l'accord » : Labo et fiche bêta)
 const l26ArpLeg = k => L26_NOTA_LEG[k === 'accord' ? L26.nota : 'lettres'];
