@@ -29,7 +29,7 @@
 .ppm-v.n2 i{display:block;width:26px;height:16px;border-radius:3px;background:var(--cream3)}
 .ppm-r{display:flex;flex-direction:column;gap:8px;min-width:0}
 .ppm-pv{background:#3b3840;border-radius:14px;padding:12px;overflow-x:hidden;overflow-y:auto;max-height:46vh}
-@media(min-width:900px){.ppm-pv{max-height:68vh}}
+@media(min-width:900px){.ppm-pv{max-height:64vh}}
 #pp-preview{zoom:.42}
 @media(min-width:900px){#pp-preview{zoom:.6}}
 #pp-preview .pg{margin-bottom:14px}
@@ -54,7 +54,7 @@
   .ppm-pv{height:24vh;max-height:none;cursor:zoom-in;transition:height .2s}
   .ppm.pv-big .ppm-pv{height:56vh;cursor:zoom-out}
   #pp-preview{zoom:.36}
-  .ppm-r .pp-tip{margin:0;font-size:12px}
+  .ppm-r .pp-tip{display:none}
   #m-print .modal-f{margin-top:8px;padding-top:10px}
   /* cartes plus petites sur téléphone (Lucas : « les boutons sont un peu gros pour ce que ça représente ») */
   .ppm-o{flex-direction:row;align-items:center;gap:10px;padding:8px 10px;border-radius:12px}
@@ -64,4 +64,13 @@
   .ppm-t{padding-right:52px}.ppm-tg{top:50%;margin-top:-10px}
   .ppm-ql{font-size:14px}
   #pp-preview{zoom:.4}
+  /* tout tient sur un écran, sans défiler (Lucas, 26/11) : les choix gardent leur taille, l'aperçu prend la place qui reste */
+  .ppm-l{flex:none;overflow:visible;gap:8px;padding-bottom:0}
+  .ppm-medi .bulle{font-size:13px;padding:8px 12px}
+  .ppm-q{gap:5px}
+  .ppm-ot small{display:none}
+  .ppm-o{min-height:40px;padding:6px 10px}
+  .ppm-r{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+  .ppm-pv{flex:1 1 auto;height:auto;min-height:110px}
+  .ppm.pv-big .ppm-l{display:none}.ppm.pv-big .ppm-pv{height:auto}
 }

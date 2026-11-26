@@ -86,13 +86,18 @@ function ppToggle(k) {
 }
 // sur téléphone, toucher l'aperçu l'agrandit (et le rétrécit)
 function ppBig() { if (innerWidth < 900) document.querySelector('#m-print .ppm').classList.toggle('pv-big'); }
+function ppFit() {
+  const pv = $('pp-preview'), box = pv && pv.parentElement; if (!box || !box.clientWidth) return;
+  pv.style.zoom = Math.min(.6, (box.clientWidth - 24) / (210 * MM + 2));
+}
+addEventListener('resize', () => { if (!$('m-print').classList.contains('hide')) ppFit(); });
 function refreshPrintPreview() {
   if (!pNew()) return oRefreshPrintPreview();
   const pv = $('pp-preview'); pv.innerHTML = buildPrintPages();
   const n = pv.querySelectorAll('.pg').length, c = $('pp-count'); if (c) c.textContent = n + (n > 1 ? ' pages' : ' page');
   // le choix se voit tout de suite : l'aperçu revient en haut et s'allume un instant
   const box = pv.parentElement; box.scrollTop = 0;
-  pv.style.zoom = Math.min(.6, (box.clientWidth - 24) / (210 * MM));   // la page A4 tient dans la largeur de l'aperçu
+  ppFit(); requestAnimationFrame(ppFit);   // la page A4 tient dans la largeur de l'aperçu (une fois la fenêtre affichée)
   if (box.animate && !mReduced()) box.animate([{boxShadow: '0 0 0 2px var(--gold)'}, {boxShadow: '0 0 0 2px transparent'}], {duration: 600, easing: 'ease-out'});
 }
 /* Fiche imprimée (refaite le 26/11, retours de Lucas : « qu'elle ressemble à l'appli » + option noir et blanc) :
