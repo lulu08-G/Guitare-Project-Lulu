@@ -1,3 +1,4 @@
+:root{--boum:#8b95ff}   /* la couleur de Boum (celle de son dessin) */
 /* ═══════ LABO : LES TESTS DU 26/11 (39-95-labo-26-11.js, caché : ?beta) ═══════
    Le son de ta prise (rebond, cordes, rosace), l'arpège sur les cordes, les effets sur le rebond, la banque de rythmes. */
 .l26-tabs{display:flex;background:var(--card);border-radius:22px;padding:4px}
@@ -153,11 +154,15 @@ body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
 .l26-sub{display:flex;flex-direction:column;align-items:stretch;gap:4px;margin:4px 0 10px}.l26-sub[hidden]{display:none}
 .l26-sub small{font:600 12px var(--sans);color:var(--cream3)}.l26-sub .l26-chips{margin:0}
 .l26-ko,.l26-h .l26-ko{fill:var(--card);stroke:none}
+/* la bande sur le dessin : les cordes vibrent de la couleur de qui joue (Médi orange, Boum lavande, Basile menthe) */
+.l26-ep .l26-vib.on.vm{stroke:var(--gold)}.l26-ep .l26-vib.on.vb{stroke:var(--boum)}.l26-ep .l26-vib.on.vl{stroke:var(--basile,#45cbb2)}.l26-ep .l26-vib.on.vn{stroke:var(--cream3)}
+.l26-who{opacity:.75;transition:opacity .15s}.l26-who.on{opacity:1}
+.l26-sub .fb-band{align-self:flex-start;margin-bottom:4px}
 .l26-cm{fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .l26-cb{fill:currentColor}
 .l26-cr{fill:currentColor;stroke:currentColor;stroke-width:2}.l26-cr.up{fill:var(--card)}
 /* l'avancement en orange (Lucas, 26/11 : « essaie de mettre l'avancement orange pour voir ») */
-.l26-ep .past{color:var(--gold)}.l26-ep .past > :not(.l26-ko){opacity:.72}.l26-ep .fut{color:var(--cream3)}.l26-ep .l26-vib.on{stroke:var(--gold)}
+.l26-ep .past{color:var(--gold)}.l26-ep .past > :not(.l26-ko){opacity:.72}.l26-ep .fut{color:var(--cream3)}.l26-ep .l26-vib.on{stroke:var(--gold);opacity:.95}
 .l26-adot{fill:var(--cream)}
 .l26-afg circle{fill:var(--gold)}
 .l26-acell{fill:var(--card2)}

@@ -291,24 +291,67 @@ function l26Coups(k) {
   if (L26.tl && $('l26-draw') && L26.style === 'saute') { L26.live = l26Mount($('l26-draw'), 'saute', L26.tl); if (was) l26Loop(); }
 }
 
+/* la bande sur le dessin (Lucas, 26/11 : « quand on ajoute la bande, Boum et Basile sont à gauche de la frise, sans que
+   ça prenne plus de place ; quand ils interviennent, les cordes vibrent de leur couleur ; à plusieurs en même temps, on
+   mélange : 2 cordes chacun ; laisse-moi aussi le choix des cordes sans couleur ») */
+const L26_CVIB = [['couleur', 'En couleur'], ['neutre', 'Sans couleur']];
+L26.cvib = (() => { const v = LS.get('gms_l26_cvib', 'couleur'); return L26_CVIB.some(c => c[0] === v) ? v : 'couleur'; })();
+const l26BandShow = () => typeof FB !== 'undefined' && FB.band;
+function l26BandEv(tl) {   // ce que joue la bande, posé sur la ligne du temps : Boum = grosse caisse et caisse claire, Basile = la basse
+  if (tl._bev) return tl._bev;
+  const ev = [];
+  if (tl.unit === 's') fbTakeEvents(tl).forEach(e => { if (e.k || e.s) ev.push({t: e.t, w: 'boum', a: e.k ? 1 : .75}); if (e.b) ev.push({t: e.t, w: 'basile', a: .9}); });
+  else {   // le rythme de la partie, comme grBandOwn
+    const beats = Math.round(tl.bar / tl.beat), hitAt = t => tl.hits.some(h => Math.abs(h.t - t) < 1e-6);
+    for (let b0 = 0; b0 < tl.L - 1e-6; b0 += tl.bar) for (let b = 0; b < beats; b++) {
+      const t = b0 + b * tl.beat, k = b === 0 || (beats === 4 && b === 2 && hitAt(t)), sn = (beats === 4 && (b === 1 || b === 3)) || (beats === 3 && b > 0 && hitAt(t));
+      if (k || sn) ev.push({t, w: 'boum', a: k ? 1 : .75});
+      if (k) ev.push({t, w: 'basile', a: .9});
+    }
+    tl.hits.forEach(h => { if (h.x) ev.push({t: h.t, w: 'boum', a: .75}); });
+  }
+  return (tl._bev = ev.sort((a, b) => a.t - b.t));
+}
+const l26PalSVG = (svg, x, y, w, h) => svg.replace('<svg class="mt-pal ', `<svg x="${x}" y="${y}" width="${w}" height="${h}" overflow="visible" class="l26-pal `);
+function l26CvibSet(k) {
+  L26.cvib = k; LS.set('gms_l26_cvib', k);
+  document.querySelectorAll('#v-labo .l26-vchips button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+}
+
 L26_DRAW.saute = {
   html(D) {
-    const top = 58, gap = 12, hmax = 40, H = top + 5 * gap + 30, hp = l26Page(D); D.hp = hp; D.top = top; D.gap = gap; D.vamp = .5;
-    const pts = [[0, top - hmax * .55]].concat(hp.map(h => [D.X(h.t), top]), [[D.W, top - hmax * .5]]);
+    const band = l26BandShow(), L = band ? 38 : 12, x0 = band ? 32 : 0;
+    D.X = t => L + (t - D.page * D.tl.win) / D.tl.win * (D.W - L - 12);   // la bande prend la marge de gauche, pas de hauteur en plus
+    const top = 58, gap = 12, hmax = 40, H = top + 5 * gap + 30, hp = l26Page(D); D.hp = hp; D.top = top; D.gap = gap; D.x0 = x0; D.band = band;
+    const pts = [[x0, top - hmax * .55]].concat(hp.map(h => [D.X(h.t), top]), [[D.W, top - hmax * .5]]);
     D.segs = l26Arcs(pts, hmax).segs;
-    let s = l26StringsHTML(D, top, gap);   // épuré (Labo de Lucas, 26/11 : « pas assez épuré encore ») : pas de son dessiné à l'avance
-    for (let k = 0; k < 6; k++) s += `<path class="l26-vib on" data-k="${k}" d="" style="stroke-width:${(1.1 + k * .3).toFixed(2)}px"/>`;
+    let s = '';   // épuré : les cordes seules, rien de dessiné à l'avance
+    for (let k = 0; k < 6; k++) s += `<line x1="${x0}" x2="${D.W}" y1="${top + k * gap}" y2="${top + k * gap}" class="l26-str" style="stroke-width:${(.8 + k * .3).toFixed(2)}px"/>`;
+    for (let k = 0; k < 6; k++) s += `<path class="l26-vib on" data-k="${k}" d="" style="stroke-width:${(1.3 + k * .3).toFixed(2)}px"/>`;
     const mid = top + 2.5 * gap;
     hp.forEach(h => { s += `<g class="l26-h fut">${l26CoupHTML(h, D.X(h.t), mid, gap)}</g>`; });
+    if (band) s += `<g class="l26-who" data-w="boum">${l26PalSVG(BOUM_SVG(true, ''), 3, top - 6, 26, 26)}</g><g class="l26-who" data-w="basile">${l26PalSVG(BASILE_SVG(true, ''), 7, top + 27, 19, 30)}</g>`;
     s += l26Labels(D.tl, D.page, D.X, H - 4) + l26MediG();
     return `<svg class="l26-svg l26-ep" viewBox="0 0 ${D.W} ${H}" aria-hidden="true">${s}</svg>`;
   },
   frame(D, pos) {
-    const x = pos < 0 ? -4 : D.X(pos), ph = performance.now() / 1000 * 26;
-    // la traînée orange (Lucas, 26/11 : « normal que les cordes ne vibrent plus et qu'il n'y a pas la traînée orange ? ») :
-    // derrière Médi, les cordes déjà jouées vibrent en orange avec le son ; devant, rien de dessiné à l'avance
-    D.el.querySelectorAll('.l26-vib.on').forEach(p => p.setAttribute('d', pos < 0 ? '' : l26VibPath(D, +p.dataset.k, 0, x, ph)));
+    const tl = D.tl, x = pos < 0 ? -4 : D.X(pos), ph = performance.now() / 1000 * 26, tau = tl.beat * .13;
+    // qui sonne en ce moment : Médi (ta guitare), et avec la bande Boum et Basile ; chacun fait vibrer ses cordes
+    const env = (L, w) => { if (pos < 0) return 0; let h = null; for (const e of L) { if (e.t > pos + 1e-6) break; if (!w || e.w === w) h = e; } return h ? h.a * Math.exp(-(pos - h.t) / tau) : 0; };
+    const bev = D.band ? l26BandEv(tl) : [], who = [['m', env(tl.hits)], ['b', D.band ? env(bev, 'boum') : 0], ['l', D.band ? env(bev, 'basile') : 0]].filter(([, e]) => e * D.gap * .45 > .35);
+    const n = who.length, col = L26.cvib === 'neutre';
+    D.el.querySelectorAll('.l26-vib.on').forEach(p => {
+      const k = +p.dataset.k; if (!n) { p.setAttribute('d', ''); return; }
+      const [w, e] = who[Math.min(n - 1, Math.floor(k * n / 6))], y0 = D.top + k * D.gap, a = e * D.gap * .45;   // 6 cordes : 6, 3 + 3 ou 2 + 2 + 2
+      let d = ''; for (let xx = D.x0; xx <= D.W; xx += 4) d += `${d ? 'L' : 'M'}${xx} ${l26f(y0 + a * Math.sin(Math.PI * (xx - D.x0) / (D.W - D.x0)) * Math.sin(xx * (.11 + k * .012) + ph + k))}`;
+      p.setAttribute('d', d); p.setAttribute('class', `l26-vib on v${col ? 'n' : w}`);
+    });
     l26SetCls(D, '.l26-h', pos < 0 ? -1 : l26Cur(D.hp, pos));
+    if (D.band) D.el.querySelectorAll('.l26-who').forEach(g => {   // Boum et Basile sautent sur place, à leur tour
+      let h = null; if (pos >= 0) for (const e of bev) { if (e.t > pos + 1e-6) break; if (e.w === g.dataset.w) h = e; }
+      const dt = h ? (pos - h.t) / (tl.beat * .45) : 9, y = dt < 1 ? -6 * Math.sin(Math.PI * dt) : 0;
+      g.setAttribute('transform', `translate(0 ${l26f(y)})`); g.classList.toggle('on', dt < 1);
+    });
     const m = D.el.querySelector('.l26-medi'); if (!m || pos < 0) return;
     for (const [a, b, cx, cy] of D.segs) if (x >= a[0] && x < b[0]) {
       const t = (x - a[0]) / (b[0] - a[0]), px = (1 - t) ** 2 * a[0] + 2 * (1 - t) * t * cx + t * t * b[0], py = (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * cy + t * t * b[1];
@@ -337,6 +380,14 @@ LAB_TESTS26[1].ask = L26_ARP_STYLES.map(s => s[1]); LAB_TESTS26[1].askq = 'Leque
 LAB_TESTS26[0].d = 'Huit dessins du son : lequel se lit le mieux en jouant ?';
 LAB_TESTS26[1].d = 'Cinq façons de dessiner l’arpège.';
 const l26ChipsHTML = (list, cur, fn) => `<div class="l26-chips" role="tablist">${list.map(([k, l]) => `<button type="button" role="tab" aria-selected="${cur === k}" class="${cur === k ? 'on' : ''}" data-k="${k}" onclick="${fn}('${k}')">${l}</button>`).join('')}</div>`;
-function l26ChipsOn(k) { document.querySelectorAll('#v-labo .l26-chips:not(.l26-mchips) button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); }
+function l26ChipsOn(k) { document.querySelectorAll('#v-labo .l26-chips:not(.l26-mchips):not(.l26-vchips) button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); }
 // la légende des doigts sous l'arpège, et le choix de la notation (dessin « Sur l'accord » : Labo et fiche bêta)
 const l26ArpLeg = k => L26_NOTA_LEG[k === 'accord' ? L26.nota : 'lettres'];
+// « Avec la bande » dans le Labo (même réglage que la fiche bêta) : le dessin se refait (Boum et Basile à gauche) et la lecture repart
+function l26Band() {
+  FB.band = !FB.band; LS.set('gms_fb_band', FB.band);
+  document.querySelectorAll('#v-labo .l26-bandb').forEach(b => { b.classList.toggle('on', FB.band); b.setAttribute('aria-pressed', FB.band); });
+  const was = l26Playing(); if (was) l26Stop();
+  if (L26.tl && $('l26-draw')) L26.live = l26Mount($('l26-draw'), L26.style, L26.tl);
+  if (was) l26SonPlay();
+}
