@@ -1,11 +1,7 @@
 /* ═══════ PRINT ═══════ */
 function printOne() { printSheet(cur.id); }
 let printOpts = null;
-/* La nouvelle fiche imprimée (ce fichier) ne se voit qu'avec ?beta tant que Lucas ne l'a pas validée (26/11) ;
-   sans ?beta, c'est l'ancienne (35-9-print-ancien.js, fonctions « o… »). */
-const pNew = () => typeof IS_BETA !== 'undefined' && IS_BETA;
 function openPrintModal() {
-  if (!pNew()) return oOpenPrintModal();
   printOpts = printOpts || {};
   printOpts.mode = printOpts.mode || 1;
   printOpts.toc = printOpts.toc != null ? printOpts.toc : selIds.size > 2;
@@ -92,7 +88,6 @@ function ppFit() {
 }
 addEventListener('resize', () => { if (!$('m-print').classList.contains('hide')) ppFit(); });
 function refreshPrintPreview() {
-  if (!pNew()) return oRefreshPrintPreview();
   const pv = $('pp-preview'); pv.innerHTML = buildPrintPages();
   const n = pv.querySelectorAll('.pg').length, c = $('pp-count'); if (c) c.textContent = n + (n > 1 ? ' pages' : ' page');
   // le choix se voit tout de suite : l'aperçu revient en haut et s'allume un instant
@@ -110,7 +105,6 @@ const pSeq = (p, sm) => !p.chords.length ? '' : `<div class="pf-seq${sm ? ' sm' 
 const pMedi = (expr, size) => mediSVG(expr, {size, anim: 'still'});
 const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi('contente', 18)}<b>Guitar Memory</b>${left ? `<i>${esc(left)}</i>` : ''}</span>${n ? `<span class="pf-n">${n}</span>` : ''}</div>`;
 function buildPrintPages() {
-  if (!pNew()) return oBuildPrintPages();
   const {toc} = printOpts;
   const list = sheets.filter(s => selIds.has(s.id)), th = (pLight() ? 'pf-nb' : 'pf-app') + ' pf2' + (printOpts.size === 'grande' ? ' pf-big' : '');
   let pages = [], pageNo = 0;
