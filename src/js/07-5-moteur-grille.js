@@ -99,6 +99,24 @@ function mtBandHit(p, t, chord, L) {
   if (p.k && L.kick !== false) metroKick(t);
   if (p.s && L.snare !== false) metroSnare(t);
   if (p.h && L.tchik !== false) metroHihat(t);
-  if (p.b && L.basile !== false) { if (chord) pluck(labRoot(chord), t, .5, .2); else if (!L.needChord) metroBass(t); }
+  if (p.b && L.basile !== false) { if (chord) pluck(bassFreq(chord, L.capo), t, .5, .2); else if (!L.needChord) metroBass(t); }
+}
+// note de Basile pour un accord (nom ou objet) : la fondamentale, ou la basse écrite après « / » (D/F#), capo compris
+function bassFreq(chord, capo) {
+  const n = String(chord && chord.name != null ? chord.name : chord || 'E'), sl = n.split('/')[1];
+  return labRoot(sl && /^[A-G]/.test(sl) ? sl : n) * Math.pow(2, (capo || 0) / 12);
+}
+// la bande d'une fiche (sans style choisi) : rock en 4/4, valse en 3/4 ; 6/8 et 4/4 en triolets écrits ici
+function grBandAuto(g) {
+  if (g.mes === '3/4') return grBand(g, 'valse', {one: true});
+  if (g.mes === '4/4' && g.spb !== 3) return grBand(g, 'rock', {one: true});
+  const D = {k: [], s: [], h: []}, beats = g.per / g.spb;
+  for (let i = 0; i < g.per; i++) {
+    const b = Math.floor(i / g.spb), pos = i % g.spb, two = beats === 2;
+    D.k.push(pos === 0 && (two ? b === 0 : b % 2 === 0) ? 1 : 0);
+    D.s.push(pos === 0 && (two ? b === 1 : b % 2 === 1) ? 1 : 0);
+    D.h.push(g.spb === 6 ? (pos % 2 === 0 ? 1 : 0) : !two && g.spb === 3 ? (pos !== 1 ? 1 : 0) : 1);   // ternaire : le « tchik » swingue
+  }
+  return grBand(g, null, {drums: D, one: true});
 }
 const mtBand = (g, i, t, chord, L) => mtBandHit({k: g.boum.k[i], s: g.boum.s[i], h: g.tchik[i], b: g.basile[i]}, t, chord, Object.assign({needChord: true}, L));

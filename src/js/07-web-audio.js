@@ -248,16 +248,17 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   recStopPlay();
   const g = grFromRhythm(rh, opt.chords && opt.chords.length ? opt.chords : null), per = g.per, spb = g.spb;
   const P = rhP = {key: opt.key || '', rh, grid: g, chords: g.chords.length ? g.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
-    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute};
+    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? grBandAuto(grNew(rh.mes, rh.res, 1)) : null};
   P.T = mtPlay({owner: 'rh', key: P.key, start: .08,
     dur: () => rhCellDur(rh, P.bpm),
     off: (k, d) => rh.swing && spb === 2 && k % 2 === 1 ? rh.swing * d : 0,
     step: (k, t) => {
       P.k = k;
       const i = k % g.n, inBar = i % per;
-      if (!P.mute && inBar % spb === 0) click(t, inBar === 0);
       // 1 accord = 1 mesure : la suite d'accords de la partie défile, mesure après mesure
       const ch = P.chords ? P.chords[Math.floor(k / per) % P.chords.length] : P.chord;
+      if (P.band) mtBand(P.band, inBar, t, ch, {capo: P.capo});   // opt.band : la bande à la place du clic (Basile suit les accords)
+      else if (!P.mute && inBar % spb === 0) click(t, inBar === 0);
       if (opt.cellFn) opt.cellFn(g.gtr[i], t, ch, i, k, P); else rhPlayCell(g.gtr[i], t, ch, P.capo, false, mmOn(opt.mm));
       if (P.onCell) P.onCell(i, t, k);
       P.k = k + 1;
