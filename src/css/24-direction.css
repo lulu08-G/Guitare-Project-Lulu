@@ -11,3 +11,26 @@
 .mj-band.on{color:var(--cream);border-color:var(--gold)}
 .mj-band:not(.on) .bd{filter:grayscale(1);opacity:.55}
 .mj-band:disabled{opacity:.4}
+/* ── Composant Grille (26/11, maquette « Composant Grille », version v1) : une case par coup ; les temps en grandes cases,
+   les « et » en petites ; le compte au-dessus ; flèches orange ; un point = la main passe ; la case jouée s'allume.
+   L'impression (.rg.light) et les arpèges (.rg.arp) gardent leur dessin. */
+.rg:not(.light):not(.arp){gap:10px}
+.rg:not(.light):not(.arp) .rg-row{gap:4px}
+.rg:not(.light):not(.arp) .rgb,.rg:not(.light):not(.arp) .rgb:has(.rgc.lit,.rgc.exo-now){border:0;border-radius:0;padding:0;background:none;box-shadow:none}
+.rg:not(.light):not(.arp) .rgn{display:none}
+.rg:not(.light):not(.arp) .rgcs{gap:4px;margin:0}
+.rg:not(.light):not(.arp) .rgc{gap:4px}
+.rg:not(.light):not(.arp) .rgl{order:-1;height:18px;line-height:18px;font:600 11px var(--sans);font-style:normal;color:var(--cream3)}
+.rg:not(.light):not(.arp) .rgl.n{font:800 15px var(--display);color:var(--cream)}
+.rg:not(.light):not(.arp) .rgc:is(.lit,.exo-now) .rgl{color:var(--gold)}
+.rg:not(.light):not(.arp) .rgs{border-radius:12px;background:color-mix(in srgb,var(--card2) 55%,var(--card));transition:background .08s}
+.rg:not(.light):not(.arp) .rgc.b .rgs{background:var(--card2)}
+.rg:not(.light):not(.arp) .rgc:not(.b) .rgs{transform:scale(.86);transform-origin:50% 100%}
+.rg:not(.light):not(.arp) .rgc:is(.lit,.exo-now) .rgs{background:var(--acc-soft);outline:2px solid var(--gold);outline-offset:-2px}
+:where(.rg:not(.light):not(.arp)) .rgp,:where(.rg:not(.light):not(.arp)) .rgc.U .rgp{stroke:var(--gold)}
+:where(.rg:not(.light):not(.arp)) .rgp.soft{opacity:.45}
+.rgo{fill:var(--cream4);stroke:none}
+.rg.light .rgl.n{visibility:hidden}
+.rg.mini:not(.light):not(.arp) .rgl{height:14px;line-height:14px;font-size:10px}
+.rg.mini:not(.light):not(.arp) .rgl.n{font-size:12px}
+.rg.mini:not(.light):not(.arp) .rgs{border-radius:8px}

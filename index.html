@@ -3183,6 +3183,29 @@ body.mj-on{overflow:hidden}
 .mj-band.on{color:var(--cream);border-color:var(--gold)}
 .mj-band:not(.on) .bd{filter:grayscale(1);opacity:.55}
 .mj-band:disabled{opacity:.4}
+/* ── Composant Grille (26/11, maquette « Composant Grille », version v1) : une case par coup ; les temps en grandes cases,
+   les « et » en petites ; le compte au-dessus ; flèches orange ; un point = la main passe ; la case jouée s'allume.
+   L'impression (.rg.light) et les arpèges (.rg.arp) gardent leur dessin. */
+.rg:not(.light):not(.arp){gap:10px}
+.rg:not(.light):not(.arp) .rg-row{gap:4px}
+.rg:not(.light):not(.arp) .rgb,.rg:not(.light):not(.arp) .rgb:has(.rgc.lit,.rgc.exo-now){border:0;border-radius:0;padding:0;background:none;box-shadow:none}
+.rg:not(.light):not(.arp) .rgn{display:none}
+.rg:not(.light):not(.arp) .rgcs{gap:4px;margin:0}
+.rg:not(.light):not(.arp) .rgc{gap:4px}
+.rg:not(.light):not(.arp) .rgl{order:-1;height:18px;line-height:18px;font:600 11px var(--sans);font-style:normal;color:var(--cream3)}
+.rg:not(.light):not(.arp) .rgl.n{font:800 15px var(--display);color:var(--cream)}
+.rg:not(.light):not(.arp) .rgc:is(.lit,.exo-now) .rgl{color:var(--gold)}
+.rg:not(.light):not(.arp) .rgs{border-radius:12px;background:color-mix(in srgb,var(--card2) 55%,var(--card));transition:background .08s}
+.rg:not(.light):not(.arp) .rgc.b .rgs{background:var(--card2)}
+.rg:not(.light):not(.arp) .rgc:not(.b) .rgs{transform:scale(.86);transform-origin:50% 100%}
+.rg:not(.light):not(.arp) .rgc:is(.lit,.exo-now) .rgs{background:var(--acc-soft);outline:2px solid var(--gold);outline-offset:-2px}
+:where(.rg:not(.light):not(.arp)) .rgp,:where(.rg:not(.light):not(.arp)) .rgc.U .rgp{stroke:var(--gold)}
+:where(.rg:not(.light):not(.arp)) .rgp.soft{opacity:.45}
+.rgo{fill:var(--cream4);stroke:none}
+.rg.light .rgl.n{visibility:hidden}
+.rg.mini:not(.light):not(.arp) .rgl{height:14px;line-height:14px;font-size:10px}
+.rg.mini:not(.light):not(.arp) .rgl.n{font-size:12px}
+.rg.mini:not(.light):not(.arp) .rgs{border-radius:8px}
 </style>
 </head>
 <body>
@@ -4111,7 +4134,9 @@ const RHYTHMS = [
 
 /* ═══════ RYTHME : RANGÉE DE CASES ═══════
    Une case par subdivision, alignées sur la mesure, comptage dessous (1 et 2 et… ; 6/8 : 1 à 6 ; triolets : 1 tri ple ; doubles : 1 e et a).
-   Dans la case : flèche ↓ cuivre / ↑ sauge, ✕ terracotta = étouffé, petit point pâle = silence ; accent = flèche pleine et plus épaisse.
+   Composant Grille (26/11, « la direction ») : une case par coup, les temps en grandes cases, les « et » en petites, le compte
+   au-dessus ; flèche orange ↓ / ↑, ✕ = étouffé, petit point = la main passe sans toucher ; accent = flèche plus épaisse, doux = pâle.
+   Le même rendu sert la fiche, le mode jeu, Créer, l'éditeur, les rythmes, Au feeling et les exercices (styles : 24-direction.css).
    rhythmSVG garde son nom historique mais renvoie une grille HTML ; opt = {cursor: case en lecture, edit: cases cliquables, pos: prochaine case}. */
 function rhLabel(mes, spb, j, b) {
   if (mes === '6/8') return spb === 6 ? (j % 2 ? 'e' : String(b*3 + j/2 + 1)) : String(b*3 + j + 1);
@@ -4137,7 +4162,7 @@ function rhCellSVG(c, dir, g) {   // une flèche droite par case : ↓ bas, ↑ 
   const {W, H, yT, yB} = g, x = W/2, hd = Math.min(W*.24, 7);
   let s = `<svg class="rgs" viewBox="0 0 ${W} ${H}" aria-hidden="true">`;
   const arrow = (d, cls, w) => d === 'U' ? `<path class="${cls}" stroke-width="${w}" d="M${x} ${yB}V${yT}m${-hd} ${hd*1.1}l${hd} ${-hd*1.1}l${hd} ${hd*1.1}"/>` : `<path class="${cls}" stroke-width="${w}" d="M${x} ${yT}V${yB}m${-hd} ${-hd*1.1}l${hd} ${hd*1.1}l${hd} ${-hd*1.1}"/>`;
-  if (!c) return s + (dir === 'F' ? `<path class="rgdot" d="M${x - 3} ${(yT + yB)/2}h6"/>` : arrow(dir, 'rgdot', 1.6)) + '</svg>';
+  if (!c) return s + `<circle class="rgo" cx="${x}" cy="${(yT + yB)/2}" r="${rhN(W*.075)}"/></svg>`;   // la main passe sans toucher : un petit point
   const a = c.a === 2 ? 2 : c.a === 0 ? 0 : 1, w = g.w[a], m = g.x;
   if (c.d === 'X') s += `<path class="rgp" stroke-width="${w}" d="M${x - m} ${(yT + yB)/2 - m}l${2*m} ${2*m}m0 ${-2*m}l${-2*m} ${2*m}"/>`;
   else s += arrow(c.d === 'U' ? 'U' : 'D', 'rgp' + (a === 0 ? ' soft' : ''), w);
@@ -4180,7 +4205,7 @@ function rhythmSVG(rh, light, opt) {
         const k = b*per + t*spb + j, c = cells[k];
         const gh = opt.edit && !c;   // saisie : une case vide est une flèche fantôme (la direction que poserait « Coup »)
         const dir = gh ? rhAutoDir(spb, j) : c ? (c.d === 'U' ? 'U' : 'D') : flat && j === 1 ? 'F' : j % 2 ? 'U' : 'D';
-        h += `<div class="rgc${k === opt.cursor ? ' lit' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}${gh ? ' gh' : ''}" data-k="${k}"${opt.idp ? ` id="${opt.idp}-${k}"` : ''}>${rhCellSVG(gh ? {d: dir, a: 1} : c, dir, g)}<span class="rgl">${j ? rhLabel(rh.mes, spb, j, t) : ''}</span></div>`;
+        h += `<div class="rgc${j ? '' : ' b'}${k === opt.cursor ? ' lit' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}${gh ? ' gh' : ''}" data-k="${k}"${opt.idp ? ` id="${opt.idp}-${k}"` : ''}>${rhCellSVG(gh ? {d: dir, a: 1} : c, dir, g)}<span class="rgl${j ? '' : ' n'}">${rhLabel(rh.mes, spb, j, t)}</span></div>`;
       }
       h += '</div></div>';
     }
@@ -9521,35 +9546,7 @@ let svPart = 0; // partie affichée en mode jeu (en vue « Tout » : partie acti
 let svAll = false; // vue « Tout » : le morceau entier, parties empilées
 const SV_COMPACT = 12; // au-delà, accords en noms seuls
 // rythme d'une partie dans la fiche (en vue « Tout » la taille mini est réglée par le CSS) : seul point d'appel de l'affichage du rythme
-/* ═══ RYTHME EN « LIGNE DE MÉTRO » : un groupe de coups = une station ═══ */
-let svTime = false;   // vue « en temps » dépliée (la grille 1 + 2 + 3 + 4)
-function rhGroups(rh) {   // coupe la suite de coups à chaque silence, et tous les 4 coups
-  const cells = rh.cells, gs = []; let cur = null, gap = 0;
-  cells.forEach((c, k) => {
-    if (!c) { gap++; return; }
-    if (!cur || gap >= 1 || cur.hits.length >= 4) { cur = {k0: k, k1: k, hits: []}; gs.push(cur); }
-    cur.hits.push(c.d === 'U' ? 'U' : 'D'); cur.k1 = k; gap = 0;
-  });
-  return gs;
-}
-function rhGroupName(h) {
-  const n = h.length, dn = h.filter(x => x === 'D').length;
-  if (dn === n) return n === 1 ? '1 bas' : n + ' × bas';
-  if (dn === 0) return n === 1 ? '1 haut' : n + ' × haut';
-  const alt = h.every((x, i) => i === 0 || x !== h[i - 1]);
-  if (alt && n % 2 === 0 && h[0] === 'D') return 'bas-haut' + (n > 2 ? ' ×' + n / 2 : '');
-  return n <= 4 ? h.map(x => x === 'D' ? 'bas' : 'haut').join('-') : 'mélange';
-}
-function rhStripHTML(rh, cursor) {
-  rh = rhNorm(rh); const gs = rhGroups(rh), n = gs.length; if (!n) return '';
-  const act = cursor == null ? -1 : gs.findIndex(g => cursor >= g.k0 && cursor <= g.k1 + 1);
-  let x = 9, a = '';
-  gs.forEach((g, i) => { g.hits.forEach(d => { const dn = d === 'D'; a += `<path class="rs-a ${dn ? 'd' : 'u'}${act < 0 || i === act ? '' : ' off'}" d="${dn ? `M${x} 4v22m-6 -7l6 8l6 -8` : `M${x} 28v-22m-6 7l6 -8l6 8`}"/>`; x += 19; }); x += 12; });
-  const flat = gs.flatMap(g => g.hits); let lab = rhGroupName(flat); if (flat.length > 4 && !/×/.test(lab)) lab = n + ' groupes';
-  return `<div class="rs"><svg class="rs-ar" viewBox="0 0 ${x - 22} 32" role="img" aria-label="Rythme : ${lab}">${a}</svg><span class="rs-n">${lab}</span>
-    <button type="button" class="rs-tg${svTime ? ' on' : ''}" onclick="event.stopPropagation();svTimeToggle()" aria-label="Voir le rythme temps par temps" aria-expanded="${svTime}" title="Temps par temps"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>`;
-}
-// vue « temps par temps » : une case par subdivision (1 + 2 + 3 + 4 +), une flèche par case
+// vue « temps par temps » pour l'impression : une case par subdivision (1 + 2 + 3 + 4 +), une flèche par case
 function rhTimeHTML(rh, cursor) {
   rh = rhNorm(rh); const per = rhPerBar(rh.mes, rh.res), beats = rh.mes === '6/8' ? 6 : (parseInt(rh.mes) || 4), sub = Math.max(1, Math.round(per / beats));
   const lab = pos => pos % sub === 0 ? pos / sub + 1 : sub === 2 ? '+' : sub === 4 ? ['e', '+', 'a'][pos % sub - 1] : '·';
@@ -9565,12 +9562,8 @@ function rhTimeHTML(rh, cursor) {
   }
   return h + '</div>';
 }
-function svTimeToggle() { svTime = !svTime; cur.parts.forEach((q, j) => { const el = $('rh-view-' + j); if (el) el.innerHTML = svWayHTML(q, {chord: q.chords[0]}); }); }
-const svWayHTML = (p, opt) => {
-  const o = Object.assign({mini: svAll}, opt);
-  if (pWay(p) !== 'rh') return pWayHTML(p, false, o);
-  return rhStripHTML(p.rhythm, o.cursor) + (svTime ? rhTimeHTML(p.rhythm, o.cursor) : '');
-};
+// rythme d'une partie dans la fiche et le mode jeu : le composant Grille (rhythmSVG) ; arpège : son ruban
+const svWayHTML = (p, opt) => pWayHTML(p, false, Object.assign({mini: svAll}, opt));
 const hasLyr = p => !!(p && typeof p.lyrics === 'string' && p.lyrics.trim());
 async function viewSheet(id, keepPart) {
   const s = sheets.find(x => x.id === id); if (!s) return;
