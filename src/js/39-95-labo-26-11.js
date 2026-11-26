@@ -265,6 +265,7 @@ function l26VibPath(D, k, x0, x1, ph) {   // corde k (0 = mi aigu) : le son dess
 /* ── la lecture : un rythme de l'app (moteur unique) ou ta prise (le fichier en boucle) ── */
 function l26Halt() { cancelAnimationFrame(L26.raf); L26.raf = 0; if (L26.live) L26.live.frame(-1); l26SyncBtns(); if (typeof fbSync === 'function') fbSync(); }
 function l26Stop() {
+  L26.tok = (L26.tok || 0) + 1;   // une prise encore en chargement ne repartira pas après cet arrêt
   if (L26.a) { try { L26.a.stop(); L26.a.disconnect(); } catch (e) {} L26.a = null; }
   if (typeof fbBandStop === 'function') fbBandStop();
   if (L26.onPos) { const f = L26.onPos; L26.onPos = null; f(-1); }
@@ -289,10 +290,17 @@ function l26PlayRh(rh, bpm, chords, opt) {   // un rythme joué par l'app ; opt.
   tl.now = () => t0 == null ? null : (((performance.now() / 1000 - t0) / spd()) % tl.L + tl.L) % tl.L;
   l26Loop();
 }
-async function l26PlayTake(p) {   // ta prise, en boucle comme sur la fiche
+async function l26PlayTake(p, opt) {   // ta prise, en boucle comme sur la fiche ; opt.band : la bande joue avec
   l26Stop(); stopPlay();
-  const buf = await recBuffer(p.rec.mediaId); if (!buf) { toast('Enregistrement introuvable', true); return; }
+  const tok = L26.tok, buf = await recBuffer(p.rec.mediaId); if (!buf) { toast('Enregistrement introuvable', true); return; }
   const ac = audio(); if (ac.state === 'suspended') await ac.resume();
+  if (tok !== L26.tok) return;
+  if (opt && opt.band) {   // posée à un instant précis pour que la bande tombe avec tes coups (comme la fiche bêta)
+    const tl = L26.tl, st = p.rec.start, en = Math.min(p.rec.end, buf.duration), Tb = ac.currentTime + .15, lat = (ac.outputLatency || 0) + (ac.baseLatency || 0);
+    const src = ac.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = st; src.loopEnd = en; src.connect(OUT(ac)); src.start(Tb, st);
+    L26.a = src; tl.now = () => { const x = ac.currentTime - lat - Tb; return x < 0 ? 0 : x % tl.L; };
+    fbTakeBand(tl, Tb, p.chords || [], opt.capo || 0); l26Loop(); return;
+  }
   const tl = L26.tl, src = recLoopSrc(buf, p.rec.start, Math.min(p.rec.end, buf.duration)), t0 = ac.currentTime + (ac.outputLatency || 0) + (ac.baseLatency || 0);
   L26.a = src;
   tl.now = () => ((ac.currentTime - t0) % tl.L + tl.L) % tl.L;
@@ -330,7 +338,10 @@ function l26SonHTML() {
     <label class="lab-sel">Le son <select onchange="l26Src(this.value)">${takes.map(t => `<option value="${t.id}" ${t.id === L26.src ? 'selected' : ''}>Ta prise : ${esc(t.s.title)} · ${esc(t.p.name || 'Partie')}</option>`).join('')}<option value="demo" ${L26.src === 'demo' ? 'selected' : ''}>Un rythme joué par l’app</option></select></label>
     ${takes.length ? '' : '<p class="lab-p">Tu n’as pas encore de prise enregistrée : enregistre ton rythme sur une fiche pour essayer avec ta vraie prise.</p>'}
     ${l26ChipsHTML(L26_RH_STYLES, L26.style, 'l26Style')}
-    <div class="l26-sub" id="l26-coups"${L26.style === 'saute' ? '' : ' hidden'}><small>Les coups</small>${l26ChipsHTML(L26_COUPS, L26.coups, 'l26Coups').replace('l26-chips', 'l26-chips l26-mchips')}</div>
+    <div class="l26-sub" id="l26-coups"${L26.style === 'saute' ? '' : ' hidden'}>
+      <button type="button" class="fb-band l26-bandb${FB.band ? ' on' : ''}" onclick="l26Band()" aria-pressed="${FB.band}">${BAND_MINI()}<span>Avec la bande</span></button>
+      <small>Les cordes qui vibrent</small>${l26ChipsHTML(L26_CVIB, L26.cvib, 'l26CvibSet').replace('l26-chips', 'l26-chips l26-vchips')}
+      <small>Les coups</small>${l26ChipsHTML(L26_COUPS, L26.coups, 'l26Coups').replace('l26-chips', 'l26-chips l26-mchips')}</div>
     <section class="l26-card"><div class="l26-ch"><small>${name}</small><b>${chords}</b></div>
       <div class="l26-draw" id="l26-draw"><p class="lab-p">Je prépare le dessin…</p></div>
       <div class="l26-ctl"><button type="button" class="l26-play" onclick="l26SonPlay()" aria-label="Écouter">${LAB_PLAY}</button><span id="l26-info"></span><button type="button" class="btn btn-ghost btn-sm" onclick="l26Next()">Dessin suivant</button></div>
@@ -350,7 +361,8 @@ async function l26SonMount() {
 function l26SonPlay() {
   if (l26Playing()) { l26Stop(); return; }
   if (!L26.tl) return;
-  if (L26.take) l26PlayTake(L26.take.p); else l26PlayRh(rhFromPat(L26_DEMO.pat, '4/4', 8, 1), L26_DEMO.bpm, L26_DEMO.chords);
+  const band = L26.style === 'saute' && FB.band, rh = rhFromPat(L26_DEMO.pat, '4/4', 8, 1);   // la bande seulement avec « Cordes + Médi saute »
+  if (L26.take) l26PlayTake(L26.take.p, band ? {band: true, capo: L26.take.s.capo || 0} : null); else l26PlayRh(rh, L26_DEMO.bpm, L26_DEMO.chords, band ? {band: grBandOwn(rh)} : null);
 }
 function l26Src(v) { l26Stop(); L26.src = v; labRender(); }
 function l26Style(k) {

@@ -130,6 +130,8 @@ function fbBand(e) {
   if (e) e.stopPropagation();
   FB.band = !FB.band; LS.set('gms_fb_band', FB.band);
   const i = FB.i, was = l26Playing() && i >= 0;
+  if (was) l26Stop();
+  fbDraw(0, FB.draw);   // le dessin se refait : Boum et Basile à gauche quand la bande joue
   fbSync();
   if (was) { FB.i = -1; fbPlay(i); }
 }
