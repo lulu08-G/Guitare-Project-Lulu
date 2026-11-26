@@ -36,6 +36,26 @@ function l26VibSub(D, k, x0, x1, ph, hits, on) {
   return d;
 }
 
+/* la façon de noter les doigts de l'arpège (Lucas, 26/11 : « les lettres sont-elles pertinentes ? des chiffres ? des
+   symboles ? le plus facile à retenir et lisible ») : P 1 2 3 = les mêmes chiffres que la main gauche (index 1,
+   majeur 2, annulaire 3), p i m a = la notation classique, des points (pouce = gros rond, puis 1, 2, 3 points),
+   ou la corde à pincer (6 = Mi grave … 1 = Mi aigu) */
+const L26_NOTA = [['chiffres', 'P 1 2 3'], ['lettres', 'p i m a'], ['points', '● • •• •••'], ['cordes', 'Cordes 6 à 1']];
+const L26_NOTA_LEG = {chiffres: 'P pouce · 1 index · 2 majeur · 3 annulaire', lettres: 'p pouce · i index · m majeur · a annulaire',
+  points: '● pouce · • index · •• majeur · ••• annulaire', cordes: 'La corde à pincer : 6 = Mi grave … 1 = Mi aigu'};
+L26.nota = (() => { const v = LS.get('gms_arp_nota', 'chiffres'); return L26_NOTA.some(n => n[0] === v) ? v : 'chiffres'; })();
+function l26Mark(n, x, y, cls) {   // le doigt (ou la corde) d'une note, centré sur x, y
+  const md = L26.nota, i = {p: 0, i: 1, m: 2, a: 3}[n.f];
+  if (md === 'points') {
+    if (i == null) return '';
+    if (i === 0) return `<circle cx="${x}" cy="${y}" r="6.5" class="${cls} d"/>`;
+    let s = ''; for (let k = 0; k < i; k++) s += `<circle cx="${l26f(+x + (k - (i - 1) / 2) * 7.5)}" cy="${y}" r="2.9" class="${cls} d"/>`;
+    return s;
+  }
+  const t = md === 'cordes' ? 6 - n.s : i == null ? '·' : (md === 'lettres' ? 'pima' : 'P123')[i];
+  return `<text x="${x}" y="${l26f(+y + 5.5)}" class="${cls}">${t}</text>`;
+}
+
 Object.assign(L26_DRAW, {
   /* ── RYTHME : MÉDI GRATTE ── il traverse les six cordes à chaque coup (vers le bas ou vers le haut) ;
      entre deux coups, sa main passe en l'air (pointillé) */
@@ -190,24 +210,37 @@ Object.assign(L26_DRAW, {
       });
     }
   },
-  /* ── ARPÈGE : SUR L'ACCORD ── le doigté de l'accord de la mesure ; la corde jouée s'allume, le doigt au-dessus ;
-     la mesure en petites cases dessous */
+  /* ── ARPÈGE : SUR L'ACCORD ── (Lucas, 26/11 : « super, mais il faut nommer chaque ligne de guitare », « les notes en
+     gros comme les doigts », « les lettres sont-elles pertinentes ? des chiffres ? des symboles ? ») : le doigté, le nom
+     de chaque corde en gros (la corde jouée s'allume), sous les cordes le doigt qui les pince, la mesure en cases ;
+     la façon de noter les doigts se choisit (L26_NOTA) */
   accord: {
     html(D) {
       const tl = D.tl, m = D.bar || 0, nb = Math.max(1, Math.round(tl.L / tl.bar)), name = tl.chords[m % tl.chords.length] || 'Em';
-      const ch = newChord(name), x0 = 100, dx = 28, y0 = 46, dy = 26, H = 232; D.ax = s => x0 + s * dx; D.ay0 = y0;
-      let s = `<text x="${x0 - 30}" y="${y0 + 30}" class="l26-chd" style="text-anchor:end">${esc(name)}</text>`;
+      const ch = newChord(name), x0 = 96, dx = 32, y0 = 46, dy = 26, yb = y0 + 4 * dy, H = 274, md = L26.nota, cy = 239;
+      D.ax = s => x0 + s * dx; D.ay0 = y0; D.fj = -2;
+      let s = `<text x="${x0 - 26}" y="${y0 + 30}" class="l26-chd" style="text-anchor:end">${esc(name)}</text>`;
       for (let f = 0; f <= 4; f++) s += `<line x1="${x0}" x2="${x0 + 5 * dx}" y1="${y0 + f * dy}" y2="${y0 + f * dy}" class="${f ? 'l26-fret' : 'l26-nut'}"/>`;
-      for (let si = 0; si < 6; si++) s += `<path class="l26-acs" data-s="${si}" d="M${D.ax(si)} ${y0}V${y0 + 4 * dy}"/>`;
+      for (let si = 0; si < 6; si++) s += `<path class="l26-acs" data-s="${si}" d="M${D.ax(si)} ${y0}V${yb}"/>`;
+      // le nom de chaque corde, en gros (ou son numéro, 6 = Mi grave … 1 = Mi aigu)
+      TN_FR.forEach((nm, si) => {
+        s += `<text x="${D.ax(si)}" y="${yb + 22}" class="l26-asn" data-s="${si}">${md === 'cordes' ? 6 - si : nm}</text>`;
+        if (md === 'cordes') s += `<text x="${D.ax(si)}" y="${yb + 34}" class="l26-asg">${nm}</text>`;
+      });
+      if (md !== 'cordes') s += `<text x="${D.ax(0)}" y="${yb + 33}" class="l26-asg">grave</text><text x="${D.ax(5)}" y="${yb + 33}" class="l26-asg">aigu</text>`;
+      // le doigt qui pince chaque corde : le pouce pour les basses, puis un doigt par corde
+      s += `<path d="M${D.ax(0) - 6} ${yb + 40}V${yb + 44}H${D.ax(2) + 6}V${yb + 40}" class="l26-abr"/>`;
+      if (md === 'cordes') [['pouce', 1], ['index', 3], ['majeur', 4], ['annul.', 5]].forEach(([w, si]) => { s += `<text x="${D.ax(si)}" y="${yb + 57}" class="l26-asg w">${w}</text>`; });
+      else [[0, 1], [1, 3], [2, 4], [3, 5]].forEach(([fi, si]) => { s += l26Mark({f: 'pima'[fi], s: si}, D.ax(si), yb + 54, 'l26-afb'); });
       (ch.frets || []).forEach((fr, si) => {
         if (fr < 0) s += `<text x="${D.ax(si)}" y="${y0 - 8}" class="l26-le" style="font-size:11px">×</text>`;
         else if (fr > 0 && fr <= 4) s += `<circle cx="${D.ax(si)}" cy="${y0 + (fr - .5) * dy}" r="9" class="l26-adot"/>`;
       });
-      s += `<g class="l26-afg" transform="translate(-50 -50)"><circle r="11"/><text y="4" class="l26-fg">p</text></g>`;
+      s += `<g class="l26-afg" transform="translate(-50 -50)"></g>`;
       const hp = D.hp = tl.hits.filter(h => h.t >= m * tl.bar - 1e-6 && h.t < (m + 1) * tl.bar - 1e-6), cw = (D.W - 40) / tl.bar;
       for (let i = 0; i < tl.bar; i++) {
         const n = hp.find(h => Math.round(h.t - m * tl.bar) === i), x = 20 + i * cw;
-        s += `<g class="l26-h fut"><rect x="${l26f(x + 2)}" y="176" width="${l26f(cw - 4)}" height="34" rx="9" class="l26-acell"/>${n ? `<text x="${l26f(x + cw / 2)}" y="198" class="l26-acl">${n.f}</text>` : ''}</g>`;
+        s += `<g class="l26-h fut"><rect x="${l26f(x + 2)}" y="${cy - 17}" width="${l26f(cw - 4)}" height="34" rx="9" class="l26-acell"/>${n ? l26Mark(n, l26f(x + cw / 2), cy, 'l26-acl') : ''}</g>`;
       }
       s += `<text x="${D.W - 6}" y="${H - 4}" class="l26-mes">mesure ${m % nb + 1} sur ${nb}</text>`;
       return `<svg class="l26-svg" viewBox="0 0 ${D.W} ${H}" aria-hidden="true">${s}</svg>`;
@@ -220,23 +253,55 @@ Object.assign(L26_DRAW, {
       const now = performance.now() / 1000 * 24, ag = n ? pos - n.t : 0;
       D.el.querySelectorAll('.l26-acs').forEach(c => {
         const si = +c.dataset.s, x = D.ax(si), on = n && n.s === si;
+        const nm = D.el.querySelector(`.l26-asn[data-s="${si}"]`); if (nm) nm.classList.toggle('on', !!on);
         if (!on) { c.setAttribute('d', `M${x} ${D.ay0}V${D.ay0 + 104}`); c.classList.remove('on'); return; }
         const amp = n.a * Math.exp(-ag / (n.bs ? 4 : 1.8)) * 4; let d = '';
         for (let y = D.ay0; y <= D.ay0 + 104; y += 4) d += `${d ? 'L' : 'M'}${l26f(x + amp * Math.sin(y * .3 + now))} ${y}`;
         c.setAttribute('d', d); c.classList.add('on');
       });
-      const fg = D.el.querySelector('.l26-afg');
-      if (fg) { if (n) { fg.setAttribute('transform', `translate(${D.ax(n.s)} ${D.ay0 - 20})`); fg.querySelector('text').textContent = n.f; } else fg.setAttribute('transform', 'translate(-50 -50)'); }
+      const fg = D.el.querySelector('.l26-afg'); if (!fg || j === D.fj) return; D.fj = j;   // la bulle du doigt, au-dessus de la corde
+      if (n) { fg.setAttribute('transform', `translate(${D.ax(n.s)} ${D.ay0 - 20})`); fg.innerHTML = `<circle r="12"/>${l26Mark(n, 0, 0, 'l26-fg')}`; }
+      else fg.setAttribute('transform', 'translate(-50 -50)');
     }
   }
 });
 
+/* ── RYTHME : LES CORDES + MÉDI SAUTE (Lucas, 26/11 : « corde seule mais avec Médi qui saute, sans ligne qui le suit,
+   c'est ça qui rend brouillon ») : les cordes seules (un petit médiator par coup donne le sens), Médi saute de coup en
+   coup au-dessus, sans tracé ni barre de lecture ; il s'écrase un peu quand il touche les cordes ── */
+L26_DRAW.saute = {
+  html(D) {
+    const top = 58, gap = 12, hmax = 40, H = top + 5 * gap + 30, hp = l26Page(D); D.hp = hp; D.top = top; D.gap = gap; D.vamp = .5;
+    const pts = [[0, top - hmax * .55]].concat(hp.map(h => [D.X(h.t), top]), [[D.W, top - hmax * .5]]);
+    D.segs = l26Arcs(pts, hmax).segs;
+    let s = l26StringsHTML(D, top, gap);
+    for (let k = 0; k < 6; k++) s += `<path class="l26-vib fut" data-k="${k}" d=""/><path class="l26-vib on" data-k="${k}" d="" style="stroke-width:${(1.1 + k * .3).toFixed(2)}px"/>`;
+    const mid = top + 2.5 * gap;
+    hp.forEach(h => { s += `<g class="l26-h fut">${l26Pick(D.X(h.t), mid, 22 * (h.d === 'D' ? 1 : .8), h.d === 'D' ? 0 : 180, false)}</g>`; });
+    s += l26Labels(D.tl, D.page, D.X, H - 4) + l26MediG();
+    return `<svg class="l26-svg" viewBox="0 0 ${D.W} ${H}" aria-hidden="true">${s}</svg>`;
+  },
+  bind(D) { L26_DRAW.cordes.bind(D); },
+  frame(D, pos) {
+    const x = pos < 0 ? -4 : D.X(pos), ph = performance.now() / 1000;
+    D.el.querySelectorAll('.l26-vib.on').forEach(p => p.setAttribute('d', pos < 0 ? '' : l26VibPath(D, +p.dataset.k, 0, x, ph * 22)));
+    l26SetCls(D, '.l26-h', pos < 0 ? -1 : l26Cur(D.hp, pos));
+    const m = D.el.querySelector('.l26-medi'); if (!m || pos < 0) return;
+    for (const [a, b, cx, cy] of D.segs) if (x >= a[0] && x < b[0]) {
+      const t = (x - a[0]) / (b[0] - a[0]), px = (1 - t) ** 2 * a[0] + 2 * (1 - t) * t * cx + t * t * b[0], py = (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * cy + t * t * b[1];
+      const sq = Math.max(0, 1 - Math.min(t, 1 - t) / .14) * ((t < .5 ? a : b)[1] === D.top ? .16 : 0);   // l'écrasement en touchant les cordes
+      m.setAttribute('transform', `translate(${l26f(px)} ${l26f(py)}) scale(${(1 + sq).toFixed(3)} ${(1 - sq).toFixed(3)}) translate(0 -15)`); break;
+    }
+  }
+};
+
 // les choix proposés (test du son, test de l'arpège, fiche bêta) ; les avis du Labo reprennent ces noms
-const L26_RH_STYLES = [['mix', 'Mélange'], ['gratte', 'Médi gratte'], ['bashaut', 'Bas en bas, haut en haut'], ['respire', 'Les cordes respirent'], ['rebond', 'Rebond seul'], ['cordes', 'Cordes seules'], ['rosace', 'Rosace']];
-const L26_ARP_STYLES = [['arp', 'Les cordes'], ['apince', 'Médi pince'], ['chemin', 'Le chemin'], ['tombe', 'Les notes tombent'], ['accord', 'Sur l’accord']];
+const L26_RH_STYLES = [['saute', 'Cordes + Médi saute'], ['mix', 'Mélange'], ['gratte', 'Médi gratte'], ['bashaut', 'Bas en bas, haut en haut'], ['respire', 'Les cordes respirent'], ['rebond', 'Rebond seul'], ['cordes', 'Cordes seules'], ['rosace', 'Rosace']];
+const L26_ARP_STYLES = [['accord', 'Sur l’accord'], ['arp', 'Les cordes'], ['apince', 'Médi pince'], ['chemin', 'Le chemin'], ['tombe', 'Les notes tombent']];
 const L26_VSAY = {
   gratte: 'Je gratte les cordes à chaque coup : vers le bas ou vers le haut. En pointillé, ta main passe sans toucher.',
   bashaut: 'Un bas tombe sur les cordes graves, un haut sur les aiguës. Seules les cordes touchées vibrent.',
+  saute: 'Je saute de coup en coup, et chaque coup fait vibrer tes cordes. Le petit médiator donne le sens : vers le bas ou vers le haut.',
   respire: 'Les cordes s’écartent quand c’est fort et se resserrent quand le son s’éteint.',
   arp: 'Chaque note fait vibrer sa corde, et la basse sonne plus longtemps. La lettre, c’est le doigt.',
   apince: 'Je saute de corde en corde avec toi : plus je monte, plus c’est aigu.',
@@ -246,7 +311,15 @@ const L26_VSAY = {
 };
 LAB_TESTS26[0].ask = L26_RH_STYLES.map(s => s[1]);
 LAB_TESTS26[1].ask = L26_ARP_STYLES.map(s => s[1]); LAB_TESTS26[1].askq = 'Lequel tu préfères ?';
-LAB_TESTS26[0].d = 'Sept dessins du son : lequel se lit le mieux en jouant ?';
+LAB_TESTS26[0].d = 'Huit dessins du son : lequel se lit le mieux en jouant ?';
 LAB_TESTS26[1].d = 'Cinq façons de dessiner l’arpège.';
 const l26ChipsHTML = (list, cur, fn) => `<div class="l26-chips" role="tablist">${list.map(([k, l]) => `<button type="button" role="tab" aria-selected="${cur === k}" class="${cur === k ? 'on' : ''}" data-k="${k}" onclick="${fn}('${k}')">${l}</button>`).join('')}</div>`;
-function l26ChipsOn(k) { document.querySelectorAll('#v-labo .l26-chips button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); }
+function l26ChipsOn(k) { document.querySelectorAll('#v-labo .l26-chips:not(.l26-nchips) button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); }
+// la légende des doigts sous l'arpège, et le choix de la notation (dessin « Sur l'accord » : Labo et fiche bêta)
+const l26ArpLeg = k => L26_NOTA_LEG[k === 'accord' ? L26.nota : 'lettres'];
+function l26Nota(k) {
+  L26.nota = k; LS.set('gms_arp_nota', k);
+  document.querySelectorAll('#v-labo .l26-nchips button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+  const lg = $('l26-leg'); if (lg) lg.textContent = l26ArpLeg(L26.arpStyle || 'accord');
+  if (L26.tl && $('l26-draw') && (L26.arpStyle || 'accord') === 'accord') { const was = l26Playing(); L26.live = l26Mount($('l26-draw'), 'accord', L26.tl); if (was) l26Loop(); }
+}
