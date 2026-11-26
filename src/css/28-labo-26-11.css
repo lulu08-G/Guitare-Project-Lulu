@@ -102,3 +102,21 @@
 .l26-bpm button{width:40px;height:40px;border:0;border-radius:20px;background:var(--card);color:var(--cream);font-size:18px;cursor:pointer}
 .l26-dock .l26-draw{min-height:0}
 .l26-take{width:100%}
+/* ── la fiche bêta (39-96-fiche-beta.js, seulement avec ?beta) ── */
+#v-sheet .fb-way{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.fb-ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fb-src{flex:1;min-width:0;font-size:13px;color:var(--cream3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fb-band{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 10px;border-radius:22px;border:1.5px solid var(--border2);background:var(--card2);color:var(--cream3);font:600 13px var(--sans);cursor:pointer}
+.fb-band.on{border-color:var(--gold);background:var(--acc-soft);color:var(--cream)}
+.fb-band:not(.on) .bd{filter:grayscale(1);opacity:.55}
+.fb-band:focus-visible,.fb-pl:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.fb-hb summary{min-height:36px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--cream3);cursor:pointer;list-style:none}
+.fb-hb summary::-webkit-details-marker{display:none}
+.fb-hb summary::after{content:"▾"}
+.fb-hb[open] summary::after{content:"▴"}
+.fb-none{margin:0;font-size:13px;color:var(--cream3)}
+/* les accords : la lettre en grand, le doigté dessous */
+body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
+#v-sheet.fb .chords-row,#v-sheet.fb.compact .chords-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:flex-start}
+#v-sheet.fb .parts-view .chord-cell{display:flex;flex-direction:column-reverse;align-items:center;gap:4px}
+#v-sheet.fb .chord-cell svg{width:56px;height:auto}

@@ -45,6 +45,7 @@ async function viewSheet(id, keepPart) {
   $('v-sheet').classList.toggle('one', nPts < 2);             // une seule partie : pas d'onglets
   $('v-sheet').classList.toggle('all', svAll);
   $('v-sheet').classList.toggle('compact', nCh > SV_COMPACT);
+  $('v-sheet').classList.toggle('fb', typeof fbOn === 'function' && fbOn());   // fiche bêta : accords avec leur doigté
   tabsHost.innerHTML = nPts < 2 ? '' : `<button type="button" class="sv-tab ${svAll?'on':''}" data-idx="-1" onclick="svShowPart(-1)">Tout</button>` + (s.parts||[]).map((p, i) =>
     `<button type="button" class="sv-tab ${!svAll && i===svPart?'on':''}" data-idx="${i}" onclick="svShowPart(${i})">${esc(p.name || 'Partie ' + (i+1))}</button>`).join('');
   partsHost.innerHTML = (s.parts||[]).map((p, i) => {
@@ -54,7 +55,8 @@ async function viewSheet(id, keepPart) {
         p.chords.map((c, j) => `<div class="chord-cell">${chordSVG(c, {size:2.2})}<div class="cn">${esc(c.name)}</div></div>`).join('') + `</div>`;
     }
     const way = pWay(p);   // rythme OU arpège : une ligne « Rythme » / « Arpège » avec son ▶
-    if (way !== 'none') body += `<div class="pv-way"><span class="pv-wl">${way === 'arp' ? 'Arpège' : 'Rythme'}</span><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div>
+    if (way !== 'none' && typeof fbOn === 'function' && fbOn()) body += fbWayHTML(p, i);   // la fiche bêta (?beta) : 39-96
+    else if (way !== 'none') body += `<div class="pv-way"><span class="pv-wl">${way === 'arp' ? 'Arpège' : 'Rythme'}</span><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div>
       <button type="button" class="pv-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : way === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${RH_PLAY_SVG}</button></div>`;
     let more = '';   // détails d'une partie : visibles quand elle est seule à l'écran, cachés en vue « Tout »
     if (p.note) more += `<div class="pv-note">${esc(p.note)}</div>`;
@@ -77,6 +79,7 @@ async function viewSheet(id, keepPart) {
       <div class="pv-body">${body}</div>
     </div>`;
   }).join('');
+  if (typeof fbOn === 'function' && fbOn()) fbAfter(s);
   $('opt-lefty').checked = document.body.classList.contains('lefty');
   $('v-sheet').classList.toggle('lyr-on', !!s.showLyrics); // paroles cachées par défaut
   $('sv-coffre').innerHTML = coffreViewHTML(s);

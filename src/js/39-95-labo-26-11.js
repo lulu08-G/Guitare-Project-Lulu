@@ -40,12 +40,21 @@ function l26FromTake(buf, start, end, bpm, chords) {
   const on = [], gap = Math.round(.09 / .006); let last = -gap;
   for (let i = 2; i < n - 1; i++) if (fl[i] > mx * .16 && fl[i] >= fl[i - 1] && fl[i] >= fl[i + 1] && i - last >= gap) { on.push({t: i * hop / sr, f: fl[i] / mx}); last = i; }
   if (on.length < 2) return null;
-  let cell = bpm ? 30 / bpm : 0;
-  if (!cell) { const io = on.slice(1).map((o, i) => o.t - on[i].t).sort((a, b) => a - b); cell = Math.max(.17, Math.min(.5, io[Math.floor(io.length * .25)])); }
+  const cell = l26Cell(on, bpm);
   const hits = on.map(o => { const k = Math.round((o.t - on[0].t) / cell); return {t: o.t, d: k % 2 ? 'U' : 'D', a: Math.max(.35, Math.min(1, o.f * 1.15))}; });
   const env = new Float32Array(240); for (let j = 0; j < 240; j++) { const i = Math.min(n - 1, Math.floor(j / 239 * (n - 1))); env[j] = emx ? Math.min(1, en[i] / emx * 1.1) : 0; }
   const L = (i1 - i0) / sr, bar = 8 * cell;
   return {hits, L, bar, beat: 2 * cell, grid: null, chords: chords || [], env, win: Math.min(L, 2 * bar), unit: 's', off: on[0].t};
+}
+// le pas d'une croche dans la prise : celui qui colle le mieux aux coups entendus (à 0,02 BPM près) ;
+// s'il y en a plusieurs (double, moitié), le plus proche du tempo de la fiche
+function l26Cell(on, hint) {
+  const t0 = on[0].t, err = bpm => { const c = 30 / bpm; let e = 0; on.forEach(o => { const x = (o.t - t0) / c; e += Math.abs(x - Math.round(x)); }); return e / on.length; };
+  const res = []; for (let b = 50; b <= 200; b += .5) res.push({b, e: err(b)});
+  const ok = res.filter(r => r.e < .14), h = hint || 90;
+  let best = (ok.length ? ok : [res.reduce((a, r) => r.e < a.e ? r : a)]).reduce((a, r) => Math.abs(r.b - h) < Math.abs(a.b - h) ? r : a);
+  for (let b = best.b - .5; b <= best.b + .5; b += .02) { const e = err(b); if (e < best.e) best = {b, e}; }
+  return 30 / best.b;
 }
 // le volume au temps t (0 à 1) : l'enveloppe de la prise, ou les coups qui s'éteignent
 function l26Env(tl, t) {
@@ -220,27 +229,29 @@ function l26VibPath(D, k, x0, x1, ph) {   // corde k (0 = mi aigu) : le son dess
 }
 
 /* ── la lecture : un rythme de l'app (moteur unique) ou ta prise (le fichier en boucle) ── */
-function l26Halt() { cancelAnimationFrame(L26.raf); L26.raf = 0; if (L26.live) L26.live.frame(-1); l26SyncBtns(); }
+function l26Halt() { cancelAnimationFrame(L26.raf); L26.raf = 0; if (L26.live) L26.live.frame(-1); l26SyncBtns(); if (typeof fbSync === 'function') fbSync(); }
 function l26Stop() {
   if (L26.a) { try { L26.a.stop(); L26.a.disconnect(); } catch (e) {} L26.a = null; }
+  if (typeof fbBandStop === 'function') fbBandStop();
+  if (L26.onPos) { const f = L26.onPos; L26.onPos = null; f(-1); }
   if (rhPlaying('l26')) rhStop();
   if (L26.tl) L26.tl.now = null;
   l26Halt();
 }
 function l26Loop() {
   cancelAnimationFrame(L26.raf);
-  const f = () => { const tl = L26.tl; if (!tl || !tl.now) { L26.raf = 0; return; } const p = tl.now(); if (p != null && L26.live) L26.live.frame(p); L26.raf = requestAnimationFrame(f); };
+  const f = () => { const tl = L26.tl; if (!tl || !tl.now) { L26.raf = 0; return; } const p = tl.now(); if (p != null && L26.live) L26.live.frame(p); if (p != null && L26.onPos) L26.onPos(p); L26.raf = requestAnimationFrame(f); };
   L26.raf = requestAnimationFrame(f); l26SyncBtns();
 }
 const l26Playing = () => !!(L26.tl && L26.tl.now);
-function l26PlayRh(rh, bpm, chords, opt) {   // un rythme joué par l'app ; opt.cellFn pour un arpège ou un effet
+function l26PlayRh(rh, bpm, chords, opt) {   // un rythme joué par l'app ; opt.cellFn pour un arpège ou un effet, opt.capo, opt.band
   l26Stop(); stopPlay();
-  const tl = L26.tl, spd = () => rhCellDur(rh, (rhP && rhP.bpm) || bpm);
+  const tl = L26.tl, spd = () => rhCellDur(rh, (rhP && rhP.bpm) || bpm), chs = chords.map(c => typeof c === 'string' ? newChord(c) : c);
   let t0 = null;
-  rhStart(rh, bpm, newChord(chords[0]), 0, (i, k) => {
+  rhStart(rh, bpm, chs[0], (opt && opt.capo) || 0, (i, k) => {
     if (i == null) { if (L26.tl === tl) { tl.now = null; l26Halt(); } return; }
     t0 = performance.now() / 1000 - (k % tl.L) * spd();
-  }, Object.assign({key: 'l26', chords: chords.map(newChord)}, opt || {}));
+  }, Object.assign({key: 'l26', chords: chs}, opt || {}));
   tl.now = () => t0 == null ? null : (((performance.now() / 1000 - t0) / spd()) % tl.L + tl.L) % tl.L;
   l26Loop();
 }
