@@ -92,3 +92,25 @@
 .pfa-d{fill:var(--p-ink)}.pfa-bs{fill:var(--p-acc)}
 .pfa.mini .pfa-s{font-size:7px}.pfa.mini .pfa-c{font-size:9px}
 .pfa-lg{font-size:9px;color:var(--p-mist)}
+/* ═══ Le format unique (Lucas, 26/11) : une page A4 exacte, les morceaux se suivent, une ligne par partie ═══ */
+@media print{@page{size:A4;margin:0}}
+.pg.pf2{width:210mm;min-height:296mm;padding:14mm 14mm 22mm;box-sizing:border-box;position:relative;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.pg.pf2 .pf-foot{bottom:9mm;left:14mm;right:14mm}
+.pf-song{break-inside:avoid}.pf-song + .pf-song{margin-top:7mm}
+.pf2-h{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin-bottom:8px}
+.pf2-ht{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px;flex:1;min-width:0}
+.pf2-ht b{font:800 24px/1.1 var(--display);letter-spacing:-.01em;color:var(--p-ink)}.pf2-ht i{font-style:normal;font-size:13px;color:var(--p-mist)}
+.pf2-h .pf-chips{margin:0}.pf2-h .pf-chip{height:24px;padding:0 10px;font-size:12px}
+.pf2-c{background:var(--p-card);border:1.2px solid var(--p-chip-bd);border-radius:16px;padding:4px 14px}
+.pf2-row{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--p-line);break-inside:avoid}
+.pf2-row:first-child{border-top:0}
+.pf2-pn{flex:none;width:72px;padding-top:4px;display:flex;flex-direction:column;gap:2px}
+.pf2-pn b{font:800 13px var(--display);color:var(--p-ink)}.pf2-pn span{font-size:11px;color:var(--p-mist)}
+.pf2-b{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+.pf2-chs{display:flex;flex-wrap:wrap;gap:4px 10px}
+.pf2-ch{display:flex;flex-direction:column;align-items:center}
+.pf2-ch b{font:800 20px/1 var(--display);color:var(--p-ink);margin-bottom:-4px}
+.pf2-no{color:var(--p-mist)}
+.pf2-note{flex-basis:100%;font-size:12px;color:var(--p-mist)}
+.pf2-memo{align-items:center;gap:8px;font-size:12px;color:var(--p-mist)}
+.pf2-memo .medi{flex:none}

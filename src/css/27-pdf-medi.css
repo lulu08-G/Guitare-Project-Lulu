@@ -56,4 +56,12 @@
   #pp-preview{zoom:.36}
   .ppm-r .pp-tip{margin:0;font-size:12px}
   #m-print .modal-f{margin-top:8px;padding-top:10px}
+  /* cartes plus petites sur téléphone (Lucas : « les boutons sont un peu gros pour ce que ça représente ») */
+  .ppm-o{flex-direction:row;align-items:center;gap:10px;padding:8px 10px;border-radius:12px}
+  .ppm-v{height:26px}.ppm-v.sw i{width:30px;height:22px}.ppm-v.sw i::after{left:5px;top:5px;width:8px;height:8px}
+  .ppm-v.pgt{width:22px;padding:4px}
+  .ppm-ot b{font-size:13px}.ppm-ot small{font-size:11px}
+  .ppm-t{padding-right:52px}.ppm-tg{top:50%;margin-top:-10px}
+  .ppm-ql{font-size:14px}
+  #pp-preview{zoom:.4}
 }

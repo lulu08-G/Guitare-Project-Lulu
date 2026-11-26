@@ -26,10 +26,9 @@ const ppMini = {
   fiche: '<span class="ppm-v pg1"><i></i><i></i><i></i></span>', cahier: '<span class="ppm-v pg2"><i></i><i></i><i></i><i></i><i></i></span>',
   1: '<span class="ppm-v n1"><i></i></span>', 2: '<span class="ppm-v n2"><i></i><i></i></span>'
 };
+// un seul format (Lucas, 26/11 : « entre compact et détaillé », seule la couleur change ; les morceaux se suivent)
 const PP_Q = [
-  {k: 'theme', q: 'Quelles couleurs ?', o: [['app', 'Comme l’appli', 'fond sombre'], ['nb', 'Noir et blanc', 'moins d’encre']]},
-  {k: 'style', q: 'Quelle forme ?', o: [['fiche', 'Détaillée', 'tout le morceau'], ['cahier', 'Compacte', 'une ligne par partie']]},
-  {k: 'mode', q: 'Combien de fiches par page ?', o: [[1, 'Une', 'bien lisible'], [2, 'Deux', 'format carnet']]}
+  {k: 'theme', q: 'Quelles couleurs ?', o: [['app', 'Comme l’appli', 'fond sombre'], ['nb', 'Noir et blanc', 'moins d’encre']]}
 ];
 const PP_SAY = {
   start: 'Je te prépare ta fiche. Choisis comment tu la veux, l’aperçu suit.',
@@ -42,7 +41,7 @@ const PP_SAY = {
   num1: 'Les pages numérotées : rien ne se mélange.', num0: 'Sans numéros : plus épuré.'
 };
 // les options en plus, en cartes comme les autres choix (on / off)
-const PP_T = [{k: 'toc', l: 'Un sommaire', sub: 'au début du carnet', many: 1}, {k: 'num', l: 'Les numéros', sub: 'en bas des pages'}];
+const PP_T = [{k: 'toc', l: 'Un sommaire', sub: 'au début du carnet', many: 1}];   // les numéros : toujours (on voit que ça vient de l'app)
 let ppSay = null;
 const ppOn = (k, v) => String(printOpts[k]) === String(v);
 function renderPrintModal() {
@@ -55,8 +54,8 @@ function renderPrintModal() {
         const m = typeof ppMini[v] === 'function' ? ppMini[v]() : ppMini[v];
         return `<button type="button" class="ppm-o${ppOn(q.k, v) ? ' on' : ''}" role="radio" aria-checked="${ppOn(q.k, v)}" data-pp="${q.k}" data-v="${v}" onclick="ppPick('${q.k}','${v}')">${m}<span class="ppm-ot"><b>${l}</b><small>${sub}</small></span></button>`;
       }).join('')}</div></div>`).join('')}
-      <div class="ppm-q"><div class="ppm-ql">Et en plus ?</div><div class="ppm-os">${PP_T.filter(t => !t.many || n > 1).map(t =>
-        `<button type="button" class="ppm-o ppm-t${printOpts[t.k] ? ' on' : ''}" role="switch" aria-checked="${!!printOpts[t.k]}" data-pt="${t.k}" onclick="ppToggle('${t.k}')">${ppMini[t.k]}<span class="ppm-ot"><b>${t.l}</b><small>${t.sub}</small></span><i class="ppm-tg" aria-hidden="true"></i></button>`).join('')}</div></div>
+      ${n < 2 ? '' : `<div class="ppm-q"><div class="ppm-ql">Et en plus ?</div><div class="ppm-os">${PP_T.filter(t => !t.many || n > 1).map(t =>
+        `<button type="button" class="ppm-o ppm-t${printOpts[t.k] ? ' on' : ''}" role="switch" aria-checked="${!!printOpts[t.k]}" data-pt="${t.k}" onclick="ppToggle('${t.k}')">${ppMini[t.k]}<span class="ppm-ot"><b>${t.l}</b><small>${t.sub}</small></span><i class="ppm-tg" aria-hidden="true"></i></button>`).join('')}</div></div>`}
     </div>
     <div class="ppm-r"><div class="ppm-pl"><b>Aperçu</b><span id="pp-count"></span></div><div class="ppm-pv" onclick="ppBig()"><div id="pp-preview"></div></div>
       <p class="pp-tip">Ensuite, choisis « Enregistrer en PDF » (ou imprime).</p></div>
@@ -101,24 +100,47 @@ const pMedi = (expr, size) => mediSVG(expr, {size, anim: 'still'});
 const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi('contente', 18)}<b>Guitar Memory</b>${left ? `<i>${esc(left)}</i>` : ''}</span>${n ? `<span class="pf-n">${n}</span>` : ''}</div>`;
 function buildPrintPages() {
   if (!pNew()) return oBuildPrintPages();
-  const {mode: perPage, toc, num, style} = printOpts;
-  const list = sheets.filter(s => selIds.has(s.id)), th = pLight() ? 'pf-nb' : 'pf-app';
+  const {toc} = printOpts;
+  const list = sheets.filter(s => selIds.has(s.id)), th = (pLight() ? 'pf-nb' : 'pf-app') + ' pf2';
   let pages = [], pageNo = 0;
-  if (toc) {
+  if (toc && list.length > 1) {
     pageNo++;
-    pages.push(`<div class="pg ${th} pf-toc"><div class="pf-toc-h"><div><small>Mon carnet de guitare</small><h2>${list.length} morceau${list.length > 1 ? 'x' : ''} que je sais jouer</h2></div>${pMedi('clin', 96)}</div>
-      <ol>${list.map((s, i) => `<li><span class="pf-i">${i + 1}</span><span class="pf-tt"><b>${esc(s.title)}</b><i>${esc(s.artist && s.artist !== '—' ? s.artist : '')}</i></span>${s.capo > 0 ? `<span class="pf-chip o">Capo ${s.capo}</span>` : ''}${s.bpm ? `<span class="pf-chip">${s.bpm} BPM</span>` : ''}</li>`).join('')}</ol>
-      ${num ? pFoot('Sommaire', pageNo) : ''}</div>`);
+    pages.push(`<div class="pg ${th} pf-toc"><div class="pf-toc-h"><div><small>Mon carnet de guitare · ${list.length} morceaux</small><h2>Tout ce que j’ai dans les doigts</h2></div>${pMedi('clin', 84)}</div>
+      <ol>${list.map((s, i) => `<li><span class="pf-i">${i + 1}</span><span class="pf-tt"><b>${esc(s.title)}</b><i>${esc(s.artist && s.artist !== '—' ? s.artist : '')}</i></span>${s.capo > 0 ? `<span class="pf-chip o">Capo ${s.capo}</span>` : ''}</li>`).join('')}</ol>
+      ${pFoot('Sommaire', pageNo)}</div>`);
   }
-  for (let i = 0; i < list.length; i += perPage) {
-    pageNo++;
-    const chunk = list.slice(i, i + perPage);
-    pages.push(`<div class="pg ${th}">${chunk.map(s => `<div class="${perPage===2?'p-half':''}">${
-      style === 'cahier' ? printCahierHTML(s) : printSheetHTML(s, perPage===2)}</div>`).join('')}
-      ${num ? pFoot('', pageNo) : ''}</div>`);
-  }
-  // thème de l'appli : la page entière est sombre, sans marge blanche autour
-  return (th === 'pf-app' ? '<style>@media print{@page{size:A4;margin:0}html,body,#print-root{background:#121014!important}}</style>' : '') + pages.join('');
+  // les morceaux se suivent : autant par page qu'il en rentre, jamais coupés (hauteurs mesurées sur une page A4 cachée)
+  const songs = list.map((s, i) => pSongHTML(s, toc && list.length > 1 ? i + 1 : 0));
+  pPack(songs, th).forEach(grp => { pageNo++; pages.push(`<div class="pg ${th}">${grp.map(i => songs[i]).join('')}${pFoot('', pageNo)}</div>`); });
+  return (th.includes('pf-app') ? '<style>@media print{html,body,#print-root{background:#121014!important}}</style>' : '') + pages.join('');
+}
+const MM = 96 / 25.4;
+function pPack(songs, th) {
+  const pr = document.createElement('div'); pr.className = 'pg ' + th; pr.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden';
+  document.body.appendChild(pr);
+  const hs = songs.map(h => { pr.innerHTML = h; return pr.firstElementChild.getBoundingClientRect().height; });
+  pr.remove();
+  const max = 259 * MM, gap = 7 * MM, out = []; let cur = [], used = 0;
+  hs.forEach((h, i) => { if (cur.length && used + gap + h > max) { out.push(cur); cur = []; used = 0; } used += (cur.length ? gap : 0) + h; cur.push(i); });
+  if (cur.length) out.push(cur);
+  return out;
+}
+/* un morceau : en-tête, puis une ligne par partie (son nom, ses accords en doigtés avec le nom en gros, son rythme ou son arpège) */
+function pSongHTML(s, no) {
+  const parts = s.parts || [], one = parts.length === 1 && !parts[0].name;
+  const chips = [s.capo > 0 ? `<span class="pf-chip o">Capo <b>${s.capo}</b></span>` : '', s.bpm ? `<span class="pf-chip">Tempo <b>${s.bpm}</b></span>` : '',
+    s.tuning && s.tuning !== 'Standard' ? `<span class="pf-chip">${esc(s.tuning)}</span>` : ''].join('');
+  return `<div class="pf-song">
+    <div class="pf2-h">${no ? `<span class="pf-i">${no}</span>` : ''}<div class="pf2-ht"><b>${esc(s.title)}</b>${s.artist && s.artist !== '—' ? `<i>${esc(s.artist)}</i>` : ''}</div>${chips ? `<div class="pf-chips">${chips}</div>` : ''}</div>
+    <div class="pf2-c">${parts.map((p, i) => {
+      const rep = +(p.repeat || p.reps || 0);
+      return `<div class="pf2-row">${one ? '' : `<div class="pf2-pn"><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span>×${rep}</span>` : ''}</div>`}
+        <div class="pf2-b"><div class="pf2-chs">${p.chords.map(c => `<div class="pf2-ch"><b>${esc(c.name)}</b>${chordSVG(c, {size: .75, light: pLight()})}</div>`).join('') || '<span class="pf2-no">—</span>'}</div>
+        ${pHas(p) ? `<div class="pf2-way">${pPrintWay(p, 0, true)}</div>` : ''}
+        ${p.note ? `<div class="pf2-note">${esc(p.note)}</div>` : ''}</div></div>`;
+    }).join('')}
+    ${s.memo ? `<div class="pf2-row pf2-memo">${pMedi('neutre', 18)}<span>${esc(s.memo)}</span></div>` : ''}</div>
+  </div>`;
 }
 function doPrint() {
   $('print-root').innerHTML = buildPrintPages();
@@ -148,7 +170,7 @@ function pCount(c, per, spb, mes) {
 function pRhBlocks(rh, mini) {
   rh = rhNorm(JSON.parse(JSON.stringify(rh))); if (!rh || !rh.cells.length) return '';
   const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res), n = rh.cells.length;
-  const cw = (spb > 2 ? 20 : 34) * (mini ? .66 : 1), m0 = 4, H = mini ? 28 : 40, cy = mini ? 34 : 50;
+  const cw = (spb > 2 ? 20 : 34) * (mini ? .8 : 1), m0 = 4, H = mini ? 28 : 40, cy = mini ? 34 : 50;
   const W = m0 * 2 + n * cw, X = c => m0 + (c + .5) * cw, amp = a => a >= 2 ? 1 : a >= 1 ? .72 : .45;
   // les blocs : les cases jouées qui se suivent (une barre de mesure coupe aussi le bloc)
   const bl = []; let cu = null;
