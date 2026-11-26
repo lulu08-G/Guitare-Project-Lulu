@@ -144,8 +144,14 @@ body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
 .l26-nut{stroke:var(--cream);stroke-width:4}
 .l26-acs{fill:none;stroke:var(--cream4);stroke-width:1.6}
 .l26-acs.on{stroke:var(--gold);stroke-width:2.6}
-.l26-asn{font:700 11px var(--sans);fill:var(--cream3);text-anchor:middle}.l26-asn.on{fill:var(--gold)}
-.l26-asg{font:500 8px var(--sans);fill:var(--cream4);text-anchor:middle}
+.l26-asn{font:800 17px var(--display);fill:var(--cream);text-anchor:middle}.l26-asn.on{fill:var(--gold)}
+.l26-asg{font:500 8.5px var(--sans);fill:var(--cream3);text-anchor:middle}.l26-asg.w{font-size:9px;fill:var(--cream3)}
+.l26-abr{fill:none;stroke:var(--cream4);stroke-width:1.2}
+.l26-afb{font:800 13px var(--sans);fill:var(--cream3);text-anchor:middle}
+.l26-acl.d,.l26-afb.d{stroke:none}.l26-fg.d{fill:var(--bg)}
+.l26-afg .l26-fg{font-size:13px}
+.l26-nota{display:flex;flex-direction:column;align-items:stretch;gap:4px;margin:4px 0 10px}.l26-nota[hidden]{display:none}
+.l26-nota small{font:600 12px var(--sans);color:var(--cream3)}.l26-nota .l26-chips{margin:0}
 .l26-adot{fill:var(--cream)}
 .l26-afg circle{fill:var(--gold)}
 .l26-acell{fill:var(--card2)}

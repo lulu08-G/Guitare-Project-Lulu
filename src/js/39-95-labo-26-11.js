@@ -381,14 +381,17 @@ function l26ArpHTML() {
   const k = L26.arpStyle || 'accord';
   return `${mediBulle('contente', `<span id="l26-say">${L26_VSAY[k]}</span>`, {size: 46, cls: 'lab-medi-b'})}
     ${l26ChipsHTML(L26_ARP_STYLES, k, 'l26ArpStyle')}
+    <div class="l26-nota" id="l26-nota"${k === 'accord' ? '' : ' hidden'}><small>Les doigts</small>${l26ChipsHTML(L26_NOTA, L26.nota, 'l26Nota').replace('l26-chips', 'l26-chips l26-nchips')}</div>
     <section class="l26-card"><div class="l26-ch"><small>${esc(A.name)}</small><b>${A.chords.map(esc).join(' ')}</b></div>
       <div class="l26-draw" id="l26-draw"></div>
-      <div class="l26-ctl"><button type="button" class="l26-play" onclick="l26ArpPlay()" aria-label="Écouter">${LAB_PLAY}</button><span>p pouce · i index · m majeur · a annulaire</span></div>
+      <div class="l26-ctl"><button type="button" class="l26-play" onclick="l26ArpPlay()" aria-label="Écouter">${LAB_PLAY}</button><span id="l26-leg">${l26ArpLeg(k)}</span></div>
     </section>`;
 }
 function l26ArpMount() { const A = l26ArpSrc(); L26.tl = l26ArpTl(A); L26.arpA = A; L26.live = l26Mount($('l26-draw'), L26.arpStyle || 'accord', L26.tl); }
 function l26ArpStyle(k) {
   const was = l26Playing(); L26.arpStyle = k; l26ChipsOn(k);
+  const nr = $('l26-nota'); if (nr) nr.hidden = k !== 'accord';
+  const lg = $('l26-leg'); if (lg) lg.textContent = l26ArpLeg(k);
   const say = $('l26-say'); if (say) say.textContent = L26_VSAY[k] || '';
   if (L26.tl && $('l26-draw')) { L26.live = l26Mount($('l26-draw'), k, L26.tl); if (was) l26Loop(); }
 }
