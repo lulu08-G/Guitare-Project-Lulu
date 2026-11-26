@@ -23,6 +23,7 @@ function renderGreeting() {
 }
 function renderHome() {
   renderGreeting();
+  if (fsBeta() && (homeFilter === 'know' || homeFilter === 'learn')) homeFilter = 'all';
   const q = ($('q').value || '').toLowerCase().trim();
   const recentIds = new Set(sheets.slice().sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0)).slice(0, 8).map(s => s.id));
   document.querySelectorAll('#home-filters .filt').forEach(b => b.classList.toggle('on', b.dataset.f === homeFilter));
@@ -46,7 +47,8 @@ function renderHome() {
     const old = !selMode && !q && homeFilter === 'all' && sheets.length > 2 ? sheets
       .map(s => ({s, t: seen[s.id] || s.updatedAt || now})).filter(x => now - x.t >= 4 * DAY)
       .sort((x, y) => (y.s.favorite ? 1 : 0) - (x.s.favorite ? 1 : 0) || x.t - y.t)[0] : null;
-    $('resume-wrap').innerHTML = old ? `<section class="hm-nudge">${mediSVG('neutre', {size: 52, anim: 'vivant', label: 'Médi cherche un morceau à rejouer'})}
+    if (fsBeta()) { fsFilters(); fsNudge(old && {s: old.s, d: Math.floor((now - old.t) / DAY)}, !selMode && !q && sheets.length > 0); }
+    else $('resume-wrap').innerHTML = old ? `<section class="hm-nudge">${mediSVG('neutre', {size: 52, anim: 'vivant', label: 'Médi cherche un morceau à rejouer'})}
       <div><p>${esc(old.s.title)} t’attend depuis ${Math.floor((now - old.t) / DAY)} jours. Cinq minutes ce soir ?</p>
       <button type="button" class="btn btn-primary btn-sm" onclick="viewSheet('${old.s.id}')">Le rejouer</button></div></section>` : ''; }
   const g = $('home-grid');

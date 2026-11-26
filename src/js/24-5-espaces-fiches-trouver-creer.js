@@ -35,7 +35,7 @@ function renderSubnav(v) {
     const act = m ? `rccStop();feelStop();exoCur=null;exoMode='${m}';${m === 'rhy' ? 'rcz.cur=null;' : ''}go('exo');exoRender()` : `go('${vv}')`;
     return `<button type="button" role="tab" aria-selected="${on}" class="${on ? 'on' : ''}" onclick="${act}">${l}</button>`; }).join('');
   const hd = document.createElement('div'); hd.className = 'tr-head';
-  hd.innerHTML = `<h1>Débloque ton jeu</h1><button type="button" class="btn-icon tr-metro" onclick="go('metro')" aria-label="Métronome"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 H16 L20 21 H4 Z"/><path class="o" d="M12 16 L17 6"/></svg></button>`;
+  hd.innerHTML = `<h1>Débloque ton jeu</h1>${fsBeta() ? accPill() : ''}<button type="button" class="btn-icon tr-metro" onclick="go('metro')" aria-label="Métronome"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 H16 L20 21 H4 Z"/><path class="o" d="M12 16 L17 6"/></svg></button>`;
   view.insertBefore(el, view.firstChild); view.insertBefore(hd, el);
 }
 // Moi : outils, mes fiches, l'appli
