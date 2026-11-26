@@ -329,7 +329,7 @@ function l26SonHTML() {
   return `${mediBulle('contente', `<span id="l26-say">${L26_SAY[L26.style]}</span>`, {size: 46, cls: 'lab-medi-b'})}
     <label class="lab-sel">Le son <select onchange="l26Src(this.value)">${takes.map(t => `<option value="${t.id}" ${t.id === L26.src ? 'selected' : ''}>Ta prise : ${esc(t.s.title)} · ${esc(t.p.name || 'Partie')}</option>`).join('')}<option value="demo" ${L26.src === 'demo' ? 'selected' : ''}>Un rythme joué par l’app</option></select></label>
     ${takes.length ? '' : '<p class="lab-p">Tu n’as pas encore de prise enregistrée : enregistre ton rythme sur une fiche pour essayer avec ta vraie prise.</p>'}
-    <div class="l26-tabs" role="tablist">${L26_STYLES.map(([k, l]) => `<button type="button" role="tab" aria-selected="${L26.style === k}" class="${L26.style === k ? 'on' : ''}" onclick="l26Style('${k}')">${l}</button>`).join('')}</div>
+    ${l26ChipsHTML(L26_RH_STYLES, L26.style, 'l26Style')}
     <section class="l26-card"><div class="l26-ch"><small>${name}</small><b>${chords}</b></div>
       <div class="l26-draw" id="l26-draw"><p class="lab-p">Je prépare le dessin…</p></div>
       <div class="l26-ctl"><button type="button" class="l26-play" onclick="l26SonPlay()" aria-label="Écouter">${LAB_PLAY}</button><span id="l26-info"></span><button type="button" class="btn btn-ghost btn-sm" onclick="l26Next()">Dessin suivant</button></div>
@@ -354,11 +354,11 @@ function l26SonPlay() {
 function l26Src(v) { l26Stop(); L26.src = v; labRender(); }
 function l26Style(k) {
   const was = l26Playing(); L26.style = k;
-  document.querySelectorAll('#v-labo .l26-tabs button').forEach(b => { const on = b.getAttribute('onclick').includes(`'${k}'`); b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
-  const say = $('l26-say'); if (say) say.textContent = L26_SAY[k];
+  l26ChipsOn(k);
+  const say = $('l26-say'); if (say) say.textContent = L26_SAY[k] || L26_VSAY[k] || '';
   if (L26.tl && $('l26-draw')) { L26.live = l26Mount($('l26-draw'), k, L26.tl); if (was) l26Loop(); }
 }
-function l26Next() { const i = L26_STYLES.findIndex(s => s[0] === L26.style); l26Style(L26_STYLES[(i + 1) % L26_STYLES.length][0]); }
+function l26Next() { const i = L26_RH_STYLES.findIndex(s => s[0] === L26.style); l26Style(L26_RH_STYLES[(i + 1) % L26_RH_STYLES.length][0]); }
 
 /* ═══ Test 2 : l'arpège sur les cordes ═══ */
 const L26_ARP = {steps: [['B'], ['3'], ['2'], ['3'], ['1'], ['3'], ['2'], ['3']], bass: 'auto'};
@@ -378,13 +378,20 @@ function l26ArpTl(A) {
 }
 function l26ArpHTML() {
   const A = l26ArpSrc();
-  return `${mediBulle('contente', 'Chaque note fait vibrer sa corde, et la basse sonne plus longtemps. La lettre, c’est le doigt.', {size: 46, cls: 'lab-medi-b'})}
+  const k = L26.arpStyle || 'arp';
+  return `${mediBulle('contente', `<span id="l26-say">${L26_VSAY[k]}</span>`, {size: 46, cls: 'lab-medi-b'})}
+    ${l26ChipsHTML(L26_ARP_STYLES, k, 'l26ArpStyle')}
     <section class="l26-card"><div class="l26-ch"><small>${esc(A.name)}</small><b>${A.chords.map(esc).join(' ')}</b></div>
       <div class="l26-draw" id="l26-draw"></div>
       <div class="l26-ctl"><button type="button" class="l26-play" onclick="l26ArpPlay()" aria-label="Écouter">${LAB_PLAY}</button><span>p pouce · i index · m majeur · a annulaire</span></div>
     </section>`;
 }
-function l26ArpMount() { const A = l26ArpSrc(); L26.tl = l26ArpTl(A); L26.arpA = A; L26.live = l26Mount($('l26-draw'), 'arp', L26.tl); }
+function l26ArpMount() { const A = l26ArpSrc(); L26.tl = l26ArpTl(A); L26.arpA = A; L26.live = l26Mount($('l26-draw'), L26.arpStyle || 'arp', L26.tl); }
+function l26ArpStyle(k) {
+  const was = l26Playing(); L26.arpStyle = k; l26ChipsOn(k);
+  const say = $('l26-say'); if (say) say.textContent = L26_VSAY[k] || '';
+  if (L26.tl && $('l26-draw')) { L26.live = l26Mount($('l26-draw'), k, L26.tl); if (was) l26Loop(); }
+}
 function l26ArpPlay() {
   if (l26Playing()) { l26Stop(); return; }
   const A = L26.arpA; l26PlayRh(arpRh(), A.bpm, A.chords, {cellFn: arpCellFn(A.a, A.capo)});

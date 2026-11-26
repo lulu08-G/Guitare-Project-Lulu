@@ -7,7 +7,8 @@
      sur 2 et 4 ou sur tes étouffés, la grosse caisse et Basile sur 1 et 3) ou ta prise (le charley sur les coups
      entendus, le tempo trouvé dans la prise) ;
    · les cases haut / bas restent dessous, repliées. Les dessins viennent du Labo (39-95-labo-26-11.js). */
-const FB = {i: -1, band: LS.get('gms_fb_band', true) !== false, D: {}, tls: {}, bandT: null};
+const FB = {i: -1, band: LS.get('gms_fb_band', true) !== false, draw: LS.get('gms_fb_draw', 'mix'), adraw: LS.get('gms_fb_adraw', 'arp'), D: {}, tls: {}, bandT: null};
+const fbKind = p => pWay(p) === 'arp' && !p.rec ? FB.adraw : FB.draw;   // le dessin choisi (rythme ou arpège)
 const fbOn = () => typeof IS_BETA !== 'undefined' && IS_BETA;
 
 // la bande qui joue le rythme de la partie (une mesure, rejouée en boucle par le moteur)
@@ -30,6 +31,7 @@ function fbWayHTML(p, i) {
     <div class="fb-ctl"><button type="button" class="l26-play fb-pl" data-i="${i}" onclick="fbPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : arp ? 'Jouer l’arpège' : 'Jouer le rythme'}">${LAB_PLAY}</button>
       <span class="fb-src">${p.rec ? 'Ta prise' : arp ? 'Arpège de l’app' : 'Rythme de l’app'}</span>
       ${arp ? '' : `<button type="button" class="fb-band${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}">${BAND_MINI()}<span>Avec la bande</span></button>`}</div>
+    <label class="fb-dsel" onclick="event.stopPropagation()"><span>Dessin</span><select onchange="fbDraw(${arp && !p.rec ? 1 : 0}, this.value)">${(arp && !p.rec ? L26_ARP_STYLES : L26_RH_STYLES).map(([k, l]) => `<option value="${k}" ${k === (arp && !p.rec ? FB.adraw : FB.draw) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
     <details class="fb-hb" onclick="event.stopPropagation()"><summary>${arp ? 'Les cases de l’arpège' : 'Les cases haut / bas'}</summary><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div></details>
   </div>`;
 }
@@ -48,7 +50,7 @@ async function fbMount(i) {
   const tl = await fbTl(p), el = $('fbd-' + i); if (!el) return;
   if (!tl) { el.innerHTML = p.rec ? '<p class="fb-none">Je n’entends pas assez de coups dans ta prise.</p>' : ''; return; }
   FB.tls[i] = tl;
-  FB.D[i] = l26Mount(el, pWay(p) === 'arp' && !p.rec ? 'arp' : 'mix', tl);   // rebond + cordes (26/11)
+  FB.D[i] = l26Mount(el, fbKind(p), tl);   // le dessin choisi (par défaut : rebond + cordes, et l'arpège sur les cordes)
 }
 function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none') fbMount(i); }); }
 
@@ -112,6 +114,16 @@ function fbChordNow(i, pos) {
   const j = pos < 0 ? -1 : Math.floor(Math.max(0, pos - (tl.off || 0)) / tl.bar) % n;
   if (FB.now === i + ':' + j) return; FB.now = i + ':' + j;
   cells.forEach((c, k) => c.classList.toggle('now', k === j));
+}
+// changer de dessin : toutes les parties du même genre suivent (retenu sur l'appareil)
+function fbDraw(arp, k) {
+  if (arp) { FB.adraw = k; LS.set('gms_fb_adraw', k); } else { FB.draw = k; LS.set('gms_fb_draw', k); }
+  (cur.parts || []).forEach((p, i) => {
+    const el = $('fbd-' + i), tl = FB.tls[i]; if (!el || !tl || ((pWay(p) === 'arp' && !p.rec) ? 1 : 0) !== (arp ? 1 : 0)) return;
+    FB.D[i] = l26Mount(el, k, tl);
+    if (FB.i === i && l26Playing()) L26.live = FB.D[i];
+    document.querySelectorAll(`#fbw-${i} .fb-dsel select`).forEach(s => { s.value = k; });
+  });
 }
 function fbBandStop() { if (FB.bandT) { clearTimeout(FB.bandT.timer); FB.bandT = null; } }
 function fbBand(e) {
