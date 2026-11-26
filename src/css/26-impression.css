@@ -1,0 +1,56 @@
+/* ═══════ FICHE IMPRIMÉE (refaite le 26/11 avec l'âme de l'appli) ═══════
+   Papier blanc ; l'orange de l'appli en aplats (pastilles, doigts, n° de page), un orange plus sombre pour le petit texte
+   (lisible sur blanc) ; titres et accords en Bricolage ; Médi dans l'en-tête, les bulles et le pied de page. */
+#print-root,#pp-preview{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-family:var(--sans);color:#121014}
+.pf-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;background:#fbf3ea;border-radius:18px;padding:16px 18px 16px 20px;margin-bottom:16px}
+.pf-head .medi{flex:none;margin-top:-4px}
+.pf-ht{min-width:0}
+.pf-ht small{display:block;font:700 10px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#a84e08}
+.pf-title{font:800 32px/1.05 var(--display);letter-spacing:-.02em;margin-top:4px;color:#121014}
+.pf-head.sm{padding:12px 14px 12px 16px;margin-bottom:12px}.pf-head.sm .pf-title{font-size:22px}
+.pf-artist{font-size:14px;color:#6b6670;margin-top:3px}
+.pf-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pf-chip{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:12px;border:1.2px solid #e3d9cd;font:700 11.5px var(--sans);color:#3a3532;background:#fff;white-space:nowrap}
+.pf-chip.o{background:#ff8a2a;border-color:#ff8a2a;color:#121014}
+.pf-lbl{font:700 10px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#8f8a86}
+.pf-dg{margin-bottom:14px}
+.pf-dgs{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
+.pf-d{display:flex;flex-direction:column;align-items:center}
+.pf-d b{font:800 14px var(--display);margin-top:-2px}
+.pf-dgs.sm{gap:2px 8px;margin:-2px 0 8px}.pf-dgs.sm .pf-d b{font-size:11px}
+.pf-part{break-inside:avoid;border:1.2px solid #ece5dc;border-radius:16px;padding:12px 16px 14px;margin-bottom:12px}
+.pf-pt{display:flex;align-items:center;gap:8px}
+.pf-i{flex:none;width:22px;height:22px;border-radius:11px;background:#121014;color:#fff;font:800 11px var(--display);display:inline-flex;align-items:center;justify-content:center}
+.pf-pt b{font:800 17px var(--display)}
+.pf-seq{display:flex;flex-wrap:wrap;gap:4px 18px;margin:8px 0 2px;font:800 26px/1.1 var(--display);letter-spacing:-.01em}
+.pf-seq.sm{font-size:17px;gap:2px 12px;margin:0}
+.pf-way{display:flex;align-items:center;gap:12px;margin-top:10px}
+.pf-way .p-rh{margin:0;max-width:none}
+.pf-tab{margin-top:8px}
+.pf-say{display:flex;align-items:flex-end;gap:8px;margin-top:10px;break-inside:avoid}
+.pf-say .medi{flex:none}
+.pf-b{flex:1;min-width:0;background:#fff1e3;color:#4a2f17;border-radius:12px 12px 12px 4px;padding:8px 12px;font-size:12.5px;line-height:1.5;white-space:pre-wrap}
+.pf-b.lyr{white-space:normal;background:#f7f4f0;color:#3a3532}
+.pf-foot{position:absolute;bottom:4mm;left:4mm;right:4mm;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ece5dc;padding-top:6px}
+.pf-brand{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#8f8a86}
+.pf-brand b{font:800 12px var(--display);color:#121014}.pf-brand i{font-style:normal}
+.pf-n{min-width:22px;height:22px;padding:0 6px;box-sizing:border-box;border-radius:11px;background:#ff8a2a;color:#121014;font:800 11px var(--display);display:inline-flex;align-items:center;justify-content:center}
+/* le rythme sur papier : les cases de la fiche */
+.pg .rt{gap:6px}.pg .rt-bar{gap:3px}
+.pg .rt-c{background:#f6f2ed;border-radius:7px;padding:4px 2px 5px}.pg .rt-c.b{background:#ece6de}
+.pg .rt-c i{font:600 9px var(--sans);color:#8f8a86}.pg .rt-c.b i{font:800 10px var(--display);color:#121014}
+.pg .rt-c .d,.pg .rt-c .u{stroke:#e0701a}.pg .rt-c .x{stroke:#6b6670}.pg .rt-c .o{fill:#c9c2b9}
+/* le sommaire : « Mon carnet de guitare » */
+.pf-toc-h{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#fbf3ea;border-radius:22px;padding:22px 26px;margin-bottom:22px}
+.pf-toc-h small{font:700 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#a84e08}
+.pf-toc-h h2{font:800 30px/1.1 var(--display);margin:6px 0 0;letter-spacing:-.02em;color:#121014}
+.pf-toc-h .medi{flex:none}
+.pf-toc ol{list-style:none;margin:0;padding:0}
+.pf-toc li{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid #ece5dc}
+.pf-tt{flex:1;min-width:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px}
+.pf-tt b{font:800 17px var(--display)}.pf-tt i{font-style:normal;color:#6b6670;font-size:13px}
+/* le cahier : une ligne par partie */
+.pf-cahier{margin-bottom:14px}
+.pf-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:7px 0;border-top:1px solid #f0ebe4;break-inside:avoid}
+.pf-rn{font:800 13px var(--display);min-width:70px}
+.pf-rw .p-rh{margin:0}

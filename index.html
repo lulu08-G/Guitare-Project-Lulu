@@ -3206,6 +3206,104 @@ body.mj-on{overflow:hidden}
 .rg.mini:not(.light):not(.arp) .rgl{height:14px;line-height:14px;font-size:10px}
 .rg.mini:not(.light):not(.arp) .rgl.n{font-size:12px}
 .rg.mini:not(.light):not(.arp) .rgs{border-radius:8px}
+/* ═══════ L'ÂME DES COURS (26/11) : Médi présente, parle et conclut ; la bande joue quand la scène en parle ═══════
+   Écran titre : le titre à gauche, Médi à droite qui gratte six cordes en bas (elles vibrent avec l'accord).
+   Sous-titres : la bulle de Médi (sa tête à gauche saute à chaque phrase), Boum ou Basile à droite sur leurs coups.
+   Fin : « À toi de jouer », Médi saute. Tout le mouvement est en CSS : la pause de la vidéo l'arrête aussi. */
+.lv-intro .lv-in-t{max-width:66cqw;position:relative;z-index:1}
+.lv-intro .lv-k{display:inline-block;max-width:100%;padding:1.1cqh 2.2cqw;border-radius:99px;background:rgba(255,138,42,.14);letter-spacing:.12em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+.lv-in-m{position:absolute;right:9cqw;bottom:21cqh;width:30cqh}
+.lv-in-m>div{transform-origin:50% 90%}
+.lv-in-m .medi,.lv-out-m .medi,.lv-say-m .medi{display:block;width:100%;height:auto}
+.lv-in-s{position:absolute;left:0;right:0;bottom:6cqh;width:100%;height:13cqh;overflow:visible}
+.lv-in-s path{fill:none;stroke:rgba(246,241,234,.3);vector-effect:non-scaling-stroke}
+.lv-caps.lv-say{display:flex;align-items:center;gap:2.2cqw;height:auto;min-height:11cqh}
+.lv-say-m{flex:none;width:8cqmin;opacity:0;transform-origin:50% 100%}
+.lv-caps.lv-say>.lv-say-b{position:relative;inset:auto;opacity:1;flex:1;min-width:0;height:11cqh;text-align:left}
+.lv-say-b>div{display:flex;align-items:center;justify-content:flex-start;text-align:left}
+.lv-say-b span{max-width:100%;padding:1.3cqh 2.4cqw;border-radius:2.6cqmin 2.6cqmin 2.6cqmin .8cqmin;background:#2e1f12;color:#ffe2c6;line-height:1.3}
+.lv-say-b span b{color:#ffb877}
+.lv-say-p{flex:none;width:10cqmin;opacity:0;transform-origin:50% 100%}
+.lv-say-p.basile{width:7cqmin}
+.lv-say-p svg{display:block;width:100%;height:auto}
+.lv-outro{align-items:center;justify-content:center;text-align:center;gap:1.6cqh}
+.lv-out-m{width:32cqh;transform-origin:50% 100%}
+.lv-outro b{font:800 10cqmin/1 var(--display);letter-spacing:-.02em;color:var(--lc);opacity:0;animation:lvUp .6s var(--ease-out) forwards}
+.lv-outro span{font:500 4cqmin/1.35 var(--sans);color:var(--lc3);opacity:0;animation:lvUp .6s var(--ease-out) forwards}
+@keyframes lvMediIn{from{opacity:0;transform:translateY(30%) scale(.6) rotate(-10deg)}to{opacity:1;transform:none}}
+@keyframes lvStrumMedi{0%{transform:none}35%{transform:translate(-4%,-12%) rotate(-14deg)}62%{transform:translate(4%,46%) rotate(16deg)}100%{transform:none}}
+@keyframes lvPluck{0%{stroke:#ff8a2a}100%{stroke:rgba(246,241,234,.3)}}
+@keyframes lvTalk{0%{transform:none}35%{transform:translateY(-22%) rotate(-6deg)}100%{transform:none}}
+@keyframes lvBump{0%{transform:none}30%{transform:translateY(-16%) scale(1.06,.94)}100%{transform:none}}
+@keyframes lvJump{0%{transform:none}30%{transform:translateY(-18%) scale(1.03)}55%{transform:none}72%{transform:translateY(-6%)}100%{transform:none}}
+@container (max-aspect-ratio:1/1){
+  .lv-intro{justify-content:flex-start;padding-top:9cqh}
+  .lv-intro .lv-in-t{max-width:100%}
+  .lv-intro .lv-h{font-size:15cqw}
+  .lv-intro .lv-k{font-size:2.6cqw}.lv-intro .lv-s{max-width:60cqw}
+  .lv-in-m{right:6cqw;bottom:16cqh;width:26cqw}
+  .lv-in-s{bottom:5cqh;height:10cqh}
+  .lv-caps.lv-say{min-height:14cqh}.lv-caps.lv-say>.lv-say-b{height:14cqh}
+  .lv-say-m{width:10cqw}.lv-say-p{width:11cqw}.lv-say-p.basile{width:8cqw}
+  .lv-say-b span{font-size:4.1cqw;padding:1cqh 2.6cqw}
+  .lv-out-m{width:40cqw}.lv-outro b{font-size:11cqw}.lv-outro span{font-size:5cqw}
+}
+/* ═══════ FICHE IMPRIMÉE (refaite le 26/11 avec l'âme de l'appli) ═══════
+   Papier blanc ; l'orange de l'appli en aplats (pastilles, doigts, n° de page), un orange plus sombre pour le petit texte
+   (lisible sur blanc) ; titres et accords en Bricolage ; Médi dans l'en-tête, les bulles et le pied de page. */
+#print-root,#pp-preview{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-family:var(--sans);color:#121014}
+.pf-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;background:#fbf3ea;border-radius:18px;padding:16px 18px 16px 20px;margin-bottom:16px}
+.pf-head .medi{flex:none;margin-top:-4px}
+.pf-ht{min-width:0}
+.pf-ht small{display:block;font:700 10px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#a84e08}
+.pf-title{font:800 32px/1.05 var(--display);letter-spacing:-.02em;margin-top:4px;color:#121014}
+.pf-head.sm{padding:12px 14px 12px 16px;margin-bottom:12px}.pf-head.sm .pf-title{font-size:22px}
+.pf-artist{font-size:14px;color:#6b6670;margin-top:3px}
+.pf-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pf-chip{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:12px;border:1.2px solid #e3d9cd;font:700 11.5px var(--sans);color:#3a3532;background:#fff;white-space:nowrap}
+.pf-chip.o{background:#ff8a2a;border-color:#ff8a2a;color:#121014}
+.pf-lbl{font:700 10px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#8f8a86}
+.pf-dg{margin-bottom:14px}
+.pf-dgs{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
+.pf-d{display:flex;flex-direction:column;align-items:center}
+.pf-d b{font:800 14px var(--display);margin-top:-2px}
+.pf-dgs.sm{gap:2px 8px;margin:-2px 0 8px}.pf-dgs.sm .pf-d b{font-size:11px}
+.pf-part{break-inside:avoid;border:1.2px solid #ece5dc;border-radius:16px;padding:12px 16px 14px;margin-bottom:12px}
+.pf-pt{display:flex;align-items:center;gap:8px}
+.pf-i{flex:none;width:22px;height:22px;border-radius:11px;background:#121014;color:#fff;font:800 11px var(--display);display:inline-flex;align-items:center;justify-content:center}
+.pf-pt b{font:800 17px var(--display)}
+.pf-seq{display:flex;flex-wrap:wrap;gap:4px 18px;margin:8px 0 2px;font:800 26px/1.1 var(--display);letter-spacing:-.01em}
+.pf-seq.sm{font-size:17px;gap:2px 12px;margin:0}
+.pf-way{display:flex;align-items:center;gap:12px;margin-top:10px}
+.pf-way .p-rh{margin:0;max-width:none}
+.pf-tab{margin-top:8px}
+.pf-say{display:flex;align-items:flex-end;gap:8px;margin-top:10px;break-inside:avoid}
+.pf-say .medi{flex:none}
+.pf-b{flex:1;min-width:0;background:#fff1e3;color:#4a2f17;border-radius:12px 12px 12px 4px;padding:8px 12px;font-size:12.5px;line-height:1.5;white-space:pre-wrap}
+.pf-b.lyr{white-space:normal;background:#f7f4f0;color:#3a3532}
+.pf-foot{position:absolute;bottom:4mm;left:4mm;right:4mm;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #ece5dc;padding-top:6px}
+.pf-brand{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#8f8a86}
+.pf-brand b{font:800 12px var(--display);color:#121014}.pf-brand i{font-style:normal}
+.pf-n{min-width:22px;height:22px;padding:0 6px;box-sizing:border-box;border-radius:11px;background:#ff8a2a;color:#121014;font:800 11px var(--display);display:inline-flex;align-items:center;justify-content:center}
+/* le rythme sur papier : les cases de la fiche */
+.pg .rt{gap:6px}.pg .rt-bar{gap:3px}
+.pg .rt-c{background:#f6f2ed;border-radius:7px;padding:4px 2px 5px}.pg .rt-c.b{background:#ece6de}
+.pg .rt-c i{font:600 9px var(--sans);color:#8f8a86}.pg .rt-c.b i{font:800 10px var(--display);color:#121014}
+.pg .rt-c .d,.pg .rt-c .u{stroke:#e0701a}.pg .rt-c .x{stroke:#6b6670}.pg .rt-c .o{fill:#c9c2b9}
+/* le sommaire : « Mon carnet de guitare » */
+.pf-toc-h{display:flex;align-items:center;justify-content:space-between;gap:20px;background:#fbf3ea;border-radius:22px;padding:22px 26px;margin-bottom:22px}
+.pf-toc-h small{font:700 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:#a84e08}
+.pf-toc-h h2{font:800 30px/1.1 var(--display);margin:6px 0 0;letter-spacing:-.02em;color:#121014}
+.pf-toc-h .medi{flex:none}
+.pf-toc ol{list-style:none;margin:0;padding:0}
+.pf-toc li{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid #ece5dc}
+.pf-tt{flex:1;min-width:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px}
+.pf-tt b{font:800 17px var(--display)}.pf-tt i{font-style:normal;color:#6b6670;font-size:13px}
+/* le cahier : une ligne par partie */
+.pf-cahier{margin-bottom:14px}
+.pf-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:7px 0;border-top:1px solid #f0ebe4;break-inside:avoid}
+.pf-rn{font:800 13px var(--display);min-width:70px}
+.pf-rw .p-rh{margin:0}
 </style>
 </head>
 <body>
@@ -3972,11 +4070,11 @@ function chordSVG(ch, opt) {
   const minF = played.length ? Math.min(...played) : 1;
   const maxF = played.length ? Math.max(...played) : 1;
   const base = (ch && ch.base > 1) ? ch.base : (maxF > NF ? Math.max(1, minF) : 1);
-  const gridC = light ? '#ccc' : 'var(--cream4)';
-  const nutC  = light ? '#111' : 'var(--cream)';
-  const dotC  = light ? '#c8783a' : 'var(--cream)';
-  const mutC  = light ? '#aaa' : 'var(--cream3)';
-  const dotT  = light ? '#fff' : 'var(--bg)';
+  const gridC = light ? '#d6d0c8' : 'var(--cream4)';   // light = papier (impression) : les couleurs de l'appli sur fond blanc
+  const nutC  = light ? '#121014' : 'var(--cream)';
+  const dotC  = light ? '#ff8a2a' : 'var(--cream)';
+  const mutC  = light ? '#8f8a86' : 'var(--cream3)';
+  const dotT  = light ? '#121014' : 'var(--bg)';
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   if (base === 1) s += `<rect x="${ml}" y="${mt-3*sz}" width="${cw*5}" height="${3.5*sz}" rx="1.5" fill="${nutC}"/>`;
   else s += `<text x="${ml-6*sz}" y="${mt+rh/2+3*sz}" text-anchor="end" font-size="${8*sz}" fill="${mutC}" font-family="Inter,system-ui,sans-serif">${base}fr</text>`;
@@ -4025,11 +4123,11 @@ function tabStaffSVG(chords, light) {
   const ml = 20, cw = 30, mt = 22, lg = 14;
   const total = segs.reduce((a,c) => a + c.arp.length, 0);
   const W = ml + total*cw + 10, H = mt + lg*5 + 12;
-  const lineC = light ? '#ddd' : 'var(--border2)';
+  const lineC = light ? '#e3dcd3' : 'var(--border2)';
   const labC  = light ? '#999' : 'var(--cream3)';
   const divC  = light ? '#888' : 'var(--cream4)';
   const nameC = light ? '#111' : 'var(--cream)';
-  const dotT  = light ? '#fff' : 'var(--bg)';
+  const dotT  = light ? '#121014' : 'var(--bg)';
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   disp.forEach((si, li) => {
     const y = mt + li*lg;
@@ -4051,7 +4149,7 @@ function tabStaffSVG(chords, light) {
         const li = disp.indexOf(si); if (li < 0) return;
         const y = mt + li*lg;
         const fr = c.frets[si];
-        s += `<circle cx="${cx}" cy="${y}" r="7" fill="${light ? '#c8783a' : 'var(--gold)'}"/>`;
+        s += `<circle cx="${cx}" cy="${y}" r="7" fill="${light ? '#ff8a2a' : 'var(--gold)'}"/>`;
         s += `<text x="${cx}" y="${y+3}" text-anchor="middle" font-size="8.5" fill="${dotT}" font-weight="700" font-family="Inter,system-ui,sans-serif">${fr <= 0 ? 0 : fr}</text>`;
       });
     });
@@ -5924,29 +6022,48 @@ let coursView = 'list', coursAll = false;
 /* ═══════ VIDÉOS DE COURS — animations jouées dans l'app (format adaptatif, son de l'app) ═══════
    LV[k] = {t: titre, dur: secondes, html(): scènes, cues: [[seconde, fn son]]}. Tout le mouvement est en CSS
    (delays en secondes) : pause = animation-play-state ; les sons sont replanifiés à la reprise. */
+/* ── L'âme des cours (26/11) : Médi présente, parle et conclut ; la bande vient jouer quand la scène en parle ──
+   lvIntroHTML : l'écran titre (Médi entre puis gratte six cordes, qui vibrent avec un accord) ;
+   lvSay : les sous-titres deviennent la bulle de Médi (un petit saut à chaque phrase), un musicien à droite si la scène en a un ;
+   lvOutroHTML : la fin, « À toi de jouer ». Utilisés par les cours des murs (lvBuild) et de théorie (lvMake, LV.notes). */
+const LV_STRUM_T = 1.62;   // l'instant où Médi traverse les cordes (le son de l'accord est calé dessus)
+function lvIntroHTML(kick, h, sub) {
+  let strs = '';
+  for (let i = 0; i < 6; i++) { const t = LV_STRUM_T + i * .022; strs += `<path d="M0 ${7 + i * 9.2}H400" stroke-width="${(1 + i * .45).toFixed(2)}" style="animation:lvPluck .9s ease-out ${t.toFixed(3)}s forwards,lvVib .07s linear ${t.toFixed(3)}s 10 alternate"/>`; }
+  return `<div class="lv-sc lv-intro" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
+      <div class="lv-in-t"><div class="lv-k" style="animation-delay:.3s">${kick}</div>
+      <div class="lv-h"><span style="animation-delay:.5s">${h[0]}</span> <span style="animation-delay:.7s"><em>${h[1]}</em></span></div>
+      <div class="lv-s" style="animation-delay:1.4s">${sub}</div></div>
+      <div class="lv-in-m"><div style="animation:lvMediIn .6s var(--ease-pop) .15s both,lvStrumMedi .75s cubic-bezier(.45,0,.35,1) ${(LV_STRUM_T - .32).toFixed(2)}s both">${mediSVG('contente', {size: 160, anim: 'still'})}</div></div>
+      <svg class="lv-in-s" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">${strs}</svg></div>`;
+}
+const lvIntroCue = () => [LV_STRUM_T, () => playChord(newChord('G'), 0, 'D')];
+function lvSay(lines, side) {   // lines = [[début, fin (0 = reste), html]] en secondes absolues
+  if (!lines.length && !side) return '';
+  const talk = lines.map(([a]) => `,lvTalk .5s var(--ease-out) ${a.toFixed(2)}s`).join('');
+  return `<div class="lv-caps lv-say"><span class="lv-say-m"${lines.length ? ` style="animation:lvIn .3s ease ${lines[0][0].toFixed(2)}s both${talk}"` : ''}>${lines.length ? mediSVG('neutre', {size: 48, anim: 'still'}) : ''}</span>
+      <div class="lv-say-b">${lines.map(([a, z, h]) => `<div style="animation:lvUp .5s var(--ease-out) ${a.toFixed(2)}s forwards${z ? `,lvOut .3s ease ${z.toFixed(2)}s forwards` : ''}"><span>${h}</span></div>`).join('')}</div>${side || ''}</div>`;
+}
+function lvOutroHTML(t) {
+  return `<div class="lv-sc lv-outro" style="animation:lvIn .45s var(--ease-out) ${t.toFixed(2)}s forwards">
+      <div class="lv-out-m" style="animation:lvMediIn .5s var(--ease-pop) ${(t + .1).toFixed(2)}s both,lvJump .8s cubic-bezier(.3,.7,.4,1) ${(t + .7).toFixed(2)}s">${mediSVG('contente', {size: 150, anim: 'still'})}</div>
+      <b style="animation-delay:${(t + .35).toFixed(2)}s">À toi de jouer</b><span style="animation-delay:${(t + .6).toFixed(2)}s">Prends ta guitare, et refais-le doucement.</span></div>`;
+}
+const LV_OUTRO = 3.2;   // durée de la fin
 const LV_N = ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'], LV_FR = {C:'Do',D:'Ré',E:'Mi',F:'Fa',G:'Sol',A:'La',B:'Si'};
 const LV = {
-  notes: {t:'Les notes', dur:15,
+  notes: {t:'Les notes', dur:19,
     html() {
       const nat = [0,2,4,5,7,9,11], shp = [1,3,6,8,10], d = i => nat.includes(i) ? 4.5 + nat.indexOf(i) * .36 : 8.1 + shp.indexOf(i) * .3;
-      return `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
-          <div class="lv-k" style="animation-delay:.3s">LEÇON 1 · LES BASES</div>
-          <div class="lv-h"><span style="animation-delay:.5s">Les</span> <span style="animation-delay:.7s"><em>notes</em></span></div>
-          <div class="lv-s" style="animation-delay:1.4s">Toute la musique tient en <b>12 notes</b>. Pas une de plus.</div>
-          <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg>
-        </div>
-        <div class="lv-sc" style="animation:lvIn .5s var(--ease-out) 3.4s forwards">
+      return lvIntroHTML('LEÇON 1 · LES BASES', ['Les', 'notes'], 'Toute la musique tient en <b>12 notes</b>. Pas une de plus.') + `
+        <div class="lv-sc" style="animation:lvIn .5s var(--ease-out) 3.4s forwards,lvOut .4s ease 15s forwards">
           <div class="lv-top"><div><b>Une seule corde</b><small>chaque case monte d’un cran</small></div><div class="lv-cnt"><span data-cnt>0</span><small>NOTES</small></div></div>
           <div class="lv-notes">${LV_N.map((n, i) => `<div class="lv-n${n.length > 1 ? ' sh' : ''}${i === 0 ? ' c0' : ''}" style="animation-delay:${d(i).toFixed(2)}s${i === 0 ? ',12s' : ''}">${n}${LV_FR[n] ? `<i>${LV_FR[n]}</i>` : ''}</div>`).join('')}<div class="lv-n oct" style="animation-delay:11s,12s">C<i>Do</i></div></div>
-          <div class="lv-caps">
-            <div style="animation:lvUp .5s var(--ease-out) 4.3s forwards,lvOut .3s ease 7.6s forwards">7 notes <b>naturelles</b> : Do Ré Mi Fa Sol La Si</div>
-            <div style="animation:lvUp .5s var(--ease-out) 7.9s forwards,lvOut .3s ease 10.6s forwards">… et 5 notes <b>entre deux</b> : les dièses ♯</div>
-            <div style="animation:lvUp .5s var(--ease-out) 11.3s forwards">À la 12<sup>e</sup> case, la même note, plus aiguë : c’est l’<b>octave</b>.</div>
-          </div>
-        </div>`;
+          ${lvSay([[4.3, 7.6, '7 notes <b>naturelles</b> : Do Ré Mi Fa Sol La Si'], [7.9, 10.6, '… et 5 notes <b>entre deux</b> : les dièses ♯'], [11.3, 0, 'À la 12<sup>e</sup> case, la même note, plus aiguë : c’est l’<b>octave</b>.']])}
+        </div>${lvOutroHTML(15.3)}`;
     },
     cues() {
-      const nat = [0,2,4,5,7,9,11], shp = [1,3,6,8,10], c = [[1.8, () => playNote(40)]];
+      const nat = [0,2,4,5,7,9,11], shp = [1,3,6,8,10], c = [lvIntroCue(), [16.05, () => playChord(newChord('G'), 0, 'D')]];
       nat.forEach((i, k) => c.push([4.5 + k * .36, el => { playNote(48 + i); lvCnt(el, k + 1); }]));
       shp.forEach((i, k) => c.push([8.1 + k * .3, el => { playNote(48 + i); lvCnt(el, 8 + k); }]));
       c.push([11, () => playNote(60)], [12.4, () => { playNote(48); playNote(60); }]);
@@ -5961,12 +6078,8 @@ const lvCnt = (el, n) => { const c = el.querySelector('[data-cnt]'); if (c) c.te
    élément « tuile » : {l: texte, s: légende, hot: mis en avant, m: note MIDI ou [notes] jouées}
    élément « accord » : {c: nom d'accord de la bibliothèque, s: légende} → schéma + accord gratté */
 function lvMake(num, kick, h, sub, scenes) {
-  let t = 3.4, html = `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
-      <div class="lv-k" style="animation-delay:.3s">LEÇON ${num} · ${kick}</div>
-      <div class="lv-h"><span style="animation-delay:.5s">${h[0]}</span> <span style="animation-delay:.7s"><em>${h[1]}</em></span></div>
-      <div class="lv-s" style="animation-delay:1.4s">${sub}</div>
-      <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg></div>`;
-  const cues = [[1.8, () => playNote(40)]];
+  let t = 3.4, html = lvIntroHTML(`LEÇON ${num} · ${kick}`, h, sub);
+  const cues = [lvIntroCue()];
   scenes.forEach((sc, si) => {
     const n = sc.items.length, step = sc.step || .55, t0 = t, ti = t0 + .9, D = Math.max(1.2 + n*step + 1.6, sc.caps.length*2.7 + .8), last = si === scenes.length - 1;
     const tiles = sc.items.map((it, i) => {
@@ -5976,15 +6089,15 @@ function lvMake(num, kick, h, sub, scenes) {
                   : `<div class="lv-t${it.hot ? ' hot' : ''}" style="animation-delay:${d}s"><b>${it.l}</b>${it.s ? `<i>${it.s}</i>` : ''}</div>`;
     }).join('');
     const span = (D - .8) / sc.caps.length;
-    const caps = sc.caps.map((c, j) => { const a = t0 + .7 + j*span, z = j === sc.caps.length - 1 ? 0 : a + span - .35;
-      return `<div style="animation:lvUp .5s var(--ease-out) ${a.toFixed(2)}s forwards${z ? `,lvOut .3s ease ${z.toFixed(2)}s forwards` : ''}">${c}</div>`; }).join('');
-    html += `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) ${t0.toFixed(2)}s forwards${last ? '' : `,lvOut .4s ease ${(t0 + D - .4).toFixed(2)}s forwards`}">
+    const caps = sc.caps.map((c, j) => { const a = t0 + .7 + j*span; return [a, j === sc.caps.length - 1 ? 0 : a + span - .35, c]; });
+    html += `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) ${t0.toFixed(2)}s forwards,lvOut .4s ease ${(t0 + D - .4).toFixed(2)}s forwards">
       <div class="lv-top"><div><b>${sc.top[0]}</b><small>${sc.top[1] || ''}</small></div></div>
       <div class="lv-tl${sc.items[0].c ? ' cds' : ''}" style="--n:${n};--np:${n <= 3 ? n : Math.ceil(n/2)}">${tiles}</div>
-      <div class="lv-caps">${caps}</div></div>`;
+      ${lvSay(caps)}</div>`;
     t += D;
   });
-  return {dur: Math.ceil(t + .6), html: () => html, cues: () => cues};
+  html += lvOutroHTML(t); cues.push([t + .75, () => playChord(newChord('G'), 0, 'D')]);
+  return {dur: Math.ceil(t + LV_OUTRO), html: () => html, cues: () => cues};
 }
 const lvT = (l, s, m, hot) => ({l, s, m, hot}), lvC = (c, s) => ({c, s});
 [
@@ -6041,10 +6154,10 @@ const lvT = (l, s, m, hot) => ({l, s, m, hot}), lvC = (c, s) => ({c, s});
    Chaque scène a ses sous-titres minutés [seconde relative, texte]. Les durées découlent du contenu. */
 const LVX = {n: 0};
 const lvCh = x => typeof x === 'string' ? newChord(x) : Object.assign({id: uid(), arp: [], base: 1}, x);
-const lvCaps = (t0, caps) => `<div class="lv-caps">${caps.map(([r, txt], j) => {
-  const a = t0 + r, nx = caps[j + 1];
-  return `<div style="animation:lvUp .5s var(--ease-out) ${a.toFixed(2)}s forwards${nx ? `,lvOut .3s ease ${(t0 + nx[0] - .3).toFixed(2)}s forwards` : ''}">${txt}</div>`;
-}).join('')}</div>`;
+const lvCaps = (t0, caps, side) => lvSay(caps.map(([r, txt], j) => [t0 + r, caps[j + 1] ? t0 + caps[j + 1][0] - .3 : 0, txt]), side);
+// un musicien de la bande à droite de la bulle : il saute sur ses coups (anims = liste d'animations CSS)
+const lvMate = (who, t, anims) => `<span class="lv-say-p ${who}" style="animation:lvIn .3s ease ${t.toFixed(2)}s both${anims ? ',' + anims : ''}">${who === 'boum' ? BOUM_SVG(true) : BASILE_SVG(true)}</span>`;
+
 const lvTop = sc => sc.top ? `<div class="lv-top"><div><b>${sc.top[0]}</b><small>${sc.top[1] || ''}</small></div>${sc.cnt ? `<div class="lv-cnt"><span data-c="${sc.cnt}">0</span><small>${sc.cntL || ''}</small></div>` : ''}</div>` : '';
 // keyframes d'opacité : visible pendant les états où flags[k] est vrai
 function lvVisKF(name, flags, h, m) {
@@ -6091,6 +6204,7 @@ function lvGlyph(c, ghost) {
 }
 function lvBeats(t0, sc, id, cues) {
   let t = t0 + .9, html = '<div class="lv-bts">';
+  const bumps = [];   // Boum saute sur chaque temps, au tempo de chaque ligne
   sc.rows.forEach((r, ri) => {
     const mes = r.mes || '4/4', cd = mes === '6/8' ? 60 / r.bpm / 3 : 60 / r.bpm / 2, chs = r.chords.map(lvCh);
     const cells = [...r.pat].map((ch, k) => ch === '-' ? null : ch === 'X' || ch === 'x' ? {d: 'X', a: 1} : {d: ch.toUpperCase() === 'U' ? 'U' : 'D', a: (r.acc || []).includes(k) ? 2 : ch === ch.toLowerCase() ? 0 : 1});
@@ -6110,9 +6224,11 @@ function lvBeats(t0, sc, id, cues) {
       const free = r.free && k === n - 1;
       if (c || free) cues.push([rs + l * bar + k * cd, () => rhPlayCell(free ? {d: 'U', a: 0} : c, audio().currentTime + .01, free ? open : ch, 0)]);
     }));
+    const beat = mes === '6/8' ? cd * 3 : cd * 2;
+    bumps.push(`lvBump ${beat.toFixed(3)}s cubic-bezier(.3,.7,.4,1) ${rs.toFixed(2)}s ${Math.round(L * bar / beat)}`);
     t = rs + L * bar + .7;
   });
-  return {d: t - t0 + (sc.tail || .8), html: html + '</div>'};
+  return {d: t - t0 + (sc.tail || .8), html: html + '</div>', side: lvMate('boum', t0 + .6, bumps.join(','))};
 }
 function lvTiles(t0, sc, id, cues) {
   const st = .9, step = sc.step || .6;
@@ -6175,22 +6291,21 @@ function lvNeck(t0, sc, id, cues) {
     if (lab) g += `<text class="lb" x="${FX(f)}" y="${Y(s) - 16}" style="animation:lvPop .3s ease ${t.toFixed(2)}s both,lvOut .3s ease ${(t + 1.2).toFixed(2)}s forwards">${lab}</text>`;
     last = [s, f];
   });
-  return {d: tl + (sc.tail || 2), html: g + '</svg>'};
+  const notes = (sc.ev || []).filter(e => e[3] !== 'c'), low = notes.filter(e => e[1] >= 5).length;
+  const side = notes.length && low * 2 >= notes.length ? lvMate('basile', t0 + .6, notes.map(e => `lvBump .4s cubic-bezier(.3,.7,.4,1) ${(t0 + st + e[0]).toFixed(2)}s`).join(',')) : '';
+  return {d: tl + (sc.tail || 2), html: g + '</svg>', side};
 }
 function lvBuild(spec) {
-  const id = ++LVX.n, cues = [[1.8, () => playNote(40)]];
-  let t = 3.4, html = `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
-      <div class="lv-k" style="animation-delay:.3s">${spec.kick}</div>
-      <div class="lv-h"><span style="animation-delay:.5s">${spec.h[0]}</span> <span style="animation-delay:.7s"><em>${spec.h[1]}</em></span></div>
-      <div class="lv-s" style="animation-delay:1.4s">${spec.sub}</div>
-      <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg></div>`;
+  const id = ++LVX.n, cues = [lvIntroCue()];
+  let t = 3.4, html = lvIntroHTML(spec.kick, spec.h, spec.sub);
   spec.scenes.forEach((sc, si) => {
     const b = (sc.morph ? lvMorph : sc.rows ? lvBeats : sc.arp ? lvArp : sc.neck ? lvNeck : lvTiles)(t, sc, `${id}_${si}`, cues);
-    const caps = sc.caps || [], d = Math.max(b.d, caps.length ? caps[caps.length - 1][0] + 3 : 0), last = si === spec.scenes.length - 1;
-    html += `<div class="lv-sc lv-sc2" style="animation:lvIn .5s var(--ease-out) ${t.toFixed(2)}s forwards${last ? '' : `,lvOut .4s ease ${(t + d - .4).toFixed(2)}s forwards`}">${lvTop(sc)}${b.html}${lvCaps(t, caps)}</div>`;
+    const caps = sc.caps || [], d = Math.max(b.d, caps.length ? caps[caps.length - 1][0] + 3 : 0);
+    html += `<div class="lv-sc lv-sc2" style="animation:lvIn .5s var(--ease-out) ${t.toFixed(2)}s forwards,lvOut .4s ease ${(t + d - .4).toFixed(2)}s forwards">${lvTop(sc)}${b.html}${lvCaps(t, caps, b.side)}</div>`;
     t += d;
   });
-  return {t: spec.t, dur: Math.ceil(t + .5), html: () => html, cues: () => cues};
+  html += lvOutroHTML(t); cues.push([t + .75, () => playChord(newChord('G'), 0, 'D')]);
+  return {t: spec.t, dur: Math.ceil(t + LV_OUTRO), html: () => html, cues: () => cues};
 }
 
 /* ═══════ BLOCS « DÉBLOQUER » : l'entraînement à la carte, un mur = un bloc ═══════ */
@@ -11458,22 +11573,27 @@ function renderPrintModal() {
   refreshPrintPreview();
 }
 function refreshPrintPreview() { $('pp-preview').innerHTML = buildPrintPages(); }
+/* Fiche imprimée (refaite le 26/11 avec l'âme de l'appli) : papier blanc, en-tête avec Médi, titre en Bricolage, capo et
+   tempo en pastilles ; les doigtés une seule fois en haut, puis chaque partie avec ses accords en grand (comme dans la fiche)
+   et son rythme en cases ; les notes dans la bulle de Médi ; un pied de page avec Médi. Styles : 26-impression.css. */
+const pMedi = (expr, size) => mediSVG(expr, {size, anim: 'still'});
+const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi('contente', 18)}<b>Guitar Memory</b>${left ? `<i>${esc(left)}</i>` : ''}</span>${n ? `<span class="pf-n">${n}</span>` : ''}</div>`;
 function buildPrintPages() {
   const {mode: perPage, toc, num, style} = printOpts;
   const list = sheets.filter(s => selIds.has(s.id));
   let pages = [], pageNo = 0;
   if (toc) {
     pageNo++;
-    pages.push(`<div class="pg"><div class="p-toc"><h2>Cahier de guitare</h2><ol>${
-      list.map(s => `<li>${esc(s.title)} <span class="a">— ${esc(s.artist||'')}${s.capo?' · capo '+s.capo:''}</span></li>`).join('')}</ol></div>
-      ${num ? `<div class="p-foot"><span>Sommaire</span><span>${pageNo}</span></div>` : ''}</div>`);
+    pages.push(`<div class="pg pf-toc"><div class="pf-toc-h"><div><small>Mon carnet de guitare</small><h2>${list.length} morceau${list.length > 1 ? 'x' : ''} que je sais jouer</h2></div>${pMedi('clin', 96)}</div>
+      <ol>${list.map((s, i) => `<li><span class="pf-i">${i + 1}</span><span class="pf-tt"><b>${esc(s.title)}</b><i>${esc(s.artist && s.artist !== '—' ? s.artist : '')}</i></span>${s.capo > 0 ? `<span class="pf-chip o">Capo ${s.capo}</span>` : ''}${s.bpm ? `<span class="pf-chip">${s.bpm} BPM</span>` : ''}</li>`).join('')}</ol>
+      ${num ? pFoot('Sommaire', pageNo) : ''}</div>`);
   }
   for (let i = 0; i < list.length; i += perPage) {
     pageNo++;
     const chunk = list.slice(i, i + perPage);
     pages.push(`<div class="pg">${chunk.map(s => `<div class="${perPage===2?'p-half':''}">${
       style === 'cahier' ? printCahierHTML(s) : printSheetHTML(s, perPage===2)}</div>`).join('')}
-      ${num ? `<div class="p-foot"><span>Guitar Memory Sheets</span><span>${pageNo}</span></div>` : ''}</div>`);
+      ${num ? pFoot('', pageNo) : ''}</div>`);
   }
   return pages.join('');
 }
@@ -11485,56 +11605,50 @@ function doPrint() {
   window.addEventListener('afterprint', () => { document.title = t0; }, {once: true});
   setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
 }
-// façon de jouer imprimée : la ligne de groupes de la fiche, volontairement plus petite que les accords
+// façon de jouer imprimée : le rythme en cases (temps par temps), l'arpège en ruban
 function pPrintWay(p, h, mini) {
   if (pWay(p) !== 'rh') return pWayHTML(p, true, mini ? {mini: true} : undefined);
   return `<div class="p-rh">${rhTimeHTML(p.rhythm)}</div>`;
 }
+// les accords du morceau, une seule fois (dans l'ordre d'apparition)
+function pUniqueChords(s) {
+  const seen = new Set(), out = [];
+  (s.parts || []).forEach(p => p.chords.forEach(c => { if (!seen.has(c.name)) { seen.add(c.name); out.push(c); } }));
+  return out;
+}
+const pBubble = (txt, lyr) => `<div class="pf-say">${pMedi('neutre', 22)}<div class="pf-b${lyr ? ' lyr' : ''}">${lyr ? lyricsPreviewHTML(txt) : esc(txt)}</div></div>`;
+function pHead(s, compact) {
+  const chips = [s.capo > 0 ? `<span class="pf-chip o">Capo ${s.capo}</span>` : '', s.bpm ? `<span class="pf-chip">${s.bpm} BPM</span>` : '',
+    s.tuning && s.tuning !== 'Standard' ? `<span class="pf-chip">${esc(s.tuning)}</span>` : '', s.difficulty && !compact ? `<span class="pf-chip">${esc(dispDiff(s.difficulty))}</span>` : ''].join('');
+  return `<div class="pf-head${compact ? ' sm' : ''}"><div class="pf-ht"><small>Ma fiche</small><div class="pf-title">${esc(s.title)}</div>${s.artist && s.artist !== '—' ? `<div class="pf-artist">${esc(s.artist)}</div>` : ''}${chips ? `<div class="pf-chips">${chips}</div>` : ''}</div>${pMedi('contente', compact ? 48 : 64)}</div>`;
+}
 function printSheetHTML(s, compact) {
-  return `<div class="p-head">
-      <div><div class="p-title" style="${compact?'font-size:20px':''}">${esc(s.title)}</div><div class="p-artist">${esc(s.artist||'')}</div></div>
-      <div class="p-meta">
-        ${s.capo>0?`<div class="p-capo">CAPO ${s.capo}</div>`:''}
-        ${s.tuning&&s.tuning!=='Standard'?`<div class="p-bpm">${esc(s.tuning)}</div>`:''}
-        ${s.bpm?`<div class="p-bpm">&#9833; ${s.bpm} BPM</div>`:''}
-        ${s.difficulty?`<div class="p-bpm">${esc(dispDiff(s.difficulty))}</div>`:''}
-      </div>
-    </div>
-    ${(s.parts||[]).map(p => {
-      const staff = tabStaffSVG(p.chords, true);
-      return `<div class="p-part">
-        <div class="p-part-t">${p.name ? `<span class="d"></span>${esc(p.name)}` : ''}${p.note && compact ? `<span class="c">${esc(p.note)}</span>` : ''}</div>
-        ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.9:1.15, light:true})}</div>`).join('')}</div>` : ''}
-        ${staff ? `<div style="margin-bottom:6px">${staff}</div>` : ''}
+  const uniq = pUniqueChords(s);
+  return `${pHead(s, compact)}
+    ${uniq.length ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: true})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
+    ${(s.parts||[]).map((p, i) => {
+      const staff = tabStaffSVG(p.chords, true), rep = +(p.repeat || p.reps || 0);
+      return `<div class="pf-part">
+        <div class="pf-pt"><span class="pf-i">${i + 1}</span><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span class="pf-chip">×${rep}</span>` : ''}</div>
+        ${p.chords.length ? `<div class="pf-seq">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('')}</div>` : ''}
+        ${pHas(p) ? `<div class="pf-way"><span class="pf-lbl">${pWay(p) === 'arp' ? 'Arpège' : 'Rythme'}</span>${pPrintWay(p, compact ? 74 : 88)}</div>` : ''}
+        ${staff && !compact ? `<div class="pf-tab">${staff}</div>` : ''}
         ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
-        ${pPrintWay(p, compact ? 74 : 88)}
-        ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? `<div class="p-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
-        ${p.note && !compact ? `<div class="p-note">${esc(p.note)}</div>` : ''}
+        ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? pBubble(p.lyrics, true) : ''}
+        ${p.note ? pBubble(p.note) : ''}
       </div>`;
     }).join('')}
-    ${s.memo && !compact ? `<div class="p-note">${esc(s.memo)}</div>` : ''}`;
+    ${s.memo && !compact ? pBubble(s.memo) : ''}`;
 }
-// Senior note: "cahier" is the practical practice-room layout — a scannable strip
-// of chords + rhythm curve per part, no prose, so a whole songbook fits densely.
+// le cahier : une ligne par partie (accords en grand + rythme), les doigtés en petit une seule fois
 function printCahierHTML(s) {
-  return `<div class="p-head" style="margin-bottom:10px;padding-bottom:6px">
-      <div><div class="p-title" style="font-size:18px">${esc(s.title)}</div><div class="p-artist" style="font-size:11px">${esc(s.artist||'')}</div></div>
-      <div class="p-meta">
-        ${s.capo>0?`<div class="p-capo" style="font-size:10px;padding:2px 9px">CAPO ${s.capo}</div>`:''}
-        ${s.bpm?`<div class="p-bpm">&#9833; ${s.bpm}</div>`:''}
-      </div>
-    </div>
-    ${(s.parts||[]).map(p => `<div style="margin-bottom:9px;page-break-inside:avoid">
-      ${p.name ? `<div class="p-part-t" style="margin-bottom:3px"><span class="d"></span>${esc(p.name)}</div>` : ''}
-      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-        <div style="display:flex;gap:9px;flex-wrap:wrap">${
-          p.chords.length ? p.chords.map(c => `<div class="p-chord"><div class="cn" style="font-size:12px">${esc(c.name)}</div>${chordSVG(c,{size:.6,light:true})}</div>`).join('')
-                           : '<span style="font-size:10px;color:#999">—</span>'}</div>
-        ${pHas(p) ? `<div>${pPrintWay(p, 62, true)}</div>` : ''}
-      </div>
-    </div>`).join('')}`;
+  const uniq = pUniqueChords(s);
+  return `<div class="pf-cahier">${pHead(s, true)}
+    ${uniq.length ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: true})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
+    ${(s.parts||[]).map((p, i) => `<div class="pf-row"><span class="pf-i">${i + 1}</span><b class="pf-rn">${esc(p.name || 'Partie ' + (i + 1))}</b>
+      <div class="pf-seq sm">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('') || '—'}</div>
+      ${pHas(p) ? `<div class="pf-rw">${pPrintWay(p, 62, true)}</div>` : ''}</div>`).join('')}</div>`;
 }
-
 /* ═══════ JSON EXPORT / IMPORT ═══════ */
 function exportSel() {
   const list = sheets.filter(s => selIds.has(s.id)).map(s => {

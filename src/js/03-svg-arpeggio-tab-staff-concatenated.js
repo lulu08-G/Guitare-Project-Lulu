@@ -6,11 +6,11 @@ function tabStaffSVG(chords, light) {
   const ml = 20, cw = 30, mt = 22, lg = 14;
   const total = segs.reduce((a,c) => a + c.arp.length, 0);
   const W = ml + total*cw + 10, H = mt + lg*5 + 12;
-  const lineC = light ? '#ddd' : 'var(--border2)';
+  const lineC = light ? '#e3dcd3' : 'var(--border2)';
   const labC  = light ? '#999' : 'var(--cream3)';
   const divC  = light ? '#888' : 'var(--cream4)';
   const nameC = light ? '#111' : 'var(--cream)';
-  const dotT  = light ? '#fff' : 'var(--bg)';
+  const dotT  = light ? '#121014' : 'var(--bg)';
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   disp.forEach((si, li) => {
     const y = mt + li*lg;
@@ -32,7 +32,7 @@ function tabStaffSVG(chords, light) {
         const li = disp.indexOf(si); if (li < 0) return;
         const y = mt + li*lg;
         const fr = c.frets[si];
-        s += `<circle cx="${cx}" cy="${y}" r="7" fill="${light ? '#c8783a' : 'var(--gold)'}"/>`;
+        s += `<circle cx="${cx}" cy="${y}" r="7" fill="${light ? '#ff8a2a' : 'var(--gold)'}"/>`;
         s += `<text x="${cx}" y="${y+3}" text-anchor="middle" font-size="8.5" fill="${dotT}" font-weight="700" font-family="Inter,system-ui,sans-serif">${fr <= 0 ? 0 : fr}</text>`;
       });
     });

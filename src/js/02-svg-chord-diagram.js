@@ -11,11 +11,11 @@ function chordSVG(ch, opt) {
   const minF = played.length ? Math.min(...played) : 1;
   const maxF = played.length ? Math.max(...played) : 1;
   const base = (ch && ch.base > 1) ? ch.base : (maxF > NF ? Math.max(1, minF) : 1);
-  const gridC = light ? '#ccc' : 'var(--cream4)';
-  const nutC  = light ? '#111' : 'var(--cream)';
-  const dotC  = light ? '#c8783a' : 'var(--cream)';
-  const mutC  = light ? '#aaa' : 'var(--cream3)';
-  const dotT  = light ? '#fff' : 'var(--bg)';
+  const gridC = light ? '#d6d0c8' : 'var(--cream4)';   // light = papier (impression) : les couleurs de l'appli sur fond blanc
+  const nutC  = light ? '#121014' : 'var(--cream)';
+  const dotC  = light ? '#ff8a2a' : 'var(--cream)';
+  const mutC  = light ? '#8f8a86' : 'var(--cream3)';
+  const dotT  = light ? '#121014' : 'var(--bg)';
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   if (base === 1) s += `<rect x="${ml}" y="${mt-3*sz}" width="${cw*5}" height="${3.5*sz}" rx="1.5" fill="${nutC}"/>`;
   else s += `<text x="${ml-6*sz}" y="${mt+rh/2+3*sz}" text-anchor="end" font-size="${8*sz}" fill="${mutC}" font-family="Inter,system-ui,sans-serif">${base}fr</text>`;
