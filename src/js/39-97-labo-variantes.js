@@ -195,10 +195,13 @@ Object.assign(L26_DRAW, {
   accord: {
     html(D) {
       const tl = D.tl, m = D.bar || 0, nb = Math.max(1, Math.round(tl.L / tl.bar)), name = tl.chords[m % tl.chords.length] || 'Em';
-      const ch = newChord(name), x0 = 100, dx = 28, y0 = 46, dy = 26, H = 232; D.ax = s => x0 + s * dx; D.ay0 = y0;
+      const ch = newChord(name), x0 = 100, dx = 28, y0 = 46, dy = 26, H = 246; D.ax = s => x0 + s * dx; D.ay0 = y0;
       let s = `<text x="${x0 - 30}" y="${y0 + 30}" class="l26-chd" style="text-anchor:end">${esc(name)}</text>`;
       for (let f = 0; f <= 4; f++) s += `<line x1="${x0}" x2="${x0 + 5 * dx}" y1="${y0 + f * dy}" y2="${y0 + f * dy}" class="${f ? 'l26-fret' : 'l26-nut'}"/>`;
       for (let si = 0; si < 6; si++) s += `<path class="l26-acs" data-s="${si}" d="M${D.ax(si)} ${y0}V${y0 + 4 * dy}"/>`;
+      // le nom de chaque corde (Lucas, 26/11 : « il faut nommer chaque ligne de guitare pour s'y retrouver »)
+      TN_FR.forEach((nm, si) => { s += `<text x="${D.ax(si)}" y="${y0 + 4 * dy + 18}" class="l26-asn" data-s="${si}">${nm}</text>`; });
+      s += `<text x="${D.ax(0)}" y="${y0 + 4 * dy + 29}" class="l26-asg">grave</text><text x="${D.ax(5)}" y="${y0 + 4 * dy + 29}" class="l26-asg">aigu</text>`;
       (ch.frets || []).forEach((fr, si) => {
         if (fr < 0) s += `<text x="${D.ax(si)}" y="${y0 - 8}" class="l26-le" style="font-size:11px">×</text>`;
         else if (fr > 0 && fr <= 4) s += `<circle cx="${D.ax(si)}" cy="${y0 + (fr - .5) * dy}" r="9" class="l26-adot"/>`;
@@ -207,7 +210,7 @@ Object.assign(L26_DRAW, {
       const hp = D.hp = tl.hits.filter(h => h.t >= m * tl.bar - 1e-6 && h.t < (m + 1) * tl.bar - 1e-6), cw = (D.W - 40) / tl.bar;
       for (let i = 0; i < tl.bar; i++) {
         const n = hp.find(h => Math.round(h.t - m * tl.bar) === i), x = 20 + i * cw;
-        s += `<g class="l26-h fut"><rect x="${l26f(x + 2)}" y="176" width="${l26f(cw - 4)}" height="34" rx="9" class="l26-acell"/>${n ? `<text x="${l26f(x + cw / 2)}" y="198" class="l26-acl">${n.f}</text>` : ''}</g>`;
+        s += `<g class="l26-h fut"><rect x="${l26f(x + 2)}" y="190" width="${l26f(cw - 4)}" height="34" rx="9" class="l26-acell"/>${n ? `<text x="${l26f(x + cw / 2)}" y="212" class="l26-acl">${n.f}</text>` : ''}</g>`;
       }
       s += `<text x="${D.W - 6}" y="${H - 4}" class="l26-mes">mesure ${m % nb + 1} sur ${nb}</text>`;
       return `<svg class="l26-svg" viewBox="0 0 ${D.W} ${H}" aria-hidden="true">${s}</svg>`;
@@ -220,6 +223,7 @@ Object.assign(L26_DRAW, {
       const now = performance.now() / 1000 * 24, ag = n ? pos - n.t : 0;
       D.el.querySelectorAll('.l26-acs').forEach(c => {
         const si = +c.dataset.s, x = D.ax(si), on = n && n.s === si;
+        const nm = D.el.querySelector(`.l26-asn[data-s="${si}"]`); if (nm) nm.classList.toggle('on', !!on);
         if (!on) { c.setAttribute('d', `M${x} ${D.ay0}V${D.ay0 + 104}`); c.classList.remove('on'); return; }
         const amp = n.a * Math.exp(-ag / (n.bs ? 4 : 1.8)) * 4; let d = '';
         for (let y = D.ay0; y <= D.ay0 + 104; y += 4) d += `${d ? 'L' : 'M'}${l26f(x + amp * Math.sin(y * .3 + now))} ${y}`;
@@ -262,7 +266,7 @@ L26_DRAW.saute = {
 
 // les choix proposés (test du son, test de l'arpège, fiche bêta) ; les avis du Labo reprennent ces noms
 const L26_RH_STYLES = [['saute', 'Cordes + Médi saute'], ['mix', 'Mélange'], ['gratte', 'Médi gratte'], ['bashaut', 'Bas en bas, haut en haut'], ['respire', 'Les cordes respirent'], ['rebond', 'Rebond seul'], ['cordes', 'Cordes seules'], ['rosace', 'Rosace']];
-const L26_ARP_STYLES = [['arp', 'Les cordes'], ['apince', 'Médi pince'], ['chemin', 'Le chemin'], ['tombe', 'Les notes tombent'], ['accord', 'Sur l’accord']];
+const L26_ARP_STYLES = [['accord', 'Sur l’accord'], ['arp', 'Les cordes'], ['apince', 'Médi pince'], ['chemin', 'Le chemin'], ['tombe', 'Les notes tombent']];
 const L26_VSAY = {
   gratte: 'Je gratte les cordes à chaque coup : vers le bas ou vers le haut. En pointillé, ta main passe sans toucher.',
   bashaut: 'Un bas tombe sur les cordes graves, un haut sur les aiguës. Seules les cordes touchées vibrent.',

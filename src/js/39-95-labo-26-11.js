@@ -378,7 +378,7 @@ function l26ArpTl(A) {
 }
 function l26ArpHTML() {
   const A = l26ArpSrc();
-  const k = L26.arpStyle || 'arp';
+  const k = L26.arpStyle || 'accord';
   return `${mediBulle('contente', `<span id="l26-say">${L26_VSAY[k]}</span>`, {size: 46, cls: 'lab-medi-b'})}
     ${l26ChipsHTML(L26_ARP_STYLES, k, 'l26ArpStyle')}
     <section class="l26-card"><div class="l26-ch"><small>${esc(A.name)}</small><b>${A.chords.map(esc).join(' ')}</b></div>
@@ -386,7 +386,7 @@ function l26ArpHTML() {
       <div class="l26-ctl"><button type="button" class="l26-play" onclick="l26ArpPlay()" aria-label="Écouter">${LAB_PLAY}</button><span>p pouce · i index · m majeur · a annulaire</span></div>
     </section>`;
 }
-function l26ArpMount() { const A = l26ArpSrc(); L26.tl = l26ArpTl(A); L26.arpA = A; L26.live = l26Mount($('l26-draw'), L26.arpStyle || 'arp', L26.tl); }
+function l26ArpMount() { const A = l26ArpSrc(); L26.tl = l26ArpTl(A); L26.arpA = A; L26.live = l26Mount($('l26-draw'), L26.arpStyle || 'accord', L26.tl); }
 function l26ArpStyle(k) {
   const was = l26Playing(); L26.arpStyle = k; l26ChipsOn(k);
   const say = $('l26-say'); if (say) say.textContent = L26_VSAY[k] || '';

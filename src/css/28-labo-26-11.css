@@ -144,6 +144,8 @@ body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
 .l26-nut{stroke:var(--cream);stroke-width:4}
 .l26-acs{fill:none;stroke:var(--cream4);stroke-width:1.6}
 .l26-acs.on{stroke:var(--gold);stroke-width:2.6}
+.l26-asn{font:700 11px var(--sans);fill:var(--cream3);text-anchor:middle}.l26-asn.on{fill:var(--gold)}
+.l26-asg{font:500 8px var(--sans);fill:var(--cream4);text-anchor:middle}
 .l26-adot{fill:var(--cream)}
 .l26-afg circle{fill:var(--gold)}
 .l26-acell{fill:var(--card2)}
