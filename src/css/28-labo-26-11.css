@@ -154,8 +154,10 @@ body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
 .l26-sub small{font:600 12px var(--sans);color:var(--cream3)}.l26-sub .l26-chips{margin:0}
 .l26-ko,.l26-h .l26-ko{fill:var(--card);stroke:none}
 .l26-cm{fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.l26-cb{fill:currentColor}
 .l26-cr{fill:currentColor;stroke:currentColor;stroke-width:2}.l26-cr.up{fill:var(--card)}
-.l26-ep .past{color:var(--cream4)}.l26-ep .past > :not(.l26-ko){opacity:.45}.l26-ep .fut{color:var(--cream3)}.l26-ep .l26-vib.on{stroke:var(--cream3);opacity:.8}
+/* l'avancement en orange (Lucas, 26/11 : « essaie de mettre l'avancement orange pour voir ») */
+.l26-ep .past{color:var(--gold)}.l26-ep .past > :not(.l26-ko){opacity:.72}.l26-ep .fut{color:var(--cream3)}.l26-ep .l26-vib.on{stroke:var(--cream3);opacity:.8}
 .l26-adot{fill:var(--cream)}
 .l26-afg circle{fill:var(--gold)}
 .l26-acell{fill:var(--card2)}
