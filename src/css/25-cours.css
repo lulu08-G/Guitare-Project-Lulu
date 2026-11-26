@@ -1,0 +1,42 @@
+/* ═══════ L'ÂME DES COURS (26/11) : Médi présente, parle et conclut ; la bande joue quand la scène en parle ═══════
+   Écran titre : le titre à gauche, Médi à droite qui gratte six cordes en bas (elles vibrent avec l'accord).
+   Sous-titres : la bulle de Médi (sa tête à gauche saute à chaque phrase), Boum ou Basile à droite sur leurs coups.
+   Fin : « À toi de jouer », Médi saute. Tout le mouvement est en CSS : la pause de la vidéo l'arrête aussi. */
+.lv-intro .lv-in-t{max-width:66cqw;position:relative;z-index:1}
+.lv-intro .lv-k{display:inline-block;max-width:100%;padding:1.1cqh 2.2cqw;border-radius:99px;background:rgba(255,138,42,.14);letter-spacing:.12em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+.lv-in-m{position:absolute;right:9cqw;bottom:21cqh;width:30cqh}
+.lv-in-m>div{transform-origin:50% 90%}
+.lv-in-m .medi,.lv-out-m .medi,.lv-say-m .medi{display:block;width:100%;height:auto}
+.lv-in-s{position:absolute;left:0;right:0;bottom:6cqh;width:100%;height:13cqh;overflow:visible}
+.lv-in-s path{fill:none;stroke:rgba(246,241,234,.3);vector-effect:non-scaling-stroke}
+.lv-caps.lv-say{display:flex;align-items:center;gap:2.2cqw;height:auto;min-height:11cqh}
+.lv-say-m{flex:none;width:8cqmin;opacity:0;transform-origin:50% 100%}
+.lv-caps.lv-say>.lv-say-b{position:relative;inset:auto;opacity:1;flex:1;min-width:0;height:11cqh;text-align:left}
+.lv-say-b>div{display:flex;align-items:center;justify-content:flex-start;text-align:left}
+.lv-say-b span{max-width:100%;padding:1.3cqh 2.4cqw;border-radius:2.6cqmin 2.6cqmin 2.6cqmin .8cqmin;background:#2e1f12;color:#ffe2c6;line-height:1.3}
+.lv-say-b span b{color:#ffb877}
+.lv-say-p{flex:none;width:10cqmin;opacity:0;transform-origin:50% 100%}
+.lv-say-p.basile{width:7cqmin}
+.lv-say-p svg{display:block;width:100%;height:auto}
+.lv-outro{align-items:center;justify-content:center;text-align:center;gap:1.6cqh}
+.lv-out-m{width:32cqh;transform-origin:50% 100%}
+.lv-outro b{font:800 10cqmin/1 var(--display);letter-spacing:-.02em;color:var(--lc);opacity:0;animation:lvUp .6s var(--ease-out) forwards}
+.lv-outro span{font:500 4cqmin/1.35 var(--sans);color:var(--lc3);opacity:0;animation:lvUp .6s var(--ease-out) forwards}
+@keyframes lvMediIn{from{opacity:0;transform:translateY(30%) scale(.6) rotate(-10deg)}to{opacity:1;transform:none}}
+@keyframes lvStrumMedi{0%{transform:none}35%{transform:translate(-4%,-12%) rotate(-14deg)}62%{transform:translate(4%,46%) rotate(16deg)}100%{transform:none}}
+@keyframes lvPluck{0%{stroke:#ff8a2a}100%{stroke:rgba(246,241,234,.3)}}
+@keyframes lvTalk{0%{transform:none}35%{transform:translateY(-22%) rotate(-6deg)}100%{transform:none}}
+@keyframes lvBump{0%{transform:none}30%{transform:translateY(-16%) scale(1.06,.94)}100%{transform:none}}
+@keyframes lvJump{0%{transform:none}30%{transform:translateY(-18%) scale(1.03)}55%{transform:none}72%{transform:translateY(-6%)}100%{transform:none}}
+@container (max-aspect-ratio:1/1){
+  .lv-intro{justify-content:flex-start;padding-top:9cqh}
+  .lv-intro .lv-in-t{max-width:100%}
+  .lv-intro .lv-h{font-size:15cqw}
+  .lv-intro .lv-k{font-size:2.6cqw}.lv-intro .lv-s{max-width:60cqw}
+  .lv-in-m{right:6cqw;bottom:16cqh;width:26cqw}
+  .lv-in-s{bottom:5cqh;height:10cqh}
+  .lv-caps.lv-say{min-height:14cqh}.lv-caps.lv-say>.lv-say-b{height:14cqh}
+  .lv-say-m{width:10cqw}.lv-say-p{width:11cqw}.lv-say-p.basile{width:8cqw}
+  .lv-say-b span{font-size:4.1cqw;padding:1cqh 2.6cqw}
+  .lv-out-m{width:40cqw}.lv-outro b{font-size:11cqw}.lv-outro span{font-size:5cqw}
+}

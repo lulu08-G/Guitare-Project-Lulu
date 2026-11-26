@@ -224,20 +224,16 @@ function click(t, hi) {
   g.gain.setValueAtTime(.09, t); g.gain.exponentialRampToValueAtTime(.0001, t+0.04);
   o.connect(g); g.connect(OUT(ac)); o.start(t); o.stop(t+0.05);
 }
-let rhP = null; // lecture en cours : {key, ctx, rh, bpm, chord, capo, k, k0, t0, timer, raf, q, onStep, click}
+let rhP = null; // lecture en cours : {key, rh, grid, bpm, chord, chords, capo, k, onStep, onCell, mute, T}
 function stopPlay() {
   rhStop(); recStopPlay();
   document.querySelectorAll('.play-on').forEach(e => e.classList.remove('play-on'));
 }
-/* Moteur de rythme : planificateur à anticipation sur l'horloge Web Audio (même principe que le métronome :
-   timer 25 ms, fenêtre 120 ms), temps absolu t = t0 + (k-k0) × durée de case → aucune dérive cumulée.
-   Boucle sans fin jusqu'à rhStop(). Points d'extension : rhPlayCell (rendu d'une case) et opt.onCell (hook
-   appelé par case planifiée, avec son temps audio) pour l'enregistrement au tap / le mode jeu. */
+/* Lecteur de rythme (fiche, mode jeu, éditeur, Au feeling, rythmes) : la partie devient une grille, jouée par le moteur
+   unique (07-5-moteur-grille.js) : Médi (le clic) sur les temps, ta ligne de guitare, un accord par mesure.
+   Boucle sans fin jusqu'à rhStop(). Points d'extension : rhPlayCell (rendu d'une case), opt.cellFn (rendu sur mesure),
+   opt.onCell (appelé par case planifiée, avec son temps audio) pour l'enregistrement au tap / le mode jeu. */
 const rhCellDur = (rh, bpm) => 60 / bpm / rhSpb(rh.mes, rh.res);
-const rhCellTime = (P, k) => {
-  const rh = P.rh, off = (rh.swing && rhSpb(rh.mes, rh.res) === 2 && k % 2 === 1) ? rh.swing*rhCellDur(rh, P.bpm) : 0;
-  return P.t0 + (k - P.k0)*rhCellDur(rh, P.bpm) + off;
-};
 function rhPlayCell(c, t, chord, capo, pm, mm) {
   if (!c) return;
   if (c.d === 'X') { if (mm) muteHit(t, chord, capo, 'D', 1, {x: 1}); else chuckSound(t, chord, capo); return; }
@@ -249,43 +245,33 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   rhStop();
   rh = rhNorm(rh); if (!rhHas(rh)) return false;
   opt = opt || {};
-  const ac = audio(); if (ac.state === 'suspended') ac.resume();
   recStopPlay();
-  const P = rhP = {key: opt.key || '', ctx: ac, rh, chords: opt.chords && opt.chords.length ? opt.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
-    k: 0, k0: 0, t0: ac.currentTime + 0.08, q: [], onStep, onCell: opt.onCell, mute: !!opt.mute, timer: null, raf: 0};
-  const tick = () => {
-    if (rhP !== P) return;
-    const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res);
-    while (rhCellTime(P, P.k) < ac.currentTime + 0.12) {
-      const i = P.k % rh.cells.length, t = rhCellTime(P, P.k), inBar = i % per;
-      if (!P.mute && inBar % spb === 0) click(t, inBar === 0);
+  const g = grFromRhythm(rh, opt.chords && opt.chords.length ? opt.chords : null), per = g.per, spb = g.spb;
+  const P = rhP = {key: opt.key || '', rh, grid: g, chords: g.chords.length ? g.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
+    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? grBandAuto(grNew(rh.mes, rh.res, 1)) : null};
+  P.T = mtPlay({owner: 'rh', key: P.key, start: .08,
+    dur: () => rhCellDur(rh, P.bpm),
+    off: (k, d) => rh.swing && spb === 2 && k % 2 === 1 ? rh.swing * d : 0,
+    step: (k, t) => {
+      P.k = k;
+      const i = k % g.n, inBar = i % per;
       // 1 accord = 1 mesure : la suite d'accords de la partie défile, mesure après mesure
-      const ch = P.chords ? P.chords[Math.floor(P.k/per) % P.chords.length] : P.chord;
-      if (opt.cellFn) opt.cellFn(rh.cells[i], t, ch, i, P.k, P); else rhPlayCell(rh.cells[i], t, ch, P.capo, false, mmOn(opt.mm));
-      if (P.onCell) P.onCell(i, t, P.k);
-      P.q.push({i, t, k: P.k}); P.k++;
-    }
-    P.timer = setTimeout(tick, 25);
-  };
-  const draw = () => {
-    if (rhP !== P) return;
-    let cur = null;
-    while (P.q.length && P.q[0].t <= ac.currentTime) cur = P.q.shift();
-    if (cur && P.onStep) P.onStep(cur.i, cur.k);
-    P.raf = requestAnimationFrame(draw);
-  };
-  tick(); draw();
+      const ch = P.chords ? P.chords[Math.floor(k / per) % P.chords.length] : P.chord;
+      if (P.band) mtBand(P.band, inBar, t, ch, {capo: P.capo});   // opt.band : la bande à la place du clic (Basile suit les accords)
+      else if (!P.mute && inBar % spb === 0) click(t, inBar === 0);
+      if (opt.cellFn) opt.cellFn(g.gtr[i], t, ch, i, k, P); else rhPlayCell(g.gtr[i], t, ch, P.capo, false, mmOn(opt.mm));
+      if (P.onCell) P.onCell(i, t, k);
+      P.k = k + 1;
+    },
+    vis: onStep ? k => onStep(k % g.n, k) : null,
+    onKill: () => { if (rhP === P) { rhP = null; if (P.onStep) P.onStep(null); } }});
   return true;
 }
-// Changer le tempo en cours de lecture sans saut : on ré-ancre la grille sur la prochaine case à planifier
-function rhSetBpm(bpm) {
-  const P = rhP; if (!P) return;
-  P.t0 = rhCellTime(P, P.k); P.k0 = P.k; P.bpm = bpm;
-}
+// Changer le tempo en cours de lecture sans saut : le moteur lit le tempo à chaque case
+function rhSetBpm(bpm) { if (rhP) rhP.bpm = bpm; }
 function rhStop() {
   const P = rhP; if (!P) return;
-  rhP = null;
-  clearTimeout(P.timer); cancelAnimationFrame(P.raf);
+  rhP = null; mtStop(P.T);
   if (P.onStep) P.onStep(null);
 }
 const rhPlaying = key => !!rhP && rhP.key === key;

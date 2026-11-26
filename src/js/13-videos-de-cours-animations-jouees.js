@@ -1,29 +1,48 @@
 /* ═══════ VIDÉOS DE COURS — animations jouées dans l'app (format adaptatif, son de l'app) ═══════
    LV[k] = {t: titre, dur: secondes, html(): scènes, cues: [[seconde, fn son]]}. Tout le mouvement est en CSS
    (delays en secondes) : pause = animation-play-state ; les sons sont replanifiés à la reprise. */
+/* ── L'âme des cours (26/11) : Médi présente, parle et conclut ; la bande vient jouer quand la scène en parle ──
+   lvIntroHTML : l'écran titre (Médi entre puis gratte six cordes, qui vibrent avec un accord) ;
+   lvSay : les sous-titres deviennent la bulle de Médi (un petit saut à chaque phrase), un musicien à droite si la scène en a un ;
+   lvOutroHTML : la fin, « À toi de jouer ». Utilisés par les cours des murs (lvBuild) et de théorie (lvMake, LV.notes). */
+const LV_STRUM_T = 1.62;   // l'instant où Médi traverse les cordes (le son de l'accord est calé dessus)
+function lvIntroHTML(kick, h, sub) {
+  let strs = '';
+  for (let i = 0; i < 6; i++) { const t = LV_STRUM_T + i * .022; strs += `<path d="M0 ${7 + i * 9.2}H400" stroke-width="${(1 + i * .45).toFixed(2)}" style="animation:lvPluck .9s ease-out ${t.toFixed(3)}s forwards,lvVib .07s linear ${t.toFixed(3)}s 10 alternate"/>`; }
+  return `<div class="lv-sc lv-intro" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
+      <div class="lv-in-t"><div class="lv-k" style="animation-delay:.3s">${kick}</div>
+      <div class="lv-h"><span style="animation-delay:.5s">${h[0]}</span> <span style="animation-delay:.7s"><em>${h[1]}</em></span></div>
+      <div class="lv-s" style="animation-delay:1.4s">${sub}</div></div>
+      <div class="lv-in-m"><div style="animation:lvMediIn .6s var(--ease-pop) .15s both,lvStrumMedi .75s cubic-bezier(.45,0,.35,1) ${(LV_STRUM_T - .32).toFixed(2)}s both">${mediSVG('contente', {size: 160, anim: 'still'})}</div></div>
+      <svg class="lv-in-s" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">${strs}</svg></div>`;
+}
+const lvIntroCue = () => [LV_STRUM_T, () => playChord(newChord('G'), 0, 'D')];
+function lvSay(lines, side) {   // lines = [[début, fin (0 = reste), html]] en secondes absolues
+  if (!lines.length && !side) return '';
+  const talk = lines.map(([a]) => `,lvTalk .5s var(--ease-out) ${a.toFixed(2)}s`).join('');
+  return `<div class="lv-caps lv-say"><span class="lv-say-m"${lines.length ? ` style="animation:lvIn .3s ease ${lines[0][0].toFixed(2)}s both${talk}"` : ''}>${lines.length ? mediSVG('neutre', {size: 48, anim: 'still'}) : ''}</span>
+      <div class="lv-say-b">${lines.map(([a, z, h]) => `<div style="animation:lvUp .5s var(--ease-out) ${a.toFixed(2)}s forwards${z ? `,lvOut .3s ease ${z.toFixed(2)}s forwards` : ''}"><span>${h}</span></div>`).join('')}</div>${side || ''}</div>`;
+}
+function lvOutroHTML(t) {
+  return `<div class="lv-sc lv-outro" style="animation:lvIn .45s var(--ease-out) ${t.toFixed(2)}s forwards">
+      <div class="lv-out-m" style="animation:lvMediIn .5s var(--ease-pop) ${(t + .1).toFixed(2)}s both,lvJump .8s cubic-bezier(.3,.7,.4,1) ${(t + .7).toFixed(2)}s">${mediSVG('contente', {size: 150, anim: 'still'})}</div>
+      <b style="animation-delay:${(t + .35).toFixed(2)}s">À toi de jouer</b><span style="animation-delay:${(t + .6).toFixed(2)}s">Prends ta guitare, et refais-le doucement.</span></div>`;
+}
+const LV_OUTRO = 3.2;   // durée de la fin
 const LV_N = ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'], LV_FR = {C:'Do',D:'Ré',E:'Mi',F:'Fa',G:'Sol',A:'La',B:'Si'};
 const LV = {
-  notes: {t:'Les notes', dur:15,
+  notes: {t:'Les notes', dur:19,
     html() {
       const nat = [0,2,4,5,7,9,11], shp = [1,3,6,8,10], d = i => nat.includes(i) ? 4.5 + nat.indexOf(i) * .36 : 8.1 + shp.indexOf(i) * .3;
-      return `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
-          <div class="lv-k" style="animation-delay:.3s">LEÇON 1 · LES BASES</div>
-          <div class="lv-h"><span style="animation-delay:.5s">Les</span> <span style="animation-delay:.7s"><em>notes</em></span></div>
-          <div class="lv-s" style="animation-delay:1.4s">Toute la musique tient en <b>12 notes</b>. Pas une de plus.</div>
-          <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg>
-        </div>
-        <div class="lv-sc" style="animation:lvIn .5s var(--ease-out) 3.4s forwards">
+      return lvIntroHTML('LEÇON 1 · LES BASES', ['Les', 'notes'], 'Toute la musique tient en <b>12 notes</b>. Pas une de plus.') + `
+        <div class="lv-sc" style="animation:lvIn .5s var(--ease-out) 3.4s forwards,lvOut .4s ease 15s forwards">
           <div class="lv-top"><div><b>Une seule corde</b><small>chaque case monte d’un cran</small></div><div class="lv-cnt"><span data-cnt>0</span><small>NOTES</small></div></div>
           <div class="lv-notes">${LV_N.map((n, i) => `<div class="lv-n${n.length > 1 ? ' sh' : ''}${i === 0 ? ' c0' : ''}" style="animation-delay:${d(i).toFixed(2)}s${i === 0 ? ',12s' : ''}">${n}${LV_FR[n] ? `<i>${LV_FR[n]}</i>` : ''}</div>`).join('')}<div class="lv-n oct" style="animation-delay:11s,12s">C<i>Do</i></div></div>
-          <div class="lv-caps">
-            <div style="animation:lvUp .5s var(--ease-out) 4.3s forwards,lvOut .3s ease 7.6s forwards">7 notes <b>naturelles</b> : Do Ré Mi Fa Sol La Si</div>
-            <div style="animation:lvUp .5s var(--ease-out) 7.9s forwards,lvOut .3s ease 10.6s forwards">… et 5 notes <b>entre deux</b> : les dièses ♯</div>
-            <div style="animation:lvUp .5s var(--ease-out) 11.3s forwards">À la 12<sup>e</sup> case, la même note, plus aiguë : c’est l’<b>octave</b>.</div>
-          </div>
-        </div>`;
+          ${lvSay([[4.3, 7.6, '7 notes <b>naturelles</b> : Do Ré Mi Fa Sol La Si'], [7.9, 10.6, '… et 5 notes <b>entre deux</b> : les dièses ♯'], [11.3, 0, 'À la 12<sup>e</sup> case, la même note, plus aiguë : c’est l’<b>octave</b>.']])}
+        </div>${lvOutroHTML(15.3)}`;
     },
     cues() {
-      const nat = [0,2,4,5,7,9,11], shp = [1,3,6,8,10], c = [[1.8, () => playNote(40)]];
+      const nat = [0,2,4,5,7,9,11], shp = [1,3,6,8,10], c = [lvIntroCue(), [16.05, () => playChord(newChord('G'), 0, 'D')]];
       nat.forEach((i, k) => c.push([4.5 + k * .36, el => { playNote(48 + i); lvCnt(el, k + 1); }]));
       shp.forEach((i, k) => c.push([8.1 + k * .3, el => { playNote(48 + i); lvCnt(el, 8 + k); }]));
       c.push([11, () => playNote(60)], [12.4, () => { playNote(48); playNote(60); }]);
@@ -38,12 +57,8 @@ const lvCnt = (el, n) => { const c = el.querySelector('[data-cnt]'); if (c) c.te
    élément « tuile » : {l: texte, s: légende, hot: mis en avant, m: note MIDI ou [notes] jouées}
    élément « accord » : {c: nom d'accord de la bibliothèque, s: légende} → schéma + accord gratté */
 function lvMake(num, kick, h, sub, scenes) {
-  let t = 3.4, html = `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
-      <div class="lv-k" style="animation-delay:.3s">LEÇON ${num} · ${kick}</div>
-      <div class="lv-h"><span style="animation-delay:.5s">${h[0]}</span> <span style="animation-delay:.7s"><em>${h[1]}</em></span></div>
-      <div class="lv-s" style="animation-delay:1.4s">${sub}</div>
-      <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg></div>`;
-  const cues = [[1.8, () => playNote(40)]];
+  let t = 3.4, html = lvIntroHTML(`LEÇON ${num} · ${kick}`, h, sub);
+  const cues = [lvIntroCue()];
   scenes.forEach((sc, si) => {
     const n = sc.items.length, step = sc.step || .55, t0 = t, ti = t0 + .9, D = Math.max(1.2 + n*step + 1.6, sc.caps.length*2.7 + .8), last = si === scenes.length - 1;
     const tiles = sc.items.map((it, i) => {
@@ -53,15 +68,15 @@ function lvMake(num, kick, h, sub, scenes) {
                   : `<div class="lv-t${it.hot ? ' hot' : ''}" style="animation-delay:${d}s"><b>${it.l}</b>${it.s ? `<i>${it.s}</i>` : ''}</div>`;
     }).join('');
     const span = (D - .8) / sc.caps.length;
-    const caps = sc.caps.map((c, j) => { const a = t0 + .7 + j*span, z = j === sc.caps.length - 1 ? 0 : a + span - .35;
-      return `<div style="animation:lvUp .5s var(--ease-out) ${a.toFixed(2)}s forwards${z ? `,lvOut .3s ease ${z.toFixed(2)}s forwards` : ''}">${c}</div>`; }).join('');
-    html += `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) ${t0.toFixed(2)}s forwards${last ? '' : `,lvOut .4s ease ${(t0 + D - .4).toFixed(2)}s forwards`}">
+    const caps = sc.caps.map((c, j) => { const a = t0 + .7 + j*span; return [a, j === sc.caps.length - 1 ? 0 : a + span - .35, c]; });
+    html += `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) ${t0.toFixed(2)}s forwards,lvOut .4s ease ${(t0 + D - .4).toFixed(2)}s forwards">
       <div class="lv-top"><div><b>${sc.top[0]}</b><small>${sc.top[1] || ''}</small></div></div>
       <div class="lv-tl${sc.items[0].c ? ' cds' : ''}" style="--n:${n};--np:${n <= 3 ? n : Math.ceil(n/2)}">${tiles}</div>
-      <div class="lv-caps">${caps}</div></div>`;
+      ${lvSay(caps)}</div>`;
     t += D;
   });
-  return {dur: Math.ceil(t + .6), html: () => html, cues: () => cues};
+  html += lvOutroHTML(t); cues.push([t + .75, () => playChord(newChord('G'), 0, 'D')]);
+  return {dur: Math.ceil(t + LV_OUTRO), html: () => html, cues: () => cues};
 }
 const lvT = (l, s, m, hot) => ({l, s, m, hot}), lvC = (c, s) => ({c, s});
 [

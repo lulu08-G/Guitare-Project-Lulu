@@ -6,10 +6,10 @@
    Chaque scène a ses sous-titres minutés [seconde relative, texte]. Les durées découlent du contenu. */
 const LVX = {n: 0};
 const lvCh = x => typeof x === 'string' ? newChord(x) : Object.assign({id: uid(), arp: [], base: 1}, x);
-const lvCaps = (t0, caps) => `<div class="lv-caps">${caps.map(([r, txt], j) => {
-  const a = t0 + r, nx = caps[j + 1];
-  return `<div style="animation:lvUp .5s var(--ease-out) ${a.toFixed(2)}s forwards${nx ? `,lvOut .3s ease ${(t0 + nx[0] - .3).toFixed(2)}s forwards` : ''}">${txt}</div>`;
-}).join('')}</div>`;
+const lvCaps = (t0, caps, side) => lvSay(caps.map(([r, txt], j) => [t0 + r, caps[j + 1] ? t0 + caps[j + 1][0] - .3 : 0, txt]), side);
+// un musicien de la bande à droite de la bulle : il saute sur ses coups (anims = liste d'animations CSS)
+const lvMate = (who, t, anims) => `<span class="lv-say-p ${who}" style="animation:lvIn .3s ease ${t.toFixed(2)}s both${anims ? ',' + anims : ''}">${who === 'boum' ? BOUM_SVG(true) : BASILE_SVG(true)}</span>`;
+
 const lvTop = sc => sc.top ? `<div class="lv-top"><div><b>${sc.top[0]}</b><small>${sc.top[1] || ''}</small></div>${sc.cnt ? `<div class="lv-cnt"><span data-c="${sc.cnt}">0</span><small>${sc.cntL || ''}</small></div>` : ''}</div>` : '';
 // keyframes d'opacité : visible pendant les états où flags[k] est vrai
 function lvVisKF(name, flags, h, m) {
@@ -56,6 +56,7 @@ function lvGlyph(c, ghost) {
 }
 function lvBeats(t0, sc, id, cues) {
   let t = t0 + .9, html = '<div class="lv-bts">';
+  const bumps = [];   // Boum saute sur chaque temps, au tempo de chaque ligne
   sc.rows.forEach((r, ri) => {
     const mes = r.mes || '4/4', cd = mes === '6/8' ? 60 / r.bpm / 3 : 60 / r.bpm / 2, chs = r.chords.map(lvCh);
     const cells = [...r.pat].map((ch, k) => ch === '-' ? null : ch === 'X' || ch === 'x' ? {d: 'X', a: 1} : {d: ch.toUpperCase() === 'U' ? 'U' : 'D', a: (r.acc || []).includes(k) ? 2 : ch === ch.toLowerCase() ? 0 : 1});
@@ -75,9 +76,11 @@ function lvBeats(t0, sc, id, cues) {
       const free = r.free && k === n - 1;
       if (c || free) cues.push([rs + l * bar + k * cd, () => rhPlayCell(free ? {d: 'U', a: 0} : c, audio().currentTime + .01, free ? open : ch, 0)]);
     }));
+    const beat = mes === '6/8' ? cd * 3 : cd * 2;
+    bumps.push(`lvBump ${beat.toFixed(3)}s cubic-bezier(.3,.7,.4,1) ${rs.toFixed(2)}s ${Math.round(L * bar / beat)}`);
     t = rs + L * bar + .7;
   });
-  return {d: t - t0 + (sc.tail || .8), html: html + '</div>'};
+  return {d: t - t0 + (sc.tail || .8), html: html + '</div>', side: lvMate('boum', t0 + .6, bumps.join(','))};
 }
 function lvTiles(t0, sc, id, cues) {
   const st = .9, step = sc.step || .6;
@@ -140,21 +143,20 @@ function lvNeck(t0, sc, id, cues) {
     if (lab) g += `<text class="lb" x="${FX(f)}" y="${Y(s) - 16}" style="animation:lvPop .3s ease ${t.toFixed(2)}s both,lvOut .3s ease ${(t + 1.2).toFixed(2)}s forwards">${lab}</text>`;
     last = [s, f];
   });
-  return {d: tl + (sc.tail || 2), html: g + '</svg>'};
+  const notes = (sc.ev || []).filter(e => e[3] !== 'c'), low = notes.filter(e => e[1] >= 5).length;
+  const side = notes.length && low * 2 >= notes.length ? lvMate('basile', t0 + .6, notes.map(e => `lvBump .4s cubic-bezier(.3,.7,.4,1) ${(t0 + st + e[0]).toFixed(2)}s`).join(',')) : '';
+  return {d: tl + (sc.tail || 2), html: g + '</svg>', side};
 }
 function lvBuild(spec) {
-  const id = ++LVX.n, cues = [[1.8, () => playNote(40)]];
-  let t = 3.4, html = `<div class="lv-sc" style="animation:lvIn .5s var(--ease-out) .1s forwards,lvOut .4s ease 3.1s forwards">
-      <div class="lv-k" style="animation-delay:.3s">${spec.kick}</div>
-      <div class="lv-h"><span style="animation-delay:.5s">${spec.h[0]}</span> <span style="animation-delay:.7s"><em>${spec.h[1]}</em></span></div>
-      <div class="lv-s" style="animation-delay:1.4s">${spec.sub}</div>
-      <svg class="lv-str" viewBox="0 0 400 20" preserveAspectRatio="none"><path d="M0 10H400"/></svg></div>`;
+  const id = ++LVX.n, cues = [lvIntroCue()];
+  let t = 3.4, html = lvIntroHTML(spec.kick, spec.h, spec.sub);
   spec.scenes.forEach((sc, si) => {
     const b = (sc.morph ? lvMorph : sc.rows ? lvBeats : sc.arp ? lvArp : sc.neck ? lvNeck : lvTiles)(t, sc, `${id}_${si}`, cues);
-    const caps = sc.caps || [], d = Math.max(b.d, caps.length ? caps[caps.length - 1][0] + 3 : 0), last = si === spec.scenes.length - 1;
-    html += `<div class="lv-sc lv-sc2" style="animation:lvIn .5s var(--ease-out) ${t.toFixed(2)}s forwards${last ? '' : `,lvOut .4s ease ${(t + d - .4).toFixed(2)}s forwards`}">${lvTop(sc)}${b.html}${lvCaps(t, caps)}</div>`;
+    const caps = sc.caps || [], d = Math.max(b.d, caps.length ? caps[caps.length - 1][0] + 3 : 0);
+    html += `<div class="lv-sc lv-sc2" style="animation:lvIn .5s var(--ease-out) ${t.toFixed(2)}s forwards,lvOut .4s ease ${(t + d - .4).toFixed(2)}s forwards">${lvTop(sc)}${b.html}${lvCaps(t, caps, b.side)}</div>`;
     t += d;
   });
-  return {t: spec.t, dur: Math.ceil(t + .5), html: () => html, cues: () => cues};
+  html += lvOutroHTML(t); cues.push([t + .75, () => playChord(newChord('G'), 0, 'D')]);
+  return {t: spec.t, dur: Math.ceil(t + LV_OUTRO), html: () => html, cues: () => cues};
 }
 

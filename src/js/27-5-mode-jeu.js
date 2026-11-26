@@ -31,6 +31,7 @@ function mjRender() {
     <div class="mj-rh" id="mj-rh">${pHas(p) ? svWayHTML(p, {chord: p.chords[0]}) : '<p class="mj-norh">Pas encore de rythme pour cette partie.</p>'}</div>
     <div class="mj-bar">
       <div class="mj-bpm"><button type="button" onclick="rhBpmStep(-1);mjBeat()" aria-label="Moins vite">−</button><span><b id="rh-bpm-mj">${bpm}</b><small>BPM</small></span><button type="button" onclick="rhBpmStep(1);mjBeat()" aria-label="Plus vite">+</button></div>
+      <button type="button" class="mj-band${mjBandOn() ? ' on' : ''}" id="mj-band" onclick="mjBandToggle()" aria-pressed="${mjBandOn()}" aria-label="La bande joue avec toi"${pHas(p) ? '' : ' disabled'}>${BAND_MINI()}<span>Bande</span></button>
       <button type="button" class="mj-play" id="mj-play" onclick="mjToggle()"${pHas(p) ? '' : ' disabled'}></button>
     </div></div>`;
   mjSyncBtn();
@@ -49,8 +50,15 @@ function mjShow(ci, step) {
 function mjOnStep(i, step, k, ci) { if (mj && i === mj.i && $('mj')) mjShow(ci < 0 ? 0 : ci, step); }
 function mjToggle() {
   const p = cur.parts[mj.i]; if (!pHas(p)) return;
-  if (rhPlaying('v' + mj.i)) { rhStop(); mj.on = false; } else { playPartRhythm(mj.i); mj.on = true; }
+  if (rhPlaying('v' + mj.i)) { rhStop(); mj.on = false; } else { playPartRhythm(mj.i, mjBandOn()); mj.on = true; }
   mjSyncBtn();
+}
+// la bande remplace le clic en mode jeu si on l'allume (réglage retenu sur l'appareil, éteint par défaut)
+const mjBandOn = () => LS.get('gms_mj_band', false) === true;
+function mjBandToggle() {
+  const on = !mjBandOn(); LS.set('gms_mj_band', on);
+  const b = $('mj-band'); if (b) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }
+  if (mj && rhPlaying('v' + mj.i)) { rhStop(); playPartRhythm(mj.i, on); mjSyncBtn(); }
 }
 function mjSyncBtn() {
   const b = $('mj-play'); if (!b) return;

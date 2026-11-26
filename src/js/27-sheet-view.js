@@ -3,35 +3,7 @@ let svPart = 0; // partie affichée en mode jeu (en vue « Tout » : partie acti
 let svAll = false; // vue « Tout » : le morceau entier, parties empilées
 const SV_COMPACT = 12; // au-delà, accords en noms seuls
 // rythme d'une partie dans la fiche (en vue « Tout » la taille mini est réglée par le CSS) : seul point d'appel de l'affichage du rythme
-/* ═══ RYTHME EN « LIGNE DE MÉTRO » : un groupe de coups = une station ═══ */
-let svTime = false;   // vue « en temps » dépliée (la grille 1 + 2 + 3 + 4)
-function rhGroups(rh) {   // coupe la suite de coups à chaque silence, et tous les 4 coups
-  const cells = rh.cells, gs = []; let cur = null, gap = 0;
-  cells.forEach((c, k) => {
-    if (!c) { gap++; return; }
-    if (!cur || gap >= 1 || cur.hits.length >= 4) { cur = {k0: k, k1: k, hits: []}; gs.push(cur); }
-    cur.hits.push(c.d === 'U' ? 'U' : 'D'); cur.k1 = k; gap = 0;
-  });
-  return gs;
-}
-function rhGroupName(h) {
-  const n = h.length, dn = h.filter(x => x === 'D').length;
-  if (dn === n) return n === 1 ? '1 bas' : n + ' × bas';
-  if (dn === 0) return n === 1 ? '1 haut' : n + ' × haut';
-  const alt = h.every((x, i) => i === 0 || x !== h[i - 1]);
-  if (alt && n % 2 === 0 && h[0] === 'D') return 'bas-haut' + (n > 2 ? ' ×' + n / 2 : '');
-  return n <= 4 ? h.map(x => x === 'D' ? 'bas' : 'haut').join('-') : 'mélange';
-}
-function rhStripHTML(rh, cursor) {
-  rh = rhNorm(rh); const gs = rhGroups(rh), n = gs.length; if (!n) return '';
-  const act = cursor == null ? -1 : gs.findIndex(g => cursor >= g.k0 && cursor <= g.k1 + 1);
-  let x = 9, a = '';
-  gs.forEach((g, i) => { g.hits.forEach(d => { const dn = d === 'D'; a += `<path class="rs-a ${dn ? 'd' : 'u'}${act < 0 || i === act ? '' : ' off'}" d="${dn ? `M${x} 4v22m-6 -7l6 8l6 -8` : `M${x} 28v-22m-6 7l6 -8l6 8`}"/>`; x += 19; }); x += 12; });
-  const flat = gs.flatMap(g => g.hits); let lab = rhGroupName(flat); if (flat.length > 4 && !/×/.test(lab)) lab = n + ' groupes';
-  return `<div class="rs"><svg class="rs-ar" viewBox="0 0 ${x - 22} 32" role="img" aria-label="Rythme : ${lab}">${a}</svg><span class="rs-n">${lab}</span>
-    <button type="button" class="rs-tg${svTime ? ' on' : ''}" onclick="event.stopPropagation();svTimeToggle()" aria-label="Voir le rythme temps par temps" aria-expanded="${svTime}" title="Temps par temps"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div>`;
-}
-// vue « temps par temps » : une case par subdivision (1 + 2 + 3 + 4 +), une flèche par case
+// vue « temps par temps » pour l'impression : une case par subdivision (1 + 2 + 3 + 4 +), une flèche par case
 function rhTimeHTML(rh, cursor) {
   rh = rhNorm(rh); const per = rhPerBar(rh.mes, rh.res), beats = rh.mes === '6/8' ? 6 : (parseInt(rh.mes) || 4), sub = Math.max(1, Math.round(per / beats));
   const lab = pos => pos % sub === 0 ? pos / sub + 1 : sub === 2 ? '+' : sub === 4 ? ['e', '+', 'a'][pos % sub - 1] : '·';
@@ -47,12 +19,8 @@ function rhTimeHTML(rh, cursor) {
   }
   return h + '</div>';
 }
-function svTimeToggle() { svTime = !svTime; cur.parts.forEach((q, j) => { const el = $('rh-view-' + j); if (el) el.innerHTML = svWayHTML(q, {chord: q.chords[0]}); }); }
-const svWayHTML = (p, opt) => {
-  const o = Object.assign({mini: svAll}, opt);
-  if (pWay(p) !== 'rh') return pWayHTML(p, false, o);
-  return rhStripHTML(p.rhythm, o.cursor) + (svTime ? rhTimeHTML(p.rhythm, o.cursor) : '');
-};
+// rythme d'une partie dans la fiche et le mode jeu : le composant Grille (rhythmSVG) ; arpège : son ruban
+const svWayHTML = (p, opt) => pWayHTML(p, false, Object.assign({mini: svAll}, opt));
 const hasLyr = p => !!(p && typeof p.lyrics === 'string' && p.lyrics.trim());
 async function viewSheet(id, keepPart) {
   const s = sheets.find(x => x.id === id); if (!s) return;
@@ -318,13 +286,17 @@ function rhRenderPlayer(i, step, k) {
   if (typeof mjOnStep === 'function') mjOnStep(i, step, k, ci);
   svSync();
 }
-function playPartRhythm(i) {
+// band : la bande (Boum, Tchik, Basile sur tes accords) joue à la place du clic. ▶ arrête ce qui joue ; le bouton de la bande
+// arrête la bande, ou relance la partie avec elle si elle jouait seule.
+function playPartRhythm(i, band) {
   const p = cur.parts[i]; if (!p || !pHas(p)) return;
-  if (rhPlaying('v' + i)) { rhStop(); return; }
+  if (rhPlaying('v' + i) && (!band || rhP.band)) { rhStop(); return; }
   const arp = pWay(p) === 'arp', chs = p.chords.length ? p.chords : [newChord('Em')];
-  rhStart(pRh(p), cur.bpm || 90, chs[0], cur.capo, (step, k) => rhRenderPlayer(i, step, k), Object.assign({key: 'v' + i, chords: chs}, arp ? {cellFn: arpCellFn(p.arp, cur.capo)} : {}));
+  rhStart(pRh(p), cur.bpm || 90, chs[0], cur.capo, (step, k) => rhRenderPlayer(i, step, k), Object.assign({key: 'v' + i, chords: chs, band: !!band}, arp ? {cellFn: arpCellFn(p.arp, cur.capo)} : {}));
   svSync();
 }
+// la bande en petit : Médi, Boum et Basile (bouton « Bande » du mode jeu ; tri de Lucas du 26/11 : la bande sort de la fiche)
+const BAND_MINI = () => `<i class="bd" aria-hidden="true">${mediSVG('contente', {size: 24, anim: 'still'})}${BOUM_SVG(true, 'bd-m')}${BASILE_SVG(true, 'bd-m')}</i>`;
 // ▶ d'une carte Partie : la rend active puis lance / arrête sa façon de jouer
 function svCardPlay(i, e) {   // ▶ d'une carte : ma prise si elle existe, sinon le rythme joué par la guitare de l'app
   if (e) e.stopPropagation();

@@ -1,6 +1,8 @@
 /* ═══════ RYTHME : RANGÉE DE CASES ═══════
    Une case par subdivision, alignées sur la mesure, comptage dessous (1 et 2 et… ; 6/8 : 1 à 6 ; triolets : 1 tri ple ; doubles : 1 e et a).
-   Dans la case : flèche ↓ cuivre / ↑ sauge, ✕ terracotta = étouffé, petit point pâle = silence ; accent = flèche pleine et plus épaisse.
+   Composant Grille (26/11, « la direction ») : une case par coup, les temps en grandes cases, les « et » en petites, le compte
+   au-dessus ; flèche orange ↓ / ↑, ✕ = étouffé, petit point = la main passe sans toucher ; accent = flèche plus épaisse, doux = pâle.
+   Le même rendu sert la fiche, le mode jeu, Créer, l'éditeur, les rythmes, Au feeling et les exercices (styles : 24-direction.css).
    rhythmSVG garde son nom historique mais renvoie une grille HTML ; opt = {cursor: case en lecture, edit: cases cliquables, pos: prochaine case}. */
 function rhLabel(mes, spb, j, b) {
   if (mes === '6/8') return spb === 6 ? (j % 2 ? 'e' : String(b*3 + j/2 + 1)) : String(b*3 + j + 1);
@@ -26,7 +28,7 @@ function rhCellSVG(c, dir, g) {   // une flèche droite par case : ↓ bas, ↑ 
   const {W, H, yT, yB} = g, x = W/2, hd = Math.min(W*.24, 7);
   let s = `<svg class="rgs" viewBox="0 0 ${W} ${H}" aria-hidden="true">`;
   const arrow = (d, cls, w) => d === 'U' ? `<path class="${cls}" stroke-width="${w}" d="M${x} ${yB}V${yT}m${-hd} ${hd*1.1}l${hd} ${-hd*1.1}l${hd} ${hd*1.1}"/>` : `<path class="${cls}" stroke-width="${w}" d="M${x} ${yT}V${yB}m${-hd} ${-hd*1.1}l${hd} ${hd*1.1}l${hd} ${-hd*1.1}"/>`;
-  if (!c) return s + (dir === 'F' ? `<path class="rgdot" d="M${x - 3} ${(yT + yB)/2}h6"/>` : arrow(dir, 'rgdot', 1.6)) + '</svg>';
+  if (!c) return s + `<circle class="rgo" cx="${x}" cy="${(yT + yB)/2}" r="${rhN(W*.075)}"/></svg>`;   // la main passe sans toucher : un petit point
   const a = c.a === 2 ? 2 : c.a === 0 ? 0 : 1, w = g.w[a], m = g.x;
   if (c.d === 'X') s += `<path class="rgp" stroke-width="${w}" d="M${x - m} ${(yT + yB)/2 - m}l${2*m} ${2*m}m0 ${-2*m}l${-2*m} ${2*m}"/>`;
   else s += arrow(c.d === 'U' ? 'U' : 'D', 'rgp' + (a === 0 ? ' soft' : ''), w);
@@ -69,7 +71,7 @@ function rhythmSVG(rh, light, opt) {
         const k = b*per + t*spb + j, c = cells[k];
         const gh = opt.edit && !c;   // saisie : une case vide est une flèche fantôme (la direction que poserait « Coup »)
         const dir = gh ? rhAutoDir(spb, j) : c ? (c.d === 'U' ? 'U' : 'D') : flat && j === 1 ? 'F' : j % 2 ? 'U' : 'D';
-        h += `<div class="rgc${k === opt.cursor ? ' lit' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}${gh ? ' gh' : ''}" data-k="${k}"${opt.idp ? ` id="${opt.idp}-${k}"` : ''}>${rhCellSVG(gh ? {d: dir, a: 1} : c, dir, g)}<span class="rgl">${j ? rhLabel(rh.mes, spb, j, t) : ''}</span></div>`;
+        h += `<div class="rgc${j ? '' : ' b'}${k === opt.cursor ? ' lit' : ''}${c ? ' ' + c.d + ' a' + c.a : ''}${gh ? ' gh' : ''}" data-k="${k}"${opt.idp ? ` id="${opt.idp}-${k}"` : ''}>${rhCellSVG(gh ? {d: dir, a: 1} : c, dir, g)}<span class="rgl${j ? '' : ' n'}">${rhLabel(rh.mes, spb, j, t)}</span></div>`;
       }
       h += '</div></div>';
     }

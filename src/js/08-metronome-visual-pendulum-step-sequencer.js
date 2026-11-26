@@ -1,13 +1,6 @@
 /* ═══════ METRONOME — visual pendulum + step-sequencer backing band ═══════
-   Senior note: setInterval alone drifts (JS event loop jitter), which is
-   unacceptable for something claiming to be a real metronome. This uses the
-   standard Web Audio "lookahead scheduler" pattern: a cheap setTimeout tick
-   scans ahead and books precise audio-clock times, while a matched setTimeout
-   fires the *visual* update at the wall-clock delay to that same instant —
-   audio timing stays sample-accurate, visuals stay close enough to be felt
-   as in-sync. The metronome deliberately keeps running when you leave this
-   tab: it's meant to double as a backing loop while you look at a chord
-   sheet elsewhere, which is the whole point of "mode impro". */
+   Joué par le moteur unique (07-5-moteur-grille.js) : les sons sont posés à l'avance sur l'horloge audio, les visuels
+   arrivent quand le son sort. Le métronome s'arrête en quittant son écran (23-nav.js) et dès qu'une autre lecture démarre. */
 const METRO_SIGS = {
   '4/4': {beats:4, sub:4},
   '3/4': {beats:3, sub:4},
@@ -51,7 +44,7 @@ let metroState = {
   pattern: null, sigCfg: METRO_SIGS['4/4'], gap: null,
 };
 let metroStepTotal = 0;
-let metroPlaying = false, metroTimerId = null, metroCtxRef = null, metroNextTime = 0, metroStepIdx = 0;
+let metroPlaying = false, metroCtxRef = null, metroStepIdx = 0;
 let metroTapTimes = [];
 
 function buildMetroPattern() {
@@ -112,16 +105,19 @@ function metroBass(t) { pluck(fretFreq(metroState.bassString, 0, 0)/2, t, 0.7, .
 function toggleMetro() { metroPlaying ? stopMetro() : startMetro(); }
 function startMetro() {
   if (!metroState.pattern) buildMetroPattern();
-  const ac = audio(); if (ac.state === 'suspended') ac.resume();
-  metroCtxRef = ac; metroStepIdx = 0; metroStepTotal = 0; metroNextTime = ac.currentTime + 0.05;
+  const ac = audioReady();
+  metroCtxRef = ac; metroStepIdx = 0; metroStepTotal = 0;
+  mtStop('metro');   // relancer le métronome ne passe pas par onKill (qui l'arrêterait)
+  mtPlay({owner: 'metro', start: .05, dur: () => (60 / metroState.bpm) / metroState.sigCfg.sub,
+    step: (k, t) => { const v = scheduleMetroStep(metroStepIdx, t, metroStepTotal++); metroStepIdx = (metroStepIdx + 1) % metroState.pattern.length; return v; },
+    vis: (k, t, d, T, v) => metroStepVis(v),
+    onKill: () => { if (metroPlaying) stopMetro(); }});
   metroPlaying = true;
   metroRenderToggleBtn();
-  metroSchedulerTick();
 }
 function stopMetro() {
   metroPlaying = false;
-  if (metroTimerId) clearTimeout(metroTimerId);
-  metroTimerId = null;
+  mtStop('metro');
   metroRenderToggleBtn();
   document.querySelectorAll('#v-metro .mtg-c.now').forEach(e => e.classList.remove('now'));
 }
@@ -139,16 +135,6 @@ function metroRenderToggleBtn() {
   if (metroPlaying) { if (!metroRaf) metroRaf = requestAnimationFrame(metroVisLoop); }
   else { metroVis = []; metroDialReset(); document.querySelectorAll('#v-metro .mt-beats i.on,#v-metro .mtg-c.now').forEach(e => e.classList.remove('on', 'now')); }
 }
-function metroSchedulerTick() {
-  if (!metroPlaying) return;
-  while (metroNextTime < metroCtxRef.currentTime + 0.12) {
-    scheduleMetroStep(metroStepIdx, metroNextTime, metroStepTotal++);
-    const stepDur = (60 / metroState.bpm) / metroState.sigCfg.sub;
-    metroNextTime += stepDur;
-    metroStepIdx = (metroStepIdx + 1) % metroState.pattern.length;
-  }
-  metroTimerId = setTimeout(metroSchedulerTick, 25);
-}
 function scheduleMetroStep(step, time, total) {
   const st = metroState, sig = st.sigCfg, p = st.pattern[step];
   const isBeatStart = step % sig.sub === 0;
@@ -158,21 +144,18 @@ function scheduleMetroStep(step, time, total) {
   const bar = Math.floor((total || 0) / st.pattern.length);
   metroVis.push({t: time, step, d: (60 / st.bpm) / sig.sub}); if (metroVis.length > 64) metroVis.shift();
   const muted = !!st.gap && (bar % (st.gap.on + st.gap.off)) >= st.gap.on;
-  if (st.gap && step === 0) setTimeout(() => {
-    document.querySelectorAll('#gap-bars .gb').forEach((e, i) => e.classList.toggle('now', i === bar % (st.gap.on + st.gap.off)));
-  }, Math.max(0, (time - metroCtxRef.currentTime) * 1000));
-  if (muted) return;
+  const v = {step, isBeatStart, beatIdx, accent, p, bpm: st.bpm, sub: sig.sub, gapBar: st.gap && step === 0 ? bar % (st.gap.on + st.gap.off) : null, muted};
+  if (muted) return v;
   if (st.layers.click && isBeatStart) metroClick(time, accent);
-  if (st.layers.kick && p.k) metroKick(time);
-  if (st.layers.snare && p.s) metroSnare(time);
-  if (st.layers.hihat && p.h) metroHihat(time);
-  if (st.layers.bass && p.b) metroBass(time);
-  const delay = Math.max(0, (time - metroCtxRef.currentTime) * 1000);
-  setTimeout(() => {
-    flashMetroStep(step);
-    if (isBeatStart) flashMetroBeat(beatIdx, accent, 60 / st.bpm);
-    metroBandHit(p, (60 / st.bpm) / sig.sub);
-  }, delay);
+  mtBandHit(p, time, null, {kick: !!st.layers.kick, snare: !!st.layers.snare, tchik: !!st.layers.hihat, basile: !!st.layers.bass});
+  return v;
+}
+function metroStepVis(v) {   // quand le son de la case sort : la case, le temps, Médi, et Boum / Basile sur leurs coups
+  if (v.gapBar != null) document.querySelectorAll('#gap-bars .gb').forEach((e, i) => e.classList.toggle('now', i === v.gapBar));
+  if (v.muted) return;
+  flashMetroStep(v.step);
+  if (v.isBeatStart) flashMetroBeat(v.beatIdx, v.accent, 60 / v.bpm);
+  metroBandHit(v.p, (60 / v.bpm) / v.sub);
 }
 function flashMetroStep(step) {
   document.querySelectorAll('#v-metro .mtg-c.now').forEach(e => e.classList.remove('now'));
