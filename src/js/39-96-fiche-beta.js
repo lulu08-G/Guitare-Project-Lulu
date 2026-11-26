@@ -48,7 +48,7 @@ async function fbMount(i) {
   const tl = await fbTl(p), el = $('fbd-' + i); if (!el) return;
   if (!tl) { el.innerHTML = p.rec ? '<p class="fb-none">Je n’entends pas assez de coups dans ta prise.</p>' : ''; return; }
   FB.tls[i] = tl;
-  FB.D[i] = l26Mount(el, pWay(p) === 'arp' && !p.rec ? 'arp' : 'rebond', tl);
+  FB.D[i] = l26Mount(el, pWay(p) === 'arp' && !p.rec ? 'arp' : 'mix', tl);   // rebond + cordes (26/11)
 }
 function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none') fbMount(i); }); }
 
