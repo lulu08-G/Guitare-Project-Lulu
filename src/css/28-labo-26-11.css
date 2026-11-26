@@ -1,0 +1,122 @@
+/* ═══════ LABO : LES TESTS DU 26/11 (39-95-labo-26-11.js, caché : ?beta) ═══════
+   Le son de ta prise (rebond, cordes, rosace), l'arpège sur les cordes, les effets sur le rebond, la banque de rythmes. */
+.l26-tabs{display:flex;background:var(--card);border-radius:22px;padding:4px}
+.l26-tabs button{flex:1;min-height:40px;border:0;border-radius:18px;background:none;color:var(--cream3);font:600 14px var(--sans);cursor:pointer}
+.l26-tabs button.on{background:var(--gold);color:var(--ink);font-weight:700}
+.l26-card{background:var(--card);border-radius:22px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.l26-ch{display:flex;flex-direction:column;gap:2px}
+.l26-ch small{font-size:13px;color:var(--cream3)}
+.l26-ch b{font:800 28px/1.1 var(--display);color:var(--cream);word-spacing:6px}
+.l26-draw{min-height:110px}
+.l26-svg{display:block;width:100%;height:auto;overflow:visible}
+.l26-ctl{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--cream3)}
+.l26-ctl>span{flex:1;min-width:0}
+.l26-play{flex:none;width:48px;height:48px;border-radius:24px;border:0;background:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.l26-play svg{width:14px;height:16px;fill:var(--ink)}
+.l26-play:focus-visible,.l26-row:focus-visible,.l26-tabs button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* les couleurs du dessin : déjà joué, maintenant, à venir */
+.l26-svg .fut{color:var(--cream4)}.l26-svg .past{color:var(--cream)}.l26-svg .cur{color:var(--gold)}
+.l26-lb{font:800 11px var(--display);fill:var(--cream);text-anchor:middle}
+.l26-le{font:600 9px var(--sans);fill:var(--cream3);text-anchor:middle}
+.l26-eye{fill:var(--bg)}
+.l26-ph{fill:var(--cream)}
+/* le rebond */
+.l26-gnd{stroke:var(--card3);stroke-width:1;fill:none}
+.l26-arc{fill:none;stroke:var(--cream4);stroke-width:1.6;stroke-dasharray:3 4}
+.l26-arc.on{stroke:var(--gold);stroke-width:2.2;stroke-dasharray:none}
+.l26-h circle{fill:currentColor;stroke:currentColor;stroke-width:1.8}
+.l26-h.up circle{fill:var(--card)}
+.l26-ar{fill:none;stroke:var(--bg);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.l26-h.up .l26-ar{stroke:currentColor}
+.l26-sp{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.l26-medi{color:var(--gold)}
+/* les cordes */
+.l26-str{stroke:var(--card3)}
+.l26-vib{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.l26-vib.fut{stroke:var(--cream4);stroke-width:1px;opacity:.55}
+.l26-vib.on{stroke:var(--gold)}
+.l26-trail{fill:currentColor;opacity:.22}
+/* la rosace */
+.l26-ray{stroke:var(--card3);stroke-width:2.2;stroke-linecap:round}
+.l26-ray.on{stroke:var(--gold)}
+.l26-ring{fill:none;stroke:var(--card3);stroke-width:1.4}
+.l26-ring.d{stroke-dasharray:1.5 2.5}
+.l26-hole{fill:var(--bg)}
+.l26-chd{font:800 22px var(--display);fill:var(--cream);text-anchor:middle}
+.l26-hand{stroke:var(--cream);stroke-width:2;stroke-linecap:round}
+.l26-mes{font:600 11px var(--sans);fill:var(--cream3);text-anchor:end}
+.l26-svg path.l26-h{fill:currentColor}
+/* l'arpège */
+.l26-sn{font:600 9px var(--sans);fill:var(--cream3);text-anchor:end}
+.l26-sep{stroke:var(--cream4);stroke-dasharray:2 3}
+.l26-fg{font:800 10px var(--sans);fill:var(--bg);text-anchor:middle}
+.l26-h.bs circle{stroke-width:3}
+/* les effets */
+.l26-mk{cursor:pointer}
+.l26-pm{fill:none;stroke:var(--gold);stroke-width:2;stroke-linejoin:round}
+.l26-mk.on .l26-pm{fill:var(--acc-soft)}
+.l26-pmb{fill:var(--card)}
+.l26-pmt{font:800 11px var(--sans);fill:var(--gold);text-anchor:middle}
+.l26-hb{fill:var(--cream);stroke:var(--card);stroke-width:2}
+.l26-mk.on .l26-hb{fill:var(--gold)}
+.l26-ht{font:800 11px var(--sans);fill:var(--bg);text-anchor:middle}
+.l26-leg{display:flex;flex-direction:column;border-top:1px solid var(--border);padding-top:4px}
+.l26-leg button{display:flex;align-items:center;gap:10px;min-height:44px;border:0;background:none;color:var(--cream);font:500 14px var(--sans);text-align:left;cursor:pointer;padding:0}
+.l26-leg b{width:30px;flex:none;font:800 14px var(--sans)}.l26-leg b.pm{color:var(--gold)}
+.l26-leg span{flex:1}.l26-leg i{font-style:normal;color:var(--cream3)}
+.l26-sheet{background:var(--card);border-radius:24px;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 -10px 30px var(--shadow)}
+.l26-sh-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.l26-sh-h b{font:800 22px var(--display);color:var(--cream)}
+.l26-x{flex:none;width:44px;height:44px;border:0;border-radius:22px;background:var(--card2);color:var(--cream);font-size:22px;cursor:pointer}
+.l26-sheet p{margin:0;font-size:14px;line-height:1.45;color:var(--cream)}
+.l26-sh-b{display:flex;gap:8px;flex-wrap:wrap}
+.l26-sh-b .btn svg{width:11px;height:12px;fill:currentColor;margin-right:6px}
+.l26-mur{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;border:0;border-radius:16px;background:var(--card2);color:var(--cream);text-align:left;padding:8px 12px;cursor:pointer}
+.l26-mur span{flex:1;display:flex;flex-direction:column}
+.l26-mur b{font:700 14px var(--sans)}.l26-mur small{font-size:12px;color:var(--cream3)}
+.l26-mur i{font-style:normal;color:var(--cream3)}
+.l26-mur .medi{width:30px;height:auto;flex:none}
+.l26-sheet .l26-ab{font-size:13px;font-weight:600;color:var(--gold);min-height:18px}
+/* la banque de rythmes */
+.l26-bank{display:flex;flex-direction:column;gap:6px}
+.l26-sec{font:700 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--cream3);padding:8px 4px 0}
+.l26-sec.mute{text-transform:none;letter-spacing:0;font-weight:500}
+.l26-rows{display:flex;flex-direction:column;gap:2px}
+.l26-row{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:0 10px 0 6px;border:0;border-radius:14px;background:none;color:var(--cream);text-align:left;cursor:pointer}
+.l26-row.on{background:var(--acc-soft);box-shadow:inset 0 0 0 2px var(--gold)}
+.l26-rp{flex:none;width:36px;height:36px;border-radius:18px;background:var(--card2);display:flex;align-items:center;justify-content:center}
+.l26-rp svg{width:11px;height:12px;fill:var(--cream)}
+.l26-row.on .l26-rp{background:var(--gold)}.l26-row.on .l26-rp svg{fill:var(--ink)}
+.l26-rt{flex:1;min-width:0;display:flex;flex-direction:column}
+.l26-rt b{font:700 15px var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l26-rt small{font-size:12px;color:var(--cream3)}
+.l26-rm{flex:none;width:80px}
+.l26-mini{display:block;width:80px;height:18px}
+.l26-marc{fill:none;stroke:var(--cream4);stroke-width:1.2}
+.l26-mdot{fill:var(--cream);stroke:var(--cream);stroke-width:1.3}.l26-mdot.up{fill:var(--bg)}
+.l26-row.on .l26-marc{stroke:var(--gold)}.l26-row.on .l26-mdot{fill:var(--gold);stroke:var(--gold)}.l26-row.on .l26-mdot.up{fill:var(--bg)}
+.l26-dock{position:sticky;bottom:12px;z-index:5;margin-top:8px;background:var(--card2);border-radius:22px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 -8px 30px var(--shadow)}
+@media(max-width:899px){.l26-dock{bottom:calc(76px + env(safe-area-inset-bottom))}}
+.l26-dh{display:flex;align-items:center;gap:10px}
+.l26-bpm{flex:none;display:flex;align-items:center;gap:6px;font:800 15px var(--display);color:var(--cream)}
+.l26-bpm button{width:40px;height:40px;border:0;border-radius:20px;background:var(--card);color:var(--cream);font-size:18px;cursor:pointer}
+.l26-dock .l26-draw{min-height:0}
+.l26-take{width:100%}
+/* ── la fiche bêta (39-96-fiche-beta.js, seulement avec ?beta) ── */
+#v-sheet .fb-way{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.fb-ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fb-src{flex:1;min-width:0;font-size:13px;color:var(--cream3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fb-band{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 10px;border-radius:22px;border:1.5px solid var(--border2);background:var(--card2);color:var(--cream3);font:600 13px var(--sans);cursor:pointer}
+.fb-band.on{border-color:var(--gold);background:var(--acc-soft);color:var(--cream)}
+.fb-band:not(.on) .bd{filter:grayscale(1);opacity:.55}
+.fb-band:focus-visible,.fb-pl:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.fb-hb summary{min-height:36px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--cream3);cursor:pointer;list-style:none}
+.fb-hb summary::-webkit-details-marker{display:none}
+.fb-hb summary::after{content:"▾"}
+.fb-hb[open] summary::after{content:"▴"}
+.fb-none{margin:0;font-size:13px;color:var(--cream3)}
+/* les accords : la lettre en grand, le doigté dessous */
+body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
+#v-sheet.fb .chords-row,#v-sheet.fb.compact .chords-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:flex-start}
+#v-sheet.fb .parts-view .chord-cell{display:flex;flex-direction:column-reverse;align-items:center;gap:4px}
+#v-sheet.fb .chord-cell svg{width:56px;height:auto}

@@ -40,7 +40,7 @@ function labRoot(name) {   // fondamentale de l'accord, à l'octave de la basse 
 
 /* ── le moteur : Médi compte une mesure, puis la bande joue ; ta ligne défile ── */
 function labStop(keepMic) {
-  if (!keepMic) { rpStop(); if (typeof lvStop === 'function') lvStop(); }
+  if (!keepMic) { rpStop(); if (typeof lvStop === 'function') lvStop(); if (typeof l26Stop === 'function') l26Stop(); }
   clearTimeout(lab.timer); lab.timer = null; lab.s = null;
   mtStop('lab');
   if (!keepMic) labMicOff();
@@ -152,12 +152,16 @@ function labRender() {
   const h = $('lab-body'); if (!h) return;
   if (lab.view === 'home') { rpRender(); return; }   // S'entraîner v2 (39-9)
   if (lab.view === 'tests') { h.innerHTML = labHomeHTML(); return; }
-  const T = LAB_TESTS.find(x => x.id === lab.view);
-  h.innerHTML = `<div class="lab-top"><button type="button" class="mt-back" onclick="labGo('tests')" aria-label="Retour aux tests"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><div><small>Labo · test ${LAB_TESTS.indexOf(T) + 1} sur ${LAB_TESTS.length}</small><h1>${T.t}</h1></div></div>
+  if (lab.view === 'tests26') { h.innerHTML = l26HomeHTML(); return; }
+  const G = labGroup(lab.view), T = G.list.find(x => x.id === lab.view);
+  if (!T) { lab.view = 'home'; labRender(); return; }
+  h.innerHTML = `<div class="lab-top"><button type="button" class="mt-back" onclick="labGo('${G.home}')" aria-label="Retour aux tests"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><div><small>Labo · test ${G.list.indexOf(T) + 1} sur ${G.list.length}</small><h1>${T.t}</h1></div></div>
     <div id="lab-test">${labTestHTML(T.id)}</div>${labFormHTML(T)}`;
   labAfterRender(T.id);
 }
 function labGo(v) { labStop(); lab.view = v; labRender(); window.scrollTo(0, 0); }
+// les deux séries de tests : celle du 19/11 et celle du 26/11 (39-95-labo-26-11.js)
+const labGroup = id => /^l26-/.test(id) ? {list: LAB_TESTS26, home: 'tests26'} : {list: LAB_TESTS, home: 'tests'};
 function labHomeHTML() {
   const A = labAns(), n = LAB_TESTS.filter(t => A[t.id]).length;
   return `<div class="rp-top"><button type="button" class="mt-back" onclick="labGo('home')" aria-label="Retour à S’entraîner">${RP_BACK}</button><div><small>Labo</small><h1>Les tests du 19/11</h1></div></div>
@@ -180,6 +184,7 @@ function labLaneHTML(line, chords) {
 }
 const LAB_PLAY = '<svg viewBox="0 0 14 16" aria-hidden="true"><path d="M2 1 L13 8 L2 15 Z"/></svg>';
 function labTestHTML(id) {
+  if (/^l26-/.test(id)) return l26TestHTML(id);
   if (id === 'ecoute') return `${labSceneHTML('ball')}${labLaneHTML(LAB_L.temps, ['Am', 'C'])}
     <div class="lab-steps"><p><b>1.</b> Pose le téléphone à côté de toi, son fort, <b>sans casque</b>. Touche « Étape 1 » et <b>ne joue pas</b> : Médi écoute la bande seule.</p>
     <p><b>2.</b> « Étape 2 » : gratte sur chaque case orange (une fois par temps).</p></div>
@@ -211,6 +216,7 @@ function labTestHTML(id) {
   return '';
 }
 function labAfterRender(id) {
+  if (/^l26-/.test(id)) { l26After(id); return; }
   requestAnimationFrame(() => labPlace(0));
   if (id === 'devine') labDvNew();
 }
@@ -292,7 +298,7 @@ function labFormHTML(T) {
   const a = labAns()[T.id] || {};
   const tri = (k, l) => `<div class="lab-q"><span>${l}</span><div role="group" aria-label="${l}">${['Oui', 'Bof', 'Non'].map(v => `<button type="button" class="${a[k] === v ? 'on' : ''}" aria-pressed="${a[k] === v}" onclick="labSet('${T.id}','${k}','${v}')">${v}</button>`).join('')}</div></div>`;
   return `<section class="lab-form"><h2>Ton avis</h2>
-    ${T.ask ? `<div class="lab-q wide"><span>${T.id === 'suivre' ? 'Lequel tu suis le mieux ?' : 'Lequel ressemble le plus au morceau ?'}</span><div role="group">${T.ask.map(v => `<button type="button" class="${a.choix === v ? 'on' : ''}" onclick="labSet('${T.id}','choix','${v}')">${v}</button>`).join('')}</div></div>` : ''}
+    ${T.ask ? `<div class="lab-q wide"><span>${T.askq || (T.id === 'suivre' ? 'Lequel tu suis le mieux ?' : 'Lequel ressemble le plus au morceau ?')}</span><div role="group">${T.ask.map(v => `<button type="button" class="${a.choix === v ? 'on' : ''}" onclick="labSet('${T.id}','choix','${v}')">${v}</button>`).join('')}</div></div>` : ''}
     ${LAB_QS.map(([k, l]) => tri(k, l)).join('')}
     <textarea id="lab-note" rows="3" placeholder="Une remarque ? Ce qui t’a gêné, ce qui t’a plu…">${esc(a.note || '')}</textarea>
     <button type="button" class="btn btn-primary lab-save" onclick="labSave('${T.id}')">Enregistrer mon avis</button></section>`;
@@ -307,12 +313,12 @@ function labSave(id) {
   if (id === 'ecoute' && lab.res) A[id].mesures = lab.res;
   if (id === 'devine' && lab.dv) A[id].score = lab.dv.score;
   LS.set('gms_labo', A); toast('Merci, avis enregistré !');
-  const k = LAB_TESTS.findIndex(t => t.id === id), nx = LAB_TESTS.slice(k + 1).find(t => !A[t.id]);
-  labGo(nx ? nx.id : 'tests');
+  const G = labGroup(id), k = G.list.findIndex(t => t.id === id), nx = G.list.slice(k + 1).find(t => !A[t.id]);
+  labGo(nx ? nx.id : G.home);
 }
 async function labExport() {
   const A = labAns();
-  const txt = 'Guitar Memory, labo de tests\n' + (navigator.userAgent || '') + '\n\n' + LAB_TESTS.concat(RP_AVIS).filter(t => A[t.id]).map(t => {
+  const txt = 'Guitar Memory, labo de tests\n' + (navigator.userAgent || '') + '\n\n' + LAB_TESTS26.concat(LAB_TESTS, RP_AVIS).filter(t => A[t.id]).map(t => {
     const a = A[t.id];
     return `■ ${t.t}\n` + (a.choix ? `  Préféré : ${a.choix}\n` : '') + LAB_QS.map(([k, l]) => a[k] ? `  ${l} ${a[k]}\n` : '').join('')
       + (a.score != null ? `  Score : ${a.score}/3\n` : '') + (a.mesures ? `  Mesures : ${JSON.stringify(a.mesures)}\n` : '') + (a.note ? `  Remarque : ${a.note}\n` : '');

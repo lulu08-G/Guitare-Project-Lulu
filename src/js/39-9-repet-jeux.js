@@ -189,7 +189,7 @@ function rpRender(keep) {
 function rpHomeHTML() {
   const tabs = `<div class="rp-tabs" role="tablist">${[['repet', 'Répét’'], ['jeux', 'Jeux']].map(([k, l]) => `<button type="button" role="tab" aria-selected="${rp.tab === k}" class="${rp.tab === k ? 'on' : ''}" onclick="rpTab('${k}')">${l}</button>`).join('')}</div>`;
   const head = `<div class="rp-head"><h1>S’entraîner</h1><span class="rp-beta">bêta</span></div>`;
-  const foot = `<div class="rp-foot"><button type="button" class="rp-link" onclick="labGo('tests')">Les tests du 19/11</button><button type="button" class="btn btn-primary" onclick="labExport()">Envoyer mes réponses</button></div>`;
+  const foot = `<div class="rp-foot"><button type="button" class="rp-link" onclick="labGo('tests26')">Les tests du 26/11</button><button type="button" class="rp-link" onclick="labGo('tests')">Les tests du 19/11</button><button type="button" class="btn btn-primary" onclick="labExport()">Envoyer mes réponses</button></div>`;
   return head + tabs + (rp.tab === 'jeux' ? rpJeuxHTML() : rpRepetHTML()) + foot;
 }
 function rpRepetHTML() {

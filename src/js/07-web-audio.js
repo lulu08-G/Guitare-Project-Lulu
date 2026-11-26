@@ -227,6 +227,7 @@ function click(t, hi) {
 let rhP = null; // lecture en cours : {key, rh, grid, bpm, chord, chords, capo, k, onStep, onCell, mute, T}
 function stopPlay() {
   rhStop(); recStopPlay();
+  if (typeof l26Stop === 'function') l26Stop();   // la fiche bêta et le Labo (39-95, 39-96)
   document.querySelectorAll('.play-on').forEach(e => e.classList.remove('play-on'));
 }
 /* Lecteur de rythme (fiche, mode jeu, éditeur, Au feeling, rythmes) : la partie devient une grille, jouée par le moteur
@@ -248,7 +249,7 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   recStopPlay();
   const g = grFromRhythm(rh, opt.chords && opt.chords.length ? opt.chords : null), per = g.per, spb = g.spb;
   const P = rhP = {key: opt.key || '', rh, grid: g, chords: g.chords.length ? g.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
-    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? grBandAuto(grNew(rh.mes, rh.res, 1)) : null};
+    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? (opt.band.boum ? opt.band : grBandAuto(grNew(rh.mes, rh.res, 1))) : null};   // opt.band : true (bande auto) ou une grille déjà jouée (grBandOwn)
   P.T = mtPlay({owner: 'rh', key: P.key, start: .08,
     dur: () => rhCellDur(rh, P.bpm),
     off: (k, d) => rh.swing && spb === 2 && k % 2 === 1 ? rh.swing * d : 0,
