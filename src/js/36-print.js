@@ -8,40 +8,37 @@ function openPrintModal() {
   printOpts.num = printOpts.num != null ? printOpts.num : true;
   printOpts.style = printOpts.style || 'fiche';
   printOpts.theme = printOpts.theme || 'app';   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
-  // les accords : 'lettres' (les noms seuls), 'schemas' (un petit doigté sous chaque accord), 'deux' (les noms + les doigtés une fois en haut)
-  printOpts.chords = {noms: 'deux'}[printOpts.chords] || printOpts.chords || 'deux';
+  // les accords : toujours les lettres dans les parties et les doigtés une fois en haut (tri de Lucas, 26/11 : pas trop d'options)
   ppSay = null;
   document.querySelector('#m-print .modal').classList.add('wide', 'ppm-modal');
   renderPrintModal();
   $('m-print').classList.remove('hide');
 }
 /* Médi prépare la fiche à imprimer (26/11, demande de Lucas) : il pose les questions, on choisit sur des cartes,
-   sa bulle réagit au dernier choix et l'aperçu suit en direct. */
+   sa bulle réagit au dernier choix et l'aperçu suit en direct (sur téléphone : l'aperçu reste visible en bas). */
 const ppMini = {
-  lettres: '<span class="ppm-v t">Em G</span>',
-  schemas: () => `<span class="ppm-v">${chordSVG(newChord('Em'), {size: .42})}</span>`,
-  deux: () => `<span class="ppm-v"><b>Em</b>${chordSVG(newChord('Em'), {size: .42})}</span>`,
+  toc: '<span class="ppm-v pgt"><i></i><i></i><i></i></span>', num: '<span class="ppm-v pgn"><i>1</i></span>',
   app: '<span class="ppm-v sw sw-a"><i></i></span>', nb: '<span class="ppm-v sw sw-b"><i></i></span>',
   fiche: '<span class="ppm-v pg1"><i></i><i></i><i></i></span>', cahier: '<span class="ppm-v pg2"><i></i><i></i><i></i><i></i><i></i></span>',
   1: '<span class="ppm-v n1"><i></i></span>', 2: '<span class="ppm-v n2"><i></i><i></i></span>'
 };
 const PP_Q = [
-  {k: 'chords', q: 'Les accords, tu les veux comment ?', o: [['lettres', 'Les lettres', 'juste les noms'], ['schemas', 'Les schémas', 'un doigté sous chaque accord'], ['deux', 'Les deux', 'les noms, et les doigtés en haut']]},
   {k: 'theme', q: 'Quelles couleurs ?', o: [['app', 'Comme l’appli', 'fond sombre'], ['nb', 'Noir et blanc', 'moins d’encre']]},
   {k: 'style', q: 'Quelle forme ?', o: [['fiche', 'Détaillée', 'tout le morceau'], ['cahier', 'Compacte', 'une ligne par partie']]},
   {k: 'mode', q: 'Combien de fiches par page ?', o: [[1, 'Une', 'bien lisible'], [2, 'Deux', 'format carnet']]}
 ];
 const PP_SAY = {
   start: 'Je te prépare ta fiche. Choisis comment tu la veux, l’aperçu suit.',
-  lettres: 'Juste les lettres : parfait si tu connais tes doigtés par cœur.',
-  schemas: 'Un petit doigté sous chaque accord : rien à chercher ailleurs.',
-  deux: 'Les lettres dans le morceau, les doigtés une fois en haut : le meilleur des deux.',
   app: 'Comme dans l’appli, sur fond sombre. Ça claque, mais ça boit de l’encre.',
   nb: 'Noir et blanc : ton imprimante te dit merci.',
   fiche: 'La fiche complète, avec la tablature, les notes et les paroles.',
   cahier: 'Version cahier : une ligne par partie, tout le morceau d’un coup d’œil.',
-  1: 'Une fiche par page, bien lisible au pupitre.', 2: 'Deux fiches par page : parfait pour un carnet de poche.'
+  1: 'Une fiche par page, bien lisible au pupitre.', 2: 'Deux fiches par page : parfait pour un carnet de poche.',
+  toc1: 'Un sommaire au début : tu retrouves ton morceau tout de suite.', toc0: 'Pas de sommaire : on file direct aux fiches.',
+  num1: 'Les pages numérotées : rien ne se mélange.', num0: 'Sans numéros : plus épuré.'
 };
+// les options en plus, en cartes comme les autres choix (on / off)
+const PP_T = [{k: 'toc', l: 'Un sommaire', sub: 'au début du carnet', many: 1}, {k: 'num', l: 'Les numéros', sub: 'en bas des pages'}];
 let ppSay = null;
 const ppOn = (k, v) => String(printOpts[k]) === String(v);
 function renderPrintModal() {
@@ -54,13 +51,11 @@ function renderPrintModal() {
         const m = typeof ppMini[v] === 'function' ? ppMini[v]() : ppMini[v];
         return `<button type="button" class="ppm-o${ppOn(q.k, v) ? ' on' : ''}" role="radio" aria-checked="${ppOn(q.k, v)}" data-pp="${q.k}" data-v="${v}" onclick="ppPick('${q.k}','${v}')">${m}<span class="ppm-ot"><b>${l}</b><small>${sub}</small></span></button>`;
       }).join('')}</div></div>`).join('')}
-      <div class="ppm-sw">
-        ${n > 1 ? `<label><input type="checkbox" id="pp-toc" ${printOpts.toc ? 'checked' : ''} onchange="printOpts.toc=this.checked;refreshPrintPreview()"> Un sommaire au début</label>` : ''}
-        <label><input type="checkbox" id="pp-num" ${printOpts.num ? 'checked' : ''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numéroter les pages</label>
-      </div>
+      <div class="ppm-q"><div class="ppm-ql">Et en plus ?</div><div class="ppm-os">${PP_T.filter(t => !t.many || n > 1).map(t =>
+        `<button type="button" class="ppm-o ppm-t${printOpts[t.k] ? ' on' : ''}" role="switch" aria-checked="${!!printOpts[t.k]}" data-pt="${t.k}" onclick="ppToggle('${t.k}')">${ppMini[t.k]}<span class="ppm-ot"><b>${t.l}</b><small>${t.sub}</small></span><i class="ppm-tg" aria-hidden="true"></i></button>`).join('')}</div></div>
     </div>
-    <div class="ppm-r"><div class="ppm-pv"><div id="pp-preview"></div></div>
-      <p class="pp-tip">Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ». Tu pourras aussi l’imprimer.</p></div>
+    <div class="ppm-r"><div class="ppm-pl"><b>Aperçu</b><span id="pp-count"></span></div><div class="ppm-pv" onclick="ppBig()"><div id="pp-preview"></div></div>
+      <p class="pp-tip">Ensuite, choisis « Enregistrer en PDF » (ou imprime).</p></div>
   </div>
   <div class="modal-f">
     <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
@@ -75,18 +70,28 @@ function ppPick(k, v) {
   const md = document.querySelector('#m-print .ppm-medi .medi'); if (md && md.animate && !mReduced()) md.animate([{transform: 'none'}, {transform: 'translateY(-8px) rotate(-6deg)'}, {transform: 'none'}], {duration: 380, easing: 'ease-out'});
   refreshPrintPreview();
 }
-function refreshPrintPreview() { $('pp-preview').innerHTML = buildPrintPages(); }
+function ppToggle(k) {
+  printOpts[k] = !printOpts[k]; ppSay = k + (printOpts[k] ? 1 : 0);
+  const b = document.querySelector(`#m-print [data-pt="${k}"]`); if (b) { b.classList.toggle('on', printOpts[k]); b.setAttribute('aria-checked', printOpts[k]); }
+  const say = $('ppm-say'); if (say) say.textContent = PP_SAY[ppSay] || '';
+  refreshPrintPreview();
+}
+// sur téléphone, toucher l'aperçu l'agrandit (et le rétrécit)
+function ppBig() { if (innerWidth < 900) document.querySelector('#m-print .ppm').classList.toggle('pv-big'); }
+function refreshPrintPreview() {
+  const pv = $('pp-preview'); pv.innerHTML = buildPrintPages();
+  const n = pv.querySelectorAll('.pg').length, c = $('pp-count'); if (c) c.textContent = n + (n > 1 ? ' pages' : ' page');
+  // le choix se voit tout de suite : l'aperçu revient en haut et s'allume un instant
+  const box = pv.parentElement; box.scrollTop = 0;
+  if (box.animate && !mReduced()) box.animate([{boxShadow: '0 0 0 2px var(--gold)'}, {boxShadow: '0 0 0 2px transparent'}], {duration: 600, easing: 'ease-out'});
+}
 /* Fiche imprimée (refaite le 26/11, retours de Lucas : « qu'elle ressemble à l'appli » + option noir et blanc) :
    deux thèmes, printOpts.theme = 'app' (fond sombre, cartes, Grille de rythme et doigtés comme à l'écran, pleine page) ou
    'nb' (papier blanc, noir et gris, Médi au trait). En-tête avec Médi, doigtés une seule fois, chaque partie avec ses accords
    en grand et son rythme, les notes dans la bulle de Médi, pied de page avec Médi. Styles : 26-impression.css. */
 const pLight = () => !printOpts || printOpts.theme === 'nb';
-const pSchemas = () => !!printOpts && printOpts.chords === 'schemas';
-const pStrip = () => !printOpts || !printOpts.chords || printOpts.chords === 'deux';   // les doigtés une fois en haut
-// les accords d'une partie : leurs noms en grand, ou chaque nom avec son petit doigté
-const pSeq = (p, sm) => !p.chords.length ? '' : pSchemas()
-  ? `<div class="pf-seq pf-sc${sm ? ' sm' : ''}">${p.chords.map(c => `<span><b>${esc(c.name)}</b>${chordSVG(c, {size: sm ? .45 : .62, light: pLight()})}</span>`).join('')}</div>`
-  : `<div class="pf-seq${sm ? ' sm' : ''}">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('')}</div>`;
+// les accords d'une partie : leurs noms en grand (les doigtés sont une fois en haut de la fiche)
+const pSeq = (p, sm) => !p.chords.length ? '' : `<div class="pf-seq${sm ? ' sm' : ''}">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('')}</div>`;
 const pMedi = (expr, size) => mediSVG(expr, {size, anim: 'still'});
 const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi('contente', 18)}<b>Guitar Memory</b>${left ? `<i>${esc(left)}</i>` : ''}</span>${n ? `<span class="pf-n">${n}</span>` : ''}</div>`;
 function buildPrintPages() {
@@ -138,7 +143,7 @@ function pHead(s, compact) {
 function printSheetHTML(s, compact) {
   const uniq = pUniqueChords(s);
   return `${pHead(s, compact)}
-    ${uniq.length && pStrip() ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
+    ${uniq.length ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
     ${(s.parts||[]).map((p, i) => {
       const staff = tabStaffSVG(p.chords, pLight()), rep = +(p.repeat || p.reps || 0);
       return `<div class="pf-part">
@@ -157,7 +162,7 @@ function printSheetHTML(s, compact) {
 function printCahierHTML(s) {
   const uniq = pUniqueChords(s);
   return `<div class="pf-cahier">${pHead(s, true)}
-    ${uniq.length && pStrip() ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
+    ${uniq.length ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
     ${(s.parts||[]).map((p, i) => `<div class="pf-row"><span class="pf-i">${i + 1}</span><b class="pf-rn">${esc(p.name || 'Partie ' + (i + 1))}</b>
       ${pSeq(p, true) || '<div class="pf-seq sm">—</div>'}
       ${pHas(p) ? `<div class="pf-rw">${pPrintWay(p, 62, true)}</div>` : ''}</div>`).join('')}</div>`;
