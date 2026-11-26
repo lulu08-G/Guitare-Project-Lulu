@@ -114,3 +114,9 @@
 .pf2-note{flex-basis:100%;font-size:12px;color:var(--p-mist)}
 .pf2-memo{align-items:center;gap:8px;font-size:12px;color:var(--p-mist)}
 .pf2-memo .medi{flex:none}
+/* la taille « Grande » : même mise en page, en plus gros */
+.pf-big .pf2-ht b{font-size:32px}.pf-big .pf2-ht i{font-size:16px}
+.pf-big .pf2-pn{width:96px}.pf-big .pf2-pn b{font-size:16px}
+.pf-big .pf2-ch b{font-size:28px;margin-bottom:-2px}
+.pf-big .pf2-chs{gap:6px 14px}.pf-big .pf2-row{padding:14px 0}
+.pf-big .pf2-note,.pf-big .pf2-memo{font-size:14px}

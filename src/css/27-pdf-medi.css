@@ -28,7 +28,7 @@
 .ppm-v.n1 i{display:block;width:26px;height:34px;border-radius:3px;background:var(--cream3)}
 .ppm-v.n2 i{display:block;width:26px;height:16px;border-radius:3px;background:var(--cream3)}
 .ppm-r{display:flex;flex-direction:column;gap:8px;min-width:0}
-.ppm-pv{background:#3b3840;border-radius:14px;padding:12px;overflow:auto;max-height:46vh}
+.ppm-pv{background:#3b3840;border-radius:14px;padding:12px;overflow-x:hidden;overflow-y:auto;max-height:46vh}
 @media(min-width:900px){.ppm-pv{max-height:68vh}}
 #pp-preview{zoom:.42}
 @media(min-width:900px){#pp-preview{zoom:.6}}

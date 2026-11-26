@@ -3361,6 +3361,12 @@ body.mj-on{overflow:hidden}
 .pf2-note{flex-basis:100%;font-size:12px;color:var(--p-mist)}
 .pf2-memo{align-items:center;gap:8px;font-size:12px;color:var(--p-mist)}
 .pf2-memo .medi{flex:none}
+/* la taille « Grande » : même mise en page, en plus gros */
+.pf-big .pf2-ht b{font-size:32px}.pf-big .pf2-ht i{font-size:16px}
+.pf-big .pf2-pn{width:96px}.pf-big .pf2-pn b{font-size:16px}
+.pf-big .pf2-ch b{font-size:28px;margin-bottom:-2px}
+.pf-big .pf2-chs{gap:6px 14px}.pf-big .pf2-row{padding:14px 0}
+.pf-big .pf2-note,.pf-big .pf2-memo{font-size:14px}
 /* ═══════ LA FENÊTRE DU PDF AVEC MÉDI (26/11, demande de Lucas) ═══════
    Médi pose les questions (sa bulle réagit au dernier choix), on choisit sur des cartes illustrées, l'aperçu suit.
    Téléphone : les choix défilent, l'aperçu et « Créer le PDF » restent en bas (toucher l'aperçu l'agrandit) ;
@@ -3391,7 +3397,7 @@ body.mj-on{overflow:hidden}
 .ppm-v.n1 i{display:block;width:26px;height:34px;border-radius:3px;background:var(--cream3)}
 .ppm-v.n2 i{display:block;width:26px;height:16px;border-radius:3px;background:var(--cream3)}
 .ppm-r{display:flex;flex-direction:column;gap:8px;min-width:0}
-.ppm-pv{background:#3b3840;border-radius:14px;padding:12px;overflow:auto;max-height:46vh}
+.ppm-pv{background:#3b3840;border-radius:14px;padding:12px;overflow-x:hidden;overflow-y:auto;max-height:46vh}
 @media(min-width:900px){.ppm-pv{max-height:68vh}}
 #pp-preview{zoom:.42}
 @media(min-width:900px){#pp-preview{zoom:.6}}
@@ -11948,7 +11954,8 @@ function openPrintModal() {
   printOpts.toc = printOpts.toc != null ? printOpts.toc : selIds.size > 2;
   printOpts.num = printOpts.num != null ? printOpts.num : true;
   printOpts.style = printOpts.style || 'fiche';
-  printOpts.theme = printOpts.theme || 'app';   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
+  printOpts.theme = printOpts.theme || 'app';
+  printOpts.size = printOpts.size || 'compacte';   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
   // les accords : toujours les lettres dans les parties et les doigtés une fois en haut (tri de Lucas, 26/11 : pas trop d'options)
   ppSay = null;
   document.querySelector('#m-print .modal').classList.add('wide', 'ppm-modal');
@@ -11960,18 +11967,22 @@ function openPrintModal() {
 const ppMini = {
   toc: '<span class="ppm-v pgt"><i></i><i></i><i></i></span>', num: '<span class="ppm-v pgn"><i>1</i></span>',
   app: '<span class="ppm-v sw sw-a"><i></i></span>', nb: '<span class="ppm-v sw sw-b"><i></i></span>',
+  compacte: '<span class="ppm-v pg2"><i></i><i></i><i></i><i></i><i></i></span>', grande: '<span class="ppm-v pg1"><i></i><i></i><i></i></span>',
   fiche: '<span class="ppm-v pg1"><i></i><i></i><i></i></span>', cahier: '<span class="ppm-v pg2"><i></i><i></i><i></i><i></i><i></i></span>',
   1: '<span class="ppm-v n1"><i></i></span>', 2: '<span class="ppm-v n2"><i></i><i></i></span>'
 };
 // un seul format (Lucas, 26/11 : « entre compact et détaillé », seule la couleur change ; les morceaux se suivent)
 const PP_Q = [
-  {k: 'theme', q: 'Quelles couleurs ?', o: [['app', 'Comme l’appli', 'fond sombre'], ['nb', 'Noir et blanc', 'moins d’encre']]}
+  {k: 'theme', q: 'Quelles couleurs ?', o: [['app', 'Comme l’appli', 'fond sombre'], ['nb', 'Noir et blanc', 'moins d’encre']]},
+  // même mise en page, la grande est juste plus grosse (Lucas, 26/11) : moins de morceaux par page, accords et rythme mieux lisibles
+  {k: 'size', q: 'Quelle taille ?', o: [['compacte', 'Compacte', 'plus de morceaux par page'], ['grande', 'Grande', 'accords et rythme en grand']]}
 ];
 const PP_SAY = {
   start: 'Je te prépare ta fiche. Choisis comment tu la veux, l’aperçu suit.',
   app: 'Comme dans l’appli, sur fond sombre. Ça claque, mais ça boit de l’encre.',
   nb: 'Noir et blanc : ton imprimante te dit merci.',
   fiche: 'La fiche complète, avec la tablature, les notes et les paroles.',
+  compacte: 'Compacte : un max de morceaux par page, tout reste lisible.', grande: 'En grand : les accords et le rythme se lisent de loin, au pupitre.',
   cahier: 'Version cahier : une ligne par partie, tout le morceau d’un coup d’œil.',
   1: 'Une fiche par page, bien lisible au pupitre.', 2: 'Deux fiches par page : parfait pour un carnet de poche.',
   toc1: 'Un sommaire au début : tu retrouves ton morceau tout de suite.', toc0: 'Pas de sommaire : on file direct aux fiches.',
@@ -12024,6 +12035,7 @@ function refreshPrintPreview() {
   const n = pv.querySelectorAll('.pg').length, c = $('pp-count'); if (c) c.textContent = n + (n > 1 ? ' pages' : ' page');
   // le choix se voit tout de suite : l'aperçu revient en haut et s'allume un instant
   const box = pv.parentElement; box.scrollTop = 0;
+  pv.style.zoom = Math.min(.6, (box.clientWidth - 24) / (210 * MM));   // la page A4 tient dans la largeur de l'aperçu
   if (box.animate && !mReduced()) box.animate([{boxShadow: '0 0 0 2px var(--gold)'}, {boxShadow: '0 0 0 2px transparent'}], {duration: 600, easing: 'ease-out'});
 }
 /* Fiche imprimée (refaite le 26/11, retours de Lucas : « qu'elle ressemble à l'appli » + option noir et blanc) :
@@ -12038,7 +12050,7 @@ const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi(
 function buildPrintPages() {
   if (!pNew()) return oBuildPrintPages();
   const {toc} = printOpts;
-  const list = sheets.filter(s => selIds.has(s.id)), th = (pLight() ? 'pf-nb' : 'pf-app') + ' pf2';
+  const list = sheets.filter(s => selIds.has(s.id)), th = (pLight() ? 'pf-nb' : 'pf-app') + ' pf2' + (printOpts.size === 'grande' ? ' pf-big' : '');
   let pages = [], pageNo = 0;
   if (toc && list.length > 1) {
     pageNo++;
@@ -12064,7 +12076,7 @@ function pPack(songs, th) {
 }
 /* un morceau : en-tête, puis une ligne par partie (son nom, ses accords en doigtés avec le nom en gros, son rythme ou son arpège) */
 function pSongHTML(s, no) {
-  const parts = s.parts || [], one = parts.length === 1 && !parts[0].name;
+  const big = printOpts.size === 'grande', parts = s.parts || [], one = parts.length === 1 && !parts[0].name;
   const chips = [s.capo > 0 ? `<span class="pf-chip o">Capo <b>${s.capo}</b></span>` : '', s.bpm ? `<span class="pf-chip">Tempo <b>${s.bpm}</b></span>` : '',
     s.tuning && s.tuning !== 'Standard' ? `<span class="pf-chip">${esc(s.tuning)}</span>` : ''].join('');
   return `<div class="pf-song">
@@ -12072,8 +12084,8 @@ function pSongHTML(s, no) {
     <div class="pf2-c">${parts.map((p, i) => {
       const rep = +(p.repeat || p.reps || 0);
       return `<div class="pf2-row">${one ? '' : `<div class="pf2-pn"><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span>×${rep}</span>` : ''}</div>`}
-        <div class="pf2-b"><div class="pf2-chs">${p.chords.map(c => `<div class="pf2-ch"><b>${esc(c.name)}</b>${chordSVG(c, {size: .75, light: pLight()})}</div>`).join('') || '<span class="pf2-no">—</span>'}</div>
-        ${pHas(p) ? `<div class="pf2-way">${pPrintWay(p, 0, true)}</div>` : ''}
+        <div class="pf2-b"><div class="pf2-chs">${p.chords.map(c => `<div class="pf2-ch"><b>${esc(c.name)}</b>${chordSVG(c, {size: big ? 1.05 : .75, light: pLight()})}</div>`).join('') || '<span class="pf2-no">—</span>'}</div>
+        ${pHas(p) ? `<div class="pf2-way">${pPrintWay(p, 0, !big)}</div>` : ''}
         ${p.note ? `<div class="pf2-note">${esc(p.note)}</div>` : ''}</div></div>`;
     }).join('')}
     ${s.memo ? `<div class="pf2-row pf2-memo">${pMedi('neutre', 18)}<span>${esc(s.memo)}</span></div>` : ''}</div>
