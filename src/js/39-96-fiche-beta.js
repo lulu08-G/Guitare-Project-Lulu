@@ -7,7 +7,7 @@
      sur 2 et 4 ou sur tes étouffés, la grosse caisse et Basile sur 1 et 3) ou ta prise (le charley sur les coups
      entendus, le tempo trouvé dans la prise) ;
    · les cases haut / bas restent dessous, repliées. Les dessins viennent du Labo (39-95-labo-26-11.js). */
-const FB = {i: -1, band: LS.get('gms_fb_band', true) !== false, draw: LS.get('gms_fb_draw', 'mix'), adraw: LS.get('gms_fb_adraw', 'arp'), D: {}, tls: {}, bandT: null};
+const FB = {i: -1, band: LS.get('gms_fb_band', true) !== false, draw: LS.get('gms_fb_draw', 'saute'), adraw: LS.get('gms_fb_adraw', 'arp'), D: {}, tls: {}, bandT: null};
 const fbKind = p => pWay(p) === 'arp' && !p.rec ? FB.adraw : FB.draw;   // le dessin choisi (rythme ou arpège)
 const fbOn = () => typeof IS_BETA !== 'undefined' && IS_BETA;
 

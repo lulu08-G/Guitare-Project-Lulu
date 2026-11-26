@@ -12,7 +12,7 @@ const LAB_TESTS26 = [
   {id: 'l26-fx', grp: '26', t: 'Les effets sur le rebond', d: 'PM et « h » posés sur les coups : touche-les.'},
   {id: 'l26-banque', grp: '26', t: 'La banque de rythmes', d: 'Une liste sobre, le lecteur s’ouvre en bas.'}
 ];
-const L26 = {style: 'mix', src: null, part: null, tl: null, raf: 0, a: null, live: null, fx: null, bank: null, mini: {}};
+const L26 = {style: 'saute', src: null, part: null, tl: null, raf: 0, a: null, live: null, fx: null, bank: null, mini: {}};
 const L26_MP = 'M12 2.2c5.6 0 9.6 2.3 9.6 6.6 0 5.6-6.4 12-9.6 13-3.2-1-9.6-7.4-9.6-13 0-4.3 4-6.6 9.6-6.6z';
 const l26f = v => (Math.round(v * 10) / 10).toString();
 // Médi en médiator (pointe en bas = un bas ; rot 180 = un haut)
