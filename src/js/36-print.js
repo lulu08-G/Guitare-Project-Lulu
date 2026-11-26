@@ -7,52 +7,72 @@ function openPrintModal() {
   printOpts.toc = printOpts.toc != null ? printOpts.toc : selIds.size > 2;
   printOpts.num = printOpts.num != null ? printOpts.num : true;
   printOpts.style = printOpts.style || 'fiche';
-  printOpts.theme = printOpts.theme || 'app';
-  printOpts.chords = printOpts.chords || 'noms';   // dans chaque partie : 'noms' (les doigtés une fois en haut) ou 'schemas' (petits doigtés partout)   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
-  document.querySelector('#m-print .modal').classList.add('wide');
+  printOpts.theme = printOpts.theme || 'app';   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
+  // les accords : 'lettres' (les noms seuls), 'schemas' (un petit doigté sous chaque accord), 'deux' (les noms + les doigtés une fois en haut)
+  printOpts.chords = {noms: 'deux'}[printOpts.chords] || printOpts.chords || 'deux';
+  ppSay = null;
+  document.querySelector('#m-print .modal').classList.add('wide', 'ppm-modal');
   renderPrintModal();
   $('m-print').classList.remove('hide');
 }
+/* Médi prépare la fiche à imprimer (26/11, demande de Lucas) : il pose les questions, on choisit sur des cartes,
+   sa bulle réagit au dernier choix et l'aperçu suit en direct. */
+const ppMini = {
+  lettres: '<span class="ppm-v t">Em G</span>',
+  schemas: () => `<span class="ppm-v">${chordSVG(newChord('Em'), {size: .42})}</span>`,
+  deux: () => `<span class="ppm-v"><b>Em</b>${chordSVG(newChord('Em'), {size: .42})}</span>`,
+  app: '<span class="ppm-v sw sw-a"><i></i></span>', nb: '<span class="ppm-v sw sw-b"><i></i></span>',
+  fiche: '<span class="ppm-v pg1"><i></i><i></i><i></i></span>', cahier: '<span class="ppm-v pg2"><i></i><i></i><i></i><i></i><i></i></span>',
+  1: '<span class="ppm-v n1"><i></i></span>', 2: '<span class="ppm-v n2"><i></i><i></i></span>'
+};
+const PP_Q = [
+  {k: 'chords', q: 'Les accords, tu les veux comment ?', o: [['lettres', 'Les lettres', 'juste les noms'], ['schemas', 'Les schémas', 'un doigté sous chaque accord'], ['deux', 'Les deux', 'les noms, et les doigtés en haut']]},
+  {k: 'theme', q: 'Quelles couleurs ?', o: [['app', 'Comme l’appli', 'fond sombre'], ['nb', 'Noir et blanc', 'moins d’encre']]},
+  {k: 'style', q: 'Quelle forme ?', o: [['fiche', 'Détaillée', 'tout le morceau'], ['cahier', 'Compacte', 'une ligne par partie']]},
+  {k: 'mode', q: 'Combien de fiches par page ?', o: [[1, 'Une', 'bien lisible'], [2, 'Deux', 'format carnet']]}
+];
+const PP_SAY = {
+  start: 'Je te prépare ta fiche. Choisis comment tu la veux, l’aperçu suit.',
+  lettres: 'Juste les lettres : parfait si tu connais tes doigtés par cœur.',
+  schemas: 'Un petit doigté sous chaque accord : rien à chercher ailleurs.',
+  deux: 'Les lettres dans le morceau, les doigtés une fois en haut : le meilleur des deux.',
+  app: 'Comme dans l’appli, sur fond sombre. Ça claque, mais ça boit de l’encre.',
+  nb: 'Noir et blanc : ton imprimante te dit merci.',
+  fiche: 'La fiche complète, avec la tablature, les notes et les paroles.',
+  cahier: 'Version cahier : une ligne par partie, tout le morceau d’un coup d’œil.',
+  1: 'Une fiche par page, bien lisible au pupitre.', 2: 'Deux fiches par page : parfait pour un carnet de poche.'
+};
+let ppSay = null;
+const ppOn = (k, v) => String(printOpts[k]) === String(v);
 function renderPrintModal() {
   const n = selIds.size;
-  $('m-print-body').innerHTML = `
-    <div class="modal-t">${n>1?`Ton PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
-    <div class="frow">
-      <div class="fg"><label>Style</label>
-        <select id="pp-style" onchange="printOpts.style=this.value;refreshPrintPreview()">
-          <option value="fiche" ${printOpts.style==='fiche'?'selected':''}>Fiche détaillée</option>
-          <option value="cahier" ${printOpts.style==='cahier'?'selected':''}>Cahier compact : accords et rythme sur une ligne</option>
-        </select></div>
-      <div class="fg"><label>Couleurs</label>
-        <select id="pp-theme" onchange="printOpts.theme=this.value;refreshPrintPreview()">
-          <option value="app" ${printOpts.theme==='app'?'selected':''}>Comme l’appli (fond sombre)</option>
-          <option value="nb" ${printOpts.theme==='nb'?'selected':''}>Noir et blanc (moins d’encre)</option>
-        </select></div>
-      <div class="fg"><label>Accords dans les parties</label>
-        <select id="pp-chords" onchange="printOpts.chords=this.value;refreshPrintPreview()">
-          <option value="noms" ${printOpts.chords==='noms'?'selected':''}>Noms seuls (doigtés en haut)</option>
-          <option value="schemas" ${printOpts.chords==='schemas'?'selected':''}>Petits schémas</option>
-        </select></div>
-      <div class="fg"><label>Mise en page</label>
-        <select id="pp-mode" onchange="printOpts.mode=+this.value;refreshPrintPreview()">
-          <option value="1" ${printOpts.mode===1?'selected':''}>1 fiche par page</option>
-          <option value="2" ${printOpts.mode===2?'selected':''}>2 fiches par page</option>
-        </select></div>
+  $('m-print-body').innerHTML = `<div class="ppm">
+    <div class="ppm-l">
+      <div class="modal-t">${n > 1 ? `Ton PDF · ${n} fiches` : 'Ta fiche en PDF'}</div>
+      ${mediBulle(ppSay ? 'contente' : 'clin', `<span id="ppm-say">${PP_SAY[ppSay || 'start']}</span>`, {size: 46, cls: 'ppm-medi'})}
+      ${PP_Q.map(q => `<div class="ppm-q"><div class="ppm-ql">${q.q}</div><div class="ppm-os" role="radiogroup" aria-label="${q.q}">${q.o.map(([v, l, sub]) => {
+        const m = typeof ppMini[v] === 'function' ? ppMini[v]() : ppMini[v];
+        return `<button type="button" class="ppm-o${ppOn(q.k, v) ? ' on' : ''}" role="radio" aria-checked="${ppOn(q.k, v)}" data-pp="${q.k}" data-v="${v}" onclick="ppPick('${q.k}','${v}')">${m}<span class="ppm-ot"><b>${l}</b><small>${sub}</small></span></button>`;
+      }).join('')}</div></div>`).join('')}
+      <div class="ppm-sw">
+        ${n > 1 ? `<label><input type="checkbox" id="pp-toc" ${printOpts.toc ? 'checked' : ''} onchange="printOpts.toc=this.checked;refreshPrintPreview()"> Un sommaire au début</label>` : ''}
+        <label><input type="checkbox" id="pp-num" ${printOpts.num ? 'checked' : ''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numéroter les pages</label>
+      </div>
     </div>
-    <div class="frow">
-      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
-        <input type="checkbox" id="pp-toc" style="width:auto" ${printOpts.toc?'checked':''} onchange="printOpts.toc=this.checked;refreshPrintPreview()"> Sommaire en première page</label>
-      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
-        <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numéroter les pages</label>
-    </div>
-    <p class="pp-tip">Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ». Tu pourras aussi l’imprimer.</p>
-    <div style="background:#5a5a5a;border-radius:10px;padding:14px;overflow:auto;max-height:52vh;margin-top:8px">
-      <div id="pp-preview" style="zoom:.42"></div>
-    </div>
-    <div class="modal-f">
-      <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
-      <button class="btn btn-primary btn-sm" onclick="doPrint()">Créer le PDF</button>
-    </div>`;
+    <div class="ppm-r"><div class="ppm-pv"><div id="pp-preview"></div></div>
+      <p class="pp-tip">Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ». Tu pourras aussi l’imprimer.</p></div>
+  </div>
+  <div class="modal-f">
+    <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
+    <button class="btn btn-primary btn-sm" onclick="doPrint()">Créer le PDF</button>
+  </div>`;
+  refreshPrintPreview();
+}
+function ppPick(k, v) {
+  printOpts[k] = k === 'mode' ? +v : v; ppSay = v;
+  document.querySelectorAll(`#m-print [data-pp="${k}"]`).forEach(b => { const on = ppOn(k, b.dataset.v); b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+  const say = $('ppm-say'); if (say) say.textContent = PP_SAY[v] || '';
+  const md = document.querySelector('#m-print .ppm-medi .medi'); if (md && md.animate && !mReduced()) md.animate([{transform: 'none'}, {transform: 'translateY(-8px) rotate(-6deg)'}, {transform: 'none'}], {duration: 380, easing: 'ease-out'});
   refreshPrintPreview();
 }
 function refreshPrintPreview() { $('pp-preview').innerHTML = buildPrintPages(); }
@@ -62,6 +82,7 @@ function refreshPrintPreview() { $('pp-preview').innerHTML = buildPrintPages(); 
    en grand et son rythme, les notes dans la bulle de Médi, pied de page avec Médi. Styles : 26-impression.css. */
 const pLight = () => !printOpts || printOpts.theme === 'nb';
 const pSchemas = () => !!printOpts && printOpts.chords === 'schemas';
+const pStrip = () => !printOpts || !printOpts.chords || printOpts.chords === 'deux';   // les doigtés une fois en haut
 // les accords d'une partie : leurs noms en grand, ou chaque nom avec son petit doigté
 const pSeq = (p, sm) => !p.chords.length ? '' : pSchemas()
   ? `<div class="pf-seq pf-sc${sm ? ' sm' : ''}">${p.chords.map(c => `<span><b>${esc(c.name)}</b>${chordSVG(c, {size: sm ? .45 : .62, light: pLight()})}</span>`).join('')}</div>`
@@ -117,7 +138,7 @@ function pHead(s, compact) {
 function printSheetHTML(s, compact) {
   const uniq = pUniqueChords(s);
   return `${pHead(s, compact)}
-    ${uniq.length && !pSchemas() ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
+    ${uniq.length && pStrip() ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
     ${(s.parts||[]).map((p, i) => {
       const staff = tabStaffSVG(p.chords, pLight()), rep = +(p.repeat || p.reps || 0);
       return `<div class="pf-part">
@@ -136,7 +157,7 @@ function printSheetHTML(s, compact) {
 function printCahierHTML(s) {
   const uniq = pUniqueChords(s);
   return `<div class="pf-cahier">${pHead(s, true)}
-    ${uniq.length && !pSchemas() ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
+    ${uniq.length && pStrip() ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
     ${(s.parts||[]).map((p, i) => `<div class="pf-row"><span class="pf-i">${i + 1}</span><b class="pf-rn">${esc(p.name || 'Partie ' + (i + 1))}</b>
       ${pSeq(p, true) || '<div class="pf-seq sm">—</div>'}
       ${pHas(p) ? `<div class="pf-rw">${pPrintWay(p, 62, true)}</div>` : ''}</div>`).join('')}</div>`;
