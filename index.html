@@ -3537,7 +3537,7 @@ body:not(.diag-on) #v-sheet.fb .chord-cell svg{display:block}
 .l26-cb{fill:currentColor}
 .l26-cr{fill:currentColor;stroke:currentColor;stroke-width:2}.l26-cr.up{fill:var(--card)}
 /* l'avancement en orange (Lucas, 26/11 : « essaie de mettre l'avancement orange pour voir ») */
-.l26-ep .past{color:var(--gold)}.l26-ep .past > :not(.l26-ko){opacity:.72}.l26-ep .fut{color:var(--cream3)}.l26-ep .l26-vib.on{stroke:var(--cream3);opacity:.8}
+.l26-ep .past{color:var(--gold)}.l26-ep .past > :not(.l26-ko){opacity:.72}.l26-ep .fut{color:var(--cream3)}.l26-ep .l26-vib.on{stroke:var(--gold)}
 .l26-adot{fill:var(--cream)}
 .l26-afg circle{fill:var(--gold)}
 .l26-acell{fill:var(--card2)}
@@ -13951,14 +13951,9 @@ L26_DRAW.saute = {
   },
   frame(D, pos) {
     const x = pos < 0 ? -4 : D.X(pos), ph = performance.now() / 1000 * 26;
-    // un bref frisson des cordes à chaque coup, puis le calme : rien ne reste derrière Médi
-    const jh = pos < 0 ? -1 : l26Cur(D.tl.hits, pos), lh = jh >= 0 ? D.tl.hits[jh] : null;
-    const env = lh ? lh.a * Math.exp(-(pos - lh.t) / (D.tl.beat * .09)) : 0;
-    D.el.querySelectorAll('.l26-vib.on').forEach(p => {
-      const k = +p.dataset.k, y0 = D.top + k * D.gap, a = env * D.gap * .4; if (a < .35) { p.setAttribute('d', ''); return; }
-      let d = ''; for (let xx = 0; xx <= D.W; xx += 4) d += `${d ? 'L' : 'M'}${xx} ${l26f(y0 + a * Math.sin(Math.PI * xx / D.W) * Math.sin(xx * (.11 + k * .012) + ph + k))}`;
-      p.setAttribute('d', d);
-    });
+    // la traînée orange (Lucas, 26/11 : « normal que les cordes ne vibrent plus et qu'il n'y a pas la traînée orange ? ») :
+    // derrière Médi, les cordes déjà jouées vibrent en orange avec le son ; devant, rien de dessiné à l'avance
+    D.el.querySelectorAll('.l26-vib.on').forEach(p => p.setAttribute('d', pos < 0 ? '' : l26VibPath(D, +p.dataset.k, 0, x, ph)));
     l26SetCls(D, '.l26-h', pos < 0 ? -1 : l26Cur(D.hp, pos));
     const m = D.el.querySelector('.l26-medi'); if (!m || pos < 0) return;
     for (const [a, b, cx, cy] of D.segs) if (x >= a[0] && x < b[0]) {
