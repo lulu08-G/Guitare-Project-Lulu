@@ -48,13 +48,13 @@ function renderDisc() {
   let hero = '';
   if (last) {
     const ch = sheetChords(last).slice(0, 4), meta = last.capo > 0 ? `capo ${last.capo}` : '';
-    hero = `<section class="dc-hero">${mediBulle('clin', opened ? `Salut ! On reprend ${esc(last.title)} là où tu l’as laissé ?` : `Salut ! On joue ${esc(last.title)} ce soir ?`, {size: 70})}
+    hero = `<section class="dc-hero">${mediBulle('clin', opened ? `Salut ! On reprend ${esc(last.title)} là où tu l’as laissé ?` : `Salut ! On joue ${esc(last.title)} ce soir ?`, {size: 70, anim: 'vivant'})}
       <button type="button" class="dc-resume" onclick="viewSheet('${last.id}')">
         <span class="dc-rt"><span class="dc-rh"><b>${esc(last.title)}</b>${last.artist && last.artist !== '—' ? `<small>${esc(last.artist)}</small>` : ''}</span>
         <span class="dc-rc">${ch.map((c, i) => `<span${i ? '' : ' class="a"'}>${esc(c)}</span>`).join('')}${meta ? `<small>${meta}</small>` : ''}</span></span>
         <span class="dc-play" aria-label="Jouer">${PLAY_I}</span></button></section>`;
   } else {
-    hero = `<section class="dc-hero">${mediBulle('clin', 'Salut ! Note le premier morceau que tu sais jouer, je te le garde.', {size: 70})}
+    hero = `<section class="dc-hero">${mediBulle('clin', 'Salut ! Note le premier morceau que tu sais jouer, je te le garde.', {size: 70, anim: 'vivant'})}
       <button type="button" class="btn btn-primary dc-first" onclick="createAsk(event)">Créer ma première fiche</button></section>`;
   }
   $('disc-hero').innerHTML = hero;

@@ -80,6 +80,17 @@
 .ca-box button.ca-x{min-height:52px;padding:0;background:none;color:var(--cream);font-size:16px}
 @media(min-width:900px){.ca-box{border-radius:32px;padding-bottom:22px}}
 @media(prefers-reduced-motion:reduce){#create-ask.on .ca-box{animation:none}}
+/* 26/11 (Lucas) : sur téléphone, le menu du bas reste visible (on voit Créer gratter) et on ferme en glissant vers le bas */
+#create-ask.out{background:transparent;transition:background .24s}
+#create-ask .ca-box.drag,#create-ask.out .ca-box{animation:none}
+#create-ask.out .ca-box{transform:translateY(110%)!important;transition:transform .24s cubic-bezier(.4,0,1,1)}
+.ca-box:not(.drag){transition:transform .2s cubic-bezier(.2,.9,.3,1)}
+@media(max-width:899px){
+  #create-ask{bottom:calc(76px + env(safe-area-inset-bottom));overflow:hidden}
+  .ca-box{padding-bottom:22px;touch-action:none}
+  .ca-grab{width:48px;height:6px;background:var(--cream3);opacity:.55}
+  .ca-box button.ca-x{display:none}
+}
 
 /* ── Créer une fiche (éditeur) ── */
 #v-ed .ed-top{background:var(--bg);padding:14px 0 10px}

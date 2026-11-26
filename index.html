@@ -2288,6 +2288,12 @@ h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
 .medi.a-tilt .mv{animation:mdTilt 3.2s ease-in-out infinite}
 .medi.a-look .mc{animation:mdLook 3.2s ease-in-out infinite}
 .medi.a-hop .mv{animation:mdHop var(--beat,.6667s) linear infinite}
+.medi.a-vivant .mv{animation:mdJump 1.2s cubic-bezier(.3,.7,.4,1) .2s 1 both,mdVivant 8s ease-in-out 1.6s infinite}
+.medi.a-vivant .mc{animation:mdVivEyes 8s ease-in-out 1.6s infinite}
+.medi.a-vivant.poke .mv{animation:mdJump 1s cubic-bezier(.3,.7,.4,1) 1}
+.medi.a-vivant.poke .mc{animation:mdBlink .5s linear 1}
+@keyframes mdVivant{0%,100%{transform:none}5%{transform:scale(1.08,.9)}11%{transform:translateY(-16px) scale(.96,1.05)}17%{transform:scale(1.1,.88)}21%{transform:none}26%{transform:translateY(-9px)}31%{transform:scale(1.05,.94)}35%,44%{transform:none}52%{transform:rotate(-8deg)}60%{transform:rotate(7deg)}67%{transform:rotate(-3deg)}72%{transform:none}86%{transform:translateY(-3px) scale(1.01,.99)}}
+@keyframes mdVivEyes{0%,2%,5%,40%,100%{transform:none}3.5%{transform:scaleY(.08)}46%,55%{transform:translateX(-9px)}62%,70%{transform:translateX(9px)}76%,83%,86%{transform:none}84.5%{transform:scaleY(.08)}}
 @keyframes mdBreathe{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-4px) scale(1.015,.985)}}
 @keyframes mdBlink{0%,90%,96%,100%{transform:scaleY(1)}93%{transform:scaleY(.08)}}
 @keyframes mdJump{0%{transform:translateY(0) scale(1,1)}15%{transform:translateY(0) scale(1.1,.88)}40%{transform:translateY(-22px) scale(.95,1.06)}62%{transform:translateY(0) scale(1.12,.86)}75%{transform:translateY(0) scale(.97,1.03)}88%,100%{transform:translateY(0) scale(1,1)}}
@@ -2426,6 +2432,17 @@ h1,h2,.hm-top h1,#nav-title,.logo-text{font-family:var(--display)}
 .ca-box button.ca-x{min-height:52px;padding:0;background:none;color:var(--cream);font-size:16px}
 @media(min-width:900px){.ca-box{border-radius:32px;padding-bottom:22px}}
 @media(prefers-reduced-motion:reduce){#create-ask.on .ca-box{animation:none}}
+/* 26/11 (Lucas) : sur téléphone, le menu du bas reste visible (on voit Créer gratter) et on ferme en glissant vers le bas */
+#create-ask.out{background:transparent;transition:background .24s}
+#create-ask .ca-box.drag,#create-ask.out .ca-box{animation:none}
+#create-ask.out .ca-box{transform:translateY(110%)!important;transition:transform .24s cubic-bezier(.4,0,1,1)}
+.ca-box:not(.drag){transition:transform .2s cubic-bezier(.2,.9,.3,1)}
+@media(max-width:899px){
+  #create-ask{bottom:calc(76px + env(safe-area-inset-bottom));overflow:hidden}
+  .ca-box{padding-bottom:22px;touch-action:none}
+  .ca-grab{width:48px;height:6px;background:var(--cream3);opacity:.55}
+  .ca-box button.ca-x{display:none}
+}
 
 /* ── Créer une fiche (éditeur) ── */
 #v-ed .ed-top{background:var(--bg);padding:14px 0 10px}
@@ -4382,6 +4399,13 @@ document.addEventListener('pointerdown', e => {
   if (!b) return;
   b.classList.remove('strum'); void b.offsetWidth; b.classList.add('strum');
   clearTimeout(b._st); b._st = setTimeout(() => b.classList.remove('strum'), 500);
+});
+// Médi de Découvrir saute quand on le touche
+document.addEventListener('pointerdown', e => {
+  const m = e.target.closest && e.target.closest('.medi.a-vivant');
+  if (!m) return;
+  m.classList.remove('poke'); void m.getBoundingClientRect(); m.classList.add('poke');
+  clearTimeout(m._pk); m._pk = setTimeout(() => m.classList.remove('poke'), 1100);
 });
 /* ═══════ SVG: CHORD DIAGRAM ═══════ */
 function chordSVG(ch, opt) {
@@ -9714,13 +9738,13 @@ function renderDisc() {
   let hero = '';
   if (last) {
     const ch = sheetChords(last).slice(0, 4), meta = last.capo > 0 ? `capo ${last.capo}` : '';
-    hero = `<section class="dc-hero">${mediBulle('clin', opened ? `Salut ! On reprend ${esc(last.title)} là où tu l’as laissé ?` : `Salut ! On joue ${esc(last.title)} ce soir ?`, {size: 70})}
+    hero = `<section class="dc-hero">${mediBulle('clin', opened ? `Salut ! On reprend ${esc(last.title)} là où tu l’as laissé ?` : `Salut ! On joue ${esc(last.title)} ce soir ?`, {size: 70, anim: 'vivant'})}
       <button type="button" class="dc-resume" onclick="viewSheet('${last.id}')">
         <span class="dc-rt"><span class="dc-rh"><b>${esc(last.title)}</b>${last.artist && last.artist !== '—' ? `<small>${esc(last.artist)}</small>` : ''}</span>
         <span class="dc-rc">${ch.map((c, i) => `<span${i ? '' : ' class="a"'}>${esc(c)}</span>`).join('')}${meta ? `<small>${meta}</small>` : ''}</span></span>
         <span class="dc-play" aria-label="Jouer">${PLAY_I}</span></button></section>`;
   } else {
-    hero = `<section class="dc-hero">${mediBulle('clin', 'Salut ! Note le premier morceau que tu sais jouer, je te le garde.', {size: 70})}
+    hero = `<section class="dc-hero">${mediBulle('clin', 'Salut ! Note le premier morceau que tu sais jouer, je te le garde.', {size: 70, anim: 'vivant'})}
       <button type="button" class="btn btn-primary dc-first" onclick="createAsk(event)">Créer ma première fiche</button></section>`;
   }
   $('disc-hero').innerHTML = hero;
@@ -10512,13 +10536,44 @@ function createAsk(e) {
       <button type="button" onclick="createAskClose();newSheet()"><span class="ca-i"><svg viewBox="0 0 28 28"><rect x="6" y="3" width="16" height="22" rx="3.5"/><path d="M10 10 H18 M10 15 H18 M10 20 H14"/></svg></span><span><b>Une fiche</b><small>Tu sais déjà le jouer. Accords et rythme, c’est noté en une minute.</small></span></button>
       <button type="button" onclick="createAskClose();go('atelier')"><span class="ca-i t"><svg viewBox="0 0 28 28"><rect x="3" y="4" width="22" height="13" rx="3"/><path class="f" d="M12 8 L17 10.5 L12 13 Z"/><path d="M5 22 H23 M5 26 H15"/></svg></span><span><b>Une fiche avec un tuto</b><small>La vidéo en haut, ta fiche se remplit dessous pendant que tu apprends.</small></span></button>
       <button type="button" class="ca-x" onclick="createAskClose()">Annuler</button></div>`;
-    m.addEventListener('click', createAskClose); document.body.appendChild(m);
+    m.addEventListener('click', () => createAskClose()); document.body.appendChild(m);
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape') createAskClose(); });
-  }
-  m.classList.remove('on'); void m.offsetWidth; m.classList.add('on');
+    caSwipe(m.querySelector('.ca-box'));
+    // le menu du bas reste visible : un autre onglet ferme le choix
+    const tb = $('tabbar'); if (tb) tb.addEventListener('click', ev => { if (!ev.target.closest('.tb-create')) createAskClose(true); }, true);
+  } else if (m.classList.contains('on') && !m.classList.contains('out')) { createAskClose(); return; } // 2e toucher sur Créer = fermer
+  clearTimeout(m._t); m.classList.remove('on', 'out'); const bx = m.querySelector('.ca-box'); bx.style.transform = ''; void m.offsetWidth; m.classList.add('on');
   const md = m.querySelector('.medi'); if (md) { md.classList.remove('a-jump'); void md.getBoundingClientRect(); md.classList.add('a-jump'); }
 }
-function createAskClose() { const m = $('create-ask'); if (m) m.classList.remove('on'); }
+// fermer : la fenêtre redescend (now = tout de suite)
+function createAskClose(now) {
+  const m = $('create-ask'); if (!m || !m.classList.contains('on')) return;
+  clearTimeout(m._t);
+  if (now || matchMedia('(prefers-reduced-motion: reduce)').matches) { m.classList.remove('on', 'out'); return; }
+  m.classList.add('out'); m._t = setTimeout(() => m.classList.remove('on', 'out'), 240);
+}
+// glisser la fenêtre vers le bas pour la fermer (à la place d'« Annuler »)
+function caSwipe(bx) {
+  let y0 = null, dy = 0, t0 = 0, moved = false;
+  bx.addEventListener('pointerdown', e => { if (e.button) return; y0 = e.clientY; dy = 0; t0 = performance.now(); moved = false; });
+  bx.addEventListener('pointermove', e => {
+    if (y0 == null) return;
+    dy = Math.max(0, e.clientY - y0);
+    if (!moved && dy > 8) { moved = true; bx.classList.add('drag'); try { bx.setPointerCapture(e.pointerId); } catch (_) {} }
+    if (moved) bx.style.transform = `translateY(${dy}px)`;
+  });
+  const end = () => {
+    if (y0 == null) return; y0 = null;
+    if (!moved) return;
+    const fast = dy / Math.max(1, performance.now() - t0) > .6;
+    bx.classList.remove('drag');
+    if (dy > 90 || (fast && dy > 30)) { bx.style.transform = ''; createAskClose(); }
+    else bx.style.transform = '';
+    bx._noClick = true; setTimeout(() => bx._noClick = false, 0);
+  };
+  bx.addEventListener('pointerup', end); bx.addEventListener('pointercancel', end);
+  bx.addEventListener('click', e => { if (bx._noClick) { e.stopPropagation(); e.preventDefault(); } }, true);
+}
 function newSheet() {
   draft = newSheet_();
   draft.color = COLORS[sheets.length % COLORS.length][0]; // couleur automatique

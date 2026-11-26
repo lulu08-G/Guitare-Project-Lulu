@@ -19,13 +19,44 @@ function createAsk(e) {
       <button type="button" onclick="createAskClose();newSheet()"><span class="ca-i"><svg viewBox="0 0 28 28"><rect x="6" y="3" width="16" height="22" rx="3.5"/><path d="M10 10 H18 M10 15 H18 M10 20 H14"/></svg></span><span><b>Une fiche</b><small>Tu sais déjà le jouer. Accords et rythme, c’est noté en une minute.</small></span></button>
       <button type="button" onclick="createAskClose();go('atelier')"><span class="ca-i t"><svg viewBox="0 0 28 28"><rect x="3" y="4" width="22" height="13" rx="3"/><path class="f" d="M12 8 L17 10.5 L12 13 Z"/><path d="M5 22 H23 M5 26 H15"/></svg></span><span><b>Une fiche avec un tuto</b><small>La vidéo en haut, ta fiche se remplit dessous pendant que tu apprends.</small></span></button>
       <button type="button" class="ca-x" onclick="createAskClose()">Annuler</button></div>`;
-    m.addEventListener('click', createAskClose); document.body.appendChild(m);
+    m.addEventListener('click', () => createAskClose()); document.body.appendChild(m);
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape') createAskClose(); });
-  }
-  m.classList.remove('on'); void m.offsetWidth; m.classList.add('on');
+    caSwipe(m.querySelector('.ca-box'));
+    // le menu du bas reste visible : un autre onglet ferme le choix
+    const tb = $('tabbar'); if (tb) tb.addEventListener('click', ev => { if (!ev.target.closest('.tb-create')) createAskClose(true); }, true);
+  } else if (m.classList.contains('on') && !m.classList.contains('out')) { createAskClose(); return; } // 2e toucher sur Créer = fermer
+  clearTimeout(m._t); m.classList.remove('on', 'out'); const bx = m.querySelector('.ca-box'); bx.style.transform = ''; void m.offsetWidth; m.classList.add('on');
   const md = m.querySelector('.medi'); if (md) { md.classList.remove('a-jump'); void md.getBoundingClientRect(); md.classList.add('a-jump'); }
 }
-function createAskClose() { const m = $('create-ask'); if (m) m.classList.remove('on'); }
+// fermer : la fenêtre redescend (now = tout de suite)
+function createAskClose(now) {
+  const m = $('create-ask'); if (!m || !m.classList.contains('on')) return;
+  clearTimeout(m._t);
+  if (now || matchMedia('(prefers-reduced-motion: reduce)').matches) { m.classList.remove('on', 'out'); return; }
+  m.classList.add('out'); m._t = setTimeout(() => m.classList.remove('on', 'out'), 240);
+}
+// glisser la fenêtre vers le bas pour la fermer (à la place d'« Annuler »)
+function caSwipe(bx) {
+  let y0 = null, dy = 0, t0 = 0, moved = false;
+  bx.addEventListener('pointerdown', e => { if (e.button) return; y0 = e.clientY; dy = 0; t0 = performance.now(); moved = false; });
+  bx.addEventListener('pointermove', e => {
+    if (y0 == null) return;
+    dy = Math.max(0, e.clientY - y0);
+    if (!moved && dy > 8) { moved = true; bx.classList.add('drag'); try { bx.setPointerCapture(e.pointerId); } catch (_) {} }
+    if (moved) bx.style.transform = `translateY(${dy}px)`;
+  });
+  const end = () => {
+    if (y0 == null) return; y0 = null;
+    if (!moved) return;
+    const fast = dy / Math.max(1, performance.now() - t0) > .6;
+    bx.classList.remove('drag');
+    if (dy > 90 || (fast && dy > 30)) { bx.style.transform = ''; createAskClose(); }
+    else bx.style.transform = '';
+    bx._noClick = true; setTimeout(() => bx._noClick = false, 0);
+  };
+  bx.addEventListener('pointerup', end); bx.addEventListener('pointercancel', end);
+  bx.addEventListener('click', e => { if (bx._noClick) { e.stopPropagation(); e.preventDefault(); } }, true);
+}
 function newSheet() {
   draft = newSheet_();
   draft.color = COLORS[sheets.length % COLORS.length][0]; // couleur automatique

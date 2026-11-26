@@ -29,3 +29,10 @@ document.addEventListener('pointerdown', e => {
   b.classList.remove('strum'); void b.offsetWidth; b.classList.add('strum');
   clearTimeout(b._st); b._st = setTimeout(() => b.classList.remove('strum'), 500);
 });
+// Médi de Découvrir saute quand on le touche
+document.addEventListener('pointerdown', e => {
+  const m = e.target.closest && e.target.closest('.medi.a-vivant');
+  if (!m) return;
+  m.classList.remove('poke'); void m.getBoundingClientRect(); m.classList.add('poke');
+  clearTimeout(m._pk); m._pk = setTimeout(() => m.classList.remove('poke'), 1100);
+});
