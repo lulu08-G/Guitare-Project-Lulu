@@ -29,6 +29,16 @@ Vision produit : `docs/VISION.md` (à lire avant toute décision produit).
 - **Noté pour plus tard (Lucas, 26/11) : un « wiki » de l'app** (comme beaucoup d'applis de guitare : une page d'aide où chercher un mot, un symbole, un geste, avec liens vers les murs et les cours). Fonctions des gros sites qui manquent : **pas importantes, à débattre** (beaucoup ne servent peut-être pas cette app) : transposer une fiche / changer de capo, listes de morceaux (setlists), mode gaucher, autres accordages (Drop D, Open G…), défilement automatique réglable, série de jours / rappel d'entraînement. **Important (plus tard) : l'affichage des accords simplifiés** (ex. Fa sans barré : pile le public « au mur »).
 - **Noté pour plus tard (Lucas, 26/11) : soigner les animations.** Ex. dans Fiches : remplacer le petit logo PDF par un vrai bouton nommé qui dit ce qu'il fait (créer un carnet / une fiche imprimée / une « partition électronique » avec ses morceaux, utile pour tout avoir hors ligne) ; bouton animé **de temps en temps** (un petit saut « vas-y, clique sur moi »), pas en permanence. À faire sur plein d'autres boutons. **Quand le gros du travail sera fait** : repasser l'ergonome (`design-ergo`), le testeur (`testeur`) et le motion designer (`motion`) sur toute l'app, d'abord sur les animations, puis sur le reste.
 
+## À faire demain (Lucas, 26/11 au soir) : le rendu final des fiches
+1. **Retirer « J'apprends / Je sais la jouer »** (à confirmer : il a dit « retirer déjà le mode jeu. J'apprends et je sais jouer »).
+2. **Deux affichages des accords et du rythme** sur la fiche : un **statique, comme le PDF** (accords en doigtés + rythme en blocs à droite) ; l'autre = **le nouveau mode jeu** (celui de la fiche bêta : `saute` + `accord`).
+3. **Réorganiser les boutons** de la fiche.
+4. **Retirer** le menu « Dessin » (les tests des autres visuels) et **les cases haut / bas** repliées.
+5. **Le « Perso »** (lien avec les chantiers déjà notés) : ma bibliothèque, audio amélioré, bibliothèque de vidéos, etc.
+6. **Chercher et ajouter un tuto** : plus facile et intuitif sur la page.
+7. **Retirer le bouton « mode gaucher »** de la fiche ; regarder ensemble à quoi il sert et s'il faut le mettre ailleurs.
+Maquette d'abord (une seule), comme d'habitude.
+
 ## Refonte « Médi » (validée par Lucas le 18/11/2026, en cours de code)
 - **Référence** : planche Design « Mascotte Guitar Memory », page « Refonte » (https://claude.ai/artifact/PNb2uUQ1GaVE1ZZ1PsbqRL). Lucas veut l'app **la plus fidèle possible** aux maquettes (encore moins épurée à ce jour : à reprendre ensemble).
 - **Sauvegarde avant refonte** : branche `sauvegarde/avant-refonte-2026-11-18` (commit f48915b).
