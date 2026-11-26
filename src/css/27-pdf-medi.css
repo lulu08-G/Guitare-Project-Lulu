@@ -73,15 +73,14 @@
   .ppm-r{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
   .ppm-pv{flex:1 1 auto;height:auto;min-height:110px}
   .ppm.pv-big .ppm-l{display:none}.ppm.pv-big .ppm-pv{height:auto}
-  /* le haut plus serré (Lucas, 26/11) : une ligne par question, l'aperçu garde la moitié de l'écran */
+  /* plus de questions, juste les cartes (Lucas, 26/11) : on touche ce qu'on veut ; dessin à gauche, nom à droite */
   .ppm .modal-t{font-size:18px}
   .ppm-medi .medi{width:32px!important;height:auto!important}
   .ppm-medi .bulle{font-size:12.5px;padding:6px 10px}
-  .ppm-q{flex-direction:row;align-items:center;gap:8px}
-  .ppm-ql{flex:none;width:74px;font-size:13px}
-  .ppm-os{flex:1;min-width:0;grid-template-columns:1fr 1fr;gap:6px}
-  .ppm-o{min-height:36px;padding:4px 10px;justify-content:center}
-  .ppm-o .ppm-v{display:none}
-  .ppm-t{grid-column:1 / -1;padding-right:48px}
-  .ppm-tg{right:8px}
+  .ppm-l{gap:6px}
+  .ppm-os{grid-template-columns:1fr 1fr;gap:6px}
+  .ppm-o{min-height:46px;padding:6px 10px}
+  .ppm-v{height:28px}
+  .ppm-t{grid-column:1 / -1;padding-right:52px}
+}
 }

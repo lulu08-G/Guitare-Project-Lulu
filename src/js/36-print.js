@@ -55,11 +55,11 @@ function renderPrintModal() {
     <div class="ppm-l">
       <div class="modal-t">${n > 1 ? `Ton PDF · ${n} fiches` : 'Ta fiche en PDF'}</div>
       ${mediBulle(ppSay ? 'contente' : 'clin', `<span id="ppm-say">${PP_SAY[ppSay || 'start']}</span>`, {size: 46, cls: 'ppm-medi'})}
-      ${PP_Q.map(q => `<div class="ppm-q"><div class="ppm-ql">${q.q}</div><div class="ppm-os" role="radiogroup" aria-label="${q.q}">${q.o.map(([v, l, sub]) => {
+      ${PP_Q.map(q => `<div class="ppm-q"><div class="ppm-os" role="radiogroup" aria-label="${q.q}">${q.o.map(([v, l, sub]) => {
         const m = typeof ppMini[v] === 'function' ? ppMini[v]() : ppMini[v];
         return `<button type="button" class="ppm-o${ppOn(q.k, v) ? ' on' : ''}" role="radio" aria-checked="${ppOn(q.k, v)}" data-pp="${q.k}" data-v="${v}" onclick="ppPick('${q.k}','${v}')">${m}<span class="ppm-ot"><b>${l}</b><small>${sub}</small></span></button>`;
       }).join('')}</div></div>`).join('')}
-      ${n < 2 ? '' : `<div class="ppm-q"><div class="ppm-ql">Et en plus ?</div><div class="ppm-os">${PP_T.filter(t => !t.many || n > 1).map(t =>
+      ${n < 2 ? '' : `<div class="ppm-q"><div class="ppm-os">${PP_T.filter(t => !t.many || n > 1).map(t =>
         `<button type="button" class="ppm-o ppm-t${printOpts[t.k] ? ' on' : ''}" role="switch" aria-checked="${!!printOpts[t.k]}" data-pt="${t.k}" onclick="ppToggle('${t.k}')">${ppMini[t.k]}<span class="ppm-ot"><b>${t.l}</b><small>${t.sub}</small></span><i class="ppm-tg" aria-hidden="true"></i></button>`).join('')}</div></div>`}
     </div>
     <div class="ppm-r"><div class="ppm-pl"><b>Aperçu</b><span id="pp-count"></span></div><div class="ppm-pv" onclick="ppBig()"><div id="pp-preview"></div></div>
