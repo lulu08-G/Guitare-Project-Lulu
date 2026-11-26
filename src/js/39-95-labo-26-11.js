@@ -330,6 +330,7 @@ function l26SonHTML() {
     <label class="lab-sel">Le son <select onchange="l26Src(this.value)">${takes.map(t => `<option value="${t.id}" ${t.id === L26.src ? 'selected' : ''}>Ta prise : ${esc(t.s.title)} · ${esc(t.p.name || 'Partie')}</option>`).join('')}<option value="demo" ${L26.src === 'demo' ? 'selected' : ''}>Un rythme joué par l’app</option></select></label>
     ${takes.length ? '' : '<p class="lab-p">Tu n’as pas encore de prise enregistrée : enregistre ton rythme sur une fiche pour essayer avec ta vraie prise.</p>'}
     ${l26ChipsHTML(L26_RH_STYLES, L26.style, 'l26Style')}
+    <div class="l26-sub" id="l26-coups"${L26.style === 'saute' ? '' : ' hidden'}><small>Les coups</small>${l26ChipsHTML(L26_COUPS, L26.coups, 'l26Coups').replace('l26-chips', 'l26-chips l26-mchips')}</div>
     <section class="l26-card"><div class="l26-ch"><small>${name}</small><b>${chords}</b></div>
       <div class="l26-draw" id="l26-draw"><p class="lab-p">Je prépare le dessin…</p></div>
       <div class="l26-ctl"><button type="button" class="l26-play" onclick="l26SonPlay()" aria-label="Écouter">${LAB_PLAY}</button><span id="l26-info"></span><button type="button" class="btn btn-ghost btn-sm" onclick="l26Next()">Dessin suivant</button></div>
@@ -354,7 +355,7 @@ function l26SonPlay() {
 function l26Src(v) { l26Stop(); L26.src = v; labRender(); }
 function l26Style(k) {
   const was = l26Playing(); L26.style = k;
-  l26ChipsOn(k);
+  l26ChipsOn(k); const cr = $('l26-coups'); if (cr) cr.hidden = k !== 'saute';
   const say = $('l26-say'); if (say) say.textContent = L26_SAY[k] || L26_VSAY[k] || '';
   if (L26.tl && $('l26-draw')) { L26.live = l26Mount($('l26-draw'), k, L26.tl); if (was) l26Loop(); }
 }
