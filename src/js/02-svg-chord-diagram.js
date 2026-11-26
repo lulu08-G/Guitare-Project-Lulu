@@ -2,7 +2,7 @@
 function chordSVG(ch, opt) {
   opt = opt || {};
   const hl = opt.hl || null;   // {anc:[[corde 0=grave, case]], vides:[corde]} : met en valeur l'ancre et les cordes à vide
-  const sz = opt.size || 1, light = !!opt.light;
+  const sz = opt.size || 1, light = opt.light === 'nb' ? 'nb' : !!opt.light;
   const W = 68*sz, H = 82*sz, NF = 5;
   const ml = 13*sz, mt = 22*sz, cw = (W - ml - 8*sz)/5, rh = (H - mt - 8*sz)/NF;
   const frets = (ch && ch.frets) || [-1,-1,-1,-1,-1,-1];
@@ -11,10 +11,12 @@ function chordSVG(ch, opt) {
   const minF = played.length ? Math.min(...played) : 1;
   const maxF = played.length ? Math.max(...played) : 1;
   const base = (ch && ch.base > 1) ? ch.base : (maxF > NF ? Math.max(1, minF) : 1);
-  const gridC = light ? '#ccc' : 'var(--cream4)';
-  const nutC  = light ? '#111' : 'var(--cream)';
-  const dotC  = light ? '#c8783a' : 'var(--cream)';
-  const mutC  = light ? '#aaa' : 'var(--cream3)';
+  // light = papier ; 'nb' = la nouvelle fiche imprimée en noir et blanc (?beta, 26/11), true = l'ancienne
+  const nb = light === 'nb';
+  const gridC = light ? (nb ? '#d6d0c8' : '#ccc') : 'var(--cream4)';
+  const nutC  = light ? (nb ? '#121014' : '#111') : 'var(--cream)';
+  const dotC  = light ? (nb ? '#111' : '#c8783a') : 'var(--cream)';
+  const mutC  = light ? (nb ? '#8f8a86' : '#aaa') : 'var(--cream3)';
   const dotT  = light ? '#fff' : 'var(--bg)';
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   if (base === 1) s += `<rect x="${ml}" y="${mt-3*sz}" width="${cw*5}" height="${3.5*sz}" rx="1.5" fill="${nutC}"/>`;

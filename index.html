@@ -3245,6 +3245,159 @@ body.mj-on{overflow:hidden}
   .lv-say-b span{font-size:4.1cqw;padding:1cqh 2.6cqw}
   .lv-out-m{width:40cqw}.lv-outro b{font-size:11cqw}.lv-outro span{font-size:5cqw}
 }
+/* ═══════ FICHE IMPRIMÉE (26/11, retours de Lucas : « qu'elle ressemble à l'appli » + option noir et blanc) ═══════
+   Deux thèmes posés sur chaque page : .pf-app (fond sombre, cartes, Grille et doigtés comme à l'écran, pleine page)
+   et .pf-nb (papier blanc, noir et gris, Médi au trait, moins d'encre). La mise en page est la même, seules les couleurs
+   changent (variables --p-*). */
+#print-root,#pp-preview,.pg{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg.pf-app{--p-bg:#121014;--p-card:#1d1b21;--p-card2:#28252c;--p-ink:#f6f1ea;--p-mist:#a19ca8;--p-line:rgba(255,255,255,.09);--p-acc:#ff8a2a;--p-on-acc:#121014;--p-acc-txt:#ff8a2a;--p-bub:#2e1f12;--p-bub-ink:#ffe2c6;--p-chip-bd:transparent;--p-num:#28252c;--p-num-ink:#f6f1ea}
+.pg.pf-nb{--p-bg:#fff;--p-card:#fff;--p-card2:#f1f1f1;--p-ink:#111;--p-mist:#555;--p-line:#d4d4d4;--p-acc:#111;--p-on-acc:#fff;--p-acc-txt:#111;--p-bub:#f2f2f2;--p-bub-ink:#222;--p-chip-bd:#bdbdbd;--p-num:#111;--p-num-ink:#fff}
+.pg.pf-app,.pg.pf-nb{background:var(--p-bg);color:var(--p-ink);font-family:var(--sans);padding:10mm 10mm 20mm;box-sizing:border-box}
+.pg.pf-app{min-height:295mm}
+@media print{
+  .pg.pf-app{padding:14mm 14mm 22mm;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  .pg.pf-nb{padding:4mm 4mm 16mm}
+}
+/* en-tête : comme le haut de la fiche dans l'appli, Médi en plus */
+.pf-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.pf-head .medi{flex:none}
+.pf-ht{min-width:0}
+.pf-title{font:800 36px/1.05 var(--display);letter-spacing:-.02em;color:var(--p-ink)}
+.pf-head.sm{margin-bottom:10px}.pf-head.sm .pf-title{font-size:24px}
+.pf-artist{font-size:15px;color:var(--p-mist);margin-top:4px}
+.pf-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pf-chip{display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 12px;border-radius:14px;border:1.2px solid var(--p-chip-bd);background:var(--p-card);font:500 12.5px var(--sans);color:var(--p-mist);white-space:nowrap}
+.pf-chip b{font-weight:800;color:var(--p-ink)}
+.pf-chip.o b{color:var(--p-acc-txt)}
+.pf-lbl{font:700 10px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--p-mist)}
+/* les accords du morceau, une seule fois */
+.pf-dg{background:var(--p-card);border:1.2px solid var(--p-chip-bd);border-radius:18px;padding:12px 16px 10px;margin-bottom:12px}
+.pf-dgs{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
+.pf-d{display:flex;flex-direction:column;align-items:center}
+.pf-d b{font:800 14px var(--display);margin-top:-2px;color:var(--p-ink)}
+.pf-dgs.sm{gap:2px 8px;margin:-2px 0 8px}.pf-dgs.sm .pf-d b{font-size:11px}
+/* une carte par partie, comme dans l'appli */
+.pf-part{break-inside:avoid;background:var(--p-card);border:1.2px solid var(--p-chip-bd);border-radius:22px;padding:14px 18px 16px;margin-bottom:12px}
+.pf-pt{display:flex;align-items:center;gap:8px}
+.pf-pt b{font:500 13px var(--sans);color:var(--p-mist)}
+.pf-i{flex:none;width:22px;height:22px;border-radius:11px;background:var(--p-num);color:var(--p-num-ink);font:800 11px var(--display);display:inline-flex;align-items:center;justify-content:center}
+.pf-seq{display:flex;flex-wrap:wrap;gap:4px 16px;margin:6px 0 2px;font:800 30px/1.1 var(--display);letter-spacing:-.01em;color:var(--p-ink)}
+.pf-seq.sm{font-size:17px;gap:2px 12px;margin:0}
+.pf-way{margin-top:12px;padding-top:12px;border-top:1px solid var(--p-line)}
+.pf-way .rg,.pf-way .p-rh{max-width:420px}.pf-way .p-rh{margin:0}
+.pf-tab{margin-top:8px}
+/* les notes : la bulle de Médi */
+.pf-say{display:flex;align-items:flex-end;gap:8px;margin-top:10px;break-inside:avoid}
+.pf-say .medi{flex:none}
+.pf-b{flex:1;min-width:0;background:var(--p-bub);color:var(--p-bub-ink);border-radius:14px 14px 14px 4px;padding:9px 13px;font-size:12.5px;line-height:1.5;white-space:pre-wrap}
+.pf-b.lyr{white-space:normal;background:var(--p-card2);color:var(--p-ink)}
+/* pied de page */
+.pf-foot{position:absolute;bottom:6mm;left:10mm;right:10mm;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--p-line);padding-top:6px}
+@media print{.pf-app .pf-foot{bottom:9mm;left:14mm;right:14mm}.pf-nb .pf-foot{bottom:4mm;left:4mm;right:4mm}}
+.pf-brand{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--p-mist)}
+.pf-brand b{font:800 12px var(--display);color:var(--p-ink)}.pf-brand i{font-style:normal}
+.pf-n{min-width:22px;height:22px;padding:0 6px;box-sizing:border-box;border-radius:11px;background:var(--p-acc);color:var(--p-on-acc);font:800 11px var(--display);display:inline-flex;align-items:center;justify-content:center}
+.pg.pf-app .p-half,.pg.pf-nb .p-half{border-bottom-color:var(--p-line)}
+/* sommaire : « Mon carnet de guitare » */
+.pf-toc-h{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--p-card);border:1.2px solid var(--p-chip-bd);border-radius:24px;padding:22px 26px;margin-bottom:18px}
+.pf-toc-h small{font:700 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--p-acc-txt)}
+.pf-toc-h h2{font:800 30px/1.1 var(--display);margin:6px 0 0;letter-spacing:-.02em;color:var(--p-ink)}
+.pf-toc-h .medi{flex:none}
+.pf-toc ol{list-style:none;margin:0;padding:0}
+.pf-toc li{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--p-line)}
+.pf-tt{flex:1;min-width:0;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px}
+.pf-tt b{font:800 17px var(--display);color:var(--p-ink)}.pf-tt i{font-style:normal;color:var(--p-mist);font-size:13px}
+/* cahier : une ligne par partie */
+.pf-cahier{margin-bottom:14px}
+.pf-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:8px 0;border-top:1px solid var(--p-line);break-inside:avoid}
+.pf-rn{font:800 13px var(--display);min-width:70px;color:var(--p-ink)}
+.pf-rw .rg{max-width:300px}.pf-rw .p-rh{margin:0}
+/* noir et blanc : Médi au trait, rythme en gris */
+.pf-nb .medi .mb{fill:#fff;stroke:#111;stroke-width:9}
+.pf-nb .rt{gap:6px}.pf-nb .rt-bar{gap:3px}
+.pf-nb .rt-c{background:#f1f1f1;border-radius:7px;padding:4px 2px 5px}.pf-nb .rt-c.b{background:#e3e3e3}
+.pf-nb .rt-c i{font:600 9px var(--sans);color:#555}.pf-nb .rt-c.b i{font:800 10px var(--display);color:#111}
+.pf-nb .rt-c .d,.pf-nb .rt-c .u{stroke:#111}.pf-nb .rt-c .x{stroke:#555}.pf-nb .rt-c .o{fill:#aaa}
+/* option « Petits schémas » : chaque accord de la partie avec son doigté */
+/* le rythme imprimé (26/11, choix de Lucas : le n° 1) : blocs là où ça gratte, barres neutres, 1er et dernier bloc en orange pâle */
+.pg.pf-app{--p-blk:#2c2930;--p-lk:#4a2e17}
+.pg.pf-nb{--p-blk:#efebe5;--p-lk:#ffe2c6}
+.pfr,.pfa{display:block;max-width:100%;height:auto;overflow:visible}
+.pfr-b{fill:var(--p-blk)}.pfr-lk{fill:var(--p-lk)}
+.pfr-c{fill:var(--p-ink)}
+.pfr-x{stroke:var(--p-ink);stroke-width:2.2;stroke-linecap:round;fill:none}
+.pfr-bar{stroke:var(--p-mist);stroke-width:1}
+.pfr-n{text-anchor:middle;font:500 9px var(--sans);fill:var(--p-mist)}
+.pfr-n.b{font:800 12px var(--display);fill:var(--p-ink)}
+.pfr.mini .pfr-n{font-size:7px}.pfr.mini .pfr-n.b{font-size:9px}
+/* l'arpège imprimé (choix C) : les six cordes en lignes, un point par note, gros point = la basse */
+.pfa-w{display:flex;flex-direction:column;gap:6px}
+.pfa-l{stroke:var(--p-line);stroke-width:1}.pg.pf-nb .pfa-l{stroke:#cfc9c1}
+.pfa-s{font:800 10px var(--sans);fill:var(--p-ink)}
+.pfa-c{font:800 12px var(--display);fill:var(--p-ink)}
+.pfa-m{stroke:var(--p-mist);stroke-width:1}
+.pfa-d{fill:var(--p-ink)}.pfa-bs{fill:var(--p-acc)}
+.pfa.mini .pfa-s{font-size:7px}.pfa.mini .pfa-c{font-size:9px}
+.pfa-lg{font-size:9px;color:var(--p-mist)}
+/* ═══════ LA FENÊTRE DU PDF AVEC MÉDI (26/11, demande de Lucas) ═══════
+   Médi pose les questions (sa bulle réagit au dernier choix), on choisit sur des cartes illustrées, l'aperçu suit.
+   Téléphone : les choix défilent, l'aperçu et « Créer le PDF » restent en bas (toucher l'aperçu l'agrandit) ;
+   PC (≥ 900 px) : les choix à gauche, l'aperçu à droite. */
+.ppm-modal{max-width:1040px}
+.ppm{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+@media(min-width:900px){.ppm{grid-template-columns:minmax(0,400px) minmax(0,1fr);align-items:start}}
+.ppm-l{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ppm .modal-t{margin:0}
+.ppm-medi .bulle{font-size:14px;line-height:1.4}
+.ppm-q{display:flex;flex-direction:column;gap:8px}
+.ppm-ql{font:800 15px var(--display);color:var(--cream)}
+.ppm-os{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}
+.ppm-o{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:44px;padding:10px 12px;border-radius:16px;border:2px solid transparent;background:var(--card2);color:var(--cream);text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.ppm-o.on{border-color:var(--gold);background:var(--acc-soft)}
+.ppm-o:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.ppm-ot{display:flex;flex-direction:column;gap:1px}
+.ppm-ot b{font:700 14px var(--sans)}.ppm-ot small{font-size:12px;line-height:1.3;color:var(--cream3)}
+.ppm-v{height:40px;display:flex;align-items:center;gap:6px}
+.ppm-v.sw i{display:block;position:relative;width:44px;height:32px;border-radius:7px}
+.ppm-v.sw i::after{content:"";position:absolute;left:8px;top:8px;width:10px;height:10px;border-radius:5px}
+.ppm-v.sw-a i{background:var(--bg);border:1px solid var(--border2)}.ppm-v.sw-a i::after{background:var(--gold)}
+.ppm-v.sw-b i{background:#fff}.ppm-v.sw-b i::after{background:#111}
+.ppm-v.pg1,.ppm-v.pg2{width:30px;border-radius:4px;background:var(--cream3);flex-direction:column;justify-content:center;gap:3px;padding:5px;box-sizing:border-box}
+.ppm-v.pg1 i{display:block;width:100%;height:7px;border-radius:2px;background:var(--card)}
+.ppm-v.pg2 i{display:block;width:100%;height:3px;border-radius:1px;background:var(--card)}
+.ppm-v.n1,.ppm-v.n2{width:30px;flex-direction:column;justify-content:center;gap:3px}
+.ppm-v.n1 i{display:block;width:26px;height:34px;border-radius:3px;background:var(--cream3)}
+.ppm-v.n2 i{display:block;width:26px;height:16px;border-radius:3px;background:var(--cream3)}
+.ppm-r{display:flex;flex-direction:column;gap:8px;min-width:0}
+.ppm-pv{background:#3b3840;border-radius:14px;padding:12px;overflow:auto;max-height:46vh}
+@media(min-width:900px){.ppm-pv{max-height:68vh}}
+#pp-preview{zoom:.42}
+@media(min-width:900px){#pp-preview{zoom:.6}}
+#pp-preview .pg{margin-bottom:14px}
+/* les options en plus : des cartes comme les autres choix, avec un interrupteur dans le coin */
+.ppm-v.pgt,.ppm-v.pgn{width:30px;border-radius:4px;background:var(--cream3);box-sizing:border-box;padding:5px}
+.ppm-v.pgt{flex-direction:column;justify-content:center;gap:4px}
+.ppm-v.pgt i{display:block;width:100%;height:3px;border-radius:1px;background:var(--card)}.ppm-v.pgt i:first-child{width:60%}
+.ppm-v.pgn{align-items:flex-end;justify-content:flex-end}
+.ppm-v.pgn i{font:800 9px/1 var(--display);font-style:normal;color:var(--card)}
+.ppm-tg{position:absolute;top:10px;right:10px;width:34px;height:20px;border-radius:10px;background:var(--border2);transition:background .15s}
+.ppm-tg::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:7px;background:var(--cream);transition:transform .15s}
+.ppm-t.on .ppm-tg{background:var(--gold)}.ppm-t.on .ppm-tg::after{transform:translateX(14px)}
+.ppm-pl{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--cream3)}
+.ppm-pl b{font:800 14px var(--display);color:var(--cream)}
+/* téléphone : l'aperçu reste sous les yeux, en bas de la fenêtre */
+@media(max-width:899px){
+  #m-print .ppm-modal{display:flex;flex-direction:column;overflow:hidden;padding:16px 16px 12px}
+  #m-print-body{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
+  .ppm{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;gap:10px}
+  .ppm-l{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:4px}
+  .ppm-r{flex:0 0 auto;gap:6px;border-top:1px solid var(--border);padding-top:10px}
+  .ppm-pv{height:24vh;max-height:none;cursor:zoom-in;transition:height .2s}
+  .ppm.pv-big .ppm-pv{height:56vh;cursor:zoom-out}
+  #pp-preview{zoom:.36}
+  .ppm-r .pp-tip{margin:0;font-size:12px}
+  #m-print .modal-f{margin-top:8px;padding-top:10px}
+}
 :root{--boum:#8b95ff}   /* la couleur de Boum (celle de son dessin) */
 /* ═══════ LABO : LES TESTS DU 26/11 (39-95-labo-26-11.js, caché : ?beta) ═══════
    Le son de ta prise (rebond, cordes, rosace), l'arpège sur les cordes, les effets sur le rebond, la banque de rythmes. */
@@ -4175,7 +4328,7 @@ document.addEventListener('pointerdown', e => {
 function chordSVG(ch, opt) {
   opt = opt || {};
   const hl = opt.hl || null;   // {anc:[[corde 0=grave, case]], vides:[corde]} : met en valeur l'ancre et les cordes à vide
-  const sz = opt.size || 1, light = !!opt.light;
+  const sz = opt.size || 1, light = opt.light === 'nb' ? 'nb' : !!opt.light;
   const W = 68*sz, H = 82*sz, NF = 5;
   const ml = 13*sz, mt = 22*sz, cw = (W - ml - 8*sz)/5, rh = (H - mt - 8*sz)/NF;
   const frets = (ch && ch.frets) || [-1,-1,-1,-1,-1,-1];
@@ -4184,10 +4337,12 @@ function chordSVG(ch, opt) {
   const minF = played.length ? Math.min(...played) : 1;
   const maxF = played.length ? Math.max(...played) : 1;
   const base = (ch && ch.base > 1) ? ch.base : (maxF > NF ? Math.max(1, minF) : 1);
-  const gridC = light ? '#ccc' : 'var(--cream4)';
-  const nutC  = light ? '#111' : 'var(--cream)';
-  const dotC  = light ? '#c8783a' : 'var(--cream)';
-  const mutC  = light ? '#aaa' : 'var(--cream3)';
+  // light = papier ; 'nb' = la nouvelle fiche imprimée en noir et blanc (?beta, 26/11), true = l'ancienne
+  const nb = light === 'nb';
+  const gridC = light ? (nb ? '#d6d0c8' : '#ccc') : 'var(--cream4)';
+  const nutC  = light ? (nb ? '#121014' : '#111') : 'var(--cream)';
+  const dotC  = light ? (nb ? '#111' : '#c8783a') : 'var(--cream)';
+  const mutC  = light ? (nb ? '#8f8a86' : '#aaa') : 'var(--cream3)';
   const dotT  = light ? '#fff' : 'var(--bg)';
   let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
   if (base === 1) s += `<rect x="${ml}" y="${mt-3*sz}" width="${cw*5}" height="${3.5*sz}" rx="1.5" fill="${nutC}"/>`;
@@ -4237,7 +4392,8 @@ function tabStaffSVG(chords, light) {
   const ml = 20, cw = 30, mt = 22, lg = 14;
   const total = segs.reduce((a,c) => a + c.arp.length, 0);
   const W = ml + total*cw + 10, H = mt + lg*5 + 12;
-  const lineC = light ? '#ddd' : 'var(--border2)';
+  const nb = light === 'nb';   // la nouvelle fiche imprimée (?beta) ; true = l'ancienne
+  const lineC = light ? (nb ? '#e3dcd3' : '#ddd') : 'var(--border2)';
   const labC  = light ? '#999' : 'var(--cream3)';
   const divC  = light ? '#888' : 'var(--cream4)';
   const nameC = light ? '#111' : 'var(--cream)';
@@ -4263,7 +4419,7 @@ function tabStaffSVG(chords, light) {
         const li = disp.indexOf(si); if (li < 0) return;
         const y = mt + li*lg;
         const fr = c.frets[si];
-        s += `<circle cx="${cx}" cy="${y}" r="7" fill="${light ? '#c8783a' : 'var(--gold)'}"/>`;
+        s += `<circle cx="${cx}" cy="${y}" r="7" fill="${light ? (nb ? '#111' : '#c8783a') : 'var(--gold)'}"/>`;
         s += `<text x="${cx}" y="${y+3}" text-anchor="middle" font-size="8.5" fill="${dotT}" font-weight="700" font-family="Inter,system-ui,sans-serif">${fr <= 0 ? 0 : fr}</text>`;
       });
     });
@@ -11542,6 +11698,121 @@ function renderLib() {   // refonte : familles en puces, une grille de doigtés 
     ${grid(list)}`;
 }
 
+/* ═══════ PRINT : l'ancienne fiche imprimée (celle de main sans ?beta) ═══════
+   Gardée telle quelle tant que Lucas n'a pas validé la nouvelle (36-print.js, seulement avec ?beta, 26/11).
+   Fonctions préfixées « o » ; 36-print.js les appelle quand la bêta est coupée. */
+function oOpenPrintModal() {
+  printOpts = printOpts || {};
+  printOpts.mode = printOpts.mode || 1;
+  printOpts.toc = printOpts.toc != null ? printOpts.toc : selIds.size > 2;
+  printOpts.num = printOpts.num != null ? printOpts.num : true;
+  printOpts.style = printOpts.style || 'fiche';
+  document.querySelector('#m-print .modal').classList.add('wide');
+  oRenderPrintModal();
+  $('m-print').classList.remove('hide');
+}
+function oRenderPrintModal() {
+  const n = selIds.size;
+  $('m-print-body').innerHTML = `
+    <div class="modal-t">${n>1?`Ton PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
+    <div class="frow">
+      <div class="fg"><label>Style</label>
+        <select id="pp-style" onchange="printOpts.style=this.value;oRefreshPrintPreview()">
+          <option value="fiche" ${printOpts.style==='fiche'?'selected':''}>Fiche détaillée</option>
+          <option value="cahier" ${printOpts.style==='cahier'?'selected':''}>Cahier compact : accords et rythme sur une ligne</option>
+        </select></div>
+      <div class="fg"><label>Mise en page</label>
+        <select id="pp-mode" onchange="printOpts.mode=+this.value;oRefreshPrintPreview()">
+          <option value="1" ${printOpts.mode===1?'selected':''}>1 fiche par page</option>
+          <option value="2" ${printOpts.mode===2?'selected':''}>2 fiches par page</option>
+        </select></div>
+    </div>
+    <div class="frow">
+      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
+        <input type="checkbox" id="pp-toc" style="width:auto" ${printOpts.toc?'checked':''} onchange="printOpts.toc=this.checked;oRefreshPrintPreview()"> Sommaire en première page</label>
+      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
+        <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;oRefreshPrintPreview()"> Numéroter les pages</label>
+    </div>
+    <p class="pp-tip">Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ». Tu pourras aussi l’imprimer.</p>
+    <div style="background:#5a5a5a;border-radius:10px;padding:14px;overflow:auto;max-height:52vh;margin-top:8px">
+      <div id="pp-preview" style="zoom:.42"></div>
+    </div>
+    <div class="modal-f">
+      <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
+      <button class="btn btn-primary btn-sm" onclick="doPrint()">Créer le PDF</button>
+    </div>`;
+  oRefreshPrintPreview();
+}
+function oRefreshPrintPreview() { $('pp-preview').innerHTML = oBuildPrintPages(); }
+function oBuildPrintPages() {
+  const {mode: perPage, toc, num, style} = printOpts;
+  const list = sheets.filter(s => selIds.has(s.id));
+  let pages = [], pageNo = 0;
+  if (toc) {
+    pageNo++;
+    pages.push(`<div class="pg"><div class="p-toc"><h2>Cahier de guitare</h2><ol>${
+      list.map(s => `<li>${esc(s.title)} <span class="a">— ${esc(s.artist||'')}${s.capo?' · capo '+s.capo:''}</span></li>`).join('')}</ol></div>
+      ${num ? `<div class="p-foot"><span>Sommaire</span><span>${pageNo}</span></div>` : ''}</div>`);
+  }
+  for (let i = 0; i < list.length; i += perPage) {
+    pageNo++;
+    const chunk = list.slice(i, i + perPage);
+    pages.push(`<div class="pg">${chunk.map(s => `<div class="${perPage===2?'p-half':''}">${
+      style === 'cahier' ? oPrintCahierHTML(s) : oPrintSheetHTML(s, perPage===2)}</div>`).join('')}
+      ${num ? `<div class="p-foot"><span>Guitar Memory Sheets</span><span>${pageNo}</span></div>` : ''}</div>`);
+  }
+  return pages.join('');
+}
+// façon de jouer imprimée : la ligne de groupes de la fiche, volontairement plus petite que les accords
+function oPPrintWay(p, h, mini) {
+  if (pWay(p) !== 'rh') return pWayHTML(p, true, mini ? {mini: true} : undefined);
+  return `<div class="p-rh">${rhTimeHTML(p.rhythm)}</div>`;
+}
+function oPrintSheetHTML(s, compact) {
+  return `<div class="p-head">
+      <div><div class="p-title" style="${compact?'font-size:20px':''}">${esc(s.title)}</div><div class="p-artist">${esc(s.artist||'')}</div></div>
+      <div class="p-meta">
+        ${s.capo>0?`<div class="p-capo">CAPO ${s.capo}</div>`:''}
+        ${s.tuning&&s.tuning!=='Standard'?`<div class="p-bpm">${esc(s.tuning)}</div>`:''}
+        ${s.bpm?`<div class="p-bpm">&#9833; ${s.bpm} BPM</div>`:''}
+        ${s.difficulty?`<div class="p-bpm">${esc(dispDiff(s.difficulty))}</div>`:''}
+      </div>
+    </div>
+    ${(s.parts||[]).map(p => {
+      const staff = tabStaffSVG(p.chords, true);
+      return `<div class="p-part">
+        <div class="p-part-t">${p.name ? `<span class="d"></span>${esc(p.name)}` : ''}${p.note && compact ? `<span class="c">${esc(p.note)}</span>` : ''}</div>
+        ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.9:1.15, light:true})}</div>`).join('')}</div>` : ''}
+        ${staff ? `<div style="margin-bottom:6px">${staff}</div>` : ''}
+        ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
+        ${oPPrintWay(p, compact ? 74 : 88)}
+        ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? `<div class="p-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
+        ${p.note && !compact ? `<div class="p-note">${esc(p.note)}</div>` : ''}
+      </div>`;
+    }).join('')}
+    ${s.memo && !compact ? `<div class="p-note">${esc(s.memo)}</div>` : ''}`;
+}
+// Senior note: "cahier" is the practical practice-room layout — a scannable strip
+// of chords + rhythm curve per part, no prose, so a whole songbook fits densely.
+function oPrintCahierHTML(s) {
+  return `<div class="p-head" style="margin-bottom:10px;padding-bottom:6px">
+      <div><div class="p-title" style="font-size:18px">${esc(s.title)}</div><div class="p-artist" style="font-size:11px">${esc(s.artist||'')}</div></div>
+      <div class="p-meta">
+        ${s.capo>0?`<div class="p-capo" style="font-size:10px;padding:2px 9px">CAPO ${s.capo}</div>`:''}
+        ${s.bpm?`<div class="p-bpm">&#9833; ${s.bpm}</div>`:''}
+      </div>
+    </div>
+    ${(s.parts||[]).map(p => `<div style="margin-bottom:9px;page-break-inside:avoid">
+      ${p.name ? `<div class="p-part-t" style="margin-bottom:3px"><span class="d"></span>${esc(p.name)}</div>` : ''}
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <div style="display:flex;gap:9px;flex-wrap:wrap">${
+          p.chords.length ? p.chords.map(c => `<div class="p-chord"><div class="cn" style="font-size:12px">${esc(c.name)}</div>${chordSVG(c,{size:.6,light:true})}</div>`).join('')
+                           : '<span style="font-size:10px;color:#999">—</span>'}</div>
+        ${pHas(p) ? `<div>${oPPrintWay(p, 62, true)}</div>` : ''}
+      </div>
+    </div>`).join('')}`;
+}
+
 /* ═══════ IMPORT: ASCII TAB / CHORD SHEET PARSER ═══════ */
 const SECT_RE = /^\s*[\[\(]?\s*(intro|verse|couplet|chorus|refrain|bridge|pont|solo|outro|pre-?chorus|interlude|riff)\s*\d*\s*[\]\)]?\s*:?\s*$/i;
 const TAB_RE  = /^\s*[eEBGDAa]\s*[\|:]/;
@@ -11637,67 +11908,124 @@ function startFromImage() {
 /* ═══════ PRINT ═══════ */
 function printOne() { printSheet(cur.id); }
 let printOpts = null;
+/* La nouvelle fiche imprimée (ce fichier) ne se voit qu'avec ?beta tant que Lucas ne l'a pas validée (26/11) ;
+   sans ?beta, c'est l'ancienne (35-9-print-ancien.js, fonctions « o… »). */
+const pNew = () => typeof IS_BETA !== 'undefined' && IS_BETA;
 function openPrintModal() {
+  if (!pNew()) return oOpenPrintModal();
   printOpts = printOpts || {};
   printOpts.mode = printOpts.mode || 1;
   printOpts.toc = printOpts.toc != null ? printOpts.toc : selIds.size > 2;
   printOpts.num = printOpts.num != null ? printOpts.num : true;
   printOpts.style = printOpts.style || 'fiche';
-  document.querySelector('#m-print .modal').classList.add('wide');
+  printOpts.theme = printOpts.theme || 'app';   // 'app' : comme l'appli (fond sombre) ; 'nb' : noir et blanc, pour économiser l'encre
+  // les accords : toujours les lettres dans les parties et les doigtés une fois en haut (tri de Lucas, 26/11 : pas trop d'options)
+  ppSay = null;
+  document.querySelector('#m-print .modal').classList.add('wide', 'ppm-modal');
   renderPrintModal();
   $('m-print').classList.remove('hide');
 }
+/* Médi prépare la fiche à imprimer (26/11, demande de Lucas) : il pose les questions, on choisit sur des cartes,
+   sa bulle réagit au dernier choix et l'aperçu suit en direct (sur téléphone : l'aperçu reste visible en bas). */
+const ppMini = {
+  toc: '<span class="ppm-v pgt"><i></i><i></i><i></i></span>', num: '<span class="ppm-v pgn"><i>1</i></span>',
+  app: '<span class="ppm-v sw sw-a"><i></i></span>', nb: '<span class="ppm-v sw sw-b"><i></i></span>',
+  fiche: '<span class="ppm-v pg1"><i></i><i></i><i></i></span>', cahier: '<span class="ppm-v pg2"><i></i><i></i><i></i><i></i><i></i></span>',
+  1: '<span class="ppm-v n1"><i></i></span>', 2: '<span class="ppm-v n2"><i></i><i></i></span>'
+};
+const PP_Q = [
+  {k: 'theme', q: 'Quelles couleurs ?', o: [['app', 'Comme l’appli', 'fond sombre'], ['nb', 'Noir et blanc', 'moins d’encre']]},
+  {k: 'style', q: 'Quelle forme ?', o: [['fiche', 'Détaillée', 'tout le morceau'], ['cahier', 'Compacte', 'une ligne par partie']]},
+  {k: 'mode', q: 'Combien de fiches par page ?', o: [[1, 'Une', 'bien lisible'], [2, 'Deux', 'format carnet']]}
+];
+const PP_SAY = {
+  start: 'Je te prépare ta fiche. Choisis comment tu la veux, l’aperçu suit.',
+  app: 'Comme dans l’appli, sur fond sombre. Ça claque, mais ça boit de l’encre.',
+  nb: 'Noir et blanc : ton imprimante te dit merci.',
+  fiche: 'La fiche complète, avec la tablature, les notes et les paroles.',
+  cahier: 'Version cahier : une ligne par partie, tout le morceau d’un coup d’œil.',
+  1: 'Une fiche par page, bien lisible au pupitre.', 2: 'Deux fiches par page : parfait pour un carnet de poche.',
+  toc1: 'Un sommaire au début : tu retrouves ton morceau tout de suite.', toc0: 'Pas de sommaire : on file direct aux fiches.',
+  num1: 'Les pages numérotées : rien ne se mélange.', num0: 'Sans numéros : plus épuré.'
+};
+// les options en plus, en cartes comme les autres choix (on / off)
+const PP_T = [{k: 'toc', l: 'Un sommaire', sub: 'au début du carnet', many: 1}, {k: 'num', l: 'Les numéros', sub: 'en bas des pages'}];
+let ppSay = null;
+const ppOn = (k, v) => String(printOpts[k]) === String(v);
 function renderPrintModal() {
   const n = selIds.size;
-  $('m-print-body').innerHTML = `
-    <div class="modal-t">${n>1?`Ton PDF · ${n} fiches`:'Ta fiche en PDF'}</div>
-    <div class="frow">
-      <div class="fg"><label>Style</label>
-        <select id="pp-style" onchange="printOpts.style=this.value;refreshPrintPreview()">
-          <option value="fiche" ${printOpts.style==='fiche'?'selected':''}>Fiche détaillée</option>
-          <option value="cahier" ${printOpts.style==='cahier'?'selected':''}>Cahier compact : accords et rythme sur une ligne</option>
-        </select></div>
-      <div class="fg"><label>Mise en page</label>
-        <select id="pp-mode" onchange="printOpts.mode=+this.value;refreshPrintPreview()">
-          <option value="1" ${printOpts.mode===1?'selected':''}>1 fiche par page</option>
-          <option value="2" ${printOpts.mode===2?'selected':''}>2 fiches par page</option>
-        </select></div>
+  $('m-print-body').innerHTML = `<div class="ppm">
+    <div class="ppm-l">
+      <div class="modal-t">${n > 1 ? `Ton PDF · ${n} fiches` : 'Ta fiche en PDF'}</div>
+      ${mediBulle(ppSay ? 'contente' : 'clin', `<span id="ppm-say">${PP_SAY[ppSay || 'start']}</span>`, {size: 46, cls: 'ppm-medi'})}
+      ${PP_Q.map(q => `<div class="ppm-q"><div class="ppm-ql">${q.q}</div><div class="ppm-os" role="radiogroup" aria-label="${q.q}">${q.o.map(([v, l, sub]) => {
+        const m = typeof ppMini[v] === 'function' ? ppMini[v]() : ppMini[v];
+        return `<button type="button" class="ppm-o${ppOn(q.k, v) ? ' on' : ''}" role="radio" aria-checked="${ppOn(q.k, v)}" data-pp="${q.k}" data-v="${v}" onclick="ppPick('${q.k}','${v}')">${m}<span class="ppm-ot"><b>${l}</b><small>${sub}</small></span></button>`;
+      }).join('')}</div></div>`).join('')}
+      <div class="ppm-q"><div class="ppm-ql">Et en plus ?</div><div class="ppm-os">${PP_T.filter(t => !t.many || n > 1).map(t =>
+        `<button type="button" class="ppm-o ppm-t${printOpts[t.k] ? ' on' : ''}" role="switch" aria-checked="${!!printOpts[t.k]}" data-pt="${t.k}" onclick="ppToggle('${t.k}')">${ppMini[t.k]}<span class="ppm-ot"><b>${t.l}</b><small>${t.sub}</small></span><i class="ppm-tg" aria-hidden="true"></i></button>`).join('')}</div></div>
     </div>
-    <div class="frow">
-      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
-        <input type="checkbox" id="pp-toc" style="width:auto" ${printOpts.toc?'checked':''} onchange="printOpts.toc=this.checked;refreshPrintPreview()"> Sommaire en première page</label>
-      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--cream2)">
-        <input type="checkbox" id="pp-num" style="width:auto" ${printOpts.num?'checked':''} onchange="printOpts.num=this.checked;refreshPrintPreview()"> Numéroter les pages</label>
-    </div>
-    <p class="pp-tip">Dans la fenêtre qui s’ouvre, choisis « Enregistrer en PDF ». Tu pourras aussi l’imprimer.</p>
-    <div style="background:#5a5a5a;border-radius:10px;padding:14px;overflow:auto;max-height:52vh;margin-top:8px">
-      <div id="pp-preview" style="zoom:.42"></div>
-    </div>
-    <div class="modal-f">
-      <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
-      <button class="btn btn-primary btn-sm" onclick="doPrint()">Créer le PDF</button>
-    </div>`;
+    <div class="ppm-r"><div class="ppm-pl"><b>Aperçu</b><span id="pp-count"></span></div><div class="ppm-pv" onclick="ppBig()"><div id="pp-preview"></div></div>
+      <p class="pp-tip">Ensuite, choisis « Enregistrer en PDF » (ou imprime).</p></div>
+  </div>
+  <div class="modal-f">
+    <button class="btn btn-ghost btn-sm" onclick="closePrintModal()">Fermer</button>
+    <button class="btn btn-primary btn-sm" onclick="doPrint()">Créer le PDF</button>
+  </div>`;
   refreshPrintPreview();
 }
-function refreshPrintPreview() { $('pp-preview').innerHTML = buildPrintPages(); }
+function ppPick(k, v) {
+  printOpts[k] = k === 'mode' ? +v : v; ppSay = v;
+  document.querySelectorAll(`#m-print [data-pp="${k}"]`).forEach(b => { const on = ppOn(k, b.dataset.v); b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+  const say = $('ppm-say'); if (say) say.textContent = PP_SAY[v] || '';
+  const md = document.querySelector('#m-print .ppm-medi .medi'); if (md && md.animate && !mReduced()) md.animate([{transform: 'none'}, {transform: 'translateY(-8px) rotate(-6deg)'}, {transform: 'none'}], {duration: 380, easing: 'ease-out'});
+  refreshPrintPreview();
+}
+function ppToggle(k) {
+  printOpts[k] = !printOpts[k]; ppSay = k + (printOpts[k] ? 1 : 0);
+  const b = document.querySelector(`#m-print [data-pt="${k}"]`); if (b) { b.classList.toggle('on', printOpts[k]); b.setAttribute('aria-checked', printOpts[k]); }
+  const say = $('ppm-say'); if (say) say.textContent = PP_SAY[ppSay] || '';
+  refreshPrintPreview();
+}
+// sur téléphone, toucher l'aperçu l'agrandit (et le rétrécit)
+function ppBig() { if (innerWidth < 900) document.querySelector('#m-print .ppm').classList.toggle('pv-big'); }
+function refreshPrintPreview() {
+  if (!pNew()) return oRefreshPrintPreview();
+  const pv = $('pp-preview'); pv.innerHTML = buildPrintPages();
+  const n = pv.querySelectorAll('.pg').length, c = $('pp-count'); if (c) c.textContent = n + (n > 1 ? ' pages' : ' page');
+  // le choix se voit tout de suite : l'aperçu revient en haut et s'allume un instant
+  const box = pv.parentElement; box.scrollTop = 0;
+  if (box.animate && !mReduced()) box.animate([{boxShadow: '0 0 0 2px var(--gold)'}, {boxShadow: '0 0 0 2px transparent'}], {duration: 600, easing: 'ease-out'});
+}
+/* Fiche imprimée (refaite le 26/11, retours de Lucas : « qu'elle ressemble à l'appli » + option noir et blanc) :
+   deux thèmes, printOpts.theme = 'app' (fond sombre, cartes, Grille de rythme et doigtés comme à l'écran, pleine page) ou
+   'nb' (papier blanc, noir et gris, Médi au trait). En-tête avec Médi, doigtés une seule fois, chaque partie avec ses accords
+   en grand et son rythme, les notes dans la bulle de Médi, pied de page avec Médi. Styles : 26-impression.css. */
+const pLight = () => (!printOpts || printOpts.theme === 'nb') && 'nb';   // 'nb' : les doigtés au trait noir (02-, 03-)
+// les accords d'une partie : leurs noms en grand (les doigtés sont une fois en haut de la fiche)
+const pSeq = (p, sm) => !p.chords.length ? '' : `<div class="pf-seq${sm ? ' sm' : ''}">${p.chords.map(c => `<span>${esc(c.name)}</span>`).join('')}</div>`;
+const pMedi = (expr, size) => mediSVG(expr, {size, anim: 'still'});
+const pFoot = (left, n) => `<div class="pf-foot"><span class="pf-brand">${pMedi('contente', 18)}<b>Guitar Memory</b>${left ? `<i>${esc(left)}</i>` : ''}</span>${n ? `<span class="pf-n">${n}</span>` : ''}</div>`;
 function buildPrintPages() {
+  if (!pNew()) return oBuildPrintPages();
   const {mode: perPage, toc, num, style} = printOpts;
-  const list = sheets.filter(s => selIds.has(s.id));
+  const list = sheets.filter(s => selIds.has(s.id)), th = pLight() ? 'pf-nb' : 'pf-app';
   let pages = [], pageNo = 0;
   if (toc) {
     pageNo++;
-    pages.push(`<div class="pg"><div class="p-toc"><h2>Cahier de guitare</h2><ol>${
-      list.map(s => `<li>${esc(s.title)} <span class="a">— ${esc(s.artist||'')}${s.capo?' · capo '+s.capo:''}</span></li>`).join('')}</ol></div>
-      ${num ? `<div class="p-foot"><span>Sommaire</span><span>${pageNo}</span></div>` : ''}</div>`);
+    pages.push(`<div class="pg ${th} pf-toc"><div class="pf-toc-h"><div><small>Mon carnet de guitare</small><h2>${list.length} morceau${list.length > 1 ? 'x' : ''} que je sais jouer</h2></div>${pMedi('clin', 96)}</div>
+      <ol>${list.map((s, i) => `<li><span class="pf-i">${i + 1}</span><span class="pf-tt"><b>${esc(s.title)}</b><i>${esc(s.artist && s.artist !== '—' ? s.artist : '')}</i></span>${s.capo > 0 ? `<span class="pf-chip o">Capo ${s.capo}</span>` : ''}${s.bpm ? `<span class="pf-chip">${s.bpm} BPM</span>` : ''}</li>`).join('')}</ol>
+      ${num ? pFoot('Sommaire', pageNo) : ''}</div>`);
   }
   for (let i = 0; i < list.length; i += perPage) {
     pageNo++;
     const chunk = list.slice(i, i + perPage);
-    pages.push(`<div class="pg">${chunk.map(s => `<div class="${perPage===2?'p-half':''}">${
+    pages.push(`<div class="pg ${th}">${chunk.map(s => `<div class="${perPage===2?'p-half':''}">${
       style === 'cahier' ? printCahierHTML(s) : printSheetHTML(s, perPage===2)}</div>`).join('')}
-      ${num ? `<div class="p-foot"><span>Guitar Memory Sheets</span><span>${pageNo}</span></div>` : ''}</div>`);
+      ${num ? pFoot('', pageNo) : ''}</div>`);
   }
-  return pages.join('');
+  // thème de l'appli : la page entière est sombre, sans marge blanche autour
+  return (th === 'pf-app' ? '<style>@media print{@page{size:A4;margin:0}html,body,#print-root{background:#121014!important}}</style>' : '') + pages.join('');
 }
 function doPrint() {
   $('print-root').innerHTML = buildPrintPages();
@@ -11707,56 +12035,110 @@ function doPrint() {
   window.addEventListener('afterprint', () => { document.title = t0; }, {once: true});
   setTimeout(() => { window.print(); if (!selMode && selIds.size) { selIds.clear(); renderHome(); } }, 150);
 }
-// façon de jouer imprimée : la ligne de groupes de la fiche, volontairement plus petite que les accords
+/* Façon de jouer imprimée (26/11, choix de Lucas après 4 planches de croquis) :
+   le rythme = des blocs là où ça gratte (les pauses les séparent), une barre neutre par coup, plus haute si le coup
+   est fort, le compte dessous ; le premier et le dernier bloc en orange pâle (la fin se relie au début : aide au
+   changement d'accord). Pas de flèches : le sens se déduit de la place (bas sur les chiffres, haut sur les « et »).
+   L'arpège = les six cordes en lignes (1 = Mi aigu en haut … 6 = Mi grave en bas), un point par note, gros point = la basse. */
 function pPrintWay(p, h, mini) {
-  if (pWay(p) !== 'rh') return pWayHTML(p, true, mini ? {mini: true} : undefined);
-  return `<div class="p-rh">${rhTimeHTML(p.rhythm)}</div>`;
+  const w = pWay(p);
+  return w === 'rh' ? pRhBlocks(p.rhythm, mini) : w === 'arp' ? pArpLines(p, mini) : '';
+}
+const pF = v => Math.round(v * 10) / 10;
+// le compte sous une case : le chiffre sur le temps, « et » au milieu du temps, un point ailleurs (6/8 : 1 à 6)
+function pCount(c, per, spb, mes) {
+  const k = c % per;
+  if (mes === '6/8' && spb === 3) return {t: String(k + 1), b: k % 3 === 0};
+  if (k % spb === 0) return {t: String(k / spb + 1), b: true};
+  return {t: spb % 2 === 0 && k % spb === spb / 2 ? 'et' : '·', b: false};
+}
+function pRhBlocks(rh, mini) {
+  rh = rhNorm(JSON.parse(JSON.stringify(rh))); if (!rh || !rh.cells.length) return '';
+  const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res), n = rh.cells.length;
+  const cw = (spb > 2 ? 20 : 34) * (mini ? .66 : 1), m0 = 4, H = mini ? 28 : 40, cy = mini ? 34 : 50;
+  const W = m0 * 2 + n * cw, X = c => m0 + (c + .5) * cw, amp = a => a >= 2 ? 1 : a >= 1 ? .72 : .45;
+  // les blocs : les cases jouées qui se suivent (une barre de mesure coupe aussi le bloc)
+  const bl = []; let cu = null;
+  rh.cells.forEach((c, i) => { if (!c) { cu = null; return; } if (cu && i % per) cu.e = i; else bl.push(cu = {s: i, e: i}); });
+  let s = `<svg class="pfr${mini ? ' mini' : ''}" width="${pF(W)}" height="${cy + 4}" viewBox="0 0 ${pF(W)} ${cy + 4}" role="img" aria-label="Le rythme : des blocs là où ça gratte, une barre par coup">`;
+  for (let b = 1; b < n / per; b++) s += `<line class="pfr-bar" x1="${pF(m0 + b * per * cw)}" x2="${pF(m0 + b * per * cw)}" y1="0" y2="${H}"/>`;
+  bl.forEach((k, j) => {
+    const x0 = X(k.s) - cw / 2 + 1.5, x1 = X(k.e) + cw / 2 - 1.5, lk = j === 0 || j === bl.length - 1;
+    s += `<rect class="${lk ? 'pfr-lk' : 'pfr-b'}" x="${pF(x0)}" y="0" width="${pF(x1 - x0)}" height="${H}" rx="${mini ? 7 : 10}"/>`;
+    for (let c = k.s; c <= k.e; c++) {
+      const cell = rh.cells[c], x = X(c), my = H / 2;
+      if (cell.d === 'X') { const r = mini ? 3.5 : 5; s += `<path class="pfr-x" d="M${pF(x - r)} ${pF(my - r)}L${pF(x + r)} ${pF(my + r)}M${pF(x + r)} ${pF(my - r)}L${pF(x - r)} ${pF(my + r)}"/>`; continue; }
+      const a = amp(cell.a), bw = (3.6 + 2.4 * a) * (mini ? .8 : 1), bh = (10 + 22 * a) * (mini ? .7 : 1);
+      s += `<rect class="pfr-c" x="${pF(x - bw / 2)}" y="${pF(my - bh / 2)}" width="${pF(bw)}" height="${pF(bh)}" rx="${pF(bw / 2)}"/>`;
+    }
+  });
+  for (let c = 0; c < n; c++) { const t = pCount(c, per, spb, rh.mes); s += `<text class="pfr-n${t.b ? ' b' : ''}" x="${pF(X(c))}" y="${cy}">${t.t}</text>`; }
+  return s + '</svg>';
+}
+// les notes d'une colonne d'arpège : sur l'accord (corde réelle), ou sans accord, la corde du rôle (la basse sur la 5)
+function pArpNotes(roles, ch, bass) {
+  if (ch && ch.frets) return arpStepNotes(roles, ch, bass).map(o => ({n: 6 - o.si, bs: o.bs}));
+  return (roles || []).map(r => ({n: r === 'B' ? (+bass || 5) : +r, bs: r === 'B'}));
+}
+function pArpLines(p, mini) {
+  const a = p.arp, chs = p.chords.length ? p.chords : [null], steps = a.steps.length;
+  const dx = mini ? 7.5 : 14, gap = mini ? 8 : 13, L = mini ? 14 : 20, top = mini ? 14 : 18, rowN = 4;
+  let out = '';
+  for (let r0 = 0; r0 < chs.length; r0 += rowN) {
+    const row = chs.slice(r0, r0 + rowN), W = L + row.length * steps * dx + 6, H = top + 5 * gap + 4;
+    let s = `<svg class="pfa${mini ? ' mini' : ''}" width="${pF(W)}" height="${H}" viewBox="0 0 ${pF(W)} ${H}" role="img" aria-label="L'arpège sur les six cordes, un point par note">`;
+    for (let k = 0; k < 6; k++) { const y = top + k * gap; s += `<text class="pfa-s" x="2" y="${pF(y + (mini ? 2.6 : 3.5))}">${k + 1}</text><line class="pfa-l" x1="${L - 6}" x2="${pF(W - 2)}" y1="${y}" y2="${y}"/>`; }
+    row.forEach((ch, m) => {
+      const bx = L + m * steps * dx;
+      if (ch) s += `<text class="pfa-c" x="${pF(bx + 2)}" y="${top - (mini ? 5 : 8)}">${esc(ch.name)}</text>`;
+      if (m) s += `<line class="pfa-m" x1="${pF(bx - dx / 2 + 4)}" x2="${pF(bx - dx / 2 + 4)}" y1="${top - 2}" y2="${top + 5 * gap + 2}"/>`;
+      for (let i = 0; i < steps; i++) pArpNotes(a.steps[i], ch, a.bass).forEach(o => {
+        s += `<circle class="${o.bs ? 'pfa-bs' : 'pfa-d'}" cx="${pF(bx + i * dx + 6)}" cy="${top + (o.n - 1) * gap}" r="${(o.bs ? 4.2 : 3.2) * (mini ? .8 : 1)}"/>`;
+      });
+    });
+    out += s + '</svg>';
+  }
+  return `<div class="pfa-w">${out}${mini ? '' : '<div class="pfa-lg">1 = Mi aigu (en haut) … 6 = Mi grave (en bas). Gros point = la basse, au pouce.</div>'}</div>`;
+}
+// les accords du morceau, une seule fois (dans l'ordre d'apparition)
+function pUniqueChords(s) {
+  const seen = new Set(), out = [];
+  (s.parts || []).forEach(p => p.chords.forEach(c => { if (!seen.has(c.name)) { seen.add(c.name); out.push(c); } }));
+  return out;
+}
+const pBubble = (txt, lyr) => `<div class="pf-say">${pMedi('neutre', 22)}<div class="pf-b${lyr ? ' lyr' : ''}">${lyr ? lyricsPreviewHTML(txt) : esc(txt)}</div></div>`;
+function pHead(s, compact) {
+  const chips = [s.capo > 0 ? `<span class="pf-chip o">Capo <b>${s.capo}</b></span>` : '', s.bpm ? `<span class="pf-chip">Tempo <b>${s.bpm}</b></span>` : '',
+    s.tuning && s.tuning !== 'Standard' ? `<span class="pf-chip">${esc(s.tuning)}</span>` : '', s.difficulty && !compact ? `<span class="pf-chip">${esc(dispDiff(s.difficulty))}</span>` : ''].join('');
+  return `<div class="pf-head${compact ? ' sm' : ''}"><div class="pf-ht"><div class="pf-title">${esc(s.title)}</div>${s.artist && s.artist !== '—' ? `<div class="pf-artist">${esc(s.artist)}</div>` : ''}${chips ? `<div class="pf-chips">${chips}</div>` : ''}</div>${pMedi('contente', compact ? 48 : 64)}</div>`;
 }
 function printSheetHTML(s, compact) {
-  return `<div class="p-head">
-      <div><div class="p-title" style="${compact?'font-size:20px':''}">${esc(s.title)}</div><div class="p-artist">${esc(s.artist||'')}</div></div>
-      <div class="p-meta">
-        ${s.capo>0?`<div class="p-capo">CAPO ${s.capo}</div>`:''}
-        ${s.tuning&&s.tuning!=='Standard'?`<div class="p-bpm">${esc(s.tuning)}</div>`:''}
-        ${s.bpm?`<div class="p-bpm">&#9833; ${s.bpm} BPM</div>`:''}
-        ${s.difficulty?`<div class="p-bpm">${esc(dispDiff(s.difficulty))}</div>`:''}
-      </div>
-    </div>
-    ${(s.parts||[]).map(p => {
-      const staff = tabStaffSVG(p.chords, true);
-      return `<div class="p-part">
-        <div class="p-part-t">${p.name ? `<span class="d"></span>${esc(p.name)}` : ''}${p.note && compact ? `<span class="c">${esc(p.note)}</span>` : ''}</div>
-        ${p.chords.length ? `<div class="p-chords">${p.chords.map(c => `<div class="p-chord"><div class="cn">${esc(c.name)}</div>${chordSVG(c, {size: compact?.9:1.15, light:true})}</div>`).join('')}</div>` : ''}
-        ${staff ? `<div style="margin-bottom:6px">${staff}</div>` : ''}
+  const uniq = pUniqueChords(s);
+  return `${pHead(s, compact)}
+    ${uniq.length ? `<div class="pf-dg"><div class="pf-lbl">Les accords</div><div class="pf-dgs">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: compact ? .8 : 1, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div></div>` : ''}
+    ${(s.parts||[]).map((p, i) => {
+      const staff = pWay(p) === 'arp' ? '' : tabStaffSVG(p.chords, pLight()), rep = +(p.repeat || p.reps || 0);
+      return `<div class="pf-part">
+        <div class="pf-pt"><b>${esc(p.name || 'Partie ' + (i + 1))}</b>${rep > 1 ? `<span class="pf-chip">×${rep}</span>` : ''}</div>
+        ${pSeq(p, compact)}
+        ${pHas(p) ? `<div class="pf-way">${pPrintWay(p, compact ? 74 : 88)}</div>` : ''}
+        ${staff && !compact ? `<div class="pf-tab">${staff}</div>` : ''}
         ${p.tabText && !compact ? `<div class="p-ascii">${esc(p.tabText)}</div>` : ''}
-        ${pPrintWay(p, compact ? 74 : 88)}
-        ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? `<div class="p-note" style="font-style:normal">${lyricsPreviewHTML(p.lyrics)}</div>` : ''}
-        ${p.note && !compact ? `<div class="p-note">${esc(p.note)}</div>` : ''}
+        ${typeof p.lyrics === 'string' && p.lyrics.trim() && !compact ? pBubble(p.lyrics, true) : ''}
+        ${p.note ? pBubble(p.note) : ''}
       </div>`;
     }).join('')}
-    ${s.memo && !compact ? `<div class="p-note">${esc(s.memo)}</div>` : ''}`;
+    ${s.memo && !compact ? pBubble(s.memo) : ''}`;
 }
-// Senior note: "cahier" is the practical practice-room layout — a scannable strip
-// of chords + rhythm curve per part, no prose, so a whole songbook fits densely.
+// le cahier : une ligne par partie (accords en grand + rythme), les doigtés en petit une seule fois
 function printCahierHTML(s) {
-  return `<div class="p-head" style="margin-bottom:10px;padding-bottom:6px">
-      <div><div class="p-title" style="font-size:18px">${esc(s.title)}</div><div class="p-artist" style="font-size:11px">${esc(s.artist||'')}</div></div>
-      <div class="p-meta">
-        ${s.capo>0?`<div class="p-capo" style="font-size:10px;padding:2px 9px">CAPO ${s.capo}</div>`:''}
-        ${s.bpm?`<div class="p-bpm">&#9833; ${s.bpm}</div>`:''}
-      </div>
-    </div>
-    ${(s.parts||[]).map(p => `<div style="margin-bottom:9px;page-break-inside:avoid">
-      ${p.name ? `<div class="p-part-t" style="margin-bottom:3px"><span class="d"></span>${esc(p.name)}</div>` : ''}
-      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-        <div style="display:flex;gap:9px;flex-wrap:wrap">${
-          p.chords.length ? p.chords.map(c => `<div class="p-chord"><div class="cn" style="font-size:12px">${esc(c.name)}</div>${chordSVG(c,{size:.6,light:true})}</div>`).join('')
-                           : '<span style="font-size:10px;color:#999">—</span>'}</div>
-        ${pHas(p) ? `<div>${pPrintWay(p, 62, true)}</div>` : ''}
-      </div>
-    </div>`).join('')}`;
+  const uniq = pUniqueChords(s);
+  return `<div class="pf-cahier">${pHead(s, true)}
+    ${uniq.length ? `<div class="pf-dgs sm">${uniq.map(c => `<div class="pf-d">${chordSVG(c, {size: .55, light: pLight()})}<b>${esc(c.name)}</b></div>`).join('')}</div>` : ''}
+    ${(s.parts||[]).map((p, i) => `<div class="pf-row"><span class="pf-i">${i + 1}</span><b class="pf-rn">${esc(p.name || 'Partie ' + (i + 1))}</b>
+      ${pSeq(p, true) || '<div class="pf-seq sm">—</div>'}
+      ${pHas(p) ? `<div class="pf-rw">${pPrintWay(p, 62, true)}</div>` : ''}</div>`).join('')}</div>`;
 }
-
 /* ═══════ JSON EXPORT / IMPORT ═══════ */
 function exportSel() {
   const list = sheets.filter(s => selIds.has(s.id)).map(s => {
