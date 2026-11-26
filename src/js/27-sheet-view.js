@@ -55,8 +55,7 @@ async function viewSheet(id, keepPart) {
     }
     const way = pWay(p);   // rythme OU arpège : une ligne « Rythme » / « Arpège » avec son ▶
     if (way !== 'none') body += `<div class="pv-way"><span class="pv-wl">${way === 'arp' ? 'Arpège' : 'Rythme'}</span><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div>
-      <button type="button" class="pv-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : way === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${RH_PLAY_SVG}</button></div>
-      <button type="button" class="pv-band" data-i="${i}" onclick="svBandPlay(${i},event)" aria-pressed="false">${BAND_DOTS}<span>Écouter avec la bande</span></button>`;
+      <button type="button" class="pv-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : way === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${RH_PLAY_SVG}</button></div>`;
     let more = '';   // détails d'une partie : visibles quand elle est seule à l'écran, cachés en vue « Tout »
     if (p.note) more += `<div class="pv-note">${esc(p.note)}</div>`;
     const staff = tabStaffSVG(p.chords, false);
@@ -137,11 +136,6 @@ function svSync() {
   else if (has) { const ar = pWay(p) === 'arp'; pl.innerHTML = on ? RH_PAUSE_SVG : RH_PLAY_SVG; cap.textContent = on ? 'Pause' : 'Jouer'; pl.setAttribute('aria-label', on ? (ar ? 'Mettre l’arpège en pause' : 'Mettre le rythme en pause') : (ar ? 'Lancer l’arpège en boucle' : 'Lancer le rythme en boucle')); }
   else { pl.innerHTML = RH_PLUS_SVG; cap.textContent = 'Créer'; pl.setAttribute('aria-label', 'Créer un rythme ou un arpège pour cette partie'); }
   $('sv-live').textContent = (pWay(p) === 'arp' ? 'Arpège en boucle' : 'Rythme en boucle') + (p && p.name ? ' · ' + p.name : '');
-  document.querySelectorAll('#sv-parts .pv-band').forEach(b => {   // la bande de chaque carte
-    const bn = !!(rhP && rhP.band && rhP.key === 'v' + b.dataset.i); if (b.dataset.on === String(bn)) return;
-    b.dataset.on = String(bn); b.classList.toggle('on', bn); b.setAttribute('aria-pressed', bn);
-    b.querySelector('span').textContent = bn ? 'Arrêter la bande' : 'Écouter avec la bande';
-  });
   document.querySelectorAll('#sv-parts .pv-pl').forEach(b => {   // ▶ de chaque carte
     const pn = (rhPlaying('v' + b.dataset.i) || (rp && +b.dataset.i === svPart)) && !recing; if (b.dataset.on === String(pn)) return;
     b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
@@ -301,13 +295,8 @@ function playPartRhythm(i, band) {
   rhStart(pRh(p), cur.bpm || 90, chs[0], cur.capo, (step, k) => rhRenderPlayer(i, step, k), Object.assign({key: 'v' + i, chords: chs, band: !!band}, arp ? {cellFn: arpCellFn(p.arp, cur.capo)} : {}));
   svSync();
 }
-const BAND_DOTS = '<i class="bd" aria-hidden="true"><b class="boum"></b><b class="tchik"></b><b class="basile"></b></i>';
-function svBandPlay(i, e) {   // « Écouter avec la bande » sous le rythme d'une carte
-  if (e) e.stopPropagation();
-  if (recPlay) recStopPlay();
-  if (i !== svPart) { if (rhP) stopPlay(); svPart = i; svPick2(); }
-  playPartRhythm(i, true);
-}
+// la bande en petit : Médi, Boum et Basile (bouton « Bande » du mode jeu ; tri de Lucas du 26/11 : la bande sort de la fiche)
+const BAND_MINI = () => `<i class="bd" aria-hidden="true">${mediSVG('contente', {size: 24, anim: 'still'})}${BOUM_SVG(true, 'bd-m')}${BASILE_SVG(true, 'bd-m')}</i>`;
 // ▶ d'une carte Partie : la rend active puis lance / arrête sa façon de jouer
 function svCardPlay(i, e) {   // ▶ d'une carte : ma prise si elle existe, sinon le rythme joué par la guitare de l'app
   if (e) e.stopPropagation();
