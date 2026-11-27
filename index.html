@@ -145,6 +145,11 @@ textarea{resize:vertical;min-height:68px;line-height:1.6}
 .sv-foot{display:flex;justify-content:center;padding:6px 0 22px}
 .sv-foot .btn{display:inline-flex;align-items:center;gap:8px}
 
+/* 27/11 (Lucas : « on a encore du bleu de sélectionné quand on clique ») : plus de surlignage bleu au toucher ni de
+   contour au clic ; le contour reste pour le clavier (focus-visible) ; pas de sélection de texte sur les boutons */
+html{-webkit-tap-highlight-color:transparent}
+:focus:not(:focus-visible){outline:none}
+button,[role="button"],.chord-cell,.filt,.sv-tab,a.btn{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 /* ── SHEET VIEW ── */
 .sv-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:28px 0 22px}
 .sv-top h2{font-family:var(--serif);font-size:clamp(22px,3.5vw,32px);font-weight:800;color:var(--cream)}
@@ -1296,6 +1301,8 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
   .logo-text{display:none}
 }
 
+/* 27/11 (Lucas) : la bulle cachée ne doit pas prendre le toucher (elle bloquait le rythme en bas de l'écran) */
+.toast:not(.show){pointer-events:none}
 /* ── NAVIGATION : 5 espaces ── */
 .nav-links{display:flex;gap:6px;align-items:center}
 .nav-link{padding:9px 16px;font-size:14px;min-height:40px}

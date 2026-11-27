@@ -189,3 +189,5 @@ body.lefty .sv-main>.sv-big:first-child{order:3}body.lefty .sv-main>.sv-big:last
   .logo-text{display:none}
 }
 
+/* 27/11 (Lucas) : la bulle cachée ne doit pas prendre le toucher (elle bloquait le rythme en bas de l'écran) */
+.toast:not(.show){pointer-events:none}
