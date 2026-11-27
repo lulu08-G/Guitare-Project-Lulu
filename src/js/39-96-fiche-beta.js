@@ -44,8 +44,8 @@ function fbWayHTML(p, i) {
   const lbl = p.rec ? 'ta prise' : arp ? 'l’arpège' : 'le rythme';
   return `<div class="fb-way fb-live" id="fbw-${i}">
     <div class="fb-stage" data-i="${i}" role="button" tabindex="0" aria-label="Jouer ${lbl}" onclick="fbPlay(${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fbPlay(${i},event)}">
-      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><i class="pl">${FB_PLAYI}</i><i class="pa">${FB_PAUSE}</i></span></div>
-    ${band ? `<button type="button" class="fb-tab fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}<i class="fb-sw" aria-hidden="true"></i></button>` : ''}
+      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><svg class="pl" viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M8.5 5.5v13M15.5 5.5v13"/></svg></span></div>
+    ${band ? `<button type="button" class="fb-tab fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}</button>` : ''}
     ${arw ? fbArwBtn().replace('class="fb-arw', 'class="fb-tab fb-arw') : ''}
   </div>`;
 }

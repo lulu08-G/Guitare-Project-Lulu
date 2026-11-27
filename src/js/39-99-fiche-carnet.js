@@ -131,12 +131,13 @@ function fsGroupDots() {
   const wrap = document.createElement('span'); wrap.className = 'fs-fav';
   fav.parentNode.insertBefore(wrap, fav); wrap.appendChild(fav);
   wrap.insertAdjacentHTML('beforeend', '<span class="fs-gdots" id="fs-gdots"></span><button type="button" class="fs-plus" onclick="fsGroups(event)" aria-label="Ranger dans un groupe" title="Ranger dans un groupe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>');
-  { const ch = document.querySelector('#v-sheet .sv-chips'); if (ch) ch.insertAdjacentHTML('beforeend', '<button type="button" class="sv-carnet" onclick="printOne()" aria-label="Mettre cette fiche dans mon carnet (PDF)">Mon carnet</button>'); }   // là où était Mode jeu
+  { const ch = document.querySelector('#v-sheet .sv-chips'); if (ch) ch.insertAdjacentHTML('beforeend', '<button type="button" class="sv-carnet" onclick="printOne()" aria-label="Garder cette fiche : la mettre dans mon carnet (PDF)"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="bk" d="M6.5 3.5h11a1.5 1.5 0 011.5 1.5v14a1.5 1.5 0 01-1.5 1.5h-11z"/><path class="bk" d="M6.5 3.5v17M4.5 7h2M4.5 12h2M4.5 17h2"/><g class="ar"><path d="M13 6.5v7.5M10 11.2l3 3 3-3"/></g></svg>Garder</button>'); }   // là où était Mode jeu
   wrap.insertAdjacentHTML('afterend', '<button type="button" class="btn-icon sv-pen" onclick="if(cur)editSheet(cur.id)" aria-label="Modifier la fiche" title="Modifier la fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 00-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button>');
   const kn = $('sv-know');
   if (kn) kn.insertAdjacentHTML('afterend', `<button type="button" class="fs-live" id="fs-live" onclick="fbLive()" aria-pressed="false">
     <span class="fs-live-i" aria-hidden="true"><svg viewBox="0 0 40 24"><path d="M0 6h40M0 10h40M0 14h40M0 18h40" class="l"/><rect x="7" y="4" width="3.4" height="16" rx="1.7"/><rect x="18" y="7" width="3.4" height="10" rx="1.7"/><rect x="29" y="5" width="3.4" height="14" rx="1.7"/></svg></span>
-    <span class="fs-live-t"><b>En rythme</b><small></small></span><i class="fs-live-sw" aria-hidden="true"></i></button>`);
+    <span class="fs-live-t"><b>En rythme</b><small></small></span>
+    <span class="fs-live-k" aria-hidden="true"><svg viewBox="0 0 60 30"><path class="st" d="M3 17H57"/><path class="vb" d="M3 17Q10.5 11 18 17T33 17T48 17T57 17"/><g class="pk"><path transform="translate(-7 -8.6) scale(.083)" d="${FS_BODY}"/></g></svg></span></button>`);
   // la fiche s'ouvre : les petits logos des groupes à côté du cœur
   const sv = viewSheet;
   viewSheet = async function (id, k) { const r = await sv(id, k); fsGroupDots(); fsLiveSync(); return r; };
