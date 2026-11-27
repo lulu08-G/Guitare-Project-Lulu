@@ -67,6 +67,15 @@ const l26Cur = (hits, pos) => { let j = -1; for (let i = 0; i < hits.length; i++
 // les chiffres sous le dessin : les temps (et les « et » pour un rythme de l'app)
 function l26Labels(tl, page, X, y) {
   let s = ''; const w0 = page * tl.win, w1 = w0 + tl.win;
+  if (tl.chl && tl.chl.length && tl.bar && tl.roll) {   // deux places : la mesure en cours, et la suivante dans l'autre place
+    const o = tl.off || 0, sh = tl.grid ? .5 : 0;
+    [page, l26MNext(tl, page)].forEach((m, j) => {
+      const t0 = o + m * tl.bar, cw = X(t0 + Math.min(1, tl.bar / 2)) - X(t0), u = cw / Math.min(1, tl.bar / 2), a = X(t0) - sh * u;
+      if ((j === 0 ? page : page + 1) % 2 === 1) s += `<line x1="${l26f(a)}" x2="${l26f(a)}" y1="${y - 14}" y2="${y + 2}" class="l26-lm"/>`;
+      s += `<text x="${l26f(a + tl.bar * u / 2)}" y="${y}" class="l26-lc${j ? ' nx' : ''}" data-m="${m}">${esc(tl.chl[m % tl.chl.length])}</text>`;
+    });
+    return s;
+  }
   if (tl.chl && tl.chl.length && tl.bar) {   // la fiche (27/11) : le nom de l'accord sous chaque mesure, à la place du compte
     const o = tl.off || 0;
     for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
@@ -94,7 +103,7 @@ function l26Mount(el, kind, tl, o) {
   D.X = t => 12 + (t - D.page * tl.win) / tl.win * (D.W - 24);
   D.draw = page => { D.page = page; D.cur = -2; el.innerHTML = L26_DRAW[kind].html(D); L26_DRAW[kind].bind && L26_DRAW[kind].bind(D); };
   D.frame = pos => {
-    const page = pos < 0 || tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);   // à l'arrêt : la 1re page, comme au départ
+    const page = pos < 0 ? 0 : tl.roll ? Math.max(0, Math.floor((pos - (tl.off || 0)) / tl.bar + 1e-6)) : tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);   // à l'arrêt : la 1re page, comme au départ ; tl.roll : la page = la mesure en cours
     if (page !== D.page) D.draw(page);
     L26_DRAW[kind].frame(D, pos);
   };
@@ -102,7 +111,13 @@ function l26Mount(el, kind, tl, o) {
   return D;
 }
 // les coups de la page affichée
-const l26Page = D => D.tl.hits.filter(h => h.t >= D.page * D.tl.win - 1e-6 && h.t < (D.page + 1) * D.tl.win - 1e-6);
+const l26Page = D => D.tl.roll ? D.tl.hits.filter(h => { const m = l26M(D.tl, h.t); return m === D.page || m === l26MNext(D.tl, D.page); })
+    .map(h => l26M(D.tl, h.t) < D.page ? Object.assign({}, h, {t: h.t + D.tl.L}) : h).sort((a, b) => a.t - b.t)   // la mesure d'après le bout de la boucle : vue comme « après »
+  : D.tl.hits.filter(h => h.t >= D.page * D.tl.win - 1e-6 && h.t < (D.page + 1) * D.tl.win - 1e-6);
+// tl.roll (la fiche, 27/11 : « prévisualiser le prochain accord ») : deux places qui se relaient ; la mesure en cours et la suivante
+const l26M = (tl, t) => Math.floor((t - (tl.off || 0)) / tl.bar + 1e-6);
+const l26NM = tl => Math.max(1, Math.ceil((tl.L - (tl.off || 0)) / tl.bar - 1e-6));
+const l26MNext = (tl, m) => (m + 1) % l26NM(tl);
 function l26SetCls(D, sel, cur) {   // passé / maintenant / à venir
   if (cur === D.cur) return; D.cur = cur;
   D.el.querySelectorAll(sel).forEach((g, j) => { g.classList.toggle('past', j < cur); g.classList.toggle('cur', j === cur); g.classList.toggle('fut', j > cur); });

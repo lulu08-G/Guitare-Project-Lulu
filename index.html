@@ -3838,6 +3838,7 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .l26-ko,#v-sheet .l26-h .l26-ko{display:none}   /* « retire le fond noir des flèches » (Lucas, 27/11) */
 .l26-chr{opacity:.85}
 .l26-wnd{stroke:#000;stroke-opacity:.3;stroke-dasharray:.7 1.6}
+.l26-lc.nx{opacity:.7}   /* l'accord suivant, déjà affiché dans l'autre place */
 </style>
 </head>
 <body>
@@ -13480,6 +13481,15 @@ const l26Cur = (hits, pos) => { let j = -1; for (let i = 0; i < hits.length; i++
 // les chiffres sous le dessin : les temps (et les « et » pour un rythme de l'app)
 function l26Labels(tl, page, X, y) {
   let s = ''; const w0 = page * tl.win, w1 = w0 + tl.win;
+  if (tl.chl && tl.chl.length && tl.bar && tl.roll) {   // deux places : la mesure en cours, et la suivante dans l'autre place
+    const o = tl.off || 0, sh = tl.grid ? .5 : 0;
+    [page, l26MNext(tl, page)].forEach((m, j) => {
+      const t0 = o + m * tl.bar, cw = X(t0 + Math.min(1, tl.bar / 2)) - X(t0), u = cw / Math.min(1, tl.bar / 2), a = X(t0) - sh * u;
+      if ((j === 0 ? page : page + 1) % 2 === 1) s += `<line x1="${l26f(a)}" x2="${l26f(a)}" y1="${y - 14}" y2="${y + 2}" class="l26-lm"/>`;
+      s += `<text x="${l26f(a + tl.bar * u / 2)}" y="${y}" class="l26-lc${j ? ' nx' : ''}" data-m="${m}">${esc(tl.chl[m % tl.chl.length])}</text>`;
+    });
+    return s;
+  }
   if (tl.chl && tl.chl.length && tl.bar) {   // la fiche (27/11) : le nom de l'accord sous chaque mesure, à la place du compte
     const o = tl.off || 0;
     for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
@@ -13507,7 +13517,7 @@ function l26Mount(el, kind, tl, o) {
   D.X = t => 12 + (t - D.page * tl.win) / tl.win * (D.W - 24);
   D.draw = page => { D.page = page; D.cur = -2; el.innerHTML = L26_DRAW[kind].html(D); L26_DRAW[kind].bind && L26_DRAW[kind].bind(D); };
   D.frame = pos => {
-    const page = pos < 0 || tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);   // à l'arrêt : la 1re page, comme au départ
+    const page = pos < 0 ? 0 : tl.roll ? Math.max(0, Math.floor((pos - (tl.off || 0)) / tl.bar + 1e-6)) : tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);   // à l'arrêt : la 1re page, comme au départ ; tl.roll : la page = la mesure en cours
     if (page !== D.page) D.draw(page);
     L26_DRAW[kind].frame(D, pos);
   };
@@ -13515,7 +13525,13 @@ function l26Mount(el, kind, tl, o) {
   return D;
 }
 // les coups de la page affichée
-const l26Page = D => D.tl.hits.filter(h => h.t >= D.page * D.tl.win - 1e-6 && h.t < (D.page + 1) * D.tl.win - 1e-6);
+const l26Page = D => D.tl.roll ? D.tl.hits.filter(h => { const m = l26M(D.tl, h.t); return m === D.page || m === l26MNext(D.tl, D.page); })
+    .map(h => l26M(D.tl, h.t) < D.page ? Object.assign({}, h, {t: h.t + D.tl.L}) : h).sort((a, b) => a.t - b.t)   // la mesure d'après le bout de la boucle : vue comme « après »
+  : D.tl.hits.filter(h => h.t >= D.page * D.tl.win - 1e-6 && h.t < (D.page + 1) * D.tl.win - 1e-6);
+// tl.roll (la fiche, 27/11 : « prévisualiser le prochain accord ») : deux places qui se relaient ; la mesure en cours et la suivante
+const l26M = (tl, t) => Math.floor((t - (tl.off || 0)) / tl.bar + 1e-6);
+const l26NM = tl => Math.max(1, Math.ceil((tl.L - (tl.off || 0)) / tl.bar - 1e-6));
+const l26MNext = (tl, m) => (m + 1) % l26NM(tl);
 function l26SetCls(D, sel, cur) {   // passé / maintenant / à venir
   if (cur === D.cur) return; D.cur = cur;
   D.el.querySelectorAll(sel).forEach((g, j) => { g.classList.toggle('past', j < cur); g.classList.toggle('cur', j === cur); g.classList.toggle('fut', j > cur); });
@@ -14057,11 +14073,11 @@ async function fbTl(p) {   // la ligne du temps d'une partie
   const chl = (p.chords || []).map(c => (FB.simp ? fsSimp(c) : c).name);   // le nom de l'accord sous chaque mesure
   if (p.rec) {
     const tl = await l26TakeTl({id: [p.rec.mediaId, p.rec.start, p.rec.end, cur.bpm].join(':'), s: cur, p});
-    if (tl) return Object.assign({}, tl, {now: null, chl});
+    if (tl) return Object.assign({}, tl, {now: null, chl, roll: !!tl.bar && tl.L > tl.bar * 1.5});
   }
   const chs = p.chords.length ? p.chords : [newChord('Em')];
   if (pWay(p) === 'arp') { const tl = l26ArpTl({a: p.arp, chords: chs.map(c => c.name)}); tl.chs = chs; return tl; }
-  if (pWay(p) === 'rh') { const tl = l26FromRh(p.rhythm, chs.map(c => c.name)); tl.chs = chs; tl.chl = chl; return tl; }
+  if (pWay(p) === 'rh') { const tl = l26FromRh(p.rhythm, chs.map(c => c.name)); tl.chs = chs; tl.chl = chl; tl.roll = Math.abs(tl.win - 2 * tl.bar) < 1e-6; return tl; }
   return null;
 }
 async function fbMount(i) {
@@ -14182,8 +14198,8 @@ function fbScrub(i, st) {
       try { st.setPointerCapture(e.pointerId); } catch (_) {}
       st.classList.add('scrub');
     }
-    const w0 = D.page * tl.win, span = (D.X(w0 + tl.win) - D.X(w0)) * st.getBoundingClientRect().width / D.W;
-    const pos = (((p0 - dx * tl.win / Math.max(1, span)) % tl.L) + tl.L) % tl.L;
+    const t0 = tl.roll ? (tl.off || 0) + D.page * tl.bar : D.page * tl.win, d = Math.min(1, tl.bar / 2), upx = (D.X(t0 + d) - D.X(t0)) / d * st.getBoundingClientRect().width / D.W;   // pixels par unité de temps
+    const pos = (((p0 - dx / Math.max(.01, upx)) % tl.L) + tl.L) % tl.L;
     fbHold(i, pos);
   });
   const end = () => {
@@ -14533,8 +14549,13 @@ function l26Blocks(D, hp) {
   const tl = D.tl; if (!tl.chl || !tl.bar) return null;
   const o = tl.off || 0, w0 = D.page * tl.win, w1 = w0 + tl.win, y0 = D.top - 16, h = 5 * D.gap + 32, of = [];
   let bg = '';
-  for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
-    const sh = tl.grid ? .5 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant
+  const sh = tl.grid ? .5 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant
+  const uX = t => { const d = Math.min(1, tl.bar / 2); return (D.X(t + d) - D.X(t)) / d; };   // une unité de temps en x, dans la mesure de t
+  if (tl.roll) [D.page, l26MNext(tl, D.page)].forEach((m, j) => {
+    const t0 = o + m * tl.bar, u = uX(t0), xa = D.X(t0) - sh * u + 2, xb = xa + tl.bar * u - 4, sl = (j ? D.page + 1 : D.page) % 2;
+    bg += `<rect class="l26-mb${sl ? ' odd' : ''}${j ? ' nx' : ''}" data-m="${m}" x="${l26f(xa)}" y="${y0}" width="${l26f(xb - xa)}" height="${h}" rx="12"/>`;
+  });
+  else for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
     const a = Math.max(w0 - sh, o + m * tl.bar - sh), b = Math.min(w1 - sh, o + (m + 1) * tl.bar - sh), xa = D.X(a) + 2, xb = D.X(b) - 2;
     if (xb > xa) bg += `<rect class="l26-mb${m % 2 ? ' odd' : ''}" data-m="${m}" x="${l26f(xa)}" y="${y0}" width="${l26f(xb - xa)}" height="${h}" rx="12"/>`;
   }
@@ -14548,7 +14569,7 @@ function l26Blocks(D, hp) {
     st.x1 = hh.t; pt = hh.t; of.push(blk);
   });
   const half = tl.grid ? .42 : tl.beat * .2, mid = D.top + 2.5 * D.gap;
-  caps.forEach(c => { const xa = D.X(c.x0 - half), xb = D.X(c.x1 + half);
+  caps.forEach(c => { const xa = D.X(c.x0) - half * uX(c.x0), xb = D.X(c.x1) + half * uX(c.x1);
     bg += `<rect class="l26-bk" data-b="${c.b % 4}" x="${l26f(xa)}" y="${l26f(mid - 2.6 * D.gap)}" width="${l26f(xb - xa)}" height="${l26f(5.2 * D.gap)}" rx="9"/>`; });
   return {bg, of};
 }
@@ -14556,8 +14577,13 @@ L26_DRAW.saute = {
   html(D) {
     const band = l26BandShow(), L = band ? 38 : 12, x0 = band ? 32 : 0;
     D.X = t => L + (t - D.page * D.tl.win) / D.tl.win * (D.W - L - 12);   // la bande prend la marge de gauche, pas de hauteur en plus
+    if (D.tl.roll) {   // deux places qui se relaient : la mesure en cours dans la sienne (paire à gauche, impaire à droite), la suivante dans l'autre
+      const tl = D.tl, o = tl.off || 0, sp = (D.W - L - 12) / 2;
+      D.X = t => { const m = l26M(tl, t), slot = m === D.page ? D.page % 2 : (D.page + 1) % 2; return L + slot * sp + (t - o - m * tl.bar) / tl.bar * sp; };
+    }
     const top = 58, gap = 12, hmax = 40, H = top + 5 * gap + 30, hp = l26Page(D); D.hp = hp; D.top = top; D.gap = gap; D.x0 = x0; D.band = band;
-    const pts = [[x0, top - hmax * .55]].concat(hp.map(h => [D.X(h.t), top]), [[D.W, top - hmax * .5]]);
+    const hpM = D.tl.roll ? hp.filter(h => l26M(D.tl, h.t) === D.page || D.page % 2 === 0) : hp;   // Médi ne revient pas en arrière
+    const pts = [[x0, top - hmax * .55]].concat(hpM.map(h => [D.X(h.t), top]).sort((a, b) => a[0] - b[0]), [[D.W, top - hmax * .5]]);
     D.segs = l26Arcs(pts, hmax).segs;
     let s = '';   // épuré : les cordes seules, rien de dessiné à l'avance
     const bk = l26Blocks(D, hp);   // la fiche (27/11) : une bulle par accord (une teinte sur deux), un groupe de coups = une couleur

@@ -91,11 +91,11 @@ async function fbTl(p) {   // la ligne du temps d'une partie
   const chl = (p.chords || []).map(c => (FB.simp ? fsSimp(c) : c).name);   // le nom de l'accord sous chaque mesure
   if (p.rec) {
     const tl = await l26TakeTl({id: [p.rec.mediaId, p.rec.start, p.rec.end, cur.bpm].join(':'), s: cur, p});
-    if (tl) return Object.assign({}, tl, {now: null, chl});
+    if (tl) return Object.assign({}, tl, {now: null, chl, roll: !!tl.bar && tl.L > tl.bar * 1.5});
   }
   const chs = p.chords.length ? p.chords : [newChord('Em')];
   if (pWay(p) === 'arp') { const tl = l26ArpTl({a: p.arp, chords: chs.map(c => c.name)}); tl.chs = chs; return tl; }
-  if (pWay(p) === 'rh') { const tl = l26FromRh(p.rhythm, chs.map(c => c.name)); tl.chs = chs; tl.chl = chl; return tl; }
+  if (pWay(p) === 'rh') { const tl = l26FromRh(p.rhythm, chs.map(c => c.name)); tl.chs = chs; tl.chl = chl; tl.roll = Math.abs(tl.win - 2 * tl.bar) < 1e-6; return tl; }
   return null;
 }
 async function fbMount(i) {
@@ -216,8 +216,8 @@ function fbScrub(i, st) {
       try { st.setPointerCapture(e.pointerId); } catch (_) {}
       st.classList.add('scrub');
     }
-    const w0 = D.page * tl.win, span = (D.X(w0 + tl.win) - D.X(w0)) * st.getBoundingClientRect().width / D.W;
-    const pos = (((p0 - dx * tl.win / Math.max(1, span)) % tl.L) + tl.L) % tl.L;
+    const t0 = tl.roll ? (tl.off || 0) + D.page * tl.bar : D.page * tl.win, d = Math.min(1, tl.bar / 2), upx = (D.X(t0 + d) - D.X(t0)) / d * st.getBoundingClientRect().width / D.W;   // pixels par unité de temps
+    const pos = (((p0 - dx / Math.max(.01, upx)) % tl.L) + tl.L) % tl.L;
     fbHold(i, pos);
   });
   const end = () => {

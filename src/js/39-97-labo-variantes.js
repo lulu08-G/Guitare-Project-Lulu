@@ -324,8 +324,13 @@ function l26Blocks(D, hp) {
   const tl = D.tl; if (!tl.chl || !tl.bar) return null;
   const o = tl.off || 0, w0 = D.page * tl.win, w1 = w0 + tl.win, y0 = D.top - 16, h = 5 * D.gap + 32, of = [];
   let bg = '';
-  for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
-    const sh = tl.grid ? .5 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant
+  const sh = tl.grid ? .5 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant
+  const uX = t => { const d = Math.min(1, tl.bar / 2); return (D.X(t + d) - D.X(t)) / d; };   // une unité de temps en x, dans la mesure de t
+  if (tl.roll) [D.page, l26MNext(tl, D.page)].forEach((m, j) => {
+    const t0 = o + m * tl.bar, u = uX(t0), xa = D.X(t0) - sh * u + 2, xb = xa + tl.bar * u - 4, sl = (j ? D.page + 1 : D.page) % 2;
+    bg += `<rect class="l26-mb${sl ? ' odd' : ''}${j ? ' nx' : ''}" data-m="${m}" x="${l26f(xa)}" y="${y0}" width="${l26f(xb - xa)}" height="${h}" rx="12"/>`;
+  });
+  else for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
     const a = Math.max(w0 - sh, o + m * tl.bar - sh), b = Math.min(w1 - sh, o + (m + 1) * tl.bar - sh), xa = D.X(a) + 2, xb = D.X(b) - 2;
     if (xb > xa) bg += `<rect class="l26-mb${m % 2 ? ' odd' : ''}" data-m="${m}" x="${l26f(xa)}" y="${y0}" width="${l26f(xb - xa)}" height="${h}" rx="12"/>`;
   }
@@ -339,7 +344,7 @@ function l26Blocks(D, hp) {
     st.x1 = hh.t; pt = hh.t; of.push(blk);
   });
   const half = tl.grid ? .42 : tl.beat * .2, mid = D.top + 2.5 * D.gap;
-  caps.forEach(c => { const xa = D.X(c.x0 - half), xb = D.X(c.x1 + half);
+  caps.forEach(c => { const xa = D.X(c.x0) - half * uX(c.x0), xb = D.X(c.x1) + half * uX(c.x1);
     bg += `<rect class="l26-bk" data-b="${c.b % 4}" x="${l26f(xa)}" y="${l26f(mid - 2.6 * D.gap)}" width="${l26f(xb - xa)}" height="${l26f(5.2 * D.gap)}" rx="9"/>`; });
   return {bg, of};
 }
@@ -347,8 +352,13 @@ L26_DRAW.saute = {
   html(D) {
     const band = l26BandShow(), L = band ? 38 : 12, x0 = band ? 32 : 0;
     D.X = t => L + (t - D.page * D.tl.win) / D.tl.win * (D.W - L - 12);   // la bande prend la marge de gauche, pas de hauteur en plus
+    if (D.tl.roll) {   // deux places qui se relaient : la mesure en cours dans la sienne (paire à gauche, impaire à droite), la suivante dans l'autre
+      const tl = D.tl, o = tl.off || 0, sp = (D.W - L - 12) / 2;
+      D.X = t => { const m = l26M(tl, t), slot = m === D.page ? D.page % 2 : (D.page + 1) % 2; return L + slot * sp + (t - o - m * tl.bar) / tl.bar * sp; };
+    }
     const top = 58, gap = 12, hmax = 40, H = top + 5 * gap + 30, hp = l26Page(D); D.hp = hp; D.top = top; D.gap = gap; D.x0 = x0; D.band = band;
-    const pts = [[x0, top - hmax * .55]].concat(hp.map(h => [D.X(h.t), top]), [[D.W, top - hmax * .5]]);
+    const hpM = D.tl.roll ? hp.filter(h => l26M(D.tl, h.t) === D.page || D.page % 2 === 0) : hp;   // Médi ne revient pas en arrière
+    const pts = [[x0, top - hmax * .55]].concat(hpM.map(h => [D.X(h.t), top]).sort((a, b) => a[0] - b[0]), [[D.W, top - hmax * .5]]);
     D.segs = l26Arcs(pts, hmax).segs;
     let s = '';   // épuré : les cordes seules, rien de dessiné à l'avance
     const bk = l26Blocks(D, hp);   // la fiche (27/11) : une bulle par accord (une teinte sur deux), un groupe de coups = une couleur
