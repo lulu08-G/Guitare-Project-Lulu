@@ -67,6 +67,15 @@ const l26Cur = (hits, pos) => { let j = -1; for (let i = 0; i < hits.length; i++
 // les chiffres sous le dessin : les temps (et les « et » pour un rythme de l'app)
 function l26Labels(tl, page, X, y) {
   let s = ''; const w0 = page * tl.win, w1 = w0 + tl.win;
+  if (tl.chl && tl.chl.length && tl.bar) {   // la fiche (27/11) : le nom de l'accord sous chaque mesure, à la place du compte
+    const o = tl.off || 0;
+    for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
+      const a = o + m * tl.bar, c = a + tl.bar / 2;
+      if (m > 0 && a > w0 + 1e-6) s += `<line x1="${l26f(X(a))}" x2="${l26f(X(a))}" y1="${y - 14}" y2="${y + 2}" class="l26-lm"/>`;
+      if (c >= w0 && c < w1) s += `<text x="${l26f(X(c))}" y="${y}" class="l26-lc" data-m="${m}">${esc(tl.chl[m % tl.chl.length])}</text>`;
+    }
+    return s;
+  }
   if (tl.grid) {
     for (let k = Math.ceil(w0); k < w1; k++) { const j = k % tl.grid.per, beat = j % tl.grid.spb === 0, x = X(k);
       s += `<text x="${l26f(x)}" y="${y}" class="${beat ? 'l26-lb' : 'l26-le'}">${beat ? j / tl.grid.spb + 1 : 'et'}</text>`; }

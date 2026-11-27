@@ -40,7 +40,11 @@ function fbStaticHTML(p, i) {
   const w = pWay(p);
   const pl = `<button type="button" class="pv-pl fs-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : w === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${FB_PLAYO}</button>`;
   if (w === 'arp') return `<div class="fs-stat fs-rh"><div class="fs-sc">${pArpLines(p, false)}</div>${pl}</div>`;
-  if (w === 'rh') return `<div class="fs-stat fs-rh"><div class="fs-sc">${pRhBlocks(p.rhythm, false, L26.coups === 'fleche')}</div>${pl}</div>`;
+  if (w === 'rh') {   // choix C (Lucas, 27/11) : le rythme répété sous chaque accord, chaque accord dans son cadre, le nom posé dessus
+    const m = pRhBlocks(p.rhythm, false, L26.coups === 'fleche').replace(/<text[^>]*>[^<]*<\/text>/g, '').replace(/height="54" viewBox="0 0 ([\d.]+) 54"/, 'height="42" viewBox="0 0 $1 42"');
+    const chs = p.chords.length ? p.chords.map(c => FB.simp ? fsSimp(c) : c) : [null];
+    return `<div class="fs-stat fs-c"><div class="fs-gr">${chs.map(c => `<div class="fs-g">${c ? `<span class="fs-gc">${esc(c.name)}</span>` : ''}${m}</div>`).join('')}</div>${pl}</div>`;
+  }
   return p.rec ? `<div class="fs-stat fs-rh"><span class="fs-stat-n">Ma prise</span>${pl}</div>` : '';
 }
 const FB_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.4"/><rect x="13.5" y="5" width="4" height="14" rx="1.4"/></svg>';
@@ -80,13 +84,14 @@ function fbLive(v) {
   if (cur) viewSheet(cur.id, svAll ? null : svPart);
 }
 async function fbTl(p) {   // la ligne du temps d'une partie
+  const chl = (p.chords || []).map(c => (FB.simp ? fsSimp(c) : c).name);   // le nom de l'accord sous chaque mesure
   if (p.rec) {
     const tl = await l26TakeTl({id: [p.rec.mediaId, p.rec.start, p.rec.end, cur.bpm].join(':'), s: cur, p});
-    if (tl) return Object.assign({}, tl, {now: null});
+    if (tl) return Object.assign({}, tl, {now: null, chl});
   }
   const chs = p.chords.length ? p.chords : [newChord('Em')];
   if (pWay(p) === 'arp') { const tl = l26ArpTl({a: p.arp, chords: chs.map(c => c.name)}); tl.chs = chs; return tl; }
-  if (pWay(p) === 'rh') { const tl = l26FromRh(p.rhythm, chs.map(c => c.name)); tl.chs = chs; return tl; }
+  if (pWay(p) === 'rh') { const tl = l26FromRh(p.rhythm, chs.map(c => c.name)); tl.chs = chs; tl.chl = chl; return tl; }
   return null;
 }
 async function fbMount(i) {
@@ -157,8 +162,10 @@ function fbTakeBand(tl, Tb, chords, capo) {
 function fbChordNow(i, pos) {
   const tl = FB.tls[i], cells = document.querySelectorAll(`#pvb-${i} .chord-cell`), n = cells.length; if (!tl || !n) return;
   const j = pos < 0 ? -1 : Math.floor(Math.max(0, pos - (tl.off || 0)) / tl.bar) % n;
-  if (FB.now === i + ':' + j) return; FB.now = i + ':' + j;
+  const m = pos < 0 ? -1 : Math.floor(Math.max(0, pos - (tl.off || 0)) / tl.bar);
+  if (FB.now === i + ':' + m) return; FB.now = i + ':' + m;
   cells.forEach((c, k) => c.classList.toggle('now', k === j));
+  document.querySelectorAll(`#fbd-${i} .l26-lc`).forEach(t => t.classList.toggle('now', +t.dataset.m === m));
 }
 // changer de dessin : toutes les parties du même genre suivent (retenu sur l'appareil)
 function fbDraw(arp, k) {
