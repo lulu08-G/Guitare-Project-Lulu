@@ -125,3 +125,8 @@
 .pf-big .pf2-ch b{font-size:28px;margin-bottom:-2px}
 .pf-big .pf2-chs{gap:6px 14px}.pf-big .pf2-row{padding:14px 0}
 .pf-big .pf2-note,.pf-big .pf2-memo{font-size:14px}
+/* bêta (Lucas, 27/11) : le cadre arrondi, la phrase sur le côté (une seule ligne), l'en-tête du sommaire en tête de carnet ou de fiche seule */
+.pg.pf2 .pf-frm{position:absolute;left:8mm;right:7mm;top:7mm;bottom:5mm;border:1.3px solid var(--p-line);border-radius:22px;pointer-events:none}
+.pg.pf-app .pf-frm{border-color:rgba(255,255,255,.16)}
+.pg.pf2 .pf-side{position:absolute;left:8mm;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font:700 8px var(--sans);letter-spacing:.26em;text-transform:uppercase;color:var(--p-mist);background:var(--p-bg);padding:0 10px}
+.pg.pf2 .pf-side b{color:var(--p-acc-txt);font-weight:800}

@@ -58,6 +58,7 @@ async function viewSheet(id, keepPart) {
     }
     const way = pWay(p);   // rythme OU arpège : une ligne « Rythme » / « Arpège » avec son ▶
     if (fbw && (way !== 'none' || p.rec)) body += fbWayHTML(p, i);
+    if (fbw) body += fpTakesRow(p, i);   // les prises du rythme de la partie (39-995)
     else if (way !== 'none') body += `<div class="pv-way"><span class="pv-wl">${way === 'arp' ? 'Arpège' : 'Rythme'}</span><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div>
       <button type="button" class="pv-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : way === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${RH_PLAY_SVG}</button></div>`;
     let more = '';   // détails d'une partie : visibles quand elle est seule à l'écran, cachés en vue « Tout »

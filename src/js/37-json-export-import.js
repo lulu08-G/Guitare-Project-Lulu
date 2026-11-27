@@ -1,7 +1,7 @@
 /* ═══════ JSON EXPORT / IMPORT ═══════ */
 function exportSel() {
   const list = sheets.filter(s => selIds.has(s.id)).map(s => {
-    const c = clone(s); delete c.media; delete c.tabImage; (c.parts||[]).forEach(p => { delete p.rec; }); return c; // media blobs stay local
+    const c = clone(s); delete c.media; delete c.tabImage; (c.parts||[]).forEach(p => { delete p.rec; delete p.recAlt; }); return c; // media blobs stay local
   });
   const blob = new Blob([JSON.stringify({app:'gms', v:2, sheets:list}, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
@@ -22,7 +22,7 @@ function importJSON(inp) {
       let n = 0;
       for (const raw of list) {
         const s = {...newSheet_(), ...raw, id: uid(), updatedAt: Date.now()};
-        s.media = []; s.tabImage = null; (s.parts||[]).forEach(p => { delete p.rec; });
+        s.media = []; s.tabImage = null; (s.parts||[]).forEach(p => { delete p.rec; delete p.recAlt; });
         if (titleTaken(s.title)) s.title = uniqueTitle(s.title);
         if (!s.parts || !s.parts.length) s.parts = [newPart('')];
         sheets.push(s); await DB.put('sheets', s); n++;

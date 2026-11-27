@@ -108,24 +108,29 @@ function buildPrintPages() {
   const {toc} = printOpts;
   const list = sheets.filter(s => selIds.has(s.id)), th = (pLight() ? 'pf-nb' : 'pf-app') + ' pf2' + (printOpts.size === 'grande' ? ' pf-big' : '');
   let pages = [], pageNo = 0;
-  if (toc && list.length > 1) {
+  // bêta (Lucas, 27/11) : le cadre et la phrase sur le côté sur chaque page ; sans sommaire, l'en-tête du sommaire ouvre le carnet (ou la fiche seule)
+  const ov = fsBeta(), hasToc = toc && list.length > 1;
+  const frm = ov ? '<div class="pf-frm"></div><div class="pf-side"><b>Guitar Memory</b> · Tout ce que j’ai dans les doigts</div>' : '';
+  const head = ov && !hasToc ? `<div class="pf-toc-h pf-ov-h"><div><small>${list.length > 1 ? `Mon carnet de guitare · ${list.length} morceaux` : 'Ma fiche de guitare'}</small><h2>Tout ce que j’ai dans les doigts</h2></div>${pMedi('clin', 84)}</div>` : '';
+  if (hasToc) {
     pageNo++;
-    pages.push(`<div class="pg ${th} pf-toc"><div class="pf-toc-h"><div><small>Mon carnet de guitare · ${list.length} morceaux</small><h2>Tout ce que j’ai dans les doigts</h2></div>${pMedi('clin', 84)}</div>
+    pages.push(`<div class="pg ${th} pf-toc">${frm}<div class="pf-toc-h"><div><small>Mon carnet de guitare · ${list.length} morceaux</small><h2>Tout ce que j’ai dans les doigts</h2></div>${pMedi('clin', 84)}</div>
       <ol>${list.map((s, i) => `<li><span class="pf-i">${i + 1}</span><span class="pf-tt"><b>${esc(s.title)}</b><i>${esc(s.artist && s.artist !== '—' ? s.artist : '')}</i></span>${s.capo > 0 ? `<span class="pf-chip o">Capo ${s.capo}</span>` : ''}</li>`).join('')}</ol>
       ${pFoot('Sommaire', pageNo)}</div>`);
   }
   // les morceaux se suivent : autant par page qu'il en rentre, jamais coupés (hauteurs mesurées sur une page A4 cachée)
   const songs = list.map((s, i) => pSongHTML(s, toc && list.length > 1 ? i + 1 : 0));
-  pPack(songs, th).forEach(grp => { pageNo++; pages.push(`<div class="pg ${th}">${grp.map(i => songs[i]).join('')}${pFoot('', pageNo)}</div>`); });
+  pPack(songs, th, head).forEach((grp, k) => { pageNo++; pages.push(`<div class="pg ${th}">${frm}${k ? '' : head}${grp.map(i => songs[i]).join('')}${pFoot('', pageNo)}</div>`); });
   return (th.includes('pf-app') ? '<style>@media print{html,body,#print-root{background:#121014!important}}</style>' : '') + pages.join('');
 }
 const MM = 96 / 25.4;
-function pPack(songs, th) {
+function pPack(songs, th, head) {
   const pr = document.createElement('div'); pr.className = 'pg ' + th; pr.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden';
   document.body.appendChild(pr);
   const hs = songs.map(h => { pr.innerHTML = h; return pr.firstElementChild.getBoundingClientRect().height; });
+  let h0 = 0; if (head) { pr.innerHTML = head; const e = pr.firstElementChild; h0 = e.getBoundingClientRect().height + parseFloat(getComputedStyle(e).marginBottom || 0); }
   pr.remove();
-  const max = 259 * MM, gap = 7 * MM, out = []; let cur = [], used = 0;
+  const max = 259 * MM, gap = 7 * MM, out = []; let cur = [], used = h0;   // la 1re page garde la place de l'en-tête
   hs.forEach((h, i) => { if (cur.length && used + gap + h > max) { out.push(cur); cur = []; used = 0; } used += (cur.length ? gap : 0) + h; cur.push(i); });
   if (cur.length) out.push(cur);
   return out;

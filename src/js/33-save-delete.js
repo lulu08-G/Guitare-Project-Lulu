@@ -32,8 +32,9 @@ async function saveSheet() {
   draft.updatedAt = Date.now();
   const i = sheets.findIndex(s => s.id === draft.id);
   if (i >= 0) { // prises audio des parties supprimées : plus d’orphelins dans media
-    const keep = new Set((draft.parts||[]).filter(p => p.rec).map(p => p.rec.mediaId));
-    for (const p of (sheets[i].parts||[])) if (p.rec && !keep.has(p.rec.mediaId)) { await DB.del('media', p.rec.mediaId); delete recBuf[p.rec.mediaId]; }
+    const takes = p => [p.rec, ...(p.recAlt || [])].filter(Boolean);   // la prise sur la fiche + les autres prises du rythme (bêta)
+    const keep = new Set((draft.parts||[]).flatMap(takes).map(r => r.mediaId));
+    for (const p of (sheets[i].parts||[])) for (const r of takes(p)) if (!keep.has(r.mediaId)) { await DB.del('media', r.mediaId); delete recBuf[r.mediaId]; }
   }
   i >= 0 ? sheets[i] = clone(draft) : sheets.push(clone(draft));
   await DB.put('sheets', clone(draft));
@@ -44,7 +45,7 @@ async function delSheet(id) {
   if (!confirm('Supprimer cette fiche ?')) return;
   const s = sheets.find(x => x.id === id);
   if (s) for (const m of (s.media||[])) await DB.del('media', m.mediaId);
-  if (s) for (const p of (s.parts||[])) if (p.rec) await DB.del('media', p.rec.mediaId);
+  if (s) for (const p of (s.parts||[])) for (const r of [p.rec, ...(p.recAlt || [])]) if (r) await DB.del('media', r.mediaId);
   sheets = sheets.filter(x => x.id !== id);
   selIds.delete(id);
   await DB.del('sheets', id);
