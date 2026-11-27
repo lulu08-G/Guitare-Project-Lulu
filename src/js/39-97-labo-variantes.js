@@ -330,7 +330,7 @@ L26_DRAW.saute = {
     for (let k = 0; k < 6; k++) s += `<path class="l26-vib on" data-k="${k}" d="" style="stroke-width:${(1.3 + k * .3).toFixed(2)}px"/>`;
     const mid = top + 2.5 * gap;
     hp.forEach(h => { s += `<g class="l26-h fut">${l26CoupHTML(h, D.X(h.t), mid, gap)}</g>`; });
-    if (band) s += `<g class="l26-who" data-w="boum">${l26PalSVG(BOUM_SVG(true, ''), 3, top - 6, 26, 26)}</g><g class="l26-who" data-w="basile">${l26PalSVG(BASILE_SVG(true, ''), 7, top + 27, 19, 30)}</g>`;
+    if (band) s += `<g class="l26-who" data-w="boum">${l26PalSVG(BOUM_SVG(true, ''), 4, top + 3, 23, 23)}</g><g class="l26-who" data-w="basile">${l26PalSVG(BASILE_SVG(true, ''), 8, top + 31, 16, 26)}</g>`;
     s += l26Labels(D.tl, D.page, D.X, H - 4) + l26MediG();
     return `<svg class="l26-svg l26-ep" viewBox="0 0 ${D.W} ${H}" aria-hidden="true">${s}</svg>`;
   },

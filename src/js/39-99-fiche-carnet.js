@@ -53,7 +53,7 @@ function fsSimpToggle(e) {
 function fsLiveSync() {
   const b = $('fs-live'); if (!b) return;
   b.classList.toggle('on', FB.live); b.setAttribute('aria-pressed', FB.live);
-  b.querySelector('small').textContent = FB.live ? 'Touche le dessin pour jouer, encore pour la pause.' : 'Joue ta fiche en direct, Médi suit le rythme.';
+  b.querySelector('small').textContent = FB.live ? 'Touche le dessin pour jouer.' : 'Joue la fiche avec Médi.';
 }
 
 /* ── Les groupes ── */
@@ -131,11 +131,11 @@ function fsGroupDots() {
   const wrap = document.createElement('span'); wrap.className = 'fs-fav';
   fav.parentNode.insertBefore(wrap, fav); wrap.appendChild(fav);
   wrap.insertAdjacentHTML('beforeend', '<span class="fs-gdots" id="fs-gdots"></span><button type="button" class="fs-plus" onclick="fsGroups(event)" aria-label="Ranger dans un groupe" title="Ranger dans un groupe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>');
-  wrap.insertAdjacentHTML('beforebegin', '<button type="button" class="sv-carnet" onclick="printOne()" aria-label="Mettre cette fiche dans mon carnet (PDF)">Mon carnet</button>');
+  { const ch = document.querySelector('#v-sheet .sv-chips'); if (ch) ch.insertAdjacentHTML('beforeend', '<button type="button" class="sv-carnet" onclick="printOne()" aria-label="Mettre cette fiche dans mon carnet (PDF)">Mon carnet</button>'); }   // là où était Mode jeu
   wrap.insertAdjacentHTML('afterend', '<button type="button" class="btn-icon sv-pen" onclick="if(cur)editSheet(cur.id)" aria-label="Modifier la fiche" title="Modifier la fiche"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 00-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button>');
   const kn = $('sv-know');
   if (kn) kn.insertAdjacentHTML('afterend', `<button type="button" class="fs-live" id="fs-live" onclick="fbLive()" aria-pressed="false">
-    <span class="fs-live-i" aria-hidden="true"><svg viewBox="0 0 40 24"><path d="M2 6h36M2 12h36M2 18h36" class="l"/><rect x="7" y="3" width="4" height="18" rx="2"/><rect x="18" y="6" width="4" height="12" rx="2"/><rect x="29" y="4" width="4" height="16" rx="2"/></svg></span>
+    <span class="fs-live-i" aria-hidden="true"><svg viewBox="0 0 40 24"><path d="M0 6h40M0 10h40M0 14h40M0 18h40" class="l"/><rect x="7" y="4" width="3.4" height="16" rx="1.7"/><rect x="18" y="7" width="3.4" height="10" rx="1.7"/><rect x="29" y="5" width="3.4" height="14" rx="1.7"/></svg></span>
     <span class="fs-live-t"><b>En rythme</b><small></small></span><i class="fs-live-sw" aria-hidden="true"></i></button>`);
   // la fiche s'ouvre : les petits logos des groupes à côté du cœur
   const sv = viewSheet;

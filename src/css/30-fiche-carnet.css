@@ -2,7 +2,7 @@
 /* l'en-tête : Mon carnet (blanc), le cœur + groupes, le crayon ; plus de PDF ni de Mode jeu ; pas de volume sur téléphone */
 .sv-carnet,.fs-fav,.sv-pen,.fs-live{display:none}
 body.beta #v-sheet .sv-pdf,body.beta #v-sheet .sv-mj,body.beta #v-sheet #sv-know{display:none!important}
-body.beta .sv-carnet{display:inline-flex;align-items:center;height:36px;padding:0 14px;margin-right:6px;border:0;border-radius:18px;background:var(--cream);color:var(--ink);font:700 14px var(--sans);white-space:nowrap;cursor:pointer}
+body.beta .sv-carnet{display:inline-flex;align-items:center;margin-left:auto;height:44px;padding:0 18px;border:0;border-radius:22px;background:var(--cream);color:var(--ink);font:700 15px var(--sans);white-space:nowrap;cursor:pointer}
 body.beta .fs-fav{display:inline-flex;align-items:center;height:40px;padding:0 2px;border-radius:20px;background:var(--card);margin-right:2px}
 body.beta #v-sheet .sv-head .fs-fav #sv-fav{width:38px!important;height:38px!important;background:none}
 body.beta #v-sheet .sv-head .fs-fav #sv-fav svg{width:21px!important;height:21px!important}
@@ -16,9 +16,9 @@ body.beta .sv-pen{display:inline-flex}
 @media(max-width:899px){body.beta #v-sheet .sv-head .vol-btn{display:none!important}}
 /* l'encart « En rythme » (à la place de J'apprends / Je sais la jouer) */
 body.beta .fs-live{display:flex;align-items:center;gap:12px;width:100%;max-width:520px;margin-top:14px;padding:12px 14px;border:0;border-radius:20px;background:var(--gold);color:var(--ink);text-align:left;cursor:pointer;box-sizing:border-box}
-.fs-live-i{width:44px;height:30px;flex:none;border-radius:10px;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center}
-.fs-live-i svg{width:34px;height:20px}
-.fs-live-i .l{fill:none;stroke:var(--ink);stroke-width:1.2;opacity:.35}
+.fs-live-i{width:40px;height:26px;flex:none;display:flex;align-items:center;justify-content:center;opacity:.55}
+.fs-live-i svg{width:40px;height:24px}
+.fs-live-i .l{fill:none;stroke:var(--ink);stroke-width:1;opacity:.5}
 .fs-live-i rect{fill:var(--ink)}
 .fs-live.on .fs-live-i rect{animation:fsBar 1.1s ease-in-out infinite}
 .fs-live.on .fs-live-i rect:nth-of-type(2){animation-delay:.18s}.fs-live.on .fs-live-i rect:nth-of-type(3){animation-delay:.36s}
@@ -35,31 +35,42 @@ body.beta .fs-live{display:flex;align-items:center;gap:12px;width:100%;max-width
 /* « Simplifier » à la place de « modifier » */
 .fs-simp{margin-left:auto;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--border2);background:none;color:var(--cream2);font:600 13px var(--sans);cursor:pointer;white-space:nowrap}
 .fs-simp.on{border-color:var(--gold);color:var(--gold)}
-#v-sheet.fb.solo .pv-hdr{display:flex;justify-content:flex-end}
+#v-sheet.fb.solo .pv-hdr:has(.fs-simp){display:flex;justify-content:flex-end}
+body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .chord-cell.simp .cn{color:var(--gold)}
 /* l'affichage statique, comme le PDF (les couleurs du thème sombre du PDF) */
 .fs-stat{--p-blk:#2c2930;--p-lk:#4a2e17;--p-ink:var(--cream);--p-mist:var(--cream3);--p-line:rgba(255,255,255,.12);--p-acc:var(--gold);margin-top:16px;overflow-x:auto;scrollbar-width:none}
 .fs-stat::-webkit-scrollbar{display:none}
-.fs-stat .pfa-lg{margin-top:4px}
 .fs-stat-n{margin:14px 0 0;font-size:13px;color:var(--cream3)}
-/* « En rythme » : on touche le dessin pour jouer ; la bande en haut à droite, les flèches en bas à gauche */
+/* « En rythme » : on touche le dessin pour jouer ; les languettes (bande à droite, flèches à gauche) posées sur la corde du haut */
 #v-sheet .fb-way.fb-live{position:relative;display:block;margin-top:14px}
 .fb-stage{position:relative;cursor:pointer;border-radius:14px;padding:22px 0 26px;outline:none;clip-path:inset(-80px 0 -10px 0)}
-.fb-stage:focus-visible{box-shadow:0 0 0 2px var(--gold)}
-.fb-hint{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(255,138,42,.92);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .3s,transform .3s;box-shadow:0 6px 20px rgba(0,0,0,.35)}
-.fb-hint svg{width:22px;height:22px;fill:var(--ink)}
-.fb-stage.playing .fb-hint{opacity:0;transform:scale(.6)}
-.fb-stage:not(.playing) .fb-draw{opacity:.75;transition:opacity .3s}
-.fb-bmini{position:absolute;top:-4px;right:0;display:flex;align-items:center;gap:6px;height:30px;min-height:0;padding:0 6px 0 8px;border-radius:15px;border:1px solid var(--border2);background:var(--card2);cursor:pointer}
-.fb-bmini .bd{height:18px}.fb-bmini .bd .medi,.fb-bmini .bd .mt-pal.bd-m{width:15px;height:16px}
-.fb-sw{width:26px;height:16px;border-radius:8px;background:var(--card3);position:relative;flex:none}
-.fb-sw::after{content:"";position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--cream3);transition:transform .2s}
-.fb-bmini.on{border-color:var(--gold)}
+.fb-stage:focus-visible{box-shadow:0 0 0 2px var(--cream3)}
+.fb-hint{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:rgba(18,16,20,.55);border:1px solid rgba(246,241,234,.28);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .35s,transform .35s}
+.fb-hint i{display:flex}.fb-hint svg{width:20px;height:20px;fill:rgba(246,241,234,.9)}
+.fb-hint .pa{display:none}
+.fb-stage.playing .fb-hint{opacity:0;transform:scale(.85)}
+.fb-stage.playing .fb-hint .pl{display:none}.fb-stage.playing .fb-hint .pa{display:flex}
+.fb-stage.playing.tap .fb-hint{opacity:1;transform:none;transition:none}
+.fb-stage:not(.playing) .fb-draw{opacity:.8;transition:opacity .3s}
+.fb-tab{position:absolute;top:0;display:flex;align-items:center;gap:5px;height:24px;min-height:0;padding:0 7px;border:1px solid var(--border2);border-bottom:0;border-radius:8px 8px 0 0;background:transparent;color:var(--cream3);cursor:pointer;z-index:2}
+.fb-bmini{right:0}
+.fb-bmini .bd{height:16px}.fb-bmini .bd .medi,.fb-bmini .bd .mt-pal.bd-m{width:13px;height:14px}
+.fb-bmini:not(.on) .bd{filter:grayscale(1);opacity:.5}
+.fb-sw{width:22px;height:13px;border-radius:7px;background:var(--card3);position:relative;flex:none}
+.fb-sw::after{content:"";position:absolute;left:2px;top:2px;width:9px;height:9px;border-radius:50%;background:var(--cream3);transition:transform .2s}
+.fb-bmini.on{border-color:rgba(255,138,42,.55)}
 .fb-bmini.on .fb-sw{background:var(--gold)}
-.fb-bmini.on .fb-sw::after{transform:translateX(10px);background:var(--ink)}
-.fb-arw{position:absolute;left:0;bottom:-2px;width:30px;height:30px;border-radius:15px;border:1px solid var(--border2);background:var(--card2);color:var(--cream3);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.fb-arw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.fb-arw.on{border-color:var(--gold);color:var(--gold)}
+.fb-bmini.on .fb-sw::after{transform:translateX(9px);background:var(--ink)}
+.fb-arw{display:flex;align-items:center;justify-content:center;border:1px solid var(--border2);background:none;color:var(--cream3);cursor:pointer}
+.fb-arw svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fb-arw.on{color:var(--gold);border-color:rgba(255,138,42,.55)}
+.fb-tab.fb-arw{left:0;width:30px;padding:0}
+/* la fiche statique : le bouton flèches à gauche des blocs */
+.fs-rh{display:flex;align-items:center;gap:10px}
+.fs-rh>.fb-arw{width:30px;height:30px;border-radius:15px;flex:none}
+.fs-sc{min-width:0;overflow-x:auto;scrollbar-width:none}.fs-sc::-webkit-scrollbar{display:none}
+.fs-stat .pfa-lg{display:none}
 /* la fenêtre des groupes */
 #fs-grp{position:fixed;inset:0;z-index:600;display:none;align-items:flex-end;justify-content:center;background:rgba(5,4,6,.78)}
 #fs-grp.on{display:flex}

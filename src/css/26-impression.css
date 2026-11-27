@@ -78,6 +78,7 @@
 .pfr,.pfa{display:block;max-width:100%;height:auto;overflow:visible}
 .pfr-b{fill:var(--p-blk)}.pfr-lk{fill:var(--p-lk)}
 .pfr-c{fill:var(--p-ink)}
+.pfr-ar{fill:none;stroke:var(--p-ink);stroke-linecap:round;stroke-linejoin:round}
 .pfr-x{stroke:var(--p-ink);stroke-width:2.2;stroke-linecap:round;fill:none}
 .pfr-bar{stroke:var(--p-mist);stroke-width:1}
 .pfr-n{text-anchor:middle;font:500 9px var(--sans);fill:var(--p-mist)}

@@ -172,7 +172,7 @@ function pCount(c, per, spb, mes) {
   if (k % spb === 0) return {t: String(k / spb + 1), b: true};
   return {t: spb % 2 === 0 && k % spb === spb / 2 ? 'et' : '·', b: false};
 }
-function pRhBlocks(rh, mini) {
+function pRhBlocks(rh, mini, arrows) {   // arrows : des flèches ↓ ↑ à la place des barres (choix de la fiche à l'écran)
   rh = rhNorm(JSON.parse(JSON.stringify(rh))); if (!rh || !rh.cells.length) return '';
   const per = rhPerBar(rh.mes, rh.res), spb = rhSpb(rh.mes, rh.res), n = rh.cells.length;
   const cw = (spb > 2 ? 20 : 34) * (mini ? .8 : 1), m0 = 4, H = mini ? 28 : 40, cy = mini ? 34 : 50;
@@ -189,6 +189,8 @@ function pRhBlocks(rh, mini) {
       const cell = rh.cells[c], x = X(c), my = H / 2;
       if (cell.d === 'X') { const r = mini ? 3.5 : 5; s += `<path class="pfr-x" d="M${pF(x - r)} ${pF(my - r)}L${pF(x + r)} ${pF(my + r)}M${pF(x + r)} ${pF(my - r)}L${pF(x - r)} ${pF(my + r)}"/>`; continue; }
       const a = amp(cell.a), bw = (3.6 + 2.4 * a) * (mini ? .8 : 1), bh = (10 + 22 * a) * (mini ? .7 : 1);
+      if (arrows) { const up = cell.d === 'U', y0 = my - bh / 2, y1 = my + bh / 2, tip = up ? y0 : y1, h = (mini ? 3.4 : 4.6), sg = up ? 1 : -1;
+        s += `<path class="pfr-ar" style="stroke-width:${pF(1.6 + a * 1.2)}px" d="M${pF(x)} ${pF(up ? y1 : y0)}V${pF(tip)}M${pF(x - h)} ${pF(tip + sg * h)}L${pF(x)} ${pF(tip)}L${pF(x + h)} ${pF(tip + sg * h)}"/>`; continue; }
       s += `<rect class="pfr-c" x="${pF(x - bw / 2)}" y="${pF(my - bh / 2)}" width="${pF(bw)}" height="${pF(bh)}" rx="${pF(bw / 2)}"/>`;
     }
   });

@@ -28,27 +28,39 @@ function grBandOwn(rh) {
    « En rythme » (FB.live) : le dessin animé. On touche le dessin pour jouer / mettre en pause (plus de bouton ▶),
    « avec la bande » en petit en haut à droite, les flèches haut / bas en petit en bas à gauche. Plus de menu « Dessin »
    ni de cases repliées. La bande se règle aussi sur ta prise, même quand la partie est un arpège. */
+const FB_ARW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M4.5 15.5 8 19l3.5-3.5M16 20V5M12.5 8.5 16 5l3.5 3.5"/></svg>';
+const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'fleche' ? ' on' : ''}" onclick="fbArrows(event)" aria-pressed="${L26.coups === 'fleche'}" aria-label="Montrer le sens des coups (flèches haut / bas)" title="Flèches haut / bas">${FB_ARW}</button>`;
 function fbStaticHTML(p) {
   const w = pWay(p);
   if (w === 'arp') return `<div class="fs-stat">${pArpLines(p, false)}</div>`;
-  if (w === 'rh') return `<div class="fs-stat">${pRhBlocks(p.rhythm, false)}</div>`;
+  if (w === 'rh') return `<div class="fs-stat fs-rh">${fbArwBtn()}<div class="fs-sc">${pRhBlocks(p.rhythm, false, L26.coups === 'fleche')}</div></div>`;
   return p.rec ? '<p class="fs-stat-n">Ta prise est là : passe « En rythme » pour l’écouter.</p>' : '';
 }
+const FB_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.4"/><rect x="13.5" y="5" width="4" height="14" rx="1.4"/></svg>';
+const FB_PLAYI = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 001.5.9l10.4-6.5a1 1 0 000-1.8L9.5 4.6A1 1 0 008 5.5z"/></svg>';
 function fbWayHTML(p, i) {
   if (!FB.live) return fbStaticHTML(p);
   const arp = pWay(p) === 'arp', band = !arp || p.rec, arw = !arp || p.rec;
   const lbl = p.rec ? 'ta prise' : arp ? 'l’arpège' : 'le rythme';
   return `<div class="fb-way fb-live" id="fbw-${i}">
     <div class="fb-stage" data-i="${i}" role="button" tabindex="0" aria-label="Jouer ${lbl}" onclick="fbPlay(${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fbPlay(${i},event)}">
-      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true">${LAB_PLAY}</span></div>
-    ${band ? `<button type="button" class="fb-band fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}<i class="fb-sw" aria-hidden="true"></i></button>` : ''}
-    ${arw ? `<button type="button" class="fb-arw${L26.coups === 'fleche' ? ' on' : ''}" onclick="fbArrows(event)" aria-pressed="${L26.coups === 'fleche'}" aria-label="Montrer le sens des coups (flèches haut / bas)" title="Flèches haut / bas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M4.5 15.5 8 19l3.5-3.5M16 20V5M12.5 8.5 16 5l3.5 3.5"/></svg></button>` : ''}
+      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><i class="pl">${FB_PLAYI}</i><i class="pa">${FB_PAUSE}</i></span></div>
+    ${band ? `<button type="button" class="fb-tab fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}<i class="fb-sw" aria-hidden="true"></i></button>` : ''}
+    ${arw ? fbArwBtn().replace('class="fb-arw', 'class="fb-tab fb-arw') : ''}
   </div>`;
 }
-// flèches haut / bas à la place des barres (même réglage que le Labo)
+// les deux languettes (la bande à droite, les flèches à gauche) posées sur la corde du haut
+function fbTabs(i) {
+  const w = $('fbw-' + i), str = w && w.querySelector('.l26-str'); if (!str) return;
+  const y = str.getBoundingClientRect().top - w.getBoundingClientRect().top;
+  w.querySelectorAll('.fb-tab').forEach(b => { b.style.top = Math.round(y - b.offsetHeight + 1) + 'px'; });
+}
+addEventListener('resize', () => { if (FB.live) Object.keys(FB.tls).forEach(i => fbTabs(+i)); });
+// flèches haut / bas à la place des barres (même réglage que le Labo), à l'écran animé comme sur la fiche statique
 function fbArrows(e) {
   if (e) e.stopPropagation();
   const was = l26Playing(); L26.coups = L26.coups === 'fleche' ? 'coup' : 'fleche'; LS.set('gms_l26_coup', L26.coups);
+  if (!FB.live) { if (cur) viewSheet(cur.id, svAll ? null : svPart); return; }
   fbDraw(0, FB.draw); if (was) l26Loop();
   document.querySelectorAll('#sv-parts .fb-arw').forEach(b => { const on = L26.coups === 'fleche'; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
 }
@@ -74,6 +86,7 @@ async function fbMount(i) {
   if (!tl) { el.innerHTML = p.rec ? '<p class="fb-none">Je n’entends pas assez de coups dans ta prise.</p>' : ''; return; }
   FB.tls[i] = tl;
   FB.D[i] = l26Mount(el, fbKind(p), tl);   // le dessin choisi (par défaut : rebond + cordes, et l'arpège sur les cordes)
+  fbTabs(i);
 }
 function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; fsLiveSync(); if (!FB.live) return; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
 
@@ -160,6 +173,8 @@ function fbBand(e) {
 }
 function fbSync() {
   const on = l26Playing();
-  document.querySelectorAll('#sv-parts .fb-stage').forEach(b => { const me = on && +b.dataset.i === FB.i; b.classList.toggle('playing', me); b.setAttribute('aria-label', me ? 'Mettre en pause' : 'Jouer'); });
+  document.querySelectorAll('#sv-parts .fb-stage').forEach(b => { const me = on && +b.dataset.i === FB.i;
+    if (me && !b.classList.contains('playing')) { b.classList.add('tap'); clearTimeout(b._tp); b._tp = setTimeout(() => b.classList.remove('tap'), 650); }   // le ❚❚ s'affiche un instant : on sait où toucher pour la pause
+    b.classList.toggle('playing', me); b.setAttribute('aria-label', me ? 'Mettre en pause' : 'Jouer'); });
   document.querySelectorAll('#sv-parts .fb-band').forEach(b => { b.classList.toggle('on', FB.band); b.setAttribute('aria-pressed', FB.band); });
 }
