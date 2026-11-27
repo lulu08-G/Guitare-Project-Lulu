@@ -122,7 +122,7 @@ async function fbMount(i) {
   const st = el.closest('.fb-stage'); if (st && !st._sc) { st._sc = 1; fbScrub(i, st); }
   if (FB.want === i) { FB.want = null; fbPlay(i); }   // touché avant que la prise soit prête : on lance dès qu'elle l'est
 }
-function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; FB.pos = {}; FB.want = null; fsLiveSync(); if (!FB.live) return; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
+function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; FB.pos = {}; FB.want = null; fsLiveSync(); $('v-sheet').classList.toggle('fb-on', FB.live); if (!FB.live) return; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
 
 // la vraie pause (Lucas, 27/11) : on garde l'endroit, le ▶ repart exactement de là ; on peut aussi glisser le rythme au doigt
 function fbHold(i, pos) {

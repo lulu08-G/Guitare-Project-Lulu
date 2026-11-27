@@ -169,3 +169,10 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fs-pl.on .fs-pm2 path.tri{animation:none}
 .fs-pl .fs-pm2 .pk{animation:none}
 @media(prefers-reduced-motion:reduce){.fs-pm2 *{transition:none!important;animation:none!important}}
+/* « En rythme » : les accords sur une seule rangée, plus serrée, pour voir le rythme sans faire défiler (Lucas, 27/11, Lady Melody) */
+#v-sheet.fb.fb-on .chords-row{display:flex;flex-wrap:nowrap;gap:6px}
+#v-sheet.fb.fb-on .parts-view .chord-cell{flex:1 1 0;min-width:0;max-width:72px}
+#v-sheet.fb.fb-on .chord-cell svg{width:100%;max-width:52px}
+#v-sheet.fb.fb-on .chord-cell .cn{font-size:clamp(18px,6vw,28px);white-space:nowrap}
+#v-sheet.fb.fb-on .fb-way.fb-live{margin-top:4px}
+#v-sheet.fb.fb-on .fb-stage{padding-top:6px}
