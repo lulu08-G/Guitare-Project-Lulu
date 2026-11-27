@@ -7,7 +7,7 @@
      sur 2 et 4 ou sur tes étouffés, la grosse caisse et Basile sur 1 et 3) ou ta prise (le charley sur les coups
      entendus, le tempo trouvé dans la prise) ;
    · les cases haut / bas restent dessous, repliées. Les dessins viennent du Labo (39-95-labo-26-11.js). */
-const FB = {i: -1, band: LS.get('gms_fb_band', true) !== false, draw: LS.get('gms_fb_draw', 'saute'), adraw: LS.get('gms_fb_adraw', 'accord'), D: {}, tls: {}, bandT: null};
+const FB = {i: -1, live: !!LS.get('gms_fb_live', false), simp: !!LS.get('gms_fb_simp', false), band: LS.get('gms_fb_band', true) !== false, draw: LS.get('gms_fb_draw', 'saute'), adraw: LS.get('gms_fb_adraw', 'accord'), D: {}, tls: {}, bandT: null};
 const fbKind = p => pWay(p) === 'arp' && !p.rec ? FB.adraw : FB.draw;   // le dessin choisi (rythme ou arpège)
 const fbOn = () => typeof IS_BETA !== 'undefined' && IS_BETA;
 
@@ -24,16 +24,39 @@ function grBandOwn(rh) {
   return grBand(g, null, {drums: D, one: true});
 }
 
+/* 27/11 (Lucas) : deux affichages. Par défaut, statique comme le PDF (rythme en blocs, arpège en lignes) ;
+   « En rythme » (FB.live) : le dessin animé. On touche le dessin pour jouer / mettre en pause (plus de bouton ▶),
+   « avec la bande » en petit en haut à droite, les flèches haut / bas en petit en bas à gauche. Plus de menu « Dessin »
+   ni de cases repliées. La bande se règle aussi sur ta prise, même quand la partie est un arpège. */
+function fbStaticHTML(p) {
+  const w = pWay(p);
+  if (w === 'arp') return `<div class="fs-stat">${pArpLines(p, false)}</div>`;
+  if (w === 'rh') return `<div class="fs-stat">${pRhBlocks(p.rhythm, false)}</div>`;
+  return p.rec ? '<p class="fs-stat-n">Ta prise est là : passe « En rythme » pour l’écouter.</p>' : '';
+}
 function fbWayHTML(p, i) {
-  const arp = pWay(p) === 'arp';
-  return `<div class="fb-way" id="fbw-${i}">
-    <div class="fb-draw" id="fbd-${i}"></div>
-    <div class="fb-ctl"><button type="button" class="l26-play fb-pl" data-i="${i}" onclick="fbPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : arp ? 'Jouer l’arpège' : 'Jouer le rythme'}">${LAB_PLAY}</button>
-      <span class="fb-src">${p.rec ? 'Ta prise' : arp ? 'Arpège de l’app' : 'Rythme de l’app'}</span>
-      ${arp ? '' : `<button type="button" class="fb-band${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}">${BAND_MINI()}<span>Avec la bande</span></button>`}</div>
-    <label class="fb-dsel" onclick="event.stopPropagation()"><span>Dessin</span><select onchange="fbDraw(${arp && !p.rec ? 1 : 0}, this.value)">${(arp && !p.rec ? L26_ARP_STYLES : L26_RH_STYLES).map(([k, l]) => `<option value="${k}" ${k === (arp && !p.rec ? FB.adraw : FB.draw) ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
-    <details class="fb-hb" onclick="event.stopPropagation()"><summary>${arp ? 'Les cases de l’arpège' : 'Les cases haut / bas'}</summary><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div></details>
+  if (!FB.live) return fbStaticHTML(p);
+  const arp = pWay(p) === 'arp', band = !arp || p.rec, arw = !arp || p.rec;
+  const lbl = p.rec ? 'ta prise' : arp ? 'l’arpège' : 'le rythme';
+  return `<div class="fb-way fb-live" id="fbw-${i}">
+    <div class="fb-stage" data-i="${i}" role="button" tabindex="0" aria-label="Jouer ${lbl}" onclick="fbPlay(${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fbPlay(${i},event)}">
+      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true">${LAB_PLAY}</span></div>
+    ${band ? `<button type="button" class="fb-band fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}<i class="fb-sw" aria-hidden="true"></i></button>` : ''}
+    ${arw ? `<button type="button" class="fb-arw${L26.coups === 'fleche' ? ' on' : ''}" onclick="fbArrows(event)" aria-pressed="${L26.coups === 'fleche'}" aria-label="Montrer le sens des coups (flèches haut / bas)" title="Flèches haut / bas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M4.5 15.5 8 19l3.5-3.5M16 20V5M12.5 8.5 16 5l3.5 3.5"/></svg></button>` : ''}
   </div>`;
+}
+// flèches haut / bas à la place des barres (même réglage que le Labo)
+function fbArrows(e) {
+  if (e) e.stopPropagation();
+  const was = l26Playing(); L26.coups = L26.coups === 'fleche' ? 'coup' : 'fleche'; LS.set('gms_l26_coup', L26.coups);
+  fbDraw(0, FB.draw); if (was) l26Loop();
+  document.querySelectorAll('#sv-parts .fb-arw').forEach(b => { const on = L26.coups === 'fleche'; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+}
+// « En rythme » : on passe de la fiche statique au dessin animé (retenu sur l'appareil)
+function fbLive(v) {
+  FB.live = v == null ? !FB.live : !!v; LS.set('gms_fb_live', FB.live);
+  l26Stop(); stopPlay();
+  if (cur) viewSheet(cur.id, svAll ? null : svPart);
 }
 async function fbTl(p) {   // la ligne du temps d'une partie
   if (p.rec) {
@@ -52,7 +75,7 @@ async function fbMount(i) {
   FB.tls[i] = tl;
   FB.D[i] = l26Mount(el, fbKind(p), tl);   // le dessin choisi (par défaut : rebond + cordes, et l'arpège sur les cordes)
 }
-function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none') fbMount(i); }); }
+function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; fsLiveSync(); if (!FB.live) return; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
 
 function fbPlay(i, e) {
   if (e) e.stopPropagation();
@@ -137,6 +160,6 @@ function fbBand(e) {
 }
 function fbSync() {
   const on = l26Playing();
-  document.querySelectorAll('#sv-parts .fb-pl').forEach(b => { const me = on && +b.dataset.i === FB.i; b.classList.toggle('on', me); b.innerHTML = me ? L26_PAUSE : LAB_PLAY; });
+  document.querySelectorAll('#sv-parts .fb-stage').forEach(b => { const me = on && +b.dataset.i === FB.i; b.classList.toggle('playing', me); b.setAttribute('aria-label', me ? 'Mettre en pause' : 'Jouer'); });
   document.querySelectorAll('#sv-parts .fb-band').forEach(b => { b.classList.toggle('on', FB.band); b.setAttribute('aria-pressed', FB.band); });
 }

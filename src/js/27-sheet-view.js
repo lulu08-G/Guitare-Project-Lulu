@@ -48,14 +48,16 @@ async function viewSheet(id, keepPart) {
   $('v-sheet').classList.toggle('fb', typeof fbOn === 'function' && fbOn());   // fiche bêta : accords avec leur doigté
   tabsHost.innerHTML = nPts < 2 ? '' : `<button type="button" class="sv-tab ${svAll?'on':''}" data-idx="-1" onclick="svShowPart(-1)">Tout</button>` + (s.parts||[]).map((p, i) =>
     `<button type="button" class="sv-tab ${!svAll && i===svPart?'on':''}" data-idx="${i}" onclick="svShowPart(${i})">${esc(p.name || 'Partie ' + (i+1))}</button>`).join('');
+  const fbw = typeof fbOn === 'function' && fbOn();   // la fiche bêta (?beta) : 39-96 et 39-99
   partsHost.innerHTML = (s.parts||[]).map((p, i) => {
     let body = '';
     if (p.chords.length) {
+      const shown = fbw && FB.simp ? p.chords.map(fsSimp) : p.chords;   // « Simplifier » : des doigtés sans barré (affichage seulement)
       body += `<div class="chords-row">` +
-        p.chords.map((c, j) => `<div class="chord-cell">${chordSVG(c, {size:2.2})}<div class="cn">${esc(c.name)}</div></div>`).join('') + `</div>`;
+        shown.map((c, j) => `<div class="chord-cell${c.simp ? ' simp' : ''}"${c.simp ? ` title="À la place de ${esc(c.orig)}"` : ''}>${chordSVG(c, {size:2.2})}<div class="cn">${esc(c.name)}</div></div>`).join('') + `</div>`;
     }
     const way = pWay(p);   // rythme OU arpège : une ligne « Rythme » / « Arpège » avec son ▶
-    if (way !== 'none' && typeof fbOn === 'function' && fbOn()) body += fbWayHTML(p, i);   // la fiche bêta (?beta) : 39-96
+    if (fbw && (way !== 'none' || p.rec)) body += fbWayHTML(p, i);
     else if (way !== 'none') body += `<div class="pv-way"><span class="pv-wl">${way === 'arp' ? 'Arpège' : 'Rythme'}</span><div class="sv-rh" id="rh-view-${i}">${svWayHTML(p, {chord: p.chords[0]})}</div>
       <button type="button" class="pv-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : way === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${RH_PLAY_SVG}</button></div>`;
     let more = '';   // détails d'une partie : visibles quand elle est seule à l'écran, cachés en vue « Tout »
@@ -70,12 +72,12 @@ async function viewSheet(id, keepPart) {
     return `<div class="pv-block ${i===svPart?'on':''}" data-idx="${i}" id="pvb-${i}" ${svAll ? `onclick="svPick(${i})"` : ''}>
       <div class="pv-hdr"><div class="pv-name">${esc(p.name || 'Partie ' + (i+1))}${rep > 1 ? `<span class="pv-rep">×${rep}</span>` : ''}</div>
         ${p.rec ? `<span class="pv-take has"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>Ma prise</span>` : ''}
-        <div class="hm-menu pv-menu" id="pvm-${i}"><button type="button" class="pv-edit" onclick="pvMenu(${i},event)" aria-label="Modifier cette partie" aria-haspopup="true">modifier</button>
+        ${fbw ? fsSimpBtn(p) : `<div class="hm-menu pv-menu" id="pvm-${i}"><button type="button" class="pv-edit" onclick="pvMenu(${i},event)" aria-label="Modifier cette partie" aria-haspopup="true">modifier</button>
           <div class="pop" onclick="event.stopPropagation()">
             <button type="button" onclick="pvMenuClose();editSheet(cur.id)">Changer les accords</button>
             <button type="button" onclick="pvMenuClose();rbEditCur(${i})">${pWay(p) === 'arp' ? 'Changer l’arpège' : 'Saisir le rythme à la main'}</button>
             ${p.rec ? `<button type="button" onclick="pvMenuClose();svWayPlay(${i})">Écouter la guitare de l’app</button>` : ''}
-          </div></div></div>
+          </div></div>`}</div>
       <div class="pv-body">${body}</div>
     </div>`;
   }).join('');

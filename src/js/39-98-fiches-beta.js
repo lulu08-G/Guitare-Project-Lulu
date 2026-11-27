@@ -16,6 +16,11 @@ function fsFilters() {
   const fa = $('filt-all'), fv = document.querySelector('#home-filters .filt[data-f="fav"]');
   if (fa) fa.textContent = `Tout · ${sheets.length}`;
   if (fv) fv.innerHTML = `${FS_HEART}Favoris · ${sheets.filter(s => s.favorite).length}`;
+  // les groupes créés depuis une fiche (le « + » à côté du cœur), à la suite de Favoris
+  const host = $('home-filters'); if (!host) return;
+  host.querySelectorAll('.fsg-f').forEach(b => b.remove());
+  host.insertAdjacentHTML('beforeend', fsGroupsAll().map(g => { const n = sheets.filter(s => (s.groups || []).includes(g.id)).length, k = 'g:' + g.id;
+    return `<button type="button" class="filt fsg-f${homeFilter === k ? ' on' : ''}" data-f="${k}" onclick="setHomeFilter('${k}')">${fsGIcon(g.ic)}${esc(g.n)} · ${n}</button>`; }).join(''));
 }
 // l'encart de Médi : un ou plusieurs messages qui défilent
 const fsN = {i: 0, t: null};

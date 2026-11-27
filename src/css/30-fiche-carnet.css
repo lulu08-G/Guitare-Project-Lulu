@@ -1,0 +1,91 @@
+/* ═══════ L'INTÉRIEUR DE LA FICHE, VERSION BÊTA (27/11, seulement avec ?beta : body.beta) ═══════ */
+/* l'en-tête : Mon carnet (blanc), le cœur + groupes, le crayon ; plus de PDF ni de Mode jeu ; pas de volume sur téléphone */
+.sv-carnet,.fs-fav,.sv-pen,.fs-live{display:none}
+body.beta #v-sheet .sv-pdf,body.beta #v-sheet .sv-mj,body.beta #v-sheet #sv-know{display:none!important}
+body.beta .sv-carnet{display:inline-flex;align-items:center;height:36px;padding:0 14px;margin-right:6px;border:0;border-radius:18px;background:var(--cream);color:var(--ink);font:700 14px var(--sans);white-space:nowrap;cursor:pointer}
+body.beta .fs-fav{display:inline-flex;align-items:center;height:40px;padding:0 2px;border-radius:20px;background:var(--card);margin-right:2px}
+body.beta #v-sheet .sv-head .fs-fav #sv-fav{width:38px!important;height:38px!important;background:none}
+body.beta #v-sheet .sv-head .fs-fav #sv-fav svg{width:21px!important;height:21px!important}
+.fs-gdots{display:inline-flex;gap:2px;color:var(--gold)}
+.fs-gdots:empty{display:none}
+.fs-gdots .fsg-ic{width:16px;height:16px}
+.fs-plus{width:34px;height:34px;border:0;border-radius:17px;background:var(--card2);color:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:2px}
+.fs-plus svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+body.beta .sv-pen{display:inline-flex}
+.sv-pen svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:899px){body.beta #v-sheet .sv-head .vol-btn{display:none!important}}
+/* l'encart « En rythme » (à la place de J'apprends / Je sais la jouer) */
+body.beta .fs-live{display:flex;align-items:center;gap:12px;width:100%;max-width:520px;margin-top:14px;padding:12px 14px;border:0;border-radius:20px;background:var(--gold);color:var(--ink);text-align:left;cursor:pointer;box-sizing:border-box}
+.fs-live-i{width:44px;height:30px;flex:none;border-radius:10px;background:rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center}
+.fs-live-i svg{width:34px;height:20px}
+.fs-live-i .l{fill:none;stroke:var(--ink);stroke-width:1.2;opacity:.35}
+.fs-live-i rect{fill:var(--ink)}
+.fs-live.on .fs-live-i rect{animation:fsBar 1.1s ease-in-out infinite}
+.fs-live.on .fs-live-i rect:nth-of-type(2){animation-delay:.18s}.fs-live.on .fs-live-i rect:nth-of-type(3){animation-delay:.36s}
+@keyframes fsBar{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.6)}}
+.fs-live-i rect{transform-box:fill-box;transform-origin:50% 50%}
+.fs-live-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.fs-live-t b{font:800 18px/1.1 var(--display)}
+.fs-live-t small{font-size:13px;line-height:1.3;opacity:.8}
+.fs-live-sw{width:46px;height:28px;border-radius:14px;background:rgba(0,0,0,.22);position:relative;flex:none;transition:background .2s}
+.fs-live-sw::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:var(--cream);transition:transform .25s cubic-bezier(.3,.8,.3,1)}
+.fs-live.on .fs-live-sw{background:var(--ink)}
+.fs-live.on .fs-live-sw::after{transform:translateX(18px);background:var(--gold)}
+.fs-live:focus-visible,.sv-carnet:focus-visible,.fs-plus:focus-visible,.fs-simp:focus-visible{outline:2px solid var(--cream);outline-offset:2px}
+/* « Simplifier » à la place de « modifier » */
+.fs-simp{margin-left:auto;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--border2);background:none;color:var(--cream2);font:600 13px var(--sans);cursor:pointer;white-space:nowrap}
+.fs-simp.on{border-color:var(--gold);color:var(--gold)}
+#v-sheet.fb.solo .pv-hdr{display:flex;justify-content:flex-end}
+#v-sheet .chord-cell.simp .cn{color:var(--gold)}
+/* l'affichage statique, comme le PDF (les couleurs du thème sombre du PDF) */
+.fs-stat{--p-blk:#2c2930;--p-lk:#4a2e17;--p-ink:var(--cream);--p-mist:var(--cream3);--p-line:rgba(255,255,255,.12);--p-acc:var(--gold);margin-top:16px;overflow-x:auto;scrollbar-width:none}
+.fs-stat::-webkit-scrollbar{display:none}
+.fs-stat .pfa-lg{margin-top:4px}
+.fs-stat-n{margin:14px 0 0;font-size:13px;color:var(--cream3)}
+/* « En rythme » : on touche le dessin pour jouer ; la bande en haut à droite, les flèches en bas à gauche */
+#v-sheet .fb-way.fb-live{position:relative;display:block;margin-top:14px}
+.fb-stage{position:relative;cursor:pointer;border-radius:14px;padding:22px 0 26px;outline:none;clip-path:inset(-80px 0 -10px 0)}
+.fb-stage:focus-visible{box-shadow:0 0 0 2px var(--gold)}
+.fb-hint{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(255,138,42,.92);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .3s,transform .3s;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.fb-hint svg{width:22px;height:22px;fill:var(--ink)}
+.fb-stage.playing .fb-hint{opacity:0;transform:scale(.6)}
+.fb-stage:not(.playing) .fb-draw{opacity:.75;transition:opacity .3s}
+.fb-bmini{position:absolute;top:-4px;right:0;display:flex;align-items:center;gap:6px;height:30px;min-height:0;padding:0 6px 0 8px;border-radius:15px;border:1px solid var(--border2);background:var(--card2);cursor:pointer}
+.fb-bmini .bd{height:18px}.fb-bmini .bd .medi,.fb-bmini .bd .mt-pal.bd-m{width:15px;height:16px}
+.fb-sw{width:26px;height:16px;border-radius:8px;background:var(--card3);position:relative;flex:none}
+.fb-sw::after{content:"";position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--cream3);transition:transform .2s}
+.fb-bmini.on{border-color:var(--gold)}
+.fb-bmini.on .fb-sw{background:var(--gold)}
+.fb-bmini.on .fb-sw::after{transform:translateX(10px);background:var(--ink)}
+.fb-arw{position:absolute;left:0;bottom:-2px;width:30px;height:30px;border-radius:15px;border:1px solid var(--border2);background:var(--card2);color:var(--cream3);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.fb-arw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fb-arw.on{border-color:var(--gold);color:var(--gold)}
+/* la fenêtre des groupes */
+#fs-grp{position:fixed;inset:0;z-index:600;display:none;align-items:flex-end;justify-content:center;background:rgba(5,4,6,.78)}
+#fs-grp.on{display:flex}
+.fsg-box{width:min(100%,480px);max-height:88vh;overflow-y:auto;background:var(--card);border-radius:32px 32px 0 0;padding:12px 20px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;box-sizing:border-box;animation:caOut .38s cubic-bezier(.2,.9,.3,1) both;transform-origin:50% 100%}
+.fsg-box h3{font:800 22px/1.15 var(--display);margin:0;color:var(--cream);text-wrap:balance}
+.fsg-list{display:flex;flex-direction:column;gap:6px}
+.fsg-row{display:flex;align-items:center;gap:12px;min-height:52px;padding:0 14px;border:0;border-radius:16px;background:var(--card2);color:var(--cream);font:600 15px var(--sans);text-align:left;cursor:pointer}
+.fsg-row span{flex:1}
+.fsg-ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.fsg-ic .f{fill:currentColor;stroke:none}
+.fsg-row .fsg-ic{color:var(--gold)}
+.fsg-ck{width:24px;height:24px;border-radius:12px;border:2px solid var(--card3);flex:none;position:relative}
+.fsg-row.on .fsg-ck{background:var(--gold);border-color:var(--gold)}
+.fsg-row.on .fsg-ck::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid var(--ink);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.fsg-new{display:flex;flex-direction:column;gap:10px;padding-top:4px}
+.fsg-new>b{font-size:13px;color:var(--cream3);font-weight:600}
+.fsg-sug{display:flex;flex-wrap:wrap;gap:6px}
+.fsg-sug button{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:18px;border:1px dashed var(--border2);background:none;color:var(--cream);font:600 13.5px var(--sans);cursor:pointer}
+.fsg-sug .fsg-ic{width:16px;height:16px;color:var(--gold)}
+.fsg-in{display:flex;gap:8px}
+.fsg-in input{flex:1;min-width:0;height:44px;border-radius:14px;border:1px solid var(--border2);background:var(--card2);color:var(--cream);padding:0 12px;font:500 15px var(--sans)}
+.fsg-in .btn{height:44px}
+.fsg-ics{display:flex;gap:6px;flex-wrap:wrap}
+.fsg-ics button{width:40px;height:40px;border-radius:20px;border:1.5px solid var(--border2);background:none;color:var(--cream2);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.fsg-ics button.on{border-color:var(--gold);color:var(--gold);background:var(--acc-soft)}
+.fsg-x{height:48px;border:0;background:none;color:var(--cream);font:600 15px var(--sans);cursor:pointer}
+@media(min-width:900px){#fs-grp{align-items:center}.fsg-box{border-radius:32px}}
+#home-filters .filt .fsg-ic{width:15px;height:15px;margin-right:6px;vertical-align:-3px;color:var(--gold);fill:none}#home-filters .filt .fsg-ic .f{fill:currentColor}
+@media(prefers-reduced-motion:reduce){.fs-live.on .fs-live-i rect,.fsg-box{animation:none}}

@@ -29,7 +29,7 @@ function renderHome() {
   document.querySelectorAll('#home-filters .filt').forEach(b => b.classList.toggle('on', b.dataset.f === homeFilter));
   const list = sheets
     .filter(s => !q || s.title.toLowerCase().includes(q) || (s.artist||'').toLowerCase().includes(q))
-    .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : homeFilter === 'know' ? sheetKnow(s) : homeFilter === 'learn' ? !sheetKnow(s) : recentIds.has(s.id))
+    .filter(s => homeFilter === 'all' ? true : homeFilter === 'fav' ? !!s.favorite : homeFilter.startsWith('g:') ? (s.groups || []).includes(homeFilter.slice(2)) : homeFilter === 'know' ? sheetKnow(s) : homeFilter === 'learn' ? !sheetKnow(s) : recentIds.has(s.id))
     .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
   { const k = selIds.size;
     $('sel-count').textContent = !selMode ? '' : k ? `${k} fiche${k>1?'s':''} cochée${k>1?'s':''}` : 'Coche les fiches à mettre dans le PDF';
