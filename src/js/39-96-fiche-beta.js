@@ -65,7 +65,7 @@ function fbWayHTML(p, i) {
 }
 // les deux languettes (la bande à droite, les flèches à gauche) posées sur la corde du haut
 function fbTabs(i) {
-  const w = $('fbw-' + i), str = w && w.querySelector('.l26-str'); if (!str) return;
+  const w = $('fbw-' + i), str = w && w.querySelector('.l26-chr, .l26-str'); if (!str) return;
   const y = str.getBoundingClientRect().top - w.getBoundingClientRect().top;
   w.querySelectorAll('.fb-tab').forEach(b => { b.style.top = Math.round(y - b.offsetHeight + 1) + 'px'; });
 }
