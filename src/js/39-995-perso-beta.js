@@ -85,14 +85,26 @@ const fpDash = (txt, fn, lbl, cls) => `<button type="button" class="fp-dash${cls
 function fpFilt(k) { FP.f = k; FP.all = false; fpPerso(); }
 function fpPoch(m) {
   const v = m.kind === 'video';
-  return `<button type="button" class="fp-po" onclick="fpMediaPop('${m.id}',this)"><span class="fp-th${v ? '' : ' au'}" data-mid="${m.mediaId}" data-k="${m.kind}">`
-    + (v ? `<video muted playsinline preload="metadata"></video><span class="fp-cam">${fpI('cam')}</span>` : `<svg class="fp-wv" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true"></svg>`)
+  return `<button type="button" class="fp-po" onclick="fpMediaPop('${m.id}',this)"><span class="fp-th${v ? '' : ' au poch c' + fpPochC(m)}" data-mid="${m.mediaId}" data-k="${m.kind}">`
+    + (v ? `<video muted playsinline preload="metadata"></video><span class="fp-cam">${fpI('cam')}</span>` : fpPochSVG(m))
     + `<span class="fp-pl">${FP_PLAY}</span><span class="fp-du">${m.dur ? fpDur(m.dur) : ''}</span></span><b>${esc(m.name || (v ? 'Ma vidéo' : 'Mon audio'))}</b><small>${fpDate(m.at)}</small></button>`;
 }
 function fpPeaks(buf, a, b, n) {
   const d = buf.getChannelData(0), sr = buf.sampleRate, i0 = Math.floor((a || 0) * sr), i1 = Math.min(d.length, Math.floor((b || buf.duration) * sr)), st = Math.max(1, Math.floor((i1 - i0) / n)), out = [];
   for (let k = 0; k < n; k++) { let m = 0; for (let j = i0 + k * st, e = Math.min(i1, j + st); j < e; j += 4) { const x = Math.abs(d[j]); if (x > m) m = x; } out.push(m); }
   const mx = Math.max(.02, ...out); return out.map(x => x / mx);
+}
+// la pochette d'un audio (choix C2 de Lucas, 27/11) : chaque audio a sa couleur, Médi l'écoute les yeux plissés, son onde en bas
+const fpPochC = m => { let h = 0; for (const c of String(m.id || m.mediaId)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h % 4; };
+const fpPochSVG = () => `<svg class="fp-pc" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g transform="translate(70 48) scale(.46)"><g transform="rotate(-14 100 111)"><path class="pb" d="${MEDI_BODY}"/><rect class="pe" x="62" y="62" width="20" height="38" rx="10"/><rect class="pe" x="114" y="62" width="20" height="38" rx="10"/></g></g><path class="pw" d="M8 88"/></svg>`;
+// une prise du rythme se dessine sur les six cordes (choix C1 de Lucas, 27/11) : un trait par coup, haut selon sa force ; joués = orange
+function fpStrFill(pop, buf, a, b) {
+  const w = pop.querySelector('.fp-wave'); if (!w) return;
+  const tl = l26FromTake(buf, a, b, cur && cur.bpm); if (!tl) { fpWaveFill(pop, buf, a, b); return; }
+  const L = Math.max(.01, b - a), str = [0, 1, 2, 3, 4, 5].map(k => `<line class="sl" x1="0" x2="200" y1="${(4.5 + k * 5).toFixed(1)}" y2="${(4.5 + k * 5).toFixed(1)}" style="stroke-width:${(.5 + .12 * k).toFixed(2)}"/>`).join('');
+  const hits = tl.hits.map(h => { const x = h.t / L * 200, hh = 12 + 18 * h.a; return `<rect class="sh" x="${(x - 1.6).toFixed(1)}" y="${(17 - hh / 2).toFixed(1)}" width="3.2" height="${hh.toFixed(1)}" rx="1.6"/>`; }).join('');
+  w.classList.add('str'); w.querySelector('.g').innerHTML = str + hits; const o = w.querySelector('.o'); o.innerHTML = str + hits;
+  const sync = () => { o.style.width = w.clientWidth + 'px'; }; sync(); requestAnimationFrame(sync);
 }
 const fpBars = (pk, w, h) => pk.map((x, k) => { const bw = w / pk.length, bh = Math.max(3, x * (h - 2)); return `<rect x="${(k * bw + bw * .2).toFixed(1)}" y="${((h - bh) / 2).toFixed(1)}" width="${(bw * .6).toFixed(1)}" height="${bh.toFixed(1)}" rx="1.3"/>`; }).join('');
 async function fpHydrate(host) {
@@ -106,7 +118,9 @@ async function fpHydrate(host) {
       v.src = url + '#t=' + (m && m.tt != null ? m.tt : .1);
       if (m && m.tt == null) fpThumbLater(m, url);
     } else {
-      try { const buf = await recBuffer(th.dataset.mid); th.querySelector('.fp-wv').innerHTML = fpBars(fpPeaks(buf, 0, buf.duration, 22), 120, 40); if (!du.textContent) du.textContent = fpDur(buf.duration); } catch (e) {}
+      try { const buf = await recBuffer(th.dataset.mid), m = (cur && cur.media || []).find(x => x.mediaId === th.dataset.mid), pk = fpPeaks(buf, m && m.a || 0, Math.min(m && m.b || buf.duration, buf.duration), 14);
+        const w = th.querySelector('.pw'); if (w) w.setAttribute('d', 'M8 88' + pk.map((x, k) => ` L${(11 + k * 5).toFixed(0)} ${(88 - 3 - x * 14).toFixed(1)} L${(13.5 + k * 5).toFixed(1)} 88`).join(''));
+        if (!du.textContent) du.textContent = fpDur(buf.duration); } catch (e) {}
     }
   }
 }
@@ -120,14 +134,14 @@ async function fpThumbRun() {
   while (fpThumbQ.length) {
     const {m, url} = fpThumbQ[0];
     try {
-      m.tt = await fpBestFrame(url, m.dur);
+      m.tt = await fpBestFrame(url, m.b || m.dur, m.a, m.b);
       const s = sheets.find(x => (x.media || []).includes(m)); if (s) { s.updatedAt = Date.now(); await DB.put('sheets', clone(s)); }
       const v = document.querySelector(`.fp-th[data-mid="${m.mediaId}"] video`); if (v) v.src = url + '#t=' + m.tt;
     } catch (e) { m.tt = .1; }
     fpThumbQ.shift();
   }
 }
-async function fpBestFrame(url, dur) {
+async function fpBestFrame(url, dur, a, b) {   // entre a et b si la vidéo est rognée
   const v = document.createElement('video'); v.muted = true; v.playsInline = true; v.preload = 'auto';
   const wait = (ev, ms) => new Promise(r => { const t = setTimeout(r, ms); v.addEventListener(ev, () => { clearTimeout(t); r(); }, {once: true}); });
   v.src = url; await wait('loadeddata', 5000);
@@ -137,7 +151,7 @@ async function fpBestFrame(url, dur) {
   const c = document.createElement('canvas'); c.width = c.height = 48; const g = c.getContext('2d', {willReadFrequently: true});
   let best = .1, bs = -1;
   for (const f of [.12, .25, .38, .5, .62, .75, .88]) {
-    const t = +(d * f).toFixed(2); v.currentTime = t; await wait('seeked', 1500);
+    const lo = Math.min(a || 0, d), hi = Math.max(lo, Math.min(b || d, d)), t = +(lo + (hi - lo) * f).toFixed(2); v.currentTime = t; await wait('seeked', 1500);
     let px; try { g.drawImage(v, 0, 0, 48, 48); px = g.getImageData(0, 0, 48, 48).data; } catch (e) { continue; }
     const n = 48 * 48, L = new Float32Array(n); let sm = 0, rg = 0, yb = 0, rg2 = 0, yb2 = 0;
     for (let k = 0; k < n; k++) { const r = px[k * 4] / 255, gg = px[k * 4 + 1] / 255, b = px[k * 4 + 2] / 255; L[k] = .299 * r + .587 * gg + .114 * b; sm += L[k]; const a = r - gg, y = .5 * (r + gg) - b; rg += a; yb += y; rg2 += a * a; yb2 += y * y; }
@@ -205,7 +219,7 @@ function fpPopClose(quiet) {
   if (FP.R && !FP.R.cam) fpRecAbort();
   const p = $('fp-pop'), d = $('fp-dim');
   if (p) p.remove(); if (d) d.remove();
-  FP.anchor = null;
+  FP.anchor = null; FP.T = null;
 }
 const fpMore = items => `<div class="fp-mo"><button type="button" class="fp-dots" onclick="this.parentNode.classList.toggle('open')" aria-label="Plus" aria-haspopup="true">${fpI('dots')}</button><div class="fp-mm">${items.map(([l, fn, c]) => `<button type="button"${c ? ` class="${c}"` : ''} onclick="${fn}">${l}</button>`).join('')}</div></div>`;
 // le tempo de lecture : Médi glisse sur la barre ; le petit trait = le tempo d'origine
@@ -244,11 +258,11 @@ function fpToggle() {
   const P = FP.pl; if (!P) return;
   if (!P.el.paused) { fpPlPause(); return; }
   stopPlay();
-  if (P.b && P.el.currentTime >= P.b - .05) P.el.currentTime = P.a;
+  if (P.b && P.el.currentTime >= P.b - .05 || P.el.currentTime < P.a - .05) P.el.currentTime = P.a;
   P.el.playbackRate = P.rate;
   const pr = P.el.play(); if (pr && pr.catch) pr.catch(() => {});
   fpPlBtn(true);
-  const loop = () => { const Q = FP.pl; if (!Q || Q.el.paused) return; if (Q.b && Q.el.currentTime >= Q.b) { Q.el.pause(); Q.el.currentTime = Q.a; fpPlBtn(false); fpPlPaint(); return; } fpPlPaint(); FP.raf = requestAnimationFrame(loop); };
+  const loop = () => { const Q = FP.pl; if (!Q || Q.el.paused) return; if (Q.b && Q.el.currentTime >= Q.b) { Q.el.currentTime = Q.a; if (!Q.loop) { Q.el.pause(); fpPlBtn(false); fpPlPaint(); return; } } /* une boucle de rythme repart au début */ fpPlPaint(); FP.raf = requestAnimationFrame(loop); };
   cancelAnimationFrame(FP.raf); FP.raf = requestAnimationFrame(loop);
 }
 function fpPlPause() { const P = FP.pl; if (!P) return; try { P.el.pause(); } catch (e) {} fpPlBtn(false); fpPlPaint(); }
@@ -259,6 +273,7 @@ function fpPlPaint() {
   p.querySelectorAll('.fp-prog').forEach(e => { e.style.width = x + '%'; });
   p.querySelectorAll('.fp-knob').forEach(e => { e.style.left = x + '%'; });
   const c = p.querySelector('.fp-tt .c'); if (c) c.textContent = fpDur(t);
+  const ph = p.querySelector('#fp-trim .ph'); if (ph && P.D) ph.style.left = Math.min(100, P.el.currentTime / P.D * 100).toFixed(2) + '%';   // rogner : où on en est
 }
 function fpPlStop() { cancelAnimationFrame(FP.raf); const P = FP.pl; if (P) { try { P.el.pause(); P.el.removeAttribute('src'); P.el.load(); } catch (e) {} } FP.pl = null; }
 function fpSeek(d) { const P = FP.pl; if (!P) return; P.el.currentTime = Math.max(P.a, Math.min((P.b || P.el.duration) - .05, P.el.currentTime + d)); fpPlPaint(); }
@@ -283,13 +298,13 @@ async function fpTakePop(i, mid, el, e) {
   const t = fpTakes(p).find(x => x.mediaId === mid); if (!t) return;
   stopPlay();
   const on = t === p.rec, len = (t.end || t.dur || 0) - (t.start || 0);
-  const pop = fpPopOpen(el, `<div class="fp-ph"><div><b>${esc(fpTakeName(p, t))}</b><small>${[fpDate(t.at), fpDur(len), cur.bpm ? 'tempo ' + cur.bpm : ''].filter(Boolean).join(' · ')}</small></div>${fpMore([['Renommer', `fpTakeRename(${i},'${mid}')`], ['Supprimer', `fpTakeDel(${i},'${mid}')`, 'del']])}</div>
+  const pop = fpPopOpen(el, `<div class="fp-ph"><div><b>${esc(fpTakeName(p, t))}</b><small>${[fpDate(t.at), fpDur(len), cur.bpm ? 'tempo ' + cur.bpm : ''].filter(Boolean).join(' · ')}</small></div>${fpMore([['Rogner', `fpTrimTake(${i},'${mid}')`], ['Renommer', `fpTakeRename(${i},'${mid}')`], ['Supprimer', `fpTakeDel(${i},'${mid}')`, 'del']])}</div>
     <div class="fp-pw"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><div class="fp-sw">${fpWaveHTML()}<div class="fp-tt"><span class="c">0:00</span><span>${fpDur(len)}</span></div></div></div>
     ${fpTempoHTML()}
     <button type="button" class="fp-tgl${on ? ' on' : ''}" aria-pressed="${on}" onclick="fpTakeMain(${i},'${mid}')">${fpPickSw(on)}<span>${on ? 'Elle joue sur la fiche' : 'La mettre sur la fiche'}</span></button>`, 'fp-take');
   const url = await mediaURL(mid); if (!url || $('fp-pop') !== pop) return;
   fpPlInit(new Audio(url), t.start || 0, t.end || 0);
-  try { const buf = await recBuffer(mid); if ($('fp-pop') === pop) fpWaveFill(pop, buf, t.start || 0, t.end || buf.duration); } catch (e) {}
+  try { const buf = await recBuffer(mid); if ($('fp-pop') === pop) fpStrFill(pop, buf, t.start || 0, Math.min(t.end || buf.duration, buf.duration)); } catch (e) {}
   fpPlace();
 }
 async function fpTakeMain(i, mid) {
@@ -320,7 +335,7 @@ async function fpMediaPop(id, el) {
   const m = (cur.media || []).find(x => x.id === id); if (!m) return;
   stopPlay();
   const v = m.kind === 'video';
-  const head = `<div class="fp-ph"><div><b>${esc(m.name || (v ? 'Ma vidéo' : 'Mon audio'))}</b><small class="fp-meta">${[fpDate(m.at), m.dur ? fpDur(m.dur) : ''].filter(Boolean).join(' · ')}</small></div>${v ? `<button type="button" class="fp-dots" onclick="fpFull()" aria-label="Plein écran">${fpI('full')}</button>` : ''}${fpMore([['Renommer', `fpMediaRename('${id}')`], ['Supprimer', `fpMediaDel('${id}')`, 'del']])}</div>`;
+  const head = `<div class="fp-ph"><div><b>${esc(m.name || (v ? 'Ma vidéo' : 'Mon audio'))}</b><small class="fp-meta">${[fpDate(m.at), m.dur ? fpDur(m.dur) : ''].filter(Boolean).join(' · ')}</small></div>${v ? `<button type="button" class="fp-dots" onclick="fpFull()" aria-label="Plein écran">${fpI('full')}</button>` : ''}${fpMore([['Rogner', `fpTrimMedia('${id}')`], ['Renommer', `fpMediaRename('${id}')`], ['Supprimer', `fpMediaDel('${id}')`, 'del']])}</div>`;
   const body = v
     ? `<div class="fp-vid"><video playsinline preload="metadata"></video><button type="button" class="fp-pp fp-vpl" onclick="fpToggle()" aria-label="Lire">${FP_PLAY}</button></div><div class="fp-bar" onpointerdown="fpScrubDown(event)"><i class="fp-prog"></i><b class="fp-knob"></b></div><div class="fp-tt"><span class="c">0:00</span><span class="d">${m.dur ? fpDur(m.dur) : ''}</span></div>`
     : `<div class="fp-pw"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><div class="fp-sw">${fpWaveHTML()}<div class="fp-tt"><span class="c">0:00</span><span class="d">${m.dur ? fpDur(m.dur) : ''}</span></div></div></div>`;
@@ -330,9 +345,9 @@ async function fpMediaPop(id, el) {
   if (v) fpVidFit(pop.querySelector('.fp-vid'), el2);
   el2.src = url;
   el2.addEventListener('loadedmetadata', () => { const d = pop.querySelector('.fp-tt .d'); if (d && !d.textContent && isFinite(el2.duration)) d.textContent = fpDur(el2.duration); fpPlace(); }, {once: true});
-  fpPlInit(el2, 0, 0);
+  fpPlInit(el2, m.a || 0, m.b || 0);   // une prise rognée joue entre a et b
   FP.adj = false;
-  if (!v) try { const buf = await recBuffer(m.mediaId); if ($('fp-pop') === pop) fpWaveFill(pop, buf, 0, buf.duration); } catch (e) {}
+  if (!v) try { const buf = await recBuffer(m.mediaId); if ($('fp-pop') === pop) fpWaveFill(pop, buf, m.a || 0, Math.min(m.b || buf.duration, buf.duration)); } catch (e) {}
   fpPlace();
 }
 function fpFull() { const v = $('fp-pop') && $('fp-pop').querySelector('video'); if (!v) return; try { (v.requestFullscreen || v.webkitEnterFullscreen || v.webkitRequestFullscreen).call(v); } catch (e) {} }
@@ -451,26 +466,25 @@ async function fpRecDone(R) {
   if (R.kind !== 'video') { try { R.buf = await recDecode(R.blob); R.dur = R.buf.duration; } catch (e) { if (R.kind === 'rh') { toast('Ta prise n’a pas pu être lue', true); FP.R = null; fpPopClose(); return; } } }
   fpAfter(R);
 }
-// E : c'est dans la boîte
-function fpAfter(R) {
-  const rh = R.kind === 'rh', p = rh ? cur.parts[R.part] : null;
+// E : c'est dans la boîte. Médi a déjà proposé la coupe (rogner par défaut, Lucas, 27/11 : 39-9955-perso-rogner.js)
+async function fpAfter(R) {
+  const rh = R.kind === 'rh', v = R.kind === 'video', p = rh ? cur.parts[R.part] : null;
+  if (v && !R.buf && !R.tried) { R.tried = true; try { R.buf = await recDecode(R.blob); } catch (e) {} if (FP.R !== R) return; }   // le son de la vidéo : pour couper les blancs
+  R.D = R.buf ? R.buf.duration : (R.dur || 0);
+  Object.assign(R, fpAutoTrim(R.buf, R.kind, R.D));
   const nv = (cur.media || []).filter(m => m.kind === R.kind).length;
-  R.prop = R.name = rh ? (p.rec ? 'Prise ' + (fpTakes(p).length + 1) : 'Ma prise') : nv ? (R.kind === 'video' ? 'Ma vidéo ' : 'Mon audio ') + (nv + 1) : 'Ma version';
+  R.prop = R.name = rh ? (p.rec ? 'Prise ' + (fpTakes(p).length + 1) : 'Ma prise') : nv ? (v ? 'Ma vidéo ' : 'Mon audio ') + (nv + 1) : 'Ma version';
   R.main = rh;
   const anchor = FP.anchor && FP.anchor.isConnected ? FP.anchor : (rh ? document.querySelector(`#pvb-${R.part} .fp-add, #pvb-${R.part} .fp-rh0 .fp-recm`) : $('fp-recb'));
-  const media = R.kind === 'video' ? `<div class="fp-vid sm"><video playsinline></video><button type="button" class="fp-pp fp-vpl" onclick="fpToggle()" aria-label="Lire">${FP_PLAY}</button></div>`
-    : `<div class="fp-pw"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><div class="fp-sw">${fpWaveHTML()}</div><span class="fp-dd">${fpDur(R.dur)}</span></div>`;
   FP.R = null;   // l'infobulle se rouvre : la prise n'est plus en cours, mais on la garde sous la main
-  const pop = fpPopOpen(anchor || document.body, `<div class="fp-rr top">${fpMedi('fp-joy', FP_JOY)}<p class="fp-said">Joli ! On la garde ?</p></div>${media}
+  const pop = fpPopOpen(anchor || document.body, `<div class="fp-rr top">${fpMedi('fp-joy', FP_JOY)}<p class="fp-said">${R.D ? fpTrimSay(R) : 'Joli ! On la garde ?'}</p></div>
+    ${v ? fpTrimVid() : ''}${R.D ? fpTrimHTML(R) : ''}${fpTrimCtl(R)}
     <div class="fp-names1"><button type="button" class="fp-nm on" onclick="fpName(this)">${esc(R.prop)}</button><button type="button" class="fp-own" onclick="fpOwn(this)">+ Choisir un titre</button></div>
     ${rh ? `<button type="button" class="fp-tgl on" aria-pressed="true" onclick="fpAfterMain(this)">${fpPickSw(true)}<span>Elle joue sur la fiche</span></button>` : ''}
     <div class="fp-btns"><button type="button" class="ghost" onclick="fpAgain()">Recommencer</button><button type="button" class="keep" onclick="fpKeep()">Garder</button></div>`, 'fp-rp fp-after');
   FP.R = R;
   R.url = URL.createObjectURL(R.blob);
-  const el = R.kind === 'video' ? pop.querySelector('video') : new Audio();
-  if (R.kind === 'video') fpVidFit(pop.querySelector('.fp-vid'), el);
-  el.src = R.url; fpPlInit(el, 0, 0);
-  if (R.buf) fpWaveFill(pop, R.buf, 0, R.buf.duration);
+  fpTrimMount(R, pop, v ? pop.querySelector('video') : new Audio(), R.url, R.buf);
   fpPlace();
 }
 function fpName(b) {
@@ -511,12 +525,15 @@ async function fpKeep() {
   if (R.kind === 'rh') {
     const p = cur.parts[R.part]; if (!p) return;
     recBuf[mediaId] = R.buf;
-    const d = +R.buf.duration.toFixed(3), t = {mediaId, start: 0, end: d, dur: d, at: Date.now(), name: R.name};
+    const d = +R.buf.duration.toFixed(3), t = {mediaId, start: +(R.a || 0).toFixed(3), end: +Math.min(R.b || d, d).toFixed(3), dur: d, at: Date.now(), name: R.name};
     if (R.main) { if (p.rec) (p.recAlt = p.recAlt || []).unshift(p.rec); p.rec = t; }
     else (p.recAlt = p.recAlt || []).push(t);
   } else {
     cur.media = cur.media || [];
-    cur.media.push({id: uid(), mediaId, name: R.name, kind: R.kind, at: Date.now(), dur: +(R.dur || 0).toFixed(1)});
+    const m = {id: uid(), mediaId, name: R.name, kind: R.kind, at: Date.now(), dur: +((R.D ? R.b - R.a : R.dur) || 0).toFixed(1)};
+    if (R.D) { m.a = +R.a.toFixed(2); m.b = +R.b.toFixed(2); }   // rognée : le fichier reste entier, elle joue entre a et b
+    if (R.tt != null && R.tt >= R.a && R.tt <= R.b) m.tt = R.tt;
+    cur.media.push(m);
   }
   FP.R = null; fpPopClose(); FP.all = false;
   await fpSave(); toast('Ta prise est gardée');

@@ -28,7 +28,7 @@ function lsnTakes() {
         what: 'Rythme' + (pn ? ' · ' + pn : ''), sheet: st, a: t.start || 0, b: t.end || 0, dur: Math.max(0, (t.end || t.dur || 0) - (t.start || 0)), at: t.at || 0}));
     });
     (s.media || []).forEach(m => { if (m.kind === 'audio' || m.kind === 'video') add({mid: m.mediaId, kind: m.kind, name: m.name || (m.kind === 'video' ? 'Ma vidéo' : 'Mon audio'),
-      what: m.kind === 'video' ? 'Vidéo' : 'Audio', sheet: st, a: 0, b: 0, dur: m.dur || 0, at: m.at || 0}); });
+      what: m.kind === 'video' ? 'Vidéo' : 'Audio', sheet: st, a: m.a || 0, b: m.b || 0, dur: m.dur || 0, at: m.at || 0}); });
   });
   return out.sort((x, y) => (y.at || 0) - (x.at || 0));
 }

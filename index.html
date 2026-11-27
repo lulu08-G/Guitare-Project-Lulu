@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Guitar Memory</title>
 <meta name="description" content="Retiens tes morceaux appris sur le tas et passe les murs de la guitare.">
-<meta name="theme-color" content="#0f0f11">
+<meta name="theme-color" content="#121014">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -4093,6 +4093,43 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-nin{flex:1;min-width:0;height:34px;padding:0 13px;border-radius:17px;border:1.5px solid var(--gold);background:var(--card);color:var(--cream);font:600 13px var(--sans);outline:none;box-sizing:border-box}
 .fp-nin::placeholder{color:var(--cream4)}
 @media(prefers-reduced-motion:reduce){.fp-recm .pk{transition:none}.fp-recm .rd{animation:none}}
+
+/* ── la pochette d'un audio (C2, 27/11) : sa couleur, Médi qui écoute, son onde ── */
+.fp-th.poch{--pc:#ffb877;background:var(--pc)}.fp-th.poch.c1{--pc:#b9a7ff}.fp-th.poch.c2{--pc:#7fe0c0}.fp-th.poch.c3{--pc:#8fc8ff}
+.fp-pc{position:absolute;inset:0;width:100%;height:100%}
+.fp-pc .pb{fill:var(--ink)}.fp-pc .pe{fill:var(--pc)}
+.fp-pc .pw{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;opacity:.55}
+.fp-th.poch .fp-du{background:rgba(26,13,2,.72)}
+
+/* ── une prise du rythme sur les six cordes (C1, 27/11) : joués = orange ── */
+.fp-wave.str .sl{stroke:var(--cream4);stroke-opacity:.55}
+.fp-wave.str .g .sh{fill:var(--cream3)}
+.fp-wave.str .o .sh{fill:var(--gold)}.fp-wave.str .o .sl{stroke:var(--gold);stroke-opacity:.35}
+
+/* ── rogner (B, 27/11) : la zone gardée entre deux médiators ── */
+.fp-trim{position:relative;height:62px;margin:6px 10px 0;touch-action:none;cursor:pointer;user-select:none;-webkit-user-select:none;--a:0%;--b:100%}
+.fp-trim svg.g,.fp-trim svg.o{position:absolute;left:0;top:12px;width:100%;height:44px}
+.fp-trim .g rect{fill:var(--cream4)}.fp-trim .o rect{fill:var(--gold)}
+.fp-trim svg.o{clip-path:inset(0 calc(100% - var(--b)) 0 var(--a))}
+.fp-trim .out{position:absolute;top:8px;bottom:2px;background:rgba(18,16,20,.62);pointer-events:none}
+.fp-trim .out.l{left:0;width:var(--a);border-radius:10px 0 0 10px}.fp-trim .out.r{left:var(--b);right:0;border-radius:0 10px 10px 0}
+.fp-trim .zone{position:absolute;top:8px;bottom:2px;left:var(--a);width:calc(var(--b) - var(--a));border-radius:10px;box-shadow:inset 0 0 0 2px var(--gold);pointer-events:none}
+.fp-trim .ph{position:absolute;top:11px;bottom:5px;left:0;width:2px;margin-left:-1px;background:var(--cream);border-radius:1px;pointer-events:none}
+.fp-trim .hd{position:absolute;top:-9px;bottom:0;width:26px;margin-left:-13px;display:flex;flex-direction:column;align-items:center;pointer-events:none;z-index:2}
+.fp-trim .hd.s{left:var(--a)}.fp-trim .hd.e{left:var(--b)}
+.fp-trim .hd svg{width:22px;height:23px;fill:var(--gold);transform-origin:50% 85%;transition:transform .15s}
+.fp-trim .hd.on svg{transform:scale(1.3)}
+.fp-trim .hd i{flex:1;width:3px;margin-top:-5px;background:var(--gold);border-radius:2px}
+.fp-trim.st{height:76px}
+.fp-trim .fr{position:absolute;left:0;right:0;top:12px;bottom:4px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;border-radius:10px;overflow:hidden;background:var(--card2)}
+.fp-trim .fr canvas{width:100%;height:100%;display:block}
+.fp-trim .star{position:absolute;top:0;z-index:1;transform:translateX(-50%);font:800 10px var(--display);color:var(--ink);background:var(--cream);border-radius:7px;padding:2px 6px;white-space:nowrap;pointer-events:none}
+.fp-tks{position:relative;height:17px;margin:0 10px}
+.fp-tks i{position:absolute;top:0;width:2px;height:6px;margin-left:-1px;border-radius:1px;background:var(--cream4)}.fp-tks i.in{background:var(--gold)}
+.fp-tks b{position:absolute;top:3px;transform:translateX(-50%);font:700 11px var(--display);color:var(--cream3)}
+.fp-ttr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:2px 4px 0;font-size:12px;font-weight:600;color:var(--cream3);font-variant-numeric:tabular-nums}
+.fp-ttr b{font:800 13px var(--display);color:var(--gold)}.fp-ttr .ln{font-weight:700;color:var(--cream2)}
+.fp-tpl{display:flex;align-items:center;gap:10px}.fp-tpl span{font-size:14px;font-weight:600;color:var(--cream2)}
 /* ═══════ QUITTER L'ÉDITEUR SANS AVOIR ENREGISTRÉ (Lucas, 27/11) : 23-6-retour-actualiser.js ═══════ */
 .edl{position:fixed;inset:0;z-index:970;background:rgba(10,9,11,.6);display:flex;align-items:flex-end;justify-content:center;animation:edlFade .25s both}
 .edl-box{width:100%;max-width:480px;box-sizing:border-box;background:var(--card);border-radius:26px 26px 0 0;padding:20px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;animation:edlUp .35s cubic-bezier(.2,.9,.3,1) both}
@@ -15427,14 +15464,26 @@ const fpDash = (txt, fn, lbl, cls) => `<button type="button" class="fp-dash${cls
 function fpFilt(k) { FP.f = k; FP.all = false; fpPerso(); }
 function fpPoch(m) {
   const v = m.kind === 'video';
-  return `<button type="button" class="fp-po" onclick="fpMediaPop('${m.id}',this)"><span class="fp-th${v ? '' : ' au'}" data-mid="${m.mediaId}" data-k="${m.kind}">`
-    + (v ? `<video muted playsinline preload="metadata"></video><span class="fp-cam">${fpI('cam')}</span>` : `<svg class="fp-wv" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true"></svg>`)
+  return `<button type="button" class="fp-po" onclick="fpMediaPop('${m.id}',this)"><span class="fp-th${v ? '' : ' au poch c' + fpPochC(m)}" data-mid="${m.mediaId}" data-k="${m.kind}">`
+    + (v ? `<video muted playsinline preload="metadata"></video><span class="fp-cam">${fpI('cam')}</span>` : fpPochSVG(m))
     + `<span class="fp-pl">${FP_PLAY}</span><span class="fp-du">${m.dur ? fpDur(m.dur) : ''}</span></span><b>${esc(m.name || (v ? 'Ma vidéo' : 'Mon audio'))}</b><small>${fpDate(m.at)}</small></button>`;
 }
 function fpPeaks(buf, a, b, n) {
   const d = buf.getChannelData(0), sr = buf.sampleRate, i0 = Math.floor((a || 0) * sr), i1 = Math.min(d.length, Math.floor((b || buf.duration) * sr)), st = Math.max(1, Math.floor((i1 - i0) / n)), out = [];
   for (let k = 0; k < n; k++) { let m = 0; for (let j = i0 + k * st, e = Math.min(i1, j + st); j < e; j += 4) { const x = Math.abs(d[j]); if (x > m) m = x; } out.push(m); }
   const mx = Math.max(.02, ...out); return out.map(x => x / mx);
+}
+// la pochette d'un audio (choix C2 de Lucas, 27/11) : chaque audio a sa couleur, Médi l'écoute les yeux plissés, son onde en bas
+const fpPochC = m => { let h = 0; for (const c of String(m.id || m.mediaId)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h % 4; };
+const fpPochSVG = () => `<svg class="fp-pc" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g transform="translate(70 48) scale(.46)"><g transform="rotate(-14 100 111)"><path class="pb" d="${MEDI_BODY}"/><rect class="pe" x="62" y="62" width="20" height="38" rx="10"/><rect class="pe" x="114" y="62" width="20" height="38" rx="10"/></g></g><path class="pw" d="M8 88"/></svg>`;
+// une prise du rythme se dessine sur les six cordes (choix C1 de Lucas, 27/11) : un trait par coup, haut selon sa force ; joués = orange
+function fpStrFill(pop, buf, a, b) {
+  const w = pop.querySelector('.fp-wave'); if (!w) return;
+  const tl = l26FromTake(buf, a, b, cur && cur.bpm); if (!tl) { fpWaveFill(pop, buf, a, b); return; }
+  const L = Math.max(.01, b - a), str = [0, 1, 2, 3, 4, 5].map(k => `<line class="sl" x1="0" x2="200" y1="${(4.5 + k * 5).toFixed(1)}" y2="${(4.5 + k * 5).toFixed(1)}" style="stroke-width:${(.5 + .12 * k).toFixed(2)}"/>`).join('');
+  const hits = tl.hits.map(h => { const x = h.t / L * 200, hh = 12 + 18 * h.a; return `<rect class="sh" x="${(x - 1.6).toFixed(1)}" y="${(17 - hh / 2).toFixed(1)}" width="3.2" height="${hh.toFixed(1)}" rx="1.6"/>`; }).join('');
+  w.classList.add('str'); w.querySelector('.g').innerHTML = str + hits; const o = w.querySelector('.o'); o.innerHTML = str + hits;
+  const sync = () => { o.style.width = w.clientWidth + 'px'; }; sync(); requestAnimationFrame(sync);
 }
 const fpBars = (pk, w, h) => pk.map((x, k) => { const bw = w / pk.length, bh = Math.max(3, x * (h - 2)); return `<rect x="${(k * bw + bw * .2).toFixed(1)}" y="${((h - bh) / 2).toFixed(1)}" width="${(bw * .6).toFixed(1)}" height="${bh.toFixed(1)}" rx="1.3"/>`; }).join('');
 async function fpHydrate(host) {
@@ -15448,7 +15497,9 @@ async function fpHydrate(host) {
       v.src = url + '#t=' + (m && m.tt != null ? m.tt : .1);
       if (m && m.tt == null) fpThumbLater(m, url);
     } else {
-      try { const buf = await recBuffer(th.dataset.mid); th.querySelector('.fp-wv').innerHTML = fpBars(fpPeaks(buf, 0, buf.duration, 22), 120, 40); if (!du.textContent) du.textContent = fpDur(buf.duration); } catch (e) {}
+      try { const buf = await recBuffer(th.dataset.mid), m = (cur && cur.media || []).find(x => x.mediaId === th.dataset.mid), pk = fpPeaks(buf, m && m.a || 0, Math.min(m && m.b || buf.duration, buf.duration), 14);
+        const w = th.querySelector('.pw'); if (w) w.setAttribute('d', 'M8 88' + pk.map((x, k) => ` L${(11 + k * 5).toFixed(0)} ${(88 - 3 - x * 14).toFixed(1)} L${(13.5 + k * 5).toFixed(1)} 88`).join(''));
+        if (!du.textContent) du.textContent = fpDur(buf.duration); } catch (e) {}
     }
   }
 }
@@ -15462,14 +15513,14 @@ async function fpThumbRun() {
   while (fpThumbQ.length) {
     const {m, url} = fpThumbQ[0];
     try {
-      m.tt = await fpBestFrame(url, m.dur);
+      m.tt = await fpBestFrame(url, m.b || m.dur, m.a, m.b);
       const s = sheets.find(x => (x.media || []).includes(m)); if (s) { s.updatedAt = Date.now(); await DB.put('sheets', clone(s)); }
       const v = document.querySelector(`.fp-th[data-mid="${m.mediaId}"] video`); if (v) v.src = url + '#t=' + m.tt;
     } catch (e) { m.tt = .1; }
     fpThumbQ.shift();
   }
 }
-async function fpBestFrame(url, dur) {
+async function fpBestFrame(url, dur, a, b) {   // entre a et b si la vidéo est rognée
   const v = document.createElement('video'); v.muted = true; v.playsInline = true; v.preload = 'auto';
   const wait = (ev, ms) => new Promise(r => { const t = setTimeout(r, ms); v.addEventListener(ev, () => { clearTimeout(t); r(); }, {once: true}); });
   v.src = url; await wait('loadeddata', 5000);
@@ -15479,7 +15530,7 @@ async function fpBestFrame(url, dur) {
   const c = document.createElement('canvas'); c.width = c.height = 48; const g = c.getContext('2d', {willReadFrequently: true});
   let best = .1, bs = -1;
   for (const f of [.12, .25, .38, .5, .62, .75, .88]) {
-    const t = +(d * f).toFixed(2); v.currentTime = t; await wait('seeked', 1500);
+    const lo = Math.min(a || 0, d), hi = Math.max(lo, Math.min(b || d, d)), t = +(lo + (hi - lo) * f).toFixed(2); v.currentTime = t; await wait('seeked', 1500);
     let px; try { g.drawImage(v, 0, 0, 48, 48); px = g.getImageData(0, 0, 48, 48).data; } catch (e) { continue; }
     const n = 48 * 48, L = new Float32Array(n); let sm = 0, rg = 0, yb = 0, rg2 = 0, yb2 = 0;
     for (let k = 0; k < n; k++) { const r = px[k * 4] / 255, gg = px[k * 4 + 1] / 255, b = px[k * 4 + 2] / 255; L[k] = .299 * r + .587 * gg + .114 * b; sm += L[k]; const a = r - gg, y = .5 * (r + gg) - b; rg += a; yb += y; rg2 += a * a; yb2 += y * y; }
@@ -15547,7 +15598,7 @@ function fpPopClose(quiet) {
   if (FP.R && !FP.R.cam) fpRecAbort();
   const p = $('fp-pop'), d = $('fp-dim');
   if (p) p.remove(); if (d) d.remove();
-  FP.anchor = null;
+  FP.anchor = null; FP.T = null;
 }
 const fpMore = items => `<div class="fp-mo"><button type="button" class="fp-dots" onclick="this.parentNode.classList.toggle('open')" aria-label="Plus" aria-haspopup="true">${fpI('dots')}</button><div class="fp-mm">${items.map(([l, fn, c]) => `<button type="button"${c ? ` class="${c}"` : ''} onclick="${fn}">${l}</button>`).join('')}</div></div>`;
 // le tempo de lecture : Médi glisse sur la barre ; le petit trait = le tempo d'origine
@@ -15586,11 +15637,11 @@ function fpToggle() {
   const P = FP.pl; if (!P) return;
   if (!P.el.paused) { fpPlPause(); return; }
   stopPlay();
-  if (P.b && P.el.currentTime >= P.b - .05) P.el.currentTime = P.a;
+  if (P.b && P.el.currentTime >= P.b - .05 || P.el.currentTime < P.a - .05) P.el.currentTime = P.a;
   P.el.playbackRate = P.rate;
   const pr = P.el.play(); if (pr && pr.catch) pr.catch(() => {});
   fpPlBtn(true);
-  const loop = () => { const Q = FP.pl; if (!Q || Q.el.paused) return; if (Q.b && Q.el.currentTime >= Q.b) { Q.el.pause(); Q.el.currentTime = Q.a; fpPlBtn(false); fpPlPaint(); return; } fpPlPaint(); FP.raf = requestAnimationFrame(loop); };
+  const loop = () => { const Q = FP.pl; if (!Q || Q.el.paused) return; if (Q.b && Q.el.currentTime >= Q.b) { Q.el.currentTime = Q.a; if (!Q.loop) { Q.el.pause(); fpPlBtn(false); fpPlPaint(); return; } } /* une boucle de rythme repart au début */ fpPlPaint(); FP.raf = requestAnimationFrame(loop); };
   cancelAnimationFrame(FP.raf); FP.raf = requestAnimationFrame(loop);
 }
 function fpPlPause() { const P = FP.pl; if (!P) return; try { P.el.pause(); } catch (e) {} fpPlBtn(false); fpPlPaint(); }
@@ -15601,6 +15652,7 @@ function fpPlPaint() {
   p.querySelectorAll('.fp-prog').forEach(e => { e.style.width = x + '%'; });
   p.querySelectorAll('.fp-knob').forEach(e => { e.style.left = x + '%'; });
   const c = p.querySelector('.fp-tt .c'); if (c) c.textContent = fpDur(t);
+  const ph = p.querySelector('#fp-trim .ph'); if (ph && P.D) ph.style.left = Math.min(100, P.el.currentTime / P.D * 100).toFixed(2) + '%';   // rogner : où on en est
 }
 function fpPlStop() { cancelAnimationFrame(FP.raf); const P = FP.pl; if (P) { try { P.el.pause(); P.el.removeAttribute('src'); P.el.load(); } catch (e) {} } FP.pl = null; }
 function fpSeek(d) { const P = FP.pl; if (!P) return; P.el.currentTime = Math.max(P.a, Math.min((P.b || P.el.duration) - .05, P.el.currentTime + d)); fpPlPaint(); }
@@ -15625,13 +15677,13 @@ async function fpTakePop(i, mid, el, e) {
   const t = fpTakes(p).find(x => x.mediaId === mid); if (!t) return;
   stopPlay();
   const on = t === p.rec, len = (t.end || t.dur || 0) - (t.start || 0);
-  const pop = fpPopOpen(el, `<div class="fp-ph"><div><b>${esc(fpTakeName(p, t))}</b><small>${[fpDate(t.at), fpDur(len), cur.bpm ? 'tempo ' + cur.bpm : ''].filter(Boolean).join(' · ')}</small></div>${fpMore([['Renommer', `fpTakeRename(${i},'${mid}')`], ['Supprimer', `fpTakeDel(${i},'${mid}')`, 'del']])}</div>
+  const pop = fpPopOpen(el, `<div class="fp-ph"><div><b>${esc(fpTakeName(p, t))}</b><small>${[fpDate(t.at), fpDur(len), cur.bpm ? 'tempo ' + cur.bpm : ''].filter(Boolean).join(' · ')}</small></div>${fpMore([['Rogner', `fpTrimTake(${i},'${mid}')`], ['Renommer', `fpTakeRename(${i},'${mid}')`], ['Supprimer', `fpTakeDel(${i},'${mid}')`, 'del']])}</div>
     <div class="fp-pw"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><div class="fp-sw">${fpWaveHTML()}<div class="fp-tt"><span class="c">0:00</span><span>${fpDur(len)}</span></div></div></div>
     ${fpTempoHTML()}
     <button type="button" class="fp-tgl${on ? ' on' : ''}" aria-pressed="${on}" onclick="fpTakeMain(${i},'${mid}')">${fpPickSw(on)}<span>${on ? 'Elle joue sur la fiche' : 'La mettre sur la fiche'}</span></button>`, 'fp-take');
   const url = await mediaURL(mid); if (!url || $('fp-pop') !== pop) return;
   fpPlInit(new Audio(url), t.start || 0, t.end || 0);
-  try { const buf = await recBuffer(mid); if ($('fp-pop') === pop) fpWaveFill(pop, buf, t.start || 0, t.end || buf.duration); } catch (e) {}
+  try { const buf = await recBuffer(mid); if ($('fp-pop') === pop) fpStrFill(pop, buf, t.start || 0, Math.min(t.end || buf.duration, buf.duration)); } catch (e) {}
   fpPlace();
 }
 async function fpTakeMain(i, mid) {
@@ -15662,7 +15714,7 @@ async function fpMediaPop(id, el) {
   const m = (cur.media || []).find(x => x.id === id); if (!m) return;
   stopPlay();
   const v = m.kind === 'video';
-  const head = `<div class="fp-ph"><div><b>${esc(m.name || (v ? 'Ma vidéo' : 'Mon audio'))}</b><small class="fp-meta">${[fpDate(m.at), m.dur ? fpDur(m.dur) : ''].filter(Boolean).join(' · ')}</small></div>${v ? `<button type="button" class="fp-dots" onclick="fpFull()" aria-label="Plein écran">${fpI('full')}</button>` : ''}${fpMore([['Renommer', `fpMediaRename('${id}')`], ['Supprimer', `fpMediaDel('${id}')`, 'del']])}</div>`;
+  const head = `<div class="fp-ph"><div><b>${esc(m.name || (v ? 'Ma vidéo' : 'Mon audio'))}</b><small class="fp-meta">${[fpDate(m.at), m.dur ? fpDur(m.dur) : ''].filter(Boolean).join(' · ')}</small></div>${v ? `<button type="button" class="fp-dots" onclick="fpFull()" aria-label="Plein écran">${fpI('full')}</button>` : ''}${fpMore([['Rogner', `fpTrimMedia('${id}')`], ['Renommer', `fpMediaRename('${id}')`], ['Supprimer', `fpMediaDel('${id}')`, 'del']])}</div>`;
   const body = v
     ? `<div class="fp-vid"><video playsinline preload="metadata"></video><button type="button" class="fp-pp fp-vpl" onclick="fpToggle()" aria-label="Lire">${FP_PLAY}</button></div><div class="fp-bar" onpointerdown="fpScrubDown(event)"><i class="fp-prog"></i><b class="fp-knob"></b></div><div class="fp-tt"><span class="c">0:00</span><span class="d">${m.dur ? fpDur(m.dur) : ''}</span></div>`
     : `<div class="fp-pw"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><div class="fp-sw">${fpWaveHTML()}<div class="fp-tt"><span class="c">0:00</span><span class="d">${m.dur ? fpDur(m.dur) : ''}</span></div></div></div>`;
@@ -15672,9 +15724,9 @@ async function fpMediaPop(id, el) {
   if (v) fpVidFit(pop.querySelector('.fp-vid'), el2);
   el2.src = url;
   el2.addEventListener('loadedmetadata', () => { const d = pop.querySelector('.fp-tt .d'); if (d && !d.textContent && isFinite(el2.duration)) d.textContent = fpDur(el2.duration); fpPlace(); }, {once: true});
-  fpPlInit(el2, 0, 0);
+  fpPlInit(el2, m.a || 0, m.b || 0);   // une prise rognée joue entre a et b
   FP.adj = false;
-  if (!v) try { const buf = await recBuffer(m.mediaId); if ($('fp-pop') === pop) fpWaveFill(pop, buf, 0, buf.duration); } catch (e) {}
+  if (!v) try { const buf = await recBuffer(m.mediaId); if ($('fp-pop') === pop) fpWaveFill(pop, buf, m.a || 0, Math.min(m.b || buf.duration, buf.duration)); } catch (e) {}
   fpPlace();
 }
 function fpFull() { const v = $('fp-pop') && $('fp-pop').querySelector('video'); if (!v) return; try { (v.requestFullscreen || v.webkitEnterFullscreen || v.webkitRequestFullscreen).call(v); } catch (e) {} }
@@ -15793,26 +15845,25 @@ async function fpRecDone(R) {
   if (R.kind !== 'video') { try { R.buf = await recDecode(R.blob); R.dur = R.buf.duration; } catch (e) { if (R.kind === 'rh') { toast('Ta prise n’a pas pu être lue', true); FP.R = null; fpPopClose(); return; } } }
   fpAfter(R);
 }
-// E : c'est dans la boîte
-function fpAfter(R) {
-  const rh = R.kind === 'rh', p = rh ? cur.parts[R.part] : null;
+// E : c'est dans la boîte. Médi a déjà proposé la coupe (rogner par défaut, Lucas, 27/11 : 39-9955-perso-rogner.js)
+async function fpAfter(R) {
+  const rh = R.kind === 'rh', v = R.kind === 'video', p = rh ? cur.parts[R.part] : null;
+  if (v && !R.buf && !R.tried) { R.tried = true; try { R.buf = await recDecode(R.blob); } catch (e) {} if (FP.R !== R) return; }   // le son de la vidéo : pour couper les blancs
+  R.D = R.buf ? R.buf.duration : (R.dur || 0);
+  Object.assign(R, fpAutoTrim(R.buf, R.kind, R.D));
   const nv = (cur.media || []).filter(m => m.kind === R.kind).length;
-  R.prop = R.name = rh ? (p.rec ? 'Prise ' + (fpTakes(p).length + 1) : 'Ma prise') : nv ? (R.kind === 'video' ? 'Ma vidéo ' : 'Mon audio ') + (nv + 1) : 'Ma version';
+  R.prop = R.name = rh ? (p.rec ? 'Prise ' + (fpTakes(p).length + 1) : 'Ma prise') : nv ? (v ? 'Ma vidéo ' : 'Mon audio ') + (nv + 1) : 'Ma version';
   R.main = rh;
   const anchor = FP.anchor && FP.anchor.isConnected ? FP.anchor : (rh ? document.querySelector(`#pvb-${R.part} .fp-add, #pvb-${R.part} .fp-rh0 .fp-recm`) : $('fp-recb'));
-  const media = R.kind === 'video' ? `<div class="fp-vid sm"><video playsinline></video><button type="button" class="fp-pp fp-vpl" onclick="fpToggle()" aria-label="Lire">${FP_PLAY}</button></div>`
-    : `<div class="fp-pw"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><div class="fp-sw">${fpWaveHTML()}</div><span class="fp-dd">${fpDur(R.dur)}</span></div>`;
   FP.R = null;   // l'infobulle se rouvre : la prise n'est plus en cours, mais on la garde sous la main
-  const pop = fpPopOpen(anchor || document.body, `<div class="fp-rr top">${fpMedi('fp-joy', FP_JOY)}<p class="fp-said">Joli ! On la garde ?</p></div>${media}
+  const pop = fpPopOpen(anchor || document.body, `<div class="fp-rr top">${fpMedi('fp-joy', FP_JOY)}<p class="fp-said">${R.D ? fpTrimSay(R) : 'Joli ! On la garde ?'}</p></div>
+    ${v ? fpTrimVid() : ''}${R.D ? fpTrimHTML(R) : ''}${fpTrimCtl(R)}
     <div class="fp-names1"><button type="button" class="fp-nm on" onclick="fpName(this)">${esc(R.prop)}</button><button type="button" class="fp-own" onclick="fpOwn(this)">+ Choisir un titre</button></div>
     ${rh ? `<button type="button" class="fp-tgl on" aria-pressed="true" onclick="fpAfterMain(this)">${fpPickSw(true)}<span>Elle joue sur la fiche</span></button>` : ''}
     <div class="fp-btns"><button type="button" class="ghost" onclick="fpAgain()">Recommencer</button><button type="button" class="keep" onclick="fpKeep()">Garder</button></div>`, 'fp-rp fp-after');
   FP.R = R;
   R.url = URL.createObjectURL(R.blob);
-  const el = R.kind === 'video' ? pop.querySelector('video') : new Audio();
-  if (R.kind === 'video') fpVidFit(pop.querySelector('.fp-vid'), el);
-  el.src = R.url; fpPlInit(el, 0, 0);
-  if (R.buf) fpWaveFill(pop, R.buf, 0, R.buf.duration);
+  fpTrimMount(R, pop, v ? pop.querySelector('video') : new Audio(), R.url, R.buf);
   fpPlace();
 }
 function fpName(b) {
@@ -15853,12 +15904,15 @@ async function fpKeep() {
   if (R.kind === 'rh') {
     const p = cur.parts[R.part]; if (!p) return;
     recBuf[mediaId] = R.buf;
-    const d = +R.buf.duration.toFixed(3), t = {mediaId, start: 0, end: d, dur: d, at: Date.now(), name: R.name};
+    const d = +R.buf.duration.toFixed(3), t = {mediaId, start: +(R.a || 0).toFixed(3), end: +Math.min(R.b || d, d).toFixed(3), dur: d, at: Date.now(), name: R.name};
     if (R.main) { if (p.rec) (p.recAlt = p.recAlt || []).unshift(p.rec); p.rec = t; }
     else (p.recAlt = p.recAlt || []).push(t);
   } else {
     cur.media = cur.media || [];
-    cur.media.push({id: uid(), mediaId, name: R.name, kind: R.kind, at: Date.now(), dur: +(R.dur || 0).toFixed(1)});
+    const m = {id: uid(), mediaId, name: R.name, kind: R.kind, at: Date.now(), dur: +((R.D ? R.b - R.a : R.dur) || 0).toFixed(1)};
+    if (R.D) { m.a = +R.a.toFixed(2); m.b = +R.b.toFixed(2); }   // rognée : le fichier reste entier, elle joue entre a et b
+    if (R.tt != null && R.tt >= R.a && R.tt <= R.b) m.tt = R.tt;
+    cur.media.push(m);
   }
   FP.R = null; fpPopClose(); FP.all = false;
   await fpSave(); toast('Ta prise est gardée');
@@ -15916,6 +15970,169 @@ function fpCamFile() {
   const sv = viewSheet;
   viewSheet = async function (id, k) { if (!cur || cur.id !== id) { FP.f = 'all'; FP.all = false; } const r = await sv(id, k); fpPerso(); return r; };
 })();
+/* ═══════ ROGNER UNE PRISE (27/11, bêta : choix B de Lucas, « ok pour tout ») ═══════
+   Par défaut à la fin de chaque enregistrement (rythme, audio, vidéo), et « Rogner » dans le menu ⋯ d'une prise.
+   Médi propose déjà la coupe : un rythme part du 1er coup et compte des mesures entières (les médiators s'aimantent
+   sur les mesures, la boucle tourne sans à-coup sur la fiche) ; un audio ou une vidéo perd ses silences au début et à la fin.
+   Les deux médiators se glissent au doigt (le plus proche du doigt bouge). Le fichier reste entier : seuls le début et
+   la fin changent (prise du rythme : start / end ; Mes prises : a / b, dur = la longueur gardée).
+   Vidéo : la bande d'images en bas, l'étoile = la miniature (le plus beau moment entre les deux médiators). */
+const FP_HANDLE = `<svg viewBox="-20 -10 240 250" aria-hidden="true"><path d="${MEDI_BODY}"/></svg>`;
+const fpTc = s => { s = Math.max(0, s || 0); const m = Math.floor(s / 60), r = s - m * 60; return m + ':' + (r < 10 ? '0' : '') + r.toFixed(1).replace('.', ','); };
+
+// la coupe proposée par Médi
+function fpAutoTrim(buf, kind, D) {
+  if (!buf) return {a: 0, b: D || 0, n: 0, bar: 0};
+  D = buf.duration;
+  if (kind === 'rh') {
+    const tl = l26FromTake(buf, 0, D, cur && cur.bpm);
+    if (tl && tl.bar && tl.hits.length > 1) {
+      const a = Math.max(0, tl.off - .03), last = tl.hits[tl.hits.length - 1].t, nMax = Math.floor((D - a) / tl.bar + .02);
+      if (nMax >= 1) { const n = Math.max(1, Math.min(nMax, Math.round((last - tl.off) / tl.bar + .15))); return {a, b: Math.min(D, a + n * tl.bar), n, bar: tl.bar, hits: tl.hits}; }
+    }
+  }
+  // les silences du début et de la fin
+  const d = buf.getChannelData(0), sr = buf.sampleRate, hop = Math.max(1, Math.round(sr * .01)), N = Math.floor(d.length / hop), env = new Float32Array(N); let pk = 0;
+  for (let i = 0; i < N; i++) { let e = 0; for (let k = i * hop, m = k + hop; k < m; k += 2) e += d[k] * d[k]; env[i] = Math.sqrt(e / (hop / 2)); if (env[i] > pk) pk = env[i]; }
+  const out = {a: 0, b: D, n: 0, bar: 0};
+  if (pk < .003) return out;
+  const thr = Math.max(.006, pk * .12); let f = 0, l = N - 1;
+  while (f < N && env[f] < thr) f++;
+  while (l > f && env[l] < thr) l--;
+  out.a = Math.max(0, f * hop / sr - .25); out.b = Math.min(D, (l + 1) * hop / sr + .6);
+  if (out.b - out.a < .5) { out.a = 0; out.b = D; }
+  return out;
+}
+function fpTrimSay(T) {
+  if (T.kind === 'rh' && T.bar && !T.edit) return `J’ai coupé le blanc du début. Ta boucle fait ${T.n} mesure${T.n > 1 ? 's' : ''} pile.`;
+  if (T.edit) return T.bar ? 'Glisse les médiators : ils s’aimantent sur les mesures.' : 'Glisse les médiators : je garde ce qu’il y a entre les deux.';
+  return T.a > .15 || T.D - T.b > .3 ? 'J’ai enlevé le blanc au début et à la fin. Ça te va ?' : 'Joli ! Glisse les médiators si tu veux couper.';
+}
+function fpTrimHTML(T) {
+  const st = T.kind === 'video';
+  return `<div class="fp-trim${st ? ' st' : ''}" id="fp-trim" onpointerdown="fpTrimDown(event)">`
+    + (st ? '<div class="fr"></div><span class="star" hidden>★ miniature</span>' : '<svg class="g" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true"></svg><svg class="o" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true"></svg>')
+    + `<i class="out l"></i><i class="out r"></i><i class="zone"></i><i class="ph"></i><span class="hd s">${FP_HANDLE}<i></i></span><span class="hd e">${FP_HANDLE}<i></i></span></div>`
+    + (T.bar ? '<div class="fp-tks" id="fp-tks" aria-hidden="true"></div>' : '')
+    + '<div class="fp-ttr"><span><b id="fp-ta"></b> début</span><span class="ln" id="fp-tl"></span><span>fin <b id="fp-tb"></b></span></div>';
+}
+function fpTrimPaint() {
+  const T = FP.T, el = $('fp-trim'); if (!T || !el || !T.D) return;
+  el.style.setProperty('--a', (T.a / T.D * 100).toFixed(2) + '%'); el.style.setProperty('--b', (T.b / T.D * 100).toFixed(2) + '%');
+  $('fp-ta').textContent = fpTc(T.a); $('fp-tb').textContent = fpTc(T.b);
+  $('fp-tl').textContent = T.bar ? `${T.n} mesure${T.n > 1 ? 's' : ''}` : fpTc(T.b - T.a);
+  const tk = $('fp-tks');
+  if (tk && T.bar) {
+    let s = '';
+    for (let k = 0; T.a + k * T.bar <= T.D + 1e-3 && k < 64; k++) {
+      s += `<i class="${k <= T.n ? 'in' : ''}" style="left:${((T.a + k * T.bar) / T.D * 100).toFixed(2)}%"></i>`;
+      if (k < T.n && T.n <= 12) s += `<b style="left:${((T.a + (k + .5) * T.bar) / T.D * 100).toFixed(2)}%">${k + 1}</b>`;
+    }
+    tk.innerHTML = s;
+  }
+  const P = FP.pl; if (P) { P.a = T.a; P.b = T.b; }
+}
+function fpTrimDown(e) {
+  const T = FP.T, el = e.currentTarget; if (!T || !T.D) return;
+  e.preventDefault();
+  const r = el.getBoundingClientRect(), at = ev => Math.max(0, Math.min(T.D, (ev.clientX - r.left) / r.width * T.D));
+  const t0 = at(e), h = Math.abs(t0 - T.a) <= Math.abs(t0 - T.b) ? 's' : 'e', hd = el.querySelector('.hd.' + h);
+  const set = ev => {
+    const t = at(ev);
+    if (T.bar) {
+      if (h === 's') {   // le début se pose sur un coup proche, la fin suit (même nombre de mesures)
+        let a = Math.max(0, Math.min(t, T.D - T.bar)), best = null;
+        (T.hits || []).forEach(x => { const c = Math.max(0, x.t - .03); if (Math.abs(c - a) < .12 && (best == null || Math.abs(c - a) < Math.abs(best - a))) best = c; });
+        T.a = best != null ? best : a;
+        T.n = Math.max(1, Math.min(T.n || 1, Math.floor((T.D - T.a) / T.bar + .02)));
+      } else T.n = Math.max(1, Math.min(Math.floor((T.D - T.a) / T.bar + .02), Math.round((t - T.a) / T.bar)));
+      T.b = Math.min(T.D, T.a + T.n * T.bar);
+    } else if (h === 's') T.a = Math.max(0, Math.min(t, T.b - .5));
+    else T.b = Math.min(T.D, Math.max(t, T.a + .5));
+    hd.classList.add('on'); fpTrimPaint();
+    const P = FP.pl;   // à l'arrêt, on voit (et on entend au prochain ▶) l'endroit du médiator
+    if (P && P.el.paused) { try { P.el.currentTime = h === 's' ? T.a : Math.max(T.a, T.b - .05); } catch (_) {} fpPlPaint(); }
+  };
+  set(e); try { el.setPointerCapture(e.pointerId); } catch (_) {}
+  const mv = ev => set(ev), up = () => {
+    el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); el.removeEventListener('pointercancel', up);
+    hd.classList.remove('on');
+    const P = FP.pl; if (P && (P.el.currentTime < T.a - .02 || P.el.currentTime > T.b)) { try { P.el.currentTime = T.a; } catch (_) {} fpPlPaint(); }
+    if (T.kind === 'video' && T.url && T.tt != null && (T.tt < T.a || T.tt > T.b)) fpTrimStar(T.url, T);   // la miniature reste entre les deux
+  };
+  el.addEventListener('pointermove', mv); el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+}
+function fpTrimWave(buf) {
+  const el = $('fp-trim'); if (!el || !buf) return;
+  const bars = fpBars(fpPeaks(buf, 0, buf.duration, 60), 300, 48);
+  el.querySelector('.g').innerHTML = bars; el.querySelector('.o').innerHTML = bars;
+}
+// la bande d'images d'une vidéo
+async function fpTrimFrames(url, D) {
+  const fr = document.querySelector('#fp-trim .fr'); if (!fr) return;
+  const n = 7, v = document.createElement('video'); v.muted = true; v.playsInline = true; v.preload = 'auto';
+  const wait = (ev, ms) => new Promise(r => { const t = setTimeout(r, ms); v.addEventListener(ev, () => { clearTimeout(t); r(); }, {once: true}); });
+  fr.innerHTML = Array.from({length: n}, () => '<canvas width="48" height="64"></canvas>').join('');
+  v.src = url; await wait('loadeddata', 5000);
+  const cs = fr.querySelectorAll('canvas');
+  for (let k = 0; k < n && fr.isConnected; k++) {
+    v.currentTime = D * (k + .5) / n; await wait('seeked', 1500);
+    try { const g = cs[k].getContext('2d'), vw = v.videoWidth, vh = v.videoHeight, s = Math.max(48 / vw, 64 / vh); g.drawImage(v, (48 - vw * s) / 2, (64 - vh * s) / 2, vw * s, vh * s); } catch (e) {}
+  }
+  v.removeAttribute('src'); v.load();
+}
+async function fpTrimStar(url, T) {
+  if (FP.T !== T) return;
+  const tt = await fpBestFrame(url, T.D, T.a, T.b); if (FP.T !== T) return;
+  T.tt = tt;
+  const s = document.querySelector('#fp-trim .star'); if (s) { s.hidden = false; s.style.left = (tt / T.D * 100).toFixed(2) + '%'; }
+}
+// le lecteur et la coupe, une fois l'infobulle en place (après un enregistrement, ou « Rogner »)
+function fpTrimMount(T, pop, el, url, buf) {
+  FP.T = T; T.url = url;
+  if (T.kind === 'video') fpVidFit(pop.querySelector('.fp-vid'), el);
+  el.src = url; fpPlInit(el, T.a, T.b);
+  if (FP.pl) { FP.pl.D = T.D; FP.pl.loop = T.kind === 'rh'; }
+  if (!T.D) return;
+  if (T.kind === 'video') fpTrimFrames(url, T.D).then(() => fpTrimStar(url, T)); else fpTrimWave(buf);
+  fpTrimPaint();
+}
+const fpTrimCtl = T => T.kind === 'video' ? '' : `<div class="fp-tpl"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><span>${T.kind === 'rh' ? 'Écouter la boucle' : 'Écouter'}</span></div>`;
+const fpTrimVid = () => `<div class="fp-vid sm"><video playsinline preload="metadata"></video><button type="button" class="fp-pp fp-vpl" onclick="fpToggle()" aria-label="Lire">${FP_PLAY}</button></div>`;
+
+/* ── « Rogner » dans le menu ⋯ d'une prise déjà gardée ── */
+function fpTrimOpen(T, url, buf) {
+  const pop = fpPopOpen(FP.anchor, `<div class="fp-rr top">${fpMedi('fp-idle')}<p class="fp-said">${fpTrimSay(T)}</p></div>${T.kind === 'video' ? fpTrimVid() : ''}${fpTrimHTML(T)}${fpTrimCtl(T)}
+    <div class="fp-btns"><button type="button" class="ghost" onclick="fpPopClose()">Annuler</button><button type="button" class="keep" onclick="fpTrimSave()">Garder</button></div>`, 'fp-rp fp-after');
+  fpTrimMount(T, pop, T.kind === 'video' ? pop.querySelector('video') : new Audio(), url, buf);
+  fpPlace();
+}
+async function fpTrimTake(i, mid) {
+  const p = cur && cur.parts[i], t = p && fpTakes(p).find(x => x.mediaId === mid); if (!t) return;
+  let buf = null; try { buf = await recBuffer(mid); } catch (e) {}
+  const url = await mediaURL(mid); if (!buf || !url) { toast('Impossible de rogner cette prise', true); return; }
+  const g = fpAutoTrim(buf, 'rh'), D = buf.duration, a = Math.min(t.start || 0, D), b = Math.min(t.end || D, D);
+  const T = {kind: 'rh', edit: true, D, a, b, bar: g.bar, hits: g.hits, n: g.bar ? Math.max(1, Math.round((b - a) / g.bar)) : 0,
+    save: () => { t.start = +T.a.toFixed(3); t.end = +T.b.toFixed(3); }};
+  fpTrimOpen(T, url, buf);
+}
+async function fpTrimMedia(id) {
+  const m = (cur.media || []).find(x => x.id === id); if (!m) return;
+  const url = await mediaURL(m.mediaId); if (!url) return;
+  let buf = null;
+  try { if (m.kind === 'video') { const r = await DB.get('media', m.mediaId); buf = r && await recDecode(r.blob); } else buf = await recBuffer(m.mediaId); } catch (e) {}
+  let D = buf ? buf.duration : 0;
+  if (!D) D = await new Promise(r => { const v = document.createElement('video'); v.preload = 'metadata'; v.onloadedmetadata = () => r(isFinite(v.duration) ? v.duration : (m.b || 0)); v.onerror = () => r(m.b || 0); v.src = url; });
+  if (!D) { toast('Impossible de rogner cette prise', true); return; }
+  const T = {kind: m.kind, edit: true, D, a: Math.min(m.a || 0, D), b: Math.min(m.b || D, D), bar: 0, tt: m.tt,
+    save: () => { m.a = +T.a.toFixed(2); m.b = +T.b.toFixed(2); m.dur = +(T.b - T.a).toFixed(1); if (T.tt != null && T.tt >= T.a && T.tt <= T.b) m.tt = T.tt; else delete m.tt; }};
+  fpTrimOpen(T, url, buf);
+}
+async function fpTrimSave() {
+  const T = FP.T; if (!T || !T.save) return;
+  T.save(); fpPopClose(); await fpSave(); toast('C’est rogné');
+  viewSheet(cur.id, svAll ? null : svPart);
+}
 /* ═══════ LABO : LE SON DE TES PRISES (27/11, caché : ?beta) ═══════
    Lucas : « un son qui est bien sur les réseaux, sans abuser, plutôt que brut ». 1er test du Labo (carte en haut de son accueil).
    Toutes les prises de l'appli (rythmes des fiches, autres prises du rythme, Mes prises audio et vidéo), écoutées brutes ou traitées.
@@ -15946,7 +16163,7 @@ function lsnTakes() {
         what: 'Rythme' + (pn ? ' · ' + pn : ''), sheet: st, a: t.start || 0, b: t.end || 0, dur: Math.max(0, (t.end || t.dur || 0) - (t.start || 0)), at: t.at || 0}));
     });
     (s.media || []).forEach(m => { if (m.kind === 'audio' || m.kind === 'video') add({mid: m.mediaId, kind: m.kind, name: m.name || (m.kind === 'video' ? 'Ma vidéo' : 'Mon audio'),
-      what: m.kind === 'video' ? 'Vidéo' : 'Audio', sheet: st, a: 0, b: 0, dur: m.dur || 0, at: m.at || 0}); });
+      what: m.kind === 'video' ? 'Vidéo' : 'Audio', sheet: st, a: m.a || 0, b: m.b || 0, dur: m.dur || 0, at: m.at || 0}); });
   });
   return out.sort((x, y) => (y.at || 0) - (x.at || 0));
 }

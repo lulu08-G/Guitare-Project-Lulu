@@ -212,3 +212,40 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-nin{flex:1;min-width:0;height:34px;padding:0 13px;border-radius:17px;border:1.5px solid var(--gold);background:var(--card);color:var(--cream);font:600 13px var(--sans);outline:none;box-sizing:border-box}
 .fp-nin::placeholder{color:var(--cream4)}
 @media(prefers-reduced-motion:reduce){.fp-recm .pk{transition:none}.fp-recm .rd{animation:none}}
+
+/* ── la pochette d'un audio (C2, 27/11) : sa couleur, Médi qui écoute, son onde ── */
+.fp-th.poch{--pc:#ffb877;background:var(--pc)}.fp-th.poch.c1{--pc:#b9a7ff}.fp-th.poch.c2{--pc:#7fe0c0}.fp-th.poch.c3{--pc:#8fc8ff}
+.fp-pc{position:absolute;inset:0;width:100%;height:100%}
+.fp-pc .pb{fill:var(--ink)}.fp-pc .pe{fill:var(--pc)}
+.fp-pc .pw{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;opacity:.55}
+.fp-th.poch .fp-du{background:rgba(26,13,2,.72)}
+
+/* ── une prise du rythme sur les six cordes (C1, 27/11) : joués = orange ── */
+.fp-wave.str .sl{stroke:var(--cream4);stroke-opacity:.55}
+.fp-wave.str .g .sh{fill:var(--cream3)}
+.fp-wave.str .o .sh{fill:var(--gold)}.fp-wave.str .o .sl{stroke:var(--gold);stroke-opacity:.35}
+
+/* ── rogner (B, 27/11) : la zone gardée entre deux médiators ── */
+.fp-trim{position:relative;height:62px;margin:6px 10px 0;touch-action:none;cursor:pointer;user-select:none;-webkit-user-select:none;--a:0%;--b:100%}
+.fp-trim svg.g,.fp-trim svg.o{position:absolute;left:0;top:12px;width:100%;height:44px}
+.fp-trim .g rect{fill:var(--cream4)}.fp-trim .o rect{fill:var(--gold)}
+.fp-trim svg.o{clip-path:inset(0 calc(100% - var(--b)) 0 var(--a))}
+.fp-trim .out{position:absolute;top:8px;bottom:2px;background:rgba(18,16,20,.62);pointer-events:none}
+.fp-trim .out.l{left:0;width:var(--a);border-radius:10px 0 0 10px}.fp-trim .out.r{left:var(--b);right:0;border-radius:0 10px 10px 0}
+.fp-trim .zone{position:absolute;top:8px;bottom:2px;left:var(--a);width:calc(var(--b) - var(--a));border-radius:10px;box-shadow:inset 0 0 0 2px var(--gold);pointer-events:none}
+.fp-trim .ph{position:absolute;top:11px;bottom:5px;left:0;width:2px;margin-left:-1px;background:var(--cream);border-radius:1px;pointer-events:none}
+.fp-trim .hd{position:absolute;top:-9px;bottom:0;width:26px;margin-left:-13px;display:flex;flex-direction:column;align-items:center;pointer-events:none;z-index:2}
+.fp-trim .hd.s{left:var(--a)}.fp-trim .hd.e{left:var(--b)}
+.fp-trim .hd svg{width:22px;height:23px;fill:var(--gold);transform-origin:50% 85%;transition:transform .15s}
+.fp-trim .hd.on svg{transform:scale(1.3)}
+.fp-trim .hd i{flex:1;width:3px;margin-top:-5px;background:var(--gold);border-radius:2px}
+.fp-trim.st{height:76px}
+.fp-trim .fr{position:absolute;left:0;right:0;top:12px;bottom:4px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;border-radius:10px;overflow:hidden;background:var(--card2)}
+.fp-trim .fr canvas{width:100%;height:100%;display:block}
+.fp-trim .star{position:absolute;top:0;z-index:1;transform:translateX(-50%);font:800 10px var(--display);color:var(--ink);background:var(--cream);border-radius:7px;padding:2px 6px;white-space:nowrap;pointer-events:none}
+.fp-tks{position:relative;height:17px;margin:0 10px}
+.fp-tks i{position:absolute;top:0;width:2px;height:6px;margin-left:-1px;border-radius:1px;background:var(--cream4)}.fp-tks i.in{background:var(--gold)}
+.fp-tks b{position:absolute;top:3px;transform:translateX(-50%);font:700 11px var(--display);color:var(--cream3)}
+.fp-ttr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:2px 4px 0;font-size:12px;font-weight:600;color:var(--cream3);font-variant-numeric:tabular-nums}
+.fp-ttr b{font:800 13px var(--display);color:var(--gold)}.fp-ttr .ln{font-weight:700;color:var(--cream2)}
+.fp-tpl{display:flex;align-items:center;gap:10px}.fp-tpl span{font-size:14px;font-weight:600;color:var(--cream2)}
