@@ -3704,7 +3704,11 @@ body.beta .sv-pen{display:inline-flex}
 .sv-carnet .ar{animation:fsKeep 3.2s ease-in-out infinite}
 @keyframes fsKeep{0%,62%,100%{transform:none}72%{transform:translateY(2.4px)}80%{transform:translateY(-.6px)}88%{transform:none}}
 /* l'encart « En rythme » (à la place de J'apprends / Je sais la jouer) */
-body.beta .fs-live{display:flex;align-items:center;gap:12px;width:100%;max-width:520px;margin-top:14px;padding:12px 14px;border:0;border-radius:20px;background:var(--gold);color:var(--ink);text-align:left;cursor:pointer;box-sizing:border-box}
+body.beta .fs-live{display:flex;align-items:center;gap:12px;width:100%;max-width:520px;margin-top:14px;padding:12px 14px;border:0;border-radius:20px;background:var(--card);color:var(--cream);transition:background .35s,color .35s;text-align:left;cursor:pointer;box-sizing:border-box}
+body.beta .fs-live.on{background:var(--gold);color:var(--ink)}
+.fs-live:not(.on) .fs-live-i rect{fill:var(--cream)}.fs-live:not(.on) .fs-live-i .l{stroke:var(--cream)}
+.fs-live:not(.on) .fs-live-k .st{stroke:var(--gold);opacity:.7}.fs-live:not(.on) .fs-live-k .pk{fill:var(--gold)}
+.fs-live:not(.on) .fs-live-t small{color:var(--cream3);opacity:1}
 .fs-live-i{width:40px;height:26px;flex:none;display:flex;align-items:center;justify-content:center;opacity:.55}
 .fs-live-i svg{width:40px;height:24px}
 .fs-live-i .l{fill:none;stroke:var(--ink);stroke-width:1;opacity:.5}
@@ -3742,7 +3746,7 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .fb-way.fb-live{position:relative;display:block;margin-top:14px}
 .fb-stage{position:relative;cursor:pointer;border-radius:14px;padding:22px 0 26px;outline:none;clip-path:inset(-80px 0 -10px 0)}
 .fb-stage:focus-visible{box-shadow:0 0 0 2px var(--cream3)}
-.fb-hint{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .35s}
+.fb-hint{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .35s}
 .fb-hint svg{width:26px;height:26px;fill:none;stroke:var(--cream);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;overflow:visible}
 .fb-hint .pa{display:none}
 .fb-stage:not(.playing) .fb-hint .pl{animation:fbInv 2.2s ease-in-out infinite}
@@ -3766,8 +3770,15 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fb-arw.on{color:var(--gold);border-color:rgba(255,138,42,.55)}
 .fb-tab.fb-arw{left:0;width:30px;padding:0}
 /* la fiche statique : le bouton flèches à gauche des blocs */
-.fs-rh{display:flex;align-items:flex-start;gap:8px}
-.fs-rh>.fb-arw{width:22px;height:40px;border-radius:8px;flex:none}
+.fs-stat.fs-rh{display:flex;align-items:flex-start;gap:6px;position:relative;padding-bottom:24px;overflow:visible}
+.fs-rh>.fb-arw{position:absolute;right:0;bottom:-4px;width:24px;height:24px;border-radius:7px}
+.fs-rh>.fb-arw svg{width:13px;height:13px}
+.fs-pl{width:30px;height:40px;flex:none;border:0;padding:0;background:none;color:var(--cream);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
+.fs-pl svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round;overflow:visible}
+.fs-pl:not(.on) svg{animation:fbInv 2.2s ease-in-out infinite}
+.fs-pl.on{color:var(--gold)}
+.fs-pl:focus-visible{outline:2px solid var(--cream3);outline-offset:2px;border-radius:8px}
+.fs-rh .fs-stat-n{margin:0;align-self:center}
 .fs-sc{min-width:0;overflow-x:auto;scrollbar-width:none}.fs-sc::-webkit-scrollbar{display:none}
 .fs-stat .pfa-lg{display:none}
 /* la fenêtre des groupes */
@@ -3799,6 +3810,9 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 @media(min-width:900px){#fs-grp{align-items:center}.fsg-box{border-radius:32px}}
 #home-filters .filt .fsg-ic{width:15px;height:15px;margin-right:6px;vertical-align:-3px;color:var(--gold);fill:none}#home-filters .filt .fsg-ic .f{fill:currentColor}
 @media(prefers-reduced-motion:reduce){.fs-live.on .fs-live-i rect,.fsg-box{animation:none}}
+#v-sheet .pv-pl.fs-pl,#v-sheet .pv-pl.fs-pl.on{width:30px;height:40px;border-radius:0;background:none;order:0;box-shadow:none}
+#v-sheet .pv-pl.fs-pl{color:var(--cream)}#v-sheet .pv-pl.fs-pl.on{color:var(--gold)}
+#v-sheet .pv-pl.fs-pl svg{width:22px;height:22px}
 </style>
 </head>
 <body>
@@ -10309,7 +10323,7 @@ function svSync() {
   $('sv-live').textContent = (pWay(p) === 'arp' ? 'Arpège en boucle' : 'Rythme en boucle') + (p && p.name ? ' · ' + p.name : '');
   document.querySelectorAll('#sv-parts .pv-pl').forEach(b => {   // ▶ de chaque carte
     const pn = (rhPlaying('v' + b.dataset.i) || (rp && +b.dataset.i === svPart)) && !recing; if (b.dataset.on === String(pn)) return;
-    b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
+    b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = b.classList.contains('fs-pl') ? (pn ? FB_PAUSEO : FB_PLAYO) : pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
   });
   $('sv-rec').innerHTML = REC_DOT_SVG;
   const nTk = cur.parts.filter(x => x.rec).length, tk = $('sv-takes');
@@ -13940,16 +13954,20 @@ function grBandOwn(rh) {
    ni de cases repliées. La bande se règle aussi sur ta prise, même quand la partie est un arpège. */
 const FB_ARW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M4.5 15.5 8 19l3.5-3.5M16 20V5M12.5 8.5 16 5l3.5 3.5"/></svg>';
 const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'fleche' ? ' on' : ''}" onclick="fbArrows(event)" aria-pressed="${L26.coups === 'fleche'}" aria-label="Montrer le sens des coups (flèches haut / bas)" title="Flèches haut / bas">${FB_ARW}</button>`;
-function fbStaticHTML(p) {
+// le ▶ de la fiche statique : juste le triangle qui respire (pas de rond) ; ta prise si elle existe, sinon le rythme de l'app
+const FB_PLAYO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="tri" d="M7.5 4.8v14.4L19.5 12z"/></svg>';
+const FB_PAUSEO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13M15.5 5.5v13"/></svg>';
+function fbStaticHTML(p, i) {
   const w = pWay(p);
-  if (w === 'arp') return `<div class="fs-stat">${pArpLines(p, false)}</div>`;
-  if (w === 'rh') return `<div class="fs-stat fs-rh">${fbArwBtn()}<div class="fs-sc">${pRhBlocks(p.rhythm, false, L26.coups === 'fleche')}</div></div>`;
-  return p.rec ? '<p class="fs-stat-n">Ta prise est là : passe « En rythme » pour l’écouter.</p>' : '';
+  const pl = `<button type="button" class="pv-pl fs-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : w === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${FB_PLAYO}</button>`;
+  if (w === 'arp') return `<div class="fs-stat fs-rh">${pl}<div class="fs-sc">${pArpLines(p, false)}</div></div>`;
+  if (w === 'rh') return `<div class="fs-stat fs-rh">${pl}<div class="fs-sc">${pRhBlocks(p.rhythm, false, L26.coups === 'fleche')}</div>${fbArwBtn()}</div>`;
+  return p.rec ? `<div class="fs-stat fs-rh">${pl}<span class="fs-stat-n">Ma prise</span></div>` : '';
 }
 const FB_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.4"/><rect x="13.5" y="5" width="4" height="14" rx="1.4"/></svg>';
 const FB_PLAYI = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 001.5.9l10.4-6.5a1 1 0 000-1.8L9.5 4.6A1 1 0 008 5.5z"/></svg>';
 function fbWayHTML(p, i) {
-  if (!FB.live) return fbStaticHTML(p);
+  if (!FB.live) return fbStaticHTML(p, i);
   const arp = pWay(p) === 'arp', band = !arp || p.rec, arw = !arp || p.rec;
   const lbl = p.rec ? 'ta prise' : arp ? 'l’arpège' : 'le rythme';
   return `<div class="fb-way fb-live" id="fbw-${i}">
@@ -14007,11 +14025,11 @@ function fbPlay(i, e) {
   l26Stop();
   svPart = i; document.querySelectorAll('#sv-parts .pv-block').forEach(b => b.classList.toggle('on', +b.dataset.idx === i));
   L26.tl = tl; L26.live = FB.D[i]; FB.i = i;
-  L26.onPos = pos => fbChordNow(i, pos);
   const capo = cur.capo || 0;
   if (p.rec) fbPlayTake(p, tl);
   else if (pWay(p) === 'arp') l26PlayRh(arpRh(), cur.bpm || 80, tl.chs, {cellFn: arpCellFn(p.arp, capo), capo});
   else l26PlayRh(p.rhythm, cur.bpm || 90, tl.chs, Object.assign({capo}, FB.band ? {band: grBandOwn(p.rhythm)} : {}));
+  if (!p.rec) { L26.live = FB.D[i]; L26.onPos = pos => { fbChordNow(i, pos); fbTabBob(i); }; }   // après l26Stop (qui les remet à zéro) : l'accord de la mesure s'allume, la languette suit la corde
   fbSync();
 }
 // ta prise en boucle, posée à un instant précis pour que la bande tombe avec tes coups
@@ -14021,7 +14039,7 @@ async function fbPlayTake(p, tl) {
   const ac = audio(); if (ac.state === 'suspended') await ac.resume();
   const st = p.rec.start, en = Math.min(p.rec.end, buf.duration), Tb = ac.currentTime + .15, lat = (ac.outputLatency || 0) + (ac.baseLatency || 0);
   const src = ac.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = st; src.loopEnd = en; src.connect(OUT(ac)); src.start(Tb, st);
-  L26.tl = tl; L26.a = src; L26.onPos = pos => fbChordNow(FB.i, pos);
+  L26.tl = tl; L26.a = src; L26.onPos = pos => { fbChordNow(FB.i, pos); fbTabBob(FB.i); };
   tl.now = () => { const x = ac.currentTime - lat - Tb; return x < 0 ? 0 : x % tl.L; };
   if (FB.band) fbTakeBand(tl, Tb, p.chords || [], cur.capo || 0);
   l26Loop(); fbSync();
@@ -14081,8 +14099,15 @@ function fbBand(e) {
   fbSync();
   if (was) { FB.i = -1; fbPlay(i); }
 }
+// la languette de la bande bouge un peu quand la corde du haut vibre
+function fbTabBob(i) {
+  const D = FB.D[i], t = document.querySelector(`#fbw-${i} .fb-bmini`); if (!D || !t) return;
+  const y = Math.min(2.5, (D.a0 || 0) * .45) * Math.abs(Math.sin((D.ph || 0) * .9));
+  t.style.transform = y > .05 ? `translateY(${(-y).toFixed(2)}px) rotate(${(y * .5 * Math.sin(D.ph || 0)).toFixed(2)}deg)` : '';
+}
 function fbSync() {
   const on = l26Playing();
+  if (!on) document.querySelectorAll('#sv-parts .fb-bmini').forEach(t => { t.style.transform = ''; });
   document.querySelectorAll('#sv-parts .fb-stage').forEach(b => { const me = on && +b.dataset.i === FB.i;
     if (me && !b.classList.contains('playing')) { b.classList.add('tap'); clearTimeout(b._tp); b._tp = setTimeout(() => b.classList.remove('tap'), 650); }   // le ❚❚ s'affiche un instant : on sait où toucher pour la pause
     b.classList.toggle('playing', me); b.setAttribute('aria-label', me ? 'Mettre en pause' : 'Jouer'); });
@@ -14430,6 +14455,7 @@ L26_DRAW.saute = {
     const env = (L, w) => { if (pos < 0) return 0; let h = null; for (const e of L) { if (e.t > pos + 1e-6) break; if (!w || e.w === w) h = e; } return h ? h.a * Math.exp(-(pos - h.t) / tau) : 0; };
     const bev = D.band ? l26BandEv(tl) : [], who = [['m', env(tl.hits)], ['b', D.band ? env(bev, 'boum') : 0], ['l', D.band ? env(bev, 'basile') : 0]].filter(([, e]) => e * D.gap * .45 > .35);
     const n = who.length, col = L26.cvib === 'neutre';
+    D.a0 = n ? who[0][1] * D.gap * .45 : 0; D.ph = ph;   // la corde du haut : la fiche y fait bouger la languette de la bande
     D.el.querySelectorAll('.l26-vib.on').forEach(p => {
       const k = +p.dataset.k; if (!n) { p.setAttribute('d', ''); return; }
       const [w, e] = who[Math.min(n - 1, Math.floor(k * n / 6))], y0 = D.top + k * D.gap, a = e * D.gap * .45;   // 6 cordes : 6, 3 + 3 ou 2 + 2 + 2

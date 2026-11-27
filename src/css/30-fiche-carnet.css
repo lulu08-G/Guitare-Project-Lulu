@@ -18,7 +18,11 @@ body.beta .sv-pen{display:inline-flex}
 .sv-carnet .ar{animation:fsKeep 3.2s ease-in-out infinite}
 @keyframes fsKeep{0%,62%,100%{transform:none}72%{transform:translateY(2.4px)}80%{transform:translateY(-.6px)}88%{transform:none}}
 /* l'encart « En rythme » (à la place de J'apprends / Je sais la jouer) */
-body.beta .fs-live{display:flex;align-items:center;gap:12px;width:100%;max-width:520px;margin-top:14px;padding:12px 14px;border:0;border-radius:20px;background:var(--gold);color:var(--ink);text-align:left;cursor:pointer;box-sizing:border-box}
+body.beta .fs-live{display:flex;align-items:center;gap:12px;width:100%;max-width:520px;margin-top:14px;padding:12px 14px;border:0;border-radius:20px;background:var(--card);color:var(--cream);transition:background .35s,color .35s;text-align:left;cursor:pointer;box-sizing:border-box}
+body.beta .fs-live.on{background:var(--gold);color:var(--ink)}
+.fs-live:not(.on) .fs-live-i rect{fill:var(--cream)}.fs-live:not(.on) .fs-live-i .l{stroke:var(--cream)}
+.fs-live:not(.on) .fs-live-k .st{stroke:var(--gold);opacity:.7}.fs-live:not(.on) .fs-live-k .pk{fill:var(--gold)}
+.fs-live:not(.on) .fs-live-t small{color:var(--cream3);opacity:1}
 .fs-live-i{width:40px;height:26px;flex:none;display:flex;align-items:center;justify-content:center;opacity:.55}
 .fs-live-i svg{width:40px;height:24px}
 .fs-live-i .l{fill:none;stroke:var(--ink);stroke-width:1;opacity:.5}
@@ -56,7 +60,7 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .fb-way.fb-live{position:relative;display:block;margin-top:14px}
 .fb-stage{position:relative;cursor:pointer;border-radius:14px;padding:22px 0 26px;outline:none;clip-path:inset(-80px 0 -10px 0)}
 .fb-stage:focus-visible{box-shadow:0 0 0 2px var(--cream3)}
-.fb-hint{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .35s}
+.fb-hint{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .35s}
 .fb-hint svg{width:26px;height:26px;fill:none;stroke:var(--cream);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;overflow:visible}
 .fb-hint .pa{display:none}
 .fb-stage:not(.playing) .fb-hint .pl{animation:fbInv 2.2s ease-in-out infinite}
@@ -80,8 +84,15 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fb-arw.on{color:var(--gold);border-color:rgba(255,138,42,.55)}
 .fb-tab.fb-arw{left:0;width:30px;padding:0}
 /* la fiche statique : le bouton flèches à gauche des blocs */
-.fs-rh{display:flex;align-items:flex-start;gap:8px}
-.fs-rh>.fb-arw{width:22px;height:40px;border-radius:8px;flex:none}
+.fs-stat.fs-rh{display:flex;align-items:flex-start;gap:6px;position:relative;padding-bottom:24px;overflow:visible}
+.fs-rh>.fb-arw{position:absolute;right:0;bottom:-4px;width:24px;height:24px;border-radius:7px}
+.fs-rh>.fb-arw svg{width:13px;height:13px}
+.fs-pl{width:30px;height:40px;flex:none;border:0;padding:0;background:none;color:var(--cream);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
+.fs-pl svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round;overflow:visible}
+.fs-pl:not(.on) svg{animation:fbInv 2.2s ease-in-out infinite}
+.fs-pl.on{color:var(--gold)}
+.fs-pl:focus-visible{outline:2px solid var(--cream3);outline-offset:2px;border-radius:8px}
+.fs-rh .fs-stat-n{margin:0;align-self:center}
 .fs-sc{min-width:0;overflow-x:auto;scrollbar-width:none}.fs-sc::-webkit-scrollbar{display:none}
 .fs-stat .pfa-lg{display:none}
 /* la fenêtre des groupes */
@@ -113,3 +124,6 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 @media(min-width:900px){#fs-grp{align-items:center}.fsg-box{border-radius:32px}}
 #home-filters .filt .fsg-ic{width:15px;height:15px;margin-right:6px;vertical-align:-3px;color:var(--gold);fill:none}#home-filters .filt .fsg-ic .f{fill:currentColor}
 @media(prefers-reduced-motion:reduce){.fs-live.on .fs-live-i rect,.fsg-box{animation:none}}
+#v-sheet .pv-pl.fs-pl,#v-sheet .pv-pl.fs-pl.on{width:30px;height:40px;border-radius:0;background:none;order:0;box-shadow:none}
+#v-sheet .pv-pl.fs-pl{color:var(--cream)}#v-sheet .pv-pl.fs-pl.on{color:var(--gold)}
+#v-sheet .pv-pl.fs-pl svg{width:22px;height:22px}

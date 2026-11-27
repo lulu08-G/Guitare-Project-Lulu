@@ -340,6 +340,7 @@ L26_DRAW.saute = {
     const env = (L, w) => { if (pos < 0) return 0; let h = null; for (const e of L) { if (e.t > pos + 1e-6) break; if (!w || e.w === w) h = e; } return h ? h.a * Math.exp(-(pos - h.t) / tau) : 0; };
     const bev = D.band ? l26BandEv(tl) : [], who = [['m', env(tl.hits)], ['b', D.band ? env(bev, 'boum') : 0], ['l', D.band ? env(bev, 'basile') : 0]].filter(([, e]) => e * D.gap * .45 > .35);
     const n = who.length, col = L26.cvib === 'neutre';
+    D.a0 = n ? who[0][1] * D.gap * .45 : 0; D.ph = ph;   // la corde du haut : la fiche y fait bouger la languette de la bande
     D.el.querySelectorAll('.l26-vib.on').forEach(p => {
       const k = +p.dataset.k; if (!n) { p.setAttribute('d', ''); return; }
       const [w, e] = who[Math.min(n - 1, Math.floor(k * n / 6))], y0 = D.top + k * D.gap, a = e * D.gap * .45;   // 6 cordes : 6, 3 + 3 ou 2 + 2 + 2
