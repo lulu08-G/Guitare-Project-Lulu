@@ -39,8 +39,9 @@ function fpTrimSay(T) {
 function fpTrimHTML(T) {
   const st = T.kind === 'video';
   return `<div class="fp-trim${st ? ' st' : ''}" id="fp-trim" onpointerdown="fpTrimDown(event)">`
-    + (st ? '<div class="fr"></div><span class="star" hidden>★ miniature</span>' : '<svg class="g" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true"></svg><svg class="o" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true"></svg>')
-    + `<i class="out l"></i><i class="out r"></i><i class="zone"></i><i class="ph"></i><span class="hd s">${FP_HANDLE}<i></i></span><span class="hd e">${FP_HANDLE}<i></i></span></div>`
+    + (st ? '<div class="fr"></div><span class="star" hidden>★ miniature</span>' : '')   // vidéo : les images en haut, le son en dessous (Lucas, 27/11 : voir les blancs)
+    + '<svg class="g" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true"></svg><svg class="o" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true"></svg>'
+    + `<i class="out l"></i><i class="out r"></i><i class="zone"></i><i class="ph" aria-hidden="true"></i><span class="hd s" aria-label="Début">${FP_HANDLE}<i></i></span><span class="hd e" aria-label="Fin">${FP_HANDLE}<i></i></span></div>`
     + (T.bar ? '<div class="fp-tks" id="fp-tks" aria-hidden="true"></div>' : '')
     + '<div class="fp-ttr"><span><b id="fp-ta"></b> début</span><span class="ln" id="fp-tl"></span><span>fin <b id="fp-tb"></b></span></div>';
 }
@@ -60,12 +61,18 @@ function fpTrimPaint() {
   }
   const P = FP.pl; if (P) { P.a = T.a; P.b = T.b; }
 }
+// le doigt : sur un médiator (ou son trait orange, à un doigt près) on rogne ; ailleurs on déplace la barre blanche
+// pour avancer / reculer dans la prise, sans toucher à la coupe (Lucas, 27/11)
 function fpTrimDown(e) {
   const T = FP.T, el = e.currentTarget; if (!T || !T.D) return;
   e.preventDefault();
   const r = el.getBoundingClientRect(), at = ev => Math.max(0, Math.min(T.D, (ev.clientX - r.left) / r.width * T.D));
-  const t0 = at(e), h = Math.abs(t0 - T.a) <= Math.abs(t0 - T.b) ? 's' : 'e', hd = el.querySelector('.hd.' + h);
-  const set = ev => {
+  const px = t => r.left + t / T.D * r.width, hit = e.target.closest && e.target.closest('.hd');
+  const da = Math.abs(e.clientX - px(T.a)), db = Math.abs(e.clientX - px(T.b));
+  const h = hit ? (hit.classList.contains('s') ? 's' : 'e') : Math.min(da, db) <= 22 ? (da <= db ? 's' : 'e') : null;
+  const P0 = FP.pl;
+  const scrub = ev => { const P = FP.pl; if (!P) return; try { P.el.currentTime = Math.max(T.a, Math.min(T.b - .05, at(ev))); } catch (_) {} fpPlPaint(); };
+  const trim = ev => {
     const t = at(ev);
     if (T.bar) {
       if (h === 's') {   // le début se pose sur un coup proche, la fin suit (même nombre de mesures)
@@ -77,14 +84,17 @@ function fpTrimDown(e) {
       T.b = Math.min(T.D, T.a + T.n * T.bar);
     } else if (h === 's') T.a = Math.max(0, Math.min(t, T.b - .5));
     else T.b = Math.min(T.D, Math.max(t, T.a + .5));
-    hd.classList.add('on'); fpTrimPaint();
+    fpTrimPaint();
     const P = FP.pl;   // à l'arrêt, on voit (et on entend au prochain ▶) l'endroit du médiator
     if (P && P.el.paused) { try { P.el.currentTime = h === 's' ? T.a : Math.max(T.a, T.b - .05); } catch (_) {} fpPlPaint(); }
   };
+  const set = h ? trim : scrub, hd = h && el.querySelector('.hd.' + h);
+  if (hd) hd.classList.add('on'); else el.classList.add('scrub');
   set(e); try { el.setPointerCapture(e.pointerId); } catch (_) {}
   const mv = ev => set(ev), up = () => {
     el.removeEventListener('pointermove', mv); el.removeEventListener('pointerup', up); el.removeEventListener('pointercancel', up);
-    hd.classList.remove('on');
+    if (hd) hd.classList.remove('on'); el.classList.remove('scrub');
+    if (!h) return;
     const P = FP.pl; if (P && (P.el.currentTime < T.a - .02 || P.el.currentTime > T.b)) { try { P.el.currentTime = T.a; } catch (_) {} fpPlPaint(); }
     if (T.kind === 'video' && T.url && T.tt != null && (T.tt < T.a || T.tt > T.b)) fpTrimStar(T.url, T);   // la miniature reste entre les deux
   };
@@ -112,6 +122,7 @@ async function fpTrimFrames(url, D) {
 async function fpTrimStar(url, T) {
   if (FP.T !== T) return;
   const tt = await fpBestFrame(url, T.D, T.a, T.b); if (FP.T !== T) return;
+  if (tt < T.a - .01 || tt > T.b + .01) return fpTrimStar(url, T);   // la coupe a bougé pendant la recherche : on recommence entre les deux
   T.tt = tt;
   const s = document.querySelector('#fp-trim .star'); if (s) { s.hidden = false; s.style.left = (tt / T.D * 100).toFixed(2) + '%'; }
 }
@@ -122,7 +133,8 @@ function fpTrimMount(T, pop, el, url, buf) {
   el.src = url; fpPlInit(el, T.a, T.b);
   if (FP.pl) { FP.pl.D = T.D; FP.pl.loop = T.kind === 'rh'; }
   if (!T.D) return;
-  if (T.kind === 'video') fpTrimFrames(url, T.D).then(() => fpTrimStar(url, T)); else fpTrimWave(buf);
+  fpTrimWave(buf);   // le son, aussi sous les images d'une vidéo
+  if (T.kind === 'video') fpTrimFrames(url, T.D).then(() => fpTrimStar(url, T));
   fpTrimPaint();
 }
 const fpTrimCtl = T => T.kind === 'video' ? '' : `<div class="fp-tpl"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><span>${T.kind === 'rh' ? 'Écouter la boucle' : 'Écouter'}</span></div>`;
