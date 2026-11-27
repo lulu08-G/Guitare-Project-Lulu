@@ -169,7 +169,7 @@ function fbChordNow(i, pos) {
   const m = pos < 0 ? -1 : Math.floor(Math.max(0, pos - (tl.off || 0)) / tl.bar);
   if (FB.now === i + ':' + m) return; FB.now = i + ':' + m;
   cells.forEach((c, k) => c.classList.toggle('now', k === j));
-  document.querySelectorAll(`#fbd-${i} .l26-lc`).forEach(t => t.classList.toggle('now', +t.dataset.m === m));
+  document.querySelectorAll(`#fbd-${i} .l26-lc, #fbd-${i} .l26-mb`).forEach(t => t.classList.toggle('now', +t.dataset.m === m));
 }
 // changer de dessin : toutes les parties du même genre suivent (retenu sur l'appareil)
 function fbDraw(arp, k) {

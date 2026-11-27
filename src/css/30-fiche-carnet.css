@@ -139,3 +139,11 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .l26-lc{text-anchor:middle;font:800 13px var(--display);fill:var(--cream3)}
 .l26-lc.now{fill:var(--gold)}
 .l26-lm{stroke:var(--cream3);stroke-width:1;opacity:.35}
+/* « En rythme » (27/11, choix A) : une bulle par accord, une teinte sur deux, celle qu'on joue cerclée d'orange ;
+   chaque groupe de coups a sa couleur (même ordre dans chaque mesure), les coups joués passent en orange */
+.l26-mb{fill:rgba(255,255,255,.055);stroke:transparent;stroke-width:1.5;transition:stroke .2s}
+.l26-mb.odd{fill:rgba(255,255,255,.025)}
+.l26-mb.now{stroke:rgba(255,138,42,.6)}
+.l26-bk{opacity:.13}
+.l26-bk[data-b="0"]{fill:#ffb877}.l26-bk[data-b="1"]{fill:#b9a7ff}.l26-bk[data-b="2"]{fill:#7fe0c0}.l26-bk[data-b="3"]{fill:#8fc8ff}
+.l26-ep .fut[data-b="0"]{color:#ffc796}.l26-ep .fut[data-b="1"]{color:#c4b5ff}.l26-ep .fut[data-b="2"]{color:#93e6ca}.l26-ep .fut[data-b="3"]{color:#a3d2ff}

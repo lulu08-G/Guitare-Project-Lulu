@@ -318,6 +318,31 @@ function l26CvibSet(k) {
   document.querySelectorAll('#v-labo .l26-vchips button').forEach(b => { const on = b.dataset.k === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
 }
 
+// la fiche « En rythme » (Lucas, 27/11, choix A) : chaque mesure (= un accord) posée sur sa bulle, une teinte sur deux ;
+// dans la mesure, chaque groupe de coups (entre deux silences) a sa couleur, dans le même ordre d'une mesure à l'autre
+function l26Blocks(D, hp) {
+  const tl = D.tl; if (!tl.chl || !tl.bar) return null;
+  const o = tl.off || 0, w0 = D.page * tl.win, w1 = w0 + tl.win, y0 = D.top - 16, h = 5 * D.gap + 32, of = [];
+  let bg = '';
+  for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
+    const sh = tl.grid ? .5 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant
+    const a = Math.max(w0 - sh, o + m * tl.bar - sh), b = Math.min(w1 - sh, o + (m + 1) * tl.bar - sh), xa = D.X(a) + 2, xb = D.X(b) - 2;
+    if (xb > xa) bg += `<rect class="l26-mb${m % 2 ? ' odd' : ''}" data-m="${m}" x="${l26f(xa)}" y="${y0}" width="${l26f(xb - xa)}" height="${h}" rx="12"/>`;
+  }
+  const near = tl.grid ? 1.01 : tl.beat * .75;
+  let blk = -1, pm = -1, pt = -1e9, st = null;
+  const caps = [];
+  hp.forEach(hh => {
+    const m = Math.floor((hh.t - o) / tl.bar + 1e-6);
+    if (m !== pm) { blk = 0; pm = m; st = null; } else if (hh.t - pt > near) blk++;
+    if (!st || st.b !== blk || st.m !== m) caps.push(st = {m, b: blk, x0: hh.t, x1: hh.t});
+    st.x1 = hh.t; pt = hh.t; of.push(blk);
+  });
+  const half = tl.grid ? .42 : tl.beat * .2, mid = D.top + 2.5 * D.gap;
+  caps.forEach(c => { const xa = D.X(c.x0 - half), xb = D.X(c.x1 + half);
+    bg += `<rect class="l26-bk" data-b="${c.b % 4}" x="${l26f(xa)}" y="${l26f(mid - 2.6 * D.gap)}" width="${l26f(xb - xa)}" height="${l26f(5.2 * D.gap)}" rx="9"/>`; });
+  return {bg, of};
+}
 L26_DRAW.saute = {
   html(D) {
     const band = l26BandShow(), L = band ? 38 : 12, x0 = band ? 32 : 0;
@@ -326,10 +351,12 @@ L26_DRAW.saute = {
     const pts = [[x0, top - hmax * .55]].concat(hp.map(h => [D.X(h.t), top]), [[D.W, top - hmax * .5]]);
     D.segs = l26Arcs(pts, hmax).segs;
     let s = '';   // épuré : les cordes seules, rien de dessiné à l'avance
+    const bk = l26Blocks(D, hp);   // la fiche (27/11) : une bulle par accord (une teinte sur deux), un groupe de coups = une couleur
+    if (bk) s += bk.bg;
     for (let k = 0; k < 6; k++) s += `<line x1="${x0}" x2="${D.W}" y1="${top + k * gap}" y2="${top + k * gap}" class="l26-str" style="stroke-width:${(.8 + k * .3).toFixed(2)}px"/>`;
     for (let k = 0; k < 6; k++) s += `<path class="l26-vib on" data-k="${k}" d="" style="stroke-width:${(1.3 + k * .3).toFixed(2)}px"/>`;
     const mid = top + 2.5 * gap;
-    hp.forEach(h => { s += `<g class="l26-h fut">${l26CoupHTML(h, D.X(h.t), mid, gap)}</g>`; });
+    hp.forEach((h, j) => { s += `<g class="l26-h fut"${bk ? ` data-b="${bk.of[j] % 4}"` : ''}>${l26CoupHTML(h, D.X(h.t), mid, gap)}</g>`; });
     if (band) s += `<g class="l26-who" data-w="boum">${l26PalSVG(BOUM_SVG(true, ''), 4, top + 3, 23, 23)}</g><g class="l26-who" data-w="basile">${l26PalSVG(BASILE_SVG(true, ''), 8, top + 31, 16, 26)}</g>`;
     s += l26Labels(D.tl, D.page, D.X, H - 4) + l26MediG();
     return `<svg class="l26-svg l26-ep" viewBox="0 0 ${D.W} ${H}" aria-hidden="true">${s}</svg>`;

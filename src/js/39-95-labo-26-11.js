@@ -70,7 +70,7 @@ function l26Labels(tl, page, X, y) {
   if (tl.chl && tl.chl.length && tl.bar) {   // la fiche (27/11) : le nom de l'accord sous chaque mesure, à la place du compte
     const o = tl.off || 0;
     for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
-      const a = o + m * tl.bar, c = a + tl.bar / 2;
+      const a = o + m * tl.bar - (tl.grid ? .5 : 0), c = a + tl.bar / 2;
       if (m > 0 && a > w0 + 1e-6) s += `<line x1="${l26f(X(a))}" x2="${l26f(X(a))}" y1="${y - 14}" y2="${y + 2}" class="l26-lm"/>`;
       if (c >= w0 && c < w1) s += `<text x="${l26f(X(c))}" y="${y}" class="l26-lc" data-m="${m}">${esc(tl.chl[m % tl.chl.length])}</text>`;
     }
