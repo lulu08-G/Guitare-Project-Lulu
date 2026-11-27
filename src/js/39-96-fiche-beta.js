@@ -40,10 +40,14 @@ function fbStaticHTML(p, i) {
   const w = pWay(p);
   const pl = `<button type="button" class="pv-pl fs-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : w === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${FB_PLAYO}</button>`;
   if (w === 'arp') return `<div class="fs-stat fs-rh"><div class="fs-sc">${pArpLines(p, false)}</div>${pl}</div>`;
-  if (w === 'rh') {   // choix C (Lucas, 27/11) : le rythme répété sous chaque accord, chaque accord dans son cadre, le nom posé dessus
-    const m = pRhBlocks(p.rhythm, false, L26.coups === 'fleche').replace(/<text[^>]*>[^<]*<\/text>/g, '').replace(/height="54" viewBox="0 0 ([\d.]+) 54"/, 'height="42" viewBox="0 0 $1 42"');
-    const chs = p.chords.length ? p.chords.map(c => FB.simp ? fsSimp(c) : c) : [null];
-    return `<div class="fs-stat fs-c"><div class="fs-gr">${chs.map(c => `<div class="fs-g">${c ? `<span class="fs-gc">${esc(c.name)}</span>` : ''}${m}</div>`).join('')}</div>${pl}</div>`;
+  if (w === 'rh') {   // choix C (Lucas, 27/11) : chaque boucle dans son cadre, les accords qui la jouent empilés sur le cadre ;
+    // compact : un rythme pour toute la partie = un seul cadre (« Em · D · G · B7 ») ; des rythmes différents = un cadre chacun, 2 par rangée, le ▶ à côté
+    const svg = rh => pRhBlocks(rh, false, L26.coups === 'fleche').replace(/<text[^>]*>[^<]*<\/text>/g, '').replace(/height="54" viewBox="0 0 ([\d.]+) 54"/, 'height="42" viewBox="0 0 $1 42"');
+    const chs = p.chords.length ? p.chords : [null], gr = [];
+    chs.forEach(c => { const rh = (c && c.rhythm) || p.rhythm, k = JSON.stringify(rh), g = gr[gr.length - 1];
+      if (g && g.k === k) g.n.push(c); else gr.push({k, rh, n: [c]}); });
+    const nm = g => g.n.filter(Boolean).map(c => esc((FB.simp ? fsSimp(c) : c).name)).join('<i>·</i>');
+    return `<div class="fs-stat fs-c"><div class="fs-gr">${gr.map(g => `<div class="fs-g${gr.length === 1 ? ' wide' : ''}">${nm(g) ? `<span class="fs-gc">${nm(g)}</span>` : ''}${svg(g.rh)}</div>`).join('')}</div>${pl}</div>`;
   }
   return p.rec ? `<div class="fs-stat fs-rh"><span class="fs-stat-n">Ma prise</span>${pl}</div>` : '';
 }

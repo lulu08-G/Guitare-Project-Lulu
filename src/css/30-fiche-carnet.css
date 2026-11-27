@@ -127,12 +127,14 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #home-filters .filt .fsg-ic{width:15px;height:15px;margin-right:6px;vertical-align:-3px;color:var(--gold);fill:none}#home-filters .filt .fsg-ic .f{fill:currentColor}
 @media(prefers-reduced-motion:reduce){.fs-live.on .fs-live-i rect,.fsg-box{animation:none}}
 /* le rythme groupé par accord (choix C, 27/11) : chaque accord dans son cadre, le nom posé sur le cadre */
-.fs-stat.fs-c{display:flex;flex-direction:column;gap:6px;margin-top:20px;overflow:visible}
-.fs-gr{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px}
-.fs-g{position:relative;border:1.5px solid var(--border2);border-radius:16px;padding:16px 8px 8px;min-width:0}
-.fs-g svg{display:block;width:100%;height:auto}
-.fs-gc{position:absolute;top:-11px;left:10px;padding:0 6px;background:var(--card);font:800 17px/1.2 var(--display);color:var(--cream)}
-.fs-c>.fs-pl{align-self:flex-end}
+.fs-stat.fs-c{display:flex;flex-direction:row;align-items:center;gap:10px;margin-top:18px;overflow:visible}
+.fs-gr{flex:1;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 8px}
+.fs-g{position:relative;border:1.5px solid var(--border2);border-radius:13px;padding:12px 6px 5px;min-width:0}
+.fs-g.wide{grid-column:1/-1}
+.fs-g svg{display:block;width:100%;height:auto;max-height:42px}
+.fs-gc{position:absolute;top:-10px;left:8px;right:8px;width:max-content;max-width:calc(100% - 16px);padding:0 5px;background:var(--card);font:800 15px/1.2 var(--display);color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fs-gc i{font-style:normal;color:var(--cream3);margin:0 4px;font-weight:600}
+.fs-c>.fs-pl{align-self:center}
 /* « En rythme » : le nom de l'accord sous chaque mesure ; celui qu'on joue s'allume */
 .l26-lc{text-anchor:middle;font:800 13px var(--display);fill:var(--cream3)}
 .l26-lc.now{fill:var(--gold)}
