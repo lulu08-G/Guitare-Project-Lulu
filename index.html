@@ -2344,12 +2344,16 @@ svg.medi.poke .mc{animation:mdPokeEyes .9s linear 1}
 #tb-plus.on .tb-head{animation:tbNod .4s var(--ease-out)}
 .tb-create:active,.nl-create:active{transform:scale(.94)}
 .tb-create.strum .tb-pk,.nl-create.strum .tb-pk{animation:tbStrum .45s cubic-bezier(.3,.7,.4,1)}
+/* 27/11 (Lucas : « le logo noir a un souci de collision ») : le médiator se balance sur place, sans déborder de la pilule, et le « + » reste droit */
+.tb-pk{transform-origin:50% 58%}.tb-plus{transform-box:fill-box;transform-origin:50% 50%}
+.tb-create.strum .tb-plus,.nl-create.strum .tb-plus{animation:tbStrumP .45s cubic-bezier(.3,.7,.4,1)}
 @keyframes tbPop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 @keyframes tbSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes tbFlip{0%{transform:scaleX(1)}45%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
 @keyframes tbDrop{0%{transform:translateY(-8px);opacity:0}70%{transform:translateY(1px);opacity:1}100%{transform:translateY(0)}}
 @keyframes tbNod{0%,100%{transform:rotate(0)}35%{transform:rotate(-12deg)}70%{transform:rotate(8deg)}}
-@keyframes tbStrum{0%{transform:rotate(0)}30%{transform:rotate(-26deg)}60%{transform:rotate(16deg)}80%{transform:rotate(-6deg)}100%{transform:rotate(0)}}
+@keyframes tbStrum{0%{transform:rotate(0)}30%{transform:rotate(-14deg)}60%{transform:rotate(9deg)}80%{transform:rotate(-3deg)}100%{transform:rotate(0)}}
+@keyframes tbStrumP{0%{transform:rotate(0)}30%{transform:rotate(14deg)}60%{transform:rotate(-9deg)}80%{transform:rotate(3deg)}100%{transform:rotate(0)}}
 
 /* ── PC : menu de gauche ── */
 @media(min-width:900px){
@@ -3686,10 +3690,10 @@ body.beta #filt-know,body.beta #filt-learn{display:none}
 #home-filters .filt svg{width:14px;height:14px;fill:currentColor;margin-right:6px;vertical-align:-2px}
 /* l'encart de Médi qui défile (même format que « Le rejouer ») */
 .fs-nd{touch-action:pan-y;user-select:none;-webkit-user-select:none;overflow:hidden}
-.hm-nudge>.fs-vp{display:grid;align-self:stretch}
-.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;opacity:0;visibility:hidden;transform:translateX(18px);transition:opacity .7s ease,transform .9s cubic-bezier(.25,.8,.3,1),visibility 0s .7s}
-.fs-sl.on{opacity:1;visibility:visible;transform:none;transition-delay:.18s,.18s,0s}
-.fs-sl.out{opacity:0;visibility:visible;transform:translateX(-18px);transition:opacity .45s ease,transform .6s ease,visibility 0s .6s}
+.hm-nudge>.fs-vp{display:grid;align-self:stretch;overflow:hidden;margin-right:-6px;padding-right:6px}
+.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;visibility:hidden;transform:translateX(110%);transition:transform .55s cubic-bezier(.25,.8,.3,1)}
+.fs-sl.on{visibility:visible;transform:none}
+.fs-sl.out-l{visibility:visible;transform:translateX(-110%)}.fs-sl.out-r{visibility:visible;transform:translateX(110%)}
 .fs-sl.drag{transition:none}
 .fs-sl .btn{align-self:flex-start}
 svg.medi.nod .mv{animation:fsNod .9s ease-in-out}
@@ -3937,6 +3941,16 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-tuto i{font-style:normal;color:var(--cream3);font-size:20px;padding-right:4px}
 .fp-find{display:flex;align-items:center;justify-content:center;gap:7px;height:44px;border-radius:14px;border:1.5px dashed var(--card3);background:none;color:var(--cream2);font:600 13px var(--sans);cursor:pointer}
 
+/* le visuel quand il n'y a encore rien (repris de l'ancien bloc « Perso ») : Médi, une phrase, un « + » */
+.fp-dash{display:flex;align-items:center;gap:12px;width:100%;border:2px dashed var(--card3);border-radius:22px;padding:12px 14px;background:none;color:var(--bulle-ink);font:500 14px/1.4 var(--sans);text-align:left;cursor:pointer;box-sizing:border-box}
+.fp-dash>span{flex:1;min-width:0}
+.fp-dash i{width:44px;height:44px;flex:none;border-radius:22px;background:var(--card2);color:var(--gold);font:700 22px var(--sans);font-style:normal;display:flex;align-items:center;justify-content:center}
+.fp-dash:active{transform:scale(.98)}
+.fp-dash.sm{gap:10px;padding:8px 10px;border-radius:18px;font-size:13px}.fp-dash.sm i{width:36px;height:36px;font-size:19px}
+.fp-tk:has(.fp-dash){border-top:0;padding-top:0}
+.fp-tutos{margin-top:18px}.fp-tlist{display:flex;flex-direction:column;gap:10px}
+#fp-tplayer:empty{display:none}#fp-tplayer .ytp-add{display:none}#fp-tplayer #sv-tuto{margin:0}
+
 /* l'infobulle */
 #fp-dim{position:fixed;inset:0;background:rgba(10,9,11,.55);z-index:950;animation:fpFade .25s both}
 @keyframes fpFade{from{opacity:0}}
@@ -4054,6 +4068,41 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 #fp-cam.rec .fp-corner{opacity:1;transform:none}
 #fp-cam .fp-corner .fp-cm{width:40px;height:42px}
 @media(prefers-reduced-motion:reduce){.fp-cm .mv,.fp-cm .sp,.fp-shd,.fp-rg,.fp-sit .mv,.fp-idle .mv,.fp-joy .mv{animation:none!important}.fp-n{animation:none!important;opacity:1;transform:translate(-50%,-10px)}}
+
+/* l'enregistreur, retours de Lucas (27/11) : rien ne part tout seul ; le médiator est couché pour lancer,
+   il se relève quand ça enregistre et son rond orange vif bat ; un nom proposé + son propre titre, sur une ligne */
+.fp-recm{width:64px;height:64px;overflow:visible;display:block}
+.fp-recm .mb{fill:#5a3010}.fp-recm .rd{fill:#ff9a33;transform-box:fill-box;transform-origin:50% 50%;animation:fpPulse 1.6s ease-in-out infinite}
+.fp-recm .pk{transform-origin:100px 111px;transform:rotate(-90deg);transition:transform .55s cubic-bezier(.3,1.45,.5,1)}
+.fp-recing.up .fp-recm .pk,#fp-cam.counting .fp-recm .pk,#fp-cam.rec .fp-recm .pk{transform:none}
+.fp-recing.on .fp-recm .rd,#fp-cam.rec .fp-recm .rd{animation:fpRecDot 1s ease-in-out infinite}
+@keyframes fpRecDot{50%{transform:scale(.78);opacity:.55}}
+.fp-three button:nth-of-type(2) .fp-recm .rd{animation-delay:.5s}.fp-three button:nth-of-type(3) .fp-recm .rd{animation-delay:1s}
+.fp-three.one{justify-content:center}.fp-three.one button{flex:none;padding:4px 18px}
+.fp-stop .fp-recm{width:62px;height:62px}#fp-cam .fp-stop .fp-recm{width:82px;height:82px}
+.fp-pop.swap{animation:none}
+.fp-rh0{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:0;border-radius:18px;padding:6px 12px 6px 6px;color:var(--cream);text-align:left;cursor:pointer}
+.fp-rh0 .fp-recm{width:46px;height:46px;flex:none}
+.fp-rh0 b{display:block;font:800 14.5px var(--display)}.fp-rh0 small{font-size:11.5px;color:var(--cream3)}
+.fp-rh0:active{transform:scale(.98)}
+.fp-names1{display:flex;gap:6px;align-items:center;min-width:0}
+.fp-nm{flex:none;height:34px;padding:0 13px;border-radius:17px;border:0;background:var(--card3);color:var(--cream2);font:600 13px var(--sans);cursor:pointer;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fp-nm.on{background:var(--cream);color:#121014}
+.fp-own{flex:1;min-width:0;height:34px;padding:0 12px;border-radius:17px;border:1.5px dashed var(--card3);background:none;color:var(--cream2);font:600 13px var(--sans);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fp-nin{flex:1;min-width:0;height:34px;padding:0 13px;border-radius:17px;border:1.5px solid var(--gold);background:var(--card);color:var(--cream);font:600 13px var(--sans);outline:none;box-sizing:border-box}
+.fp-nin::placeholder{color:var(--cream4)}
+@media(prefers-reduced-motion:reduce){.fp-recm .pk{transition:none}.fp-recm .rd{animation:none}}
+/* ═══════ QUITTER L'ÉDITEUR SANS AVOIR ENREGISTRÉ (Lucas, 27/11) : 23-6-retour-actualiser.js ═══════ */
+.edl{position:fixed;inset:0;z-index:970;background:rgba(10,9,11,.6);display:flex;align-items:flex-end;justify-content:center;animation:edlFade .25s both}
+.edl-box{width:100%;max-width:480px;box-sizing:border-box;background:var(--card);border-radius:26px 26px 0 0;padding:20px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;animation:edlUp .35s cubic-bezier(.2,.9,.3,1) both}
+.edl-box h3{margin:0;font:800 20px/1.2 var(--display);color:var(--cream)}
+.edl-box .medi-row{margin:0}
+.edl-b{display:flex;flex-direction:column;gap:8px}
+.edl-b .btn{width:100%;min-height:48px;justify-content:center}
+@media(min-width:700px){.edl{align-items:center}.edl-box{border-radius:26px;padding-bottom:20px}}
+@keyframes edlFade{from{opacity:0}}
+@keyframes edlUp{from{transform:translateY(40px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.edl,.edl-box{animation:none}}
 </style>
 </head>
 <body>
@@ -9984,8 +10033,127 @@ async function rcDelete(i, ctx) {
   toast('Prise supprimée'); await rcCommit(ctx, i);
 }
 
+/* ═══════ RETOUR ET ACTUALISER (Lucas, 27/11) ═══════
+   - Retour (bouton du téléphone ou du navigateur) = l'écran d'avant, rien d'autre. Ce qui est ouvert par-dessus
+     (infobulle, caméra, choix « Créer », fenêtre, menu) se ferme d'abord.
+   - Actualiser = on reste au même endroit : la fiche ouverte, l'éditeur avec la fiche en cours (gardée le temps
+     de l'onglet, dans sessionStorage), la position dans la page.
+   - Quitter l'éditeur sans avoir enregistré : Médi propose de garder la fiche (« tu pourras la modifier plus tard »). */
+const NAV = {pop: false, force: false};
+const NAV_KEEP = ['disc', 'home', 'sheet', 'ed', 'blocs', 'lib', 'tuner', 'metro', 'plus', 'privacy', 'cours', 'exo', 'labo'];
+let edSnap = null;   // l'éditeur tel qu'il était à l'ouverture (pour savoir si on a changé quelque chose)
+function navState(v) { return {v, id: v === 'sheet' && cur ? cur.id : v === 'ed' && draft ? draft.id : null}; }
+function navSave(st) { try { sessionStorage.setItem('gms_nav', JSON.stringify(st)); } catch (e) {} }
+function navPush(v) {
+  const st = navState(v);
+  navSave(st);
+  if (NAV.pop) return;
+  try {
+    const h = history.state;
+    if (h && h.v === st.v && h.id === st.id) return;
+    if (h && h.v === 'ed') history.replaceState(st, '');   // l'éditeur quitté ne reste pas dans l'historique
+    else history.pushState(st, '');
+  } catch (e) {}
+}
+// ce qui est ouvert par-dessus l'écran : on le ferme (true si quelque chose a été fermé)
+function navCloseTop() {
+  if ($('ed-leave')) { edLeaveClose(); return true; }
+  if ($('fp-cam')) { fpCamClose(); return true; }
+  if ($('fp-pop')) { fpPopClose(); return true; }
+  const ca = $('create-ask'); if (ca && ca.classList.contains('on')) { createAskClose(); return true; }
+  const gr = $('fs-grp'); if (gr && gr.classList.contains('on')) { fsGroupsClose(); return true; }
+  if (!$('m-rec').classList.contains('hide')) { rcClose(); return true; }
+  if (!$('m-print').classList.contains('hide')) { closePrintModal(); return true; }
+  if (!$('m-chord').classList.contains('hide')) { closeCE(); return true; }
+  if (!$('m-media').classList.contains('hide')) { svRecClose(); return true; }
+  if (curView === 'ed' && cp.ed) { cp.ed = false; const sh = $('cp-sheet'); if (sh) { sh.classList.remove('on'); sh.innerHTML = ''; } return true; }
+  const sp = $('sv-pop'); if (sp && sp.classList.contains('on')) { svPop(false); return true; }
+  const mn = document.querySelector('#sv-menu.open, .hm-menu.open, .pv-menu.open'); if (mn) { mn.classList.remove('open'); return true; }
+  // les pages dans un écran : un mur ouvert, un test du Labo, un exercice
+  if (curView === 'blocs' && blocCur) { blocBack(); return true; }
+  if (curView === 'labo' && lab.view !== 'home') { labGo(lab.view === 'tests' || lab.view === 'tests26' ? 'home' : labGroup(lab.view).home); return true; }
+  if (curView === 'exo' && exoCur) { exoBack(); return true; }
+  return false;
+}
+function navTo(st, push) {
+  st = st || {v: 'disc'};
+  if (!push) NAV.pop = true;
+  try {
+    if (st.v === 'sheet' && st.id && sheets.some(s => s.id === st.id)) viewSheet(st.id);
+    else if (st.v !== 'ed' && $('v-' + st.v)) go(st.v);
+    else go(cur && st.v === 'ed' && sheets.some(s => s.id === cur.id) ? 'sheet' : 'home');
+  } finally { NAV.pop = false; }
+}
+addEventListener('popstate', e => {
+  const stay = () => { try { history.pushState(navState(curView), ''); } catch (_) {} };
+  if (navCloseTop()) { stay(); return; }
+  const st = e.state || {v: 'disc'};
+  if (edDirty()) { stay(); edLeaveAsk(() => navTo(st, true)); return; }
+  navTo(st);
+});
+
+/* ── l'éditeur : a-t-on changé quelque chose ? ── */
+const edSnapOf = () => JSON.stringify([draft, ($('f-title') || {}).value || '', ($('f-artist') || {}).value || '']);
+function edDirty() { return !!(draft && edSnap != null && curView === 'ed' && edSnapOf() !== edSnap); }
+function edClean() { edSnap = null; try { sessionStorage.removeItem('gms_ed'); } catch (e) {} }
+// Médi propose de garder la fiche avant de quitter
+function edLeaveAsk(then) {
+  edLeaveClose();
+  const isNew = draft && !sheets.some(s => s.id === draft.id);
+  const m = document.createElement('div'); m.id = 'ed-leave'; m.className = 'edl'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-label', 'Fiche pas encore enregistrée');
+  m.innerHTML = `<div class="edl-box" onclick="event.stopPropagation()"><h3>${isNew ? 'Ta fiche n’est pas encore enregistrée' : 'Tes changements ne sont pas enregistrés'}</h3>
+    ${mediBulle('curieuse', isNew ? 'Je la garde pour toi ? Tu pourras la modifier plus tard.' : 'Je les garde pour toi ? Tu pourras toujours la modifier plus tard.', {size: 56, anim: 'vivant'})}
+    <div class="edl-b"><button type="button" class="btn btn-primary" id="edl-keep">${isNew ? 'Garder ma fiche' : 'Garder les changements'}</button>
+    <button type="button" class="btn btn-ghost" id="edl-quit">Quitter sans garder</button></div></div>`;
+  m.addEventListener('click', edLeaveClose);   // toucher à côté : on reste dans l'éditeur
+  document.body.appendChild(m);
+  $('edl-keep').onclick = async () => {
+    edLeaveClose();
+    const t = $('f-title'); if (t && !t.value.trim()) t.value = titleTaken('Ma fiche', draft.id) ? uniqueTitle('Ma fiche', draft.id) : 'Ma fiche';
+    await saveSheet();
+    if (edSnap == null && then) { NAV.force = true; try { then(); } finally { NAV.force = false; } }
+  };
+  $('edl-quit').onclick = () => { edLeaveClose(); edClean(); rcCleanup(); stopPlay(); edBarReset(); NAV.force = true; try { then(); } finally { NAV.force = false; } };
+}
+function edLeaveClose() { const m = $('ed-leave'); if (m) m.remove(); }
+addEventListener('keydown', e => { if (e.key === 'Escape' && $('ed-leave')) edLeaveClose(); });
+
+/* ── actualiser : on garde l'endroit (et la fiche en cours dans l'éditeur) ── */
+function navStash() {
+  try {
+    sessionStorage.setItem('gms_scroll', String(Math.round(scrollY)));
+    if (curView === 'ed' && draft && edSnap != null) sessionStorage.setItem('gms_ed', JSON.stringify({draft, title: $('f-title').value, artist: $('f-artist').value, h: $('ed-title').textContent, snap: edSnap}));
+    else sessionStorage.removeItem('gms_ed');
+  } catch (e) {}
+}
+addEventListener('pagehide', navStash);
+addEventListener('visibilitychange', () => { if (document.hidden) navStash(); });
+function navRestore() {
+  let st = null, y = 0;
+  try { st = JSON.parse(sessionStorage.getItem('gms_nav') || 'null'); y = +sessionStorage.getItem('gms_scroll') || 0; } catch (e) {}
+  NAV.pop = true;
+  try {
+    if (st && st.v === 'sheet' && sheets.some(s => s.id === st.id)) viewSheet(st.id);
+    else if (st && st.v === 'ed' && edRestore()) y = 0;
+    else if (st && NAV_KEEP.includes(st.v) && st.v !== 'ed' && $('v-' + st.v)) go(st.v);
+    else { go('disc'); y = 0; }
+  } catch (e) { go('disc'); y = 0; } finally { NAV.pop = false; }
+  try { history.replaceState(navState(curView), ''); } catch (e) {}
+  if (y > 0) setTimeout(() => scrollTo(0, y), 120);
+  return !!(st && st.v !== 'disc' && curView === st.v);
+}
+function edRestore() {
+  let d = null; try { d = JSON.parse(sessionStorage.getItem('gms_ed') || 'null'); } catch (e) {}
+  if (!d || !d.draft) return false;
+  draft = d.draft;
+  openEditor(d.h || 'Nouvelle fiche');
+  $('f-title').value = d.title || ''; $('f-artist').value = d.artist || '';
+  edSnap = d.snap;   // toujours « pas enregistrée » : l'avertissement de Médi reste
+  return true;
+}
 /* ═══════ NAV ═══════ */
 function go(v) {
+  if (curView === 'ed' && v !== 'ed' && !NAV.force && edDirty()) { edLeaveAsk(() => go(v)); return; }   // Médi propose de garder la fiche (23-6)
   if (v !== 'atelier' && atOn()) { atFlush(); atPause(); }
   stopPlay();
   if (v !== 'tuner') stopTuner();
@@ -10023,6 +10191,7 @@ function go(v) {
   if (v === 'admin') renderAdmin();
   if (v === 'labo') { lab.view = 'home'; labRender(); }
   renderSubnav(v);
+  navPush(v);   // retour = l'écran d'avant ; actualiser = on reste ici (23-6)
 }
 
 /* ═══════ 5 ESPACES : Fiches · Trouver · Créer · S'entraîner · Plus ═══════ */
@@ -11059,6 +11228,7 @@ function openEditor(title) {
   renderOptBlocks();
   renderParts();
   go('ed');
+  edSnap = edSnapOf();   // pour savoir, en quittant, s'il y a quelque chose à garder (23-6)
 }
 function pickColor(k) { draft.color = k; document.querySelectorAll('[data-col]').forEach(b => b.classList.toggle('on', b.dataset.col === k)); }
 function delFromEditor() { if (draft && sheets.some(s => s.id === draft.id)) delSheet(draft.id); }
@@ -11294,7 +11464,7 @@ function edOpenCoffre(target) {
   $('more-opts').open = true;
   setTimeout(() => { const t = $(target); if (t) { t.scrollIntoView({block: 'center', behavior: 'smooth'}); if (t.tagName === 'INPUT') t.focus(); } }, 60);
 }
-function edClose() { rcCleanup(); stopPlay(); edBarReset(); go('home'); }
+function edClose() { if (edDirty()) { edLeaveAsk(() => go('home')); return; } rcCleanup(); stopPlay(); edBarReset(); edClean(); go('home'); }
 const edOK = () => !!($('f-title').value.trim() && draft && draft.parts.some(p => p.chords.length));
 function edSyncSave() {
   const b = $('ed-save'); if (!b) return;
@@ -12197,11 +12367,13 @@ async function saveSheet() {
   }
   i >= 0 ? sheets[i] = clone(draft) : sheets.push(clone(draft));
   await DB.put('sheets', clone(draft));
+  edClean();   // plus rien à garder : on peut quitter l'éditeur sans avertissement
   toast('Fiche enregistrée'); if (i < 0) animRangee(draft.title, sheetChords(draft));   // nouvelle fiche : elle file se ranger dans Fiches
   viewSheet(draft.id);
 }
 async function delSheet(id) {
   if (!confirm('Supprimer cette fiche ?')) return;
+  if (curView === 'ed') edClean();
   const s = sheets.find(x => x.id === id);
   if (s) for (const m of (s.media||[])) await DB.del('media', m.mediaId);
   if (s) for (const p of (s.parts||[])) for (const r of [p.rec, ...(p.recAlt || [])]) if (r) await DB.del('media', r.mediaId);
@@ -14937,35 +15109,51 @@ function fsNext() {
     const nd = document.querySelector('#resume-wrap .fs-nd');
     if (!nd || nd.querySelectorAll('.fs-sl').length < 2) return;
     if (document.hidden || !$('v-home').classList.contains('on') || nd.matches(':hover')) return fsNext();
-    fsShow(nd, fsN.i + 1);
+    fsShow(nd, fsN.i + 1, 1);
   }, 6000);
 }
-function fsShow(nd, n) {
+// un vrai carrousel (Lucas, 27/11) : le message sort d'un côté, le suivant entre par l'autre (dir 1 = vers la gauche)
+function fsShow(nd, n, dir, dragged) {
   const sl = [...nd.querySelectorAll('.fs-sl')], old = sl[fsN.i];
+  dir = dir || 1;
   fsN.i = (n + sl.length) % sl.length;
   const nw = sl[fsN.i]; if (nw === old) return fsNext();
-  old.classList.remove('on', 'drag'); old.style.transform = old.style.opacity = ''; old.classList.add('out'); old.setAttribute('aria-hidden', 'true');
-  setTimeout(() => old.classList.remove('out'), 700);
-  nw.classList.remove('out', 'drag'); nw.style.transform = nw.style.opacity = ''; nw.classList.add('on'); nw.removeAttribute('aria-hidden');
+  clearTimeout(nw._t); nw.classList.remove('out-l', 'out-r', 'drag');
+  if (!dragged) { nw.style.transition = 'none'; nw.style.transform = `translateX(${dir > 0 ? 110 : -110}%)`; nw.style.visibility = 'visible'; void nw.offsetWidth; nw.style.transition = ''; }
+  nw.style.transform = ''; nw.classList.add('on'); nw.removeAttribute('aria-hidden');
+  old.classList.remove('on', 'drag'); old.style.transform = ''; old.classList.add(dir > 0 ? 'out-l' : 'out-r'); old.setAttribute('aria-hidden', 'true');
+  clearTimeout(old._t); old._t = setTimeout(() => { old.classList.remove('out-l', 'out-r'); old.style.visibility = ''; }, 650);
+  setTimeout(() => { nw.style.visibility = ''; }, 650);
   const m = nd.querySelector('svg.medi');
   if (m) { m.classList.remove('nod'); void m.getBoundingClientRect(); m.classList.add('nod', 'look');
     setTimeout(() => m.classList.remove('nod'), 950); setTimeout(() => m.classList.remove('look'), 1300); }
   fsNext();
 }
 function fsSwipe(nd) {
-  let x0 = null, dx = 0, moved = false;
-  const cur = () => nd.querySelectorAll('.fs-sl')[fsN.i];
-  nd.addEventListener('pointerdown', e => { x0 = e.clientX; dx = 0; moved = false; });
+  let x0 = null, dx = 0, moved = false, nb = null;
+  const vp = nd.querySelector('.fs-vp'), all = () => [...nd.querySelectorAll('.fs-sl')], cur = () => all()[fsN.i];
+  const neighbour = () => { const sl = all(), L = sl.length; return sl[(fsN.i + (dx < 0 ? 1 : -1) + L) % L]; };
+  nd.addEventListener('pointerdown', e => { x0 = e.clientX; dx = 0; moved = false; nb = null; });
   nd.addEventListener('pointermove', e => {
     if (x0 == null) return; dx = e.clientX - x0;
     if (!moved && Math.abs(dx) > 10) { moved = true; clearTimeout(fsN.t); cur().classList.add('drag'); try { nd.setPointerCapture(e.pointerId); } catch (_) {} }
-    if (moved) { const c = cur(); c.style.transform = `translateX(${dx * .6}px)`; c.style.opacity = String(Math.max(.2, 1 - Math.abs(dx) / 220)); }
+    if (!moved) return;
+    const W = vp.clientWidth, c = cur(); c.style.transform = `translateX(${dx}px)`;
+    const n = neighbour(); if (n === c) return;
+    if (nb && nb !== n) { nb.classList.remove('drag'); nb.style.transform = ''; nb.style.visibility = ''; }
+    nb = n; clearTimeout(nb._t); nb.classList.remove('out-l', 'out-r'); nb.classList.add('drag'); nb.style.visibility = 'visible';
+    nb.style.transform = `translateX(${dx + (dx < 0 ? W : -W)}px)`;
   });
   const end = () => {
     if (x0 == null) return; x0 = null; if (!moved) return;
-    const c = cur(); c.classList.remove('drag');
-    if (Math.abs(dx) > 40) fsShow(nd, dx < 0 ? fsN.i + 1 : fsN.i - 1);
-    else { c.style.transform = c.style.opacity = ''; fsNext(); }
+    const c = cur(); c.classList.remove('drag'); if (nb) nb.classList.remove('drag');
+    if (Math.abs(dx) > 40) { const d = dx < 0 ? 1 : -1; fsShow(nd, fsN.i + d, d, true); }
+    else {   // pas assez loin : tout revient en place
+      c.style.transform = '';
+      if (nb) { const b = nb; b.style.transform = `translateX(${dx < 0 ? 110 : -110}%)`; b._t = setTimeout(() => { b.style.transform = ''; b.style.visibility = ''; }, 600); }
+      fsNext();
+    }
+    nb = null;
     nd._noClick = true; setTimeout(() => nd._noClick = false, 0);
   };
   nd.addEventListener('pointerup', end); nd.addEventListener('pointercancel', end);
@@ -15158,7 +15346,8 @@ const FP_SIT = fpMedi('fp-sit');   // Médi assis sur la prise qui joue sur la f
 const FP_HOLLOW = `<svg class="fp-hol" viewBox="-20 -10 240 250" aria-hidden="true"><path transform="rotate(-14 100 110)" d="${MEDI_BODY}"/></svg>`;
 const FP_PLAY = fbMediLogo('<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/>');
 const fpRecIco = stop => `<svg class="fp-rec" viewBox="-20 -10 240 250" aria-hidden="true"><path class="mb" d="${MEDI_BODY}"/>${stop ? '<rect class="rd" x="78" y="70" width="44" height="44" rx="10"/>' : '<circle class="rd" cx="100" cy="92" r="26"/>'}</svg>`;
-const FP_RECC = `<svg class="fp-recc" viewBox="-20 -10 240 250" aria-hidden="true"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/><circle class="rd" cx="86" cy="111" r="28"/></svg>`;
+// le bouton d'enregistrement : couché pour lancer, il se relève quand ça enregistre, le rond orange vif bat (Lucas, 27/11)
+const FP_RECM = `<svg class="fp-recm" viewBox="-20 -10 240 250" aria-hidden="true"><g class="pk"><path class="mb" d="${MEDI_BODY}"/><circle class="rd" cx="100" cy="92" r="26"/></g></svg>`;
 // l'interrupteur maison : le médiator posé sur une corde (comme « En rythme »)
 const fpPickSw = on => `<svg class="fp-ms${on ? ' on' : ''}" viewBox="0 0 44 24" aria-hidden="true"><path class="s" d="M2 13H42"/><path class="p" transform="translate(${on ? 26 : 4} 2)" d="M7 19C6 19 .8 12 .5 8 .2 4 3 1.5 7 1.5s6.8 2.5 6.5 6.5C13.2 12 8 19 7 19z"/></svg>`;
 const fpStrings = cls => `<svg class="fp-str ${cls || ''}" viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true">${[0, 1, 2, 3, 4, 5].map(k => { const y = (8 + k * 8).toFixed(1); return `<path class="ln" style="stroke-width:${(.8 + .3 * k).toFixed(1)}" d="M0 ${y}H300"/><path class="vb" data-y="${y}" d="M0 ${y}H300"/>`; }).join('')}</svg>`;
@@ -15172,6 +15361,7 @@ function fpTakeName(p, t) {
 }
 function fpTakesRow(p, i) {
   const ts = fpTakes(p);
+  if (!ts.length) return `<div class="fp-tk" onclick="event.stopPropagation()"><button type="button" class="fp-rh0" onclick="fpRec('rh',this.querySelector('.fp-recm'),${i})">${FP_RECM}<span><b>Enregistre ton rythme</b><small>c’est lui qui jouera sur la fiche</small></span></button></div>`;
   const chips = ts.map(t => `<button type="button" class="fp-chip${t === p.rec ? ' on' : ''}" onclick="fpTakePop(${i},'${t.mediaId}',this,event)" title="${t === p.rec ? 'Elle joue sur la fiche' : ''}">${t === p.rec ? FP_SIT : FP_HOLLOW}<span>${esc(fpTakeName(p, t))}</span><small>${fpDur((t.end || t.dur || 0) - (t.start || 0))}</small></button>`).join('');
   return `<div class="fp-tk" onclick="event.stopPropagation()"><span class="fp-lbl">Prises du rythme</span><div class="fp-tkc">${chips}<button type="button" class="fp-add${ts.length ? '' : ' wide'}" onclick="fpRec('rh',this,${i})" aria-label="Enregistrer un rythme à la volée">${fpI('plus')}${ts.length ? '' : '<span>Enregistrer mon rythme</span>'}</button></div></div>`;
 }
@@ -15190,14 +15380,21 @@ function fpPerso() {
   if (!ms.length) out += `<div class="fp-empty">${mediSVG('curieuse', {size: 40, anim: 'blink'})}<p>Filme-toi une fois. Dans trois mois, tu sauras exactement comment tu le jouais.</p></div>`;
   else out += `<div class="fp-grid">${shown.map(fpPoch).join('')}</div>` + (rest > 0 ? `<button type="button" class="fp-more" onclick="FP.all=true;fpPerso()">${rest > 1 ? `Voir les ${rest} autres prises` : 'Voir la dernière prise'}<span aria-hidden="true">›</span></button>` : '');
   out += '</section>';
-  const links = s.links || [], top = svTutoLink(s);
-  out += `<section class="fp-sec"><div class="fp-sh"><div><b>Tutos</b><small>pour la réapprendre</small></div></div>`
-    + links.map((l, k) => { const yt = ytId(l.url); let host = ''; try { host = new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) {}
-      return `<button type="button" class="fp-tuto" onclick="fpTuto(${k})"><span class="fp-yt">${fpI(yt ? 'yt' : 'link')}</span><span class="fp-tt2"><b>${esc(l.title && l.title !== 'Video' ? l.title : yt ? 'Tuto YouTube' : host || l.url)}</b><small>${yt ? (l === top ? 'YouTube · se lit en haut de la fiche' : 'YouTube') : esc(host)}</small></span><i aria-hidden="true">›</i></button>`; }).join('')
-    + `<button type="button" class="fp-find" onclick="tutoOpenFor(cur.title, cur.artist)">${fpI('find')}Chercher un autre tuto</button></section>`;
   h.innerHTML = out;
   fpHydrate(h);
+  fpTutos();
 }
+// les tutos restent tout en bas (Lucas, 27/11) : le tuto YouTube se lit ici, les autres liens dessous
+function fpTutos() {
+  const h = $('fp-tlist'), s = cur; if (!h || !s) return;
+  const links = s.links || [], top = svTutoLink(s), rest = links.filter(l => l !== top);
+  if (!links.length) { h.innerHTML = fpDash('Un tuto pour l’apprendre ? Il se lit ici, sans quitter l’appli.', 'tutoOpenFor(cur.title, cur.artist)', 'Chercher un tuto'); return; }
+  h.innerHTML = rest.map(l => { const k = links.indexOf(l), yt = ytId(l.url); let host = ''; try { host = new URL(l.url).hostname.replace(/^www\./, ''); } catch (e) {}
+      return `<button type="button" class="fp-tuto" onclick="fpTuto(${k})"><span class="fp-yt">${fpI(yt ? 'yt' : 'link')}</span><span class="fp-tt2"><b>${esc(l.title && l.title !== 'Video' ? l.title : yt ? 'Tuto YouTube' : host || l.url)}</b><small>${yt ? 'YouTube · le lire ici' : esc(host)}</small></span><i aria-hidden="true">›</i></button>`; }).join('')
+    + `<button type="button" class="fp-find" onclick="tutoOpenFor(cur.title, cur.artist)">${fpI('find')}Chercher un autre tuto</button>`;
+}
+// le visuel quand il n'y a encore rien : Médi, une phrase, un « + » (comme l'ancien bloc « Perso »)
+const fpDash = (txt, fn, lbl, cls) => `<button type="button" class="fp-dash${cls ? ' ' + cls : ''}" onclick="${fn}" aria-label="${lbl}">${mediSVG('curieuse', {size: cls ? 30 : 40, anim: 'blink'})}<span>${txt}</span><i aria-hidden="true">+</i></button>`;
 function fpFilt(k) { FP.f = k; FP.all = false; fpPerso(); }
 function fpPoch(m) {
   const v = m.kind === 'video';
@@ -15217,24 +15414,71 @@ async function fpHydrate(host) {
     const du = th.querySelector('.fp-du');
     if (th.dataset.k === 'video') {
       const v = th.querySelector('video');
+      const m = (cur && cur.media || []).find(x => x.mediaId === th.dataset.mid);
       v.addEventListener('loadedmetadata', () => { if (!du.textContent && isFinite(v.duration)) du.textContent = fpDur(v.duration); }, {once: true});
-      v.src = url + '#t=0.1';
+      v.src = url + '#t=' + (m && m.tt != null ? m.tt : .1);
+      if (m && m.tt == null) fpThumbLater(m, url);
     } else {
       try { const buf = await recBuffer(th.dataset.mid); th.querySelector('.fp-wv').innerHTML = fpBars(fpPeaks(buf, 0, buf.duration, 22), 120, 40); if (!du.textContent) du.textContent = fpDur(buf.duration); } catch (e) {}
     }
   }
 }
+// la miniature d'une vidéo : le plus beau moment (net, bien éclairé, contrasté, coloré), cherché une fois puis gardé (m.tt)
+const fpThumbQ = [];
+function fpThumbLater(m, url) {
+  if (fpThumbQ.some(q => q.m === m)) return;
+  fpThumbQ.push({m, url}); if (fpThumbQ.length === 1) fpThumbRun();
+}
+async function fpThumbRun() {
+  while (fpThumbQ.length) {
+    const {m, url} = fpThumbQ[0];
+    try {
+      m.tt = await fpBestFrame(url, m.dur);
+      const s = sheets.find(x => (x.media || []).includes(m)); if (s) { s.updatedAt = Date.now(); await DB.put('sheets', clone(s)); }
+      const v = document.querySelector(`.fp-th[data-mid="${m.mediaId}"] video`); if (v) v.src = url + '#t=' + m.tt;
+    } catch (e) { m.tt = .1; }
+    fpThumbQ.shift();
+  }
+}
+async function fpBestFrame(url, dur) {
+  const v = document.createElement('video'); v.muted = true; v.playsInline = true; v.preload = 'auto';
+  const wait = (ev, ms) => new Promise(r => { const t = setTimeout(r, ms); v.addEventListener(ev, () => { clearTimeout(t); r(); }, {once: true}); });
+  v.src = url; await wait('loadeddata', 5000);
+  let d = isFinite(v.duration) && v.duration > 0 ? v.duration : +dur || 0;
+  if (!d) { v.currentTime = 1e6; await wait('seeked', 2000); d = isFinite(v.duration) ? v.duration : 0; }   // une vidéo enregistrée dans le navigateur ne connaît pas toujours sa durée
+  if (!d) return .1;
+  const c = document.createElement('canvas'); c.width = c.height = 48; const g = c.getContext('2d', {willReadFrequently: true});
+  let best = .1, bs = -1;
+  for (const f of [.12, .25, .38, .5, .62, .75, .88]) {
+    const t = +(d * f).toFixed(2); v.currentTime = t; await wait('seeked', 1500);
+    let px; try { g.drawImage(v, 0, 0, 48, 48); px = g.getImageData(0, 0, 48, 48).data; } catch (e) { continue; }
+    const n = 48 * 48, L = new Float32Array(n); let sm = 0, rg = 0, yb = 0, rg2 = 0, yb2 = 0;
+    for (let k = 0; k < n; k++) { const r = px[k * 4] / 255, gg = px[k * 4 + 1] / 255, b = px[k * 4 + 2] / 255; L[k] = .299 * r + .587 * gg + .114 * b; sm += L[k]; const a = r - gg, y = .5 * (r + gg) - b; rg += a; yb += y; rg2 += a * a; yb2 += y * y; }
+    const mean = sm / n; let vr = 0, gr = 0;
+    for (let k = 0; k < n; k++) { vr += (L[k] - mean) ** 2; if (k % 48 < 47) gr += Math.abs(L[k + 1] - L[k]); if (k < n - 48) gr += Math.abs(L[k + 48] - L[k]); }
+    const sd = Math.sqrt(vr / n), sharp = gr / (2 * n), mrg = rg / n, myb = yb / n;
+    const col = Math.sqrt(Math.max(0, rg2 / n - mrg * mrg) + Math.max(0, yb2 / n - myb * myb)) + .3 * Math.hypot(mrg, myb);
+    let sc = .35 * Math.min(1, sharp / .08) + .25 * Math.min(1, sd / .22) + .25 * (1 - Math.min(1, Math.abs(mean - .5) * 2.2)) + .15 * Math.min(1, col / .3);
+    if (mean < .08 || mean > .95) sc *= .3;   // une image noire ou blanche : jamais
+    if (sc > bs) { bs = sc; best = t; }
+  }
+  v.removeAttribute('src'); v.load();
+  return best;
+}
 // un tuto : un YouTube passe en haut de la fiche (lu dans l'appli), un autre lien s'ouvre à côté
 async function fpTuto(k) {
   const s = cur, l = s && (s.links || [])[k]; if (!l) return;
   if (!ytId(l.url)) { window.open(l.url, '_blank', 'noopener'); return; }
-  if (svTutoLink(s) !== l) { s.links.splice(k, 1); s.links.unshift(l); await fpSave(); svTutoRender(); fpPerso(); }
-  const t = $('sv-tuto'); if (t) t.scrollIntoView({behavior: 'smooth', block: 'start'});
+  if (svTutoLink(s) !== l) { s.links.splice(k, 1); s.links.unshift(l); await fpSave(); svTutoRender(); fpTutos(); }
+  const t = $('fp-tplayer'); if (t) t.scrollIntoView({behavior: 'smooth', block: 'center'});   // il se lit en bas, là où on l'a touché
 }
 async function fpSave() { cur.updatedAt = Date.now(); await DB.put('sheets', clone(cur)); }
 
 /* ── l'infobulle (une prise, l'enregistreur) ── */
 function fpPopOpen(anchor, html, cls) {
+  anchor = anchor || $('fp-perso') || document.body;
+  const old = $('fp-pop');
+  if (old && FP.anchor === anchor && !FP.R) { fpPlStop(); old.className = 'fp-pop swap ' + (cls || ''); old.innerHTML = html; fpPlace(); return old; }
   fpPopClose(true);
   const d = document.createElement('div'); d.id = 'fp-dim'; d.onclick = () => fpPopClose(); document.body.appendChild(d);
   const p = document.createElement('div'); p.id = 'fp-pop'; p.className = 'fp-pop ' + (cls || ''); p.setAttribute('role', 'dialog'); p.innerHTML = html;
@@ -15396,6 +15640,7 @@ async function fpMediaPop(id, el) {
   const pop = fpPopOpen(el, head + body + `<div class="fp-row2"><button type="button" class="fp-sm" onclick="fpSeek(-10)" aria-label="Reculer de 10 secondes">${fpI('back')}</button>${fpTempoHTML()}</div>`, 'fp-media');
   const url = await mediaURL(m.mediaId); if (!url || $('fp-pop') !== pop) return;
   const el2 = v ? pop.querySelector('video') : new Audio();
+  if (v) fpVidFit(pop.querySelector('.fp-vid'), el2);
   el2.src = url;
   el2.addEventListener('loadedmetadata', () => { const d = pop.querySelector('.fp-tt .d'); if (d && !d.textContent && isFinite(el2.duration)) d.textContent = fpDur(el2.duration); fpPlace(); }, {once: true});
   fpPlInit(el2, 0, 0);
@@ -15425,13 +15670,20 @@ function fpRec(kind, el, i) {
   stopPlay();
   if (!kind) {
     fpPopOpen(el, `<div class="fp-rr top">${fpMedi('fp-idle')}<p class="fp-said">Le rythme va sur ta fiche. Un audio ou une vidéo, c’est pour tes prises et ton profil.</p></div>
-      <div class="fp-three"><button type="button" onclick="fpRec('rh',FP.anchor)">${FP_RECC}<b>${fpI('rh')}Rythme</b><small>sur la fiche</small></button><i class="sep" aria-hidden="true"></i>
-      <button type="button" onclick="fpRec('audio',FP.anchor)">${FP_RECC}<b>${fpI('mic')}Audio</b><small>mes prises</small></button>
-      <button type="button" onclick="fpRec('video',FP.anchor)">${FP_RECC}<b>${fpI('cam')}Vidéo</b><small>mes prises</small></button></div>`, 'fp-rp fp-pick');
+      <div class="fp-three"><button type="button" onclick="fpRecGo('rh')">${FP_RECM}<b>${fpI('rh')}Rythme</b><small>sur la fiche</small></button><i class="sep" aria-hidden="true"></i>
+      <button type="button" onclick="fpRecGo('audio')">${FP_RECM}<b>${fpI('mic')}Audio</b><small>mes prises</small></button>
+      <button type="button" onclick="fpRecGo('video')">${FP_RECM}<b>${fpI('cam')}Vidéo</b><small>mes prises</small></button></div>`, 'fp-rp fp-pick');
     return;
   }
   if (kind === 'video') { fpCamOpen(); return; }
-  fpRecAudio(kind, el, kind === 'rh' ? (i != null ? i : svPart) : null);
+  // un rythme depuis la fiche : on attend qu'on touche le médiator
+  const pi = i != null ? i : svPart;
+  fpPopOpen(el, `<div class="fp-rr top">${fpMedi('fp-idle')}<p class="fp-said">Touche le médiator : je compte 4 temps, puis je t’écoute.</p></div>
+    <div class="fp-three one"><button type="button" onclick="fpRecGo('rh',${pi})">${FP_RECM}<b>${fpI('rh')}Rythme</b><small>il jouera sur la fiche</small></button></div>`, 'fp-rp fp-pick');
+}
+function fpRecGo(kind, i) {
+  if (kind === 'video') { fpCamOpen(); return; }
+  fpRecAudio(kind, FP.anchor, kind === 'rh' ? (i != null ? i : svPart) : null);
 }
 const fpCountHTML = cls => `<div class="fp-cnt ${cls || ''}">${fpMedi('fp-cm', `<g class="eo">${FP_EYES}</g><g class="ec">${FP_SHUT}</g>`)}<span class="fp-shd"></span></div>`;
 // Médi compte : 4 sauts au tempo de la fiche, un chiffre s'envole à chaque saut, au 4 il fait un tour ; puis il ferme les yeux
@@ -15479,7 +15731,8 @@ async function fpRecAudio(kind, el, part) {
   if (!window.MediaRecorder || !navigator.mediaDevices) { toast('Enregistrement non disponible ici', true); return; }
   const pn = kind === 'rh' && cur.parts.length > 1 ? ' · ' + esc(cur.parts[part].name || 'Partie ' + (part + 1)) : '';
   const pop = fpPopOpen(el, `<div class="fp-rr"><span class="fp-rk">${fpI(kind === 'rh' ? 'rh' : 'mic')}${kind === 'rh' ? 'Rythme' : 'Audio'}${pn}</span><span class="fp-time"><i></i><b>0:00</b></span></div>
-    ${fpCountHTML()}<div class="fp-live">${fpStrings()}</div><div class="fp-rr c"><button type="button" class="fp-stop" onclick="fpRecStop()" aria-label="Arrêter">${fpRecIco(true)}</button></div>`, 'fp-rp fp-recing');
+    ${fpCountHTML()}<div class="fp-live">${fpStrings()}</div><div class="fp-rr c"><button type="button" class="fp-stop" onclick="fpRecStop()" aria-label="Arrêter">${FP_RECM}</button></div>`, 'fp-rp fp-recing');
+  requestAnimationFrame(() => requestAnimationFrame(() => pop.classList.add('up')));
   const R = FP.R = {kind, part, stage: 'count'};
   try { R.stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}}); }
   catch (e) { if (FP.R === R) { FP.R = null; fpPopClose(); } toast('Micro refusé ou indisponible', true); return; }
@@ -15514,35 +15767,55 @@ async function fpRecDone(R) {
 // E : c'est dans la boîte
 function fpAfter(R) {
   const rh = R.kind === 'rh', p = rh ? cur.parts[R.part] : null;
-  const names = rh ? [p.rec ? 'Prise ' + (fpTakes(p).length + 1) : 'Ma prise', 'Plus lente', 'Plus rapide'] : ['Ma version', 'Avec paroles', 'À la plage'];
-  R.name = names[0]; R.main = rh;
-  const anchor = $('fp-recb') && !rh ? $('fp-recb') : FP.anchor && FP.anchor.isConnected ? FP.anchor : (rh ? document.querySelector(`#pvb-${R.part} .fp-add`) : $('fp-recb'));
+  const nv = (cur.media || []).filter(m => m.kind === R.kind).length;
+  R.prop = R.name = rh ? (p.rec ? 'Prise ' + (fpTakes(p).length + 1) : 'Ma prise') : nv ? (R.kind === 'video' ? 'Ma vidéo ' : 'Mon audio ') + (nv + 1) : 'Ma version';
+  R.main = rh;
+  const anchor = FP.anchor && FP.anchor.isConnected ? FP.anchor : (rh ? document.querySelector(`#pvb-${R.part} .fp-add, #pvb-${R.part} .fp-rh0 .fp-recm`) : $('fp-recb'));
   const media = R.kind === 'video' ? `<div class="fp-vid sm"><video playsinline></video><button type="button" class="fp-pp fp-vpl" onclick="fpToggle()" aria-label="Lire">${FP_PLAY}</button></div>`
     : `<div class="fp-pw"><button type="button" class="fp-pp" onclick="fpToggle()" aria-label="Écouter">${FP_PLAY}</button><div class="fp-sw">${fpWaveHTML()}</div><span class="fp-dd">${fpDur(R.dur)}</span></div>`;
   FP.R = null;   // l'infobulle se rouvre : la prise n'est plus en cours, mais on la garde sous la main
   const pop = fpPopOpen(anchor || document.body, `<div class="fp-rr top">${fpMedi('fp-joy', FP_JOY)}<p class="fp-said">Joli ! On la garde ?</p></div>${media}
-    <div class="fp-names">${names.map((n, k) => `<button type="button" class="${k ? '' : 'on'}" onclick="fpName(this)">${esc(n)}</button>`).join('')}<button type="button" onclick="fpName(this,1)">+ Autre</button></div>
+    <div class="fp-names1"><button type="button" class="fp-nm on" onclick="fpName(this)">${esc(R.prop)}</button><button type="button" class="fp-own" onclick="fpOwn(this)">+ Choisir un titre</button></div>
     ${rh ? `<button type="button" class="fp-tgl on" aria-pressed="true" onclick="fpAfterMain(this)">${fpPickSw(true)}<span>Elle joue sur la fiche</span></button>` : ''}
     <div class="fp-btns"><button type="button" class="ghost" onclick="fpAgain()">Recommencer</button><button type="button" class="keep" onclick="fpKeep()">Garder</button></div>`, 'fp-rp fp-after');
   FP.R = R;
   R.url = URL.createObjectURL(R.blob);
   const el = R.kind === 'video' ? pop.querySelector('video') : new Audio();
+  if (R.kind === 'video') fpVidFit(pop.querySelector('.fp-vid'), el);
   el.src = R.url; fpPlInit(el, 0, 0);
   if (R.buf) fpWaveFill(pop, R.buf, 0, R.buf.duration);
   fpPlace();
 }
-function fpName(b, other) {
+function fpName(b) {
   const R = FP.R; if (!R) return;
-  if (other) { const n = prompt('Le nom de cette prise', ''); if (n == null || !n.trim()) return; b.textContent = n.trim().slice(0, 40); }
-  b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
-  R.name = b.textContent;
+  b.classList.add('on'); R.name = R.prop;
+  const i = b.parentNode.querySelector('.fp-nin'); if (i) i.value = '';
+}
+// son propre titre : le bouton devient un champ, sur la même ligne
+function fpOwn(b) {
+  const R = FP.R; if (!R) return;
+  const inp = document.createElement('input'); inp.className = 'fp-nin'; inp.maxLength = 40; inp.placeholder = 'Ton titre'; inp.setAttribute('aria-label', 'Le titre de cette prise'); inp.enterKeyHint = 'done';
+  b.replaceWith(inp); inp.focus();
+  const nm = inp.parentNode.querySelector('.fp-nm');
+  inp.addEventListener('input', () => { const v = inp.value.trim(); R.name = v || R.prop; nm.classList.toggle('on', !v); });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); inp.blur(); } });
+}
+// une vidéo garde son format (debout ou couchée) : plus de bandes noires
+function fpVidFit(box, v) {
+  if (!box || !v) return;
+  v.addEventListener('loadedmetadata', () => {
+    const w = v.videoWidth, h = v.videoHeight; if (!w || !h) return;
+    box.style.aspectRatio = w + ' / ' + h;
+    if (h > w) { box.style.width = Math.round(Math.min(innerHeight * .46, 420) * w / h) + 'px'; box.style.margin = '0 auto'; }
+    fpPlace();
+  }, {once: true});
 }
 function fpAfterMain(b) { const R = FP.R; if (!R) return; R.main = !R.main; b.classList.toggle('on', R.main); b.setAttribute('aria-pressed', R.main); b.querySelector('.fp-ms').outerHTML = fpPickSw(R.main); b.querySelector('span').textContent = R.main ? 'Elle joue sur la fiche' : 'Juste la garder'; }
 function fpAgain() {
   const R = FP.R; if (!R) return;
   const kind = R.kind, part = R.part, a = FP.anchor;
   fpPopClose();
-  if (kind === 'video') fpCamOpen(); else fpRecAudio(kind, a && a.isConnected ? a : (kind === 'rh' ? document.querySelector(`#pvb-${part} .fp-add`) : $('fp-recb')), part);
+  if (kind === 'video') fpCamOpen(); else fpRecAudio(kind, a && a.isConnected ? a : (kind === 'rh' ? document.querySelector(`#pvb-${part} .fp-add, #pvb-${part} .fp-rh0 .fp-recm`) : $('fp-recb')), part);
 }
 async function fpKeep() {
   const R = FP.R; if (!R || !R.blob || !cur) return;
@@ -15569,7 +15842,7 @@ async function fpCamOpen() {
   const ov = document.createElement('div'); ov.id = 'fp-cam'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Filmer une prise');
   ov.innerHTML = `<video autoplay muted playsinline></video><div class="fp-ctop"><button type="button" class="fp-x" onclick="fpCamClose()" aria-label="Fermer">×</button><span class="fp-time"><i></i><b>0:00</b></span></div>
     ${fpCountHTML('big')}<span class="fp-corner">${fpMedi('fp-cm listen', `<g class="eo">${FP_EYES}</g><g class="ec">${FP_SHUT}</g>`)}</span>
-    <div class="fp-cbot"><button type="button" class="fp-sm" onclick="fpCamFlip()" aria-label="Retourner la caméra">${fpI('flip')}</button><button type="button" class="fp-stop" onclick="fpCamGo()" aria-label="Enregistrer">${fpRecIco()}</button><span class="fp-sm hid"></span></div>`;
+    <div class="fp-cbot"><button type="button" class="fp-sm" onclick="fpCamFlip()" aria-label="Retourner la caméra">${fpI('flip')}</button><button type="button" class="fp-stop" onclick="fpCamGo()" aria-label="Enregistrer">${FP_RECM}</button><span class="fp-sm hid"></span></div>`;
   document.body.appendChild(ov);
   const R = FP.R = {kind: 'video', cam: true, stage: 'ready'};
   if (!await fpCamStream(R)) { fpCamClose(); fpCamFile(); }
@@ -15587,7 +15860,7 @@ async function fpCamGo() {
   if (R.stage === 'rec') { fpRecStop(); return; }
   if (R.stage !== 'ready' || !R.stream) return;
   R.stage = 'count'; ov.classList.add('counting');
-  ov.querySelector('.fp-stop').innerHTML = fpRecIco(true); ov.querySelector('.fp-stop').setAttribute('aria-label', 'Arrêter');
+  ov.querySelector('.fp-stop').setAttribute('aria-label', 'Arrêter');
   if (!await fpCount(ov.querySelector('.fp-cnt'), R)) return;
   ov.classList.remove('counting'); ov.classList.add('rec');
   fpRecBegin(R, ov);
@@ -15609,7 +15882,8 @@ function fpCamFile() {
 (function fpInit() {
   if (!fsBeta()) return;
   const more = $('sv-more'); if (!more) return;
-  more.insertAdjacentHTML('afterend', '<div id="fp-perso" class="fp-perso"></div>');
+  more.insertAdjacentHTML('afterend', '<div id="fp-perso" class="fp-perso"></div><section class="fp-sec fp-tutos" id="fp-tutos"><div class="fp-sh"><div><b>Tutos</b><small>pour la réapprendre</small></div></div><div id="fp-tplayer"></div><div id="fp-tlist" class="fp-tlist"></div></section>');
+  const tu = $('sv-tuto'); if (tu) $('fp-tplayer').appendChild(tu);   // le tuto se lit en bas de la fiche, plus en haut
   const sv = viewSheet;
   viewSheet = async function (id, k) { if (!cur || cur.id !== id) { FP.f = 'all'; FP.all = false; } const r = await sv(id, k); fpPerso(); return r; };
 })();
@@ -15702,10 +15976,10 @@ document.addEventListener('keydown', e => {
       }
     }
   } catch (e) { console.warn('seed', e); }
-  renderHome(); go('disc');
+  renderHome(); const navBack = navRestore();   // actualiser : on reste au même endroit (23-6) ; sinon l'app s'ouvre sur Découvrir
   if (!hadSheets && !LS.get('gms_onboarded', false)) onbShow();   // nouvelle installation : 3 écrans d'accueil, une seule fois // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
   gmsShareIn();   // vidéo partagée depuis YouTube (19/11)
-  if (LAB_OPEN && !LAB_Q.has('url')) go('labo');   // lien de test : on ouvre le labo
+  if (LAB_OPEN && !LAB_Q.has('url') && !navBack) go('labo');   // lien de test : le labo, mais pas quand on actualise ailleurs   // lien de test : on ouvre le labo
 })();
 
 // App installable : le service de fonctionnement hors ligne ne s'active que sur un vrai site (pas en fichier local ni dans un aperçu)

@@ -128,6 +128,7 @@ function openEditor(title) {
   renderOptBlocks();
   renderParts();
   go('ed');
+  edSnap = edSnapOf();   // pour savoir, en quittant, s'il y a quelque chose à garder (23-6)
 }
 function pickColor(k) { draft.color = k; document.querySelectorAll('[data-col]').forEach(b => b.classList.toggle('on', b.dataset.col === k)); }
 function delFromEditor() { if (draft && sheets.some(s => s.id === draft.id)) delSheet(draft.id); }

@@ -22,10 +22,10 @@ body.beta #filt-know,body.beta #filt-learn{display:none}
 #home-filters .filt svg{width:14px;height:14px;fill:currentColor;margin-right:6px;vertical-align:-2px}
 /* l'encart de Médi qui défile (même format que « Le rejouer ») */
 .fs-nd{touch-action:pan-y;user-select:none;-webkit-user-select:none;overflow:hidden}
-.hm-nudge>.fs-vp{display:grid;align-self:stretch}
-.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;opacity:0;visibility:hidden;transform:translateX(18px);transition:opacity .7s ease,transform .9s cubic-bezier(.25,.8,.3,1),visibility 0s .7s}
-.fs-sl.on{opacity:1;visibility:visible;transform:none;transition-delay:.18s,.18s,0s}
-.fs-sl.out{opacity:0;visibility:visible;transform:translateX(-18px);transition:opacity .45s ease,transform .6s ease,visibility 0s .6s}
+.hm-nudge>.fs-vp{display:grid;align-self:stretch;overflow:hidden;margin-right:-6px;padding-right:6px}
+.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;visibility:hidden;transform:translateX(110%);transition:transform .55s cubic-bezier(.25,.8,.3,1)}
+.fs-sl.on{visibility:visible;transform:none}
+.fs-sl.out-l{visibility:visible;transform:translateX(-110%)}.fs-sl.out-r{visibility:visible;transform:translateX(110%)}
 .fs-sl.drag{transition:none}
 .fs-sl .btn{align-self:flex-start}
 svg.medi.nod .mv{animation:fsNod .9s ease-in-out}

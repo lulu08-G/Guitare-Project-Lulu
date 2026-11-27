@@ -1,0 +1,11 @@
+/* ═══════ QUITTER L'ÉDITEUR SANS AVOIR ENREGISTRÉ (Lucas, 27/11) : 23-6-retour-actualiser.js ═══════ */
+.edl{position:fixed;inset:0;z-index:970;background:rgba(10,9,11,.6);display:flex;align-items:flex-end;justify-content:center;animation:edlFade .25s both}
+.edl-box{width:100%;max-width:480px;box-sizing:border-box;background:var(--card);border-radius:26px 26px 0 0;padding:20px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;animation:edlUp .35s cubic-bezier(.2,.9,.3,1) both}
+.edl-box h3{margin:0;font:800 20px/1.2 var(--display);color:var(--cream)}
+.edl-box .medi-row{margin:0}
+.edl-b{display:flex;flex-direction:column;gap:8px}
+.edl-b .btn{width:100%;min-height:48px;justify-content:center}
+@media(min-width:700px){.edl{align-items:center}.edl-box{border-radius:26px;padding-bottom:20px}}
+@keyframes edlFade{from{opacity:0}}
+@keyframes edlUp{from{transform:translateY(40px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.edl,.edl-box{animation:none}}

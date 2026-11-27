@@ -50,7 +50,7 @@ function edOpenCoffre(target) {
   $('more-opts').open = true;
   setTimeout(() => { const t = $(target); if (t) { t.scrollIntoView({block: 'center', behavior: 'smooth'}); if (t.tagName === 'INPUT') t.focus(); } }, 60);
 }
-function edClose() { rcCleanup(); stopPlay(); edBarReset(); go('home'); }
+function edClose() { if (edDirty()) { edLeaveAsk(() => go('home')); return; } rcCleanup(); stopPlay(); edBarReset(); edClean(); go('home'); }
 const edOK = () => !!($('f-title').value.trim() && draft && draft.parts.some(p => p.chords.length));
 function edSyncSave() {
   const b = $('ed-save'); if (!b) return;

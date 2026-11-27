@@ -1,5 +1,6 @@
 /* ═══════ NAV ═══════ */
 function go(v) {
+  if (curView === 'ed' && v !== 'ed' && !NAV.force && edDirty()) { edLeaveAsk(() => go(v)); return; }   // Médi propose de garder la fiche (23-6)
   if (v !== 'atelier' && atOn()) { atFlush(); atPause(); }
   stopPlay();
   if (v !== 'tuner') stopTuner();
@@ -37,5 +38,6 @@ function go(v) {
   if (v === 'admin') renderAdmin();
   if (v === 'labo') { lab.view = 'home'; labRender(); }
   renderSubnav(v);
+  navPush(v);   // retour = l'écran d'avant ; actualiser = on reste ici (23-6)
 }
 

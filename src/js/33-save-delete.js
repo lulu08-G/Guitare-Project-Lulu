@@ -38,11 +38,13 @@ async function saveSheet() {
   }
   i >= 0 ? sheets[i] = clone(draft) : sheets.push(clone(draft));
   await DB.put('sheets', clone(draft));
+  edClean();   // plus rien à garder : on peut quitter l'éditeur sans avertissement
   toast('Fiche enregistrée'); if (i < 0) animRangee(draft.title, sheetChords(draft));   // nouvelle fiche : elle file se ranger dans Fiches
   viewSheet(draft.id);
 }
 async function delSheet(id) {
   if (!confirm('Supprimer cette fiche ?')) return;
+  if (curView === 'ed') edClean();
   const s = sheets.find(x => x.id === id);
   if (s) for (const m of (s.media||[])) await DB.del('media', m.mediaId);
   if (s) for (const p of (s.parts||[])) for (const r of [p.rec, ...(p.recAlt || [])]) if (r) await DB.del('media', r.mediaId);

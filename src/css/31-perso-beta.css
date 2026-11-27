@@ -61,6 +61,16 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-tuto i{font-style:normal;color:var(--cream3);font-size:20px;padding-right:4px}
 .fp-find{display:flex;align-items:center;justify-content:center;gap:7px;height:44px;border-radius:14px;border:1.5px dashed var(--card3);background:none;color:var(--cream2);font:600 13px var(--sans);cursor:pointer}
 
+/* le visuel quand il n'y a encore rien (repris de l'ancien bloc « Perso ») : Médi, une phrase, un « + » */
+.fp-dash{display:flex;align-items:center;gap:12px;width:100%;border:2px dashed var(--card3);border-radius:22px;padding:12px 14px;background:none;color:var(--bulle-ink);font:500 14px/1.4 var(--sans);text-align:left;cursor:pointer;box-sizing:border-box}
+.fp-dash>span{flex:1;min-width:0}
+.fp-dash i{width:44px;height:44px;flex:none;border-radius:22px;background:var(--card2);color:var(--gold);font:700 22px var(--sans);font-style:normal;display:flex;align-items:center;justify-content:center}
+.fp-dash:active{transform:scale(.98)}
+.fp-dash.sm{gap:10px;padding:8px 10px;border-radius:18px;font-size:13px}.fp-dash.sm i{width:36px;height:36px;font-size:19px}
+.fp-tk:has(.fp-dash){border-top:0;padding-top:0}
+.fp-tutos{margin-top:18px}.fp-tlist{display:flex;flex-direction:column;gap:10px}
+#fp-tplayer:empty{display:none}#fp-tplayer .ytp-add{display:none}#fp-tplayer #sv-tuto{margin:0}
+
 /* l'infobulle */
 #fp-dim{position:fixed;inset:0;background:rgba(10,9,11,.55);z-index:950;animation:fpFade .25s both}
 @keyframes fpFade{from{opacity:0}}
@@ -178,3 +188,27 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 #fp-cam.rec .fp-corner{opacity:1;transform:none}
 #fp-cam .fp-corner .fp-cm{width:40px;height:42px}
 @media(prefers-reduced-motion:reduce){.fp-cm .mv,.fp-cm .sp,.fp-shd,.fp-rg,.fp-sit .mv,.fp-idle .mv,.fp-joy .mv{animation:none!important}.fp-n{animation:none!important;opacity:1;transform:translate(-50%,-10px)}}
+
+/* l'enregistreur, retours de Lucas (27/11) : rien ne part tout seul ; le médiator est couché pour lancer,
+   il se relève quand ça enregistre et son rond orange vif bat ; un nom proposé + son propre titre, sur une ligne */
+.fp-recm{width:64px;height:64px;overflow:visible;display:block}
+.fp-recm .mb{fill:#5a3010}.fp-recm .rd{fill:#ff9a33;transform-box:fill-box;transform-origin:50% 50%;animation:fpPulse 1.6s ease-in-out infinite}
+.fp-recm .pk{transform-origin:100px 111px;transform:rotate(-90deg);transition:transform .55s cubic-bezier(.3,1.45,.5,1)}
+.fp-recing.up .fp-recm .pk,#fp-cam.counting .fp-recm .pk,#fp-cam.rec .fp-recm .pk{transform:none}
+.fp-recing.on .fp-recm .rd,#fp-cam.rec .fp-recm .rd{animation:fpRecDot 1s ease-in-out infinite}
+@keyframes fpRecDot{50%{transform:scale(.78);opacity:.55}}
+.fp-three button:nth-of-type(2) .fp-recm .rd{animation-delay:.5s}.fp-three button:nth-of-type(3) .fp-recm .rd{animation-delay:1s}
+.fp-three.one{justify-content:center}.fp-three.one button{flex:none;padding:4px 18px}
+.fp-stop .fp-recm{width:62px;height:62px}#fp-cam .fp-stop .fp-recm{width:82px;height:82px}
+.fp-pop.swap{animation:none}
+.fp-rh0{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:0;border-radius:18px;padding:6px 12px 6px 6px;color:var(--cream);text-align:left;cursor:pointer}
+.fp-rh0 .fp-recm{width:46px;height:46px;flex:none}
+.fp-rh0 b{display:block;font:800 14.5px var(--display)}.fp-rh0 small{font-size:11.5px;color:var(--cream3)}
+.fp-rh0:active{transform:scale(.98)}
+.fp-names1{display:flex;gap:6px;align-items:center;min-width:0}
+.fp-nm{flex:none;height:34px;padding:0 13px;border-radius:17px;border:0;background:var(--card3);color:var(--cream2);font:600 13px var(--sans);cursor:pointer;max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fp-nm.on{background:var(--cream);color:#121014}
+.fp-own{flex:1;min-width:0;height:34px;padding:0 12px;border-radius:17px;border:1.5px dashed var(--card3);background:none;color:var(--cream2);font:600 13px var(--sans);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fp-nin{flex:1;min-width:0;height:34px;padding:0 13px;border-radius:17px;border:1.5px solid var(--gold);background:var(--card);color:var(--cream);font:600 13px var(--sans);outline:none;box-sizing:border-box}
+.fp-nin::placeholder{color:var(--cream4)}
+@media(prefers-reduced-motion:reduce){.fp-recm .pk{transition:none}.fp-recm .rd{animation:none}}

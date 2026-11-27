@@ -79,10 +79,10 @@
       }
     }
   } catch (e) { console.warn('seed', e); }
-  renderHome(); go('disc');
+  renderHome(); const navBack = navRestore();   // actualiser : on reste au même endroit (23-6) ; sinon l'app s'ouvre sur Découvrir
   if (!hadSheets && !LS.get('gms_onboarded', false)) onbShow();   // nouvelle installation : 3 écrans d'accueil, une seule fois // l'app s'ouvre sur Découvrir ; ancien commentaire : Fiches (le cahier vide propose « + Créer »)
   gmsShareIn();   // vidéo partagée depuis YouTube (19/11)
-  if (LAB_OPEN && !LAB_Q.has('url')) go('labo');   // lien de test : on ouvre le labo
+  if (LAB_OPEN && !LAB_Q.has('url') && !navBack) go('labo');   // lien de test : le labo, mais pas quand on actualise ailleurs   // lien de test : on ouvre le labo
 })();
 
 // App installable : le service de fonctionnement hors ligne ne s'active que sur un vrai site (pas en fichier local ni dans un aperçu)

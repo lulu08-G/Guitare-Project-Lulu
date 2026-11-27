@@ -77,12 +77,16 @@ svg.medi.poke .mc{animation:mdPokeEyes .9s linear 1}
 #tb-plus.on .tb-head{animation:tbNod .4s var(--ease-out)}
 .tb-create:active,.nl-create:active{transform:scale(.94)}
 .tb-create.strum .tb-pk,.nl-create.strum .tb-pk{animation:tbStrum .45s cubic-bezier(.3,.7,.4,1)}
+/* 27/11 (Lucas : « le logo noir a un souci de collision ») : le médiator se balance sur place, sans déborder de la pilule, et le « + » reste droit */
+.tb-pk{transform-origin:50% 58%}.tb-plus{transform-box:fill-box;transform-origin:50% 50%}
+.tb-create.strum .tb-plus,.nl-create.strum .tb-plus{animation:tbStrumP .45s cubic-bezier(.3,.7,.4,1)}
 @keyframes tbPop{0%{transform:scale(.85)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 @keyframes tbSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @keyframes tbFlip{0%{transform:scaleX(1)}45%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
 @keyframes tbDrop{0%{transform:translateY(-8px);opacity:0}70%{transform:translateY(1px);opacity:1}100%{transform:translateY(0)}}
 @keyframes tbNod{0%,100%{transform:rotate(0)}35%{transform:rotate(-12deg)}70%{transform:rotate(8deg)}}
-@keyframes tbStrum{0%{transform:rotate(0)}30%{transform:rotate(-26deg)}60%{transform:rotate(16deg)}80%{transform:rotate(-6deg)}100%{transform:rotate(0)}}
+@keyframes tbStrum{0%{transform:rotate(0)}30%{transform:rotate(-14deg)}60%{transform:rotate(9deg)}80%{transform:rotate(-3deg)}100%{transform:rotate(0)}}
+@keyframes tbStrumP{0%{transform:rotate(0)}30%{transform:rotate(14deg)}60%{transform:rotate(-9deg)}80%{transform:rotate(3deg)}100%{transform:rotate(0)}}
 
 /* ── PC : menu de gauche ── */
 @media(min-width:900px){
