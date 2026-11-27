@@ -149,3 +149,4 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fb-stage{touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .fb-stage.scrub{cursor:grabbing}
 .fb-stage.scrub .fb-hint{opacity:0}
+#v-sheet .l26-ko,#v-sheet .l26-h .l26-ko{display:none}   /* « retire le fond noir des flèches » (Lucas, 27/11) */
