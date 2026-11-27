@@ -296,7 +296,15 @@ function l26PlayRh(rh, bpm, chords, opt) {   // un rythme joué par l'app ; opt.
     if (i == null) { if (L26.tl === tl) { tl.now = null; l26Halt(); } return; }
     t0 = performance.now() / 1000 - (k % tl.L) * spd();
   }, Object.assign({key: 'l26', chords: chs}, opt || {}));
-  tl.now = () => t0 == null ? null : (((performance.now() / 1000 - t0) / spd()) % tl.L + tl.L) % tl.L;
+  // opt.from (la reprise après une pause) : avant le 1er coup entendu, Médi part de l'endroit de la pause au lieu de disparaître
+  const from = opt && opt.from != null ? opt.from : null, k0 = (opt && opt.k0) || 0;
+  let t0e = null;
+  if (from != null) { const ac = audio(); t0e = performance.now() / 1000 + .08 + (ac.outputLatency || 0) + (ac.baseLatency || 0) - k0 * spd(); }
+  tl.now = () => {
+    if (t0 != null) return (((performance.now() / 1000 - t0) / spd()) % tl.L + tl.L) % tl.L;
+    if (t0e == null) return null;
+    return k0 + .5 < from ? from : Math.max(from, (performance.now() / 1000 - t0e) / spd());
+  };
   l26Loop();
 }
 async function l26PlayTake(p, opt) {   // ta prise, en boucle comme sur la fiche ; opt.band : la bande joue avec

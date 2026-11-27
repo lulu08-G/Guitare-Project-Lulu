@@ -144,9 +144,8 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .l26-mb{fill:rgba(255,255,255,.055);stroke:transparent;stroke-width:1.5;transition:stroke .2s}
 .l26-mb.odd{fill:rgba(255,255,255,.025)}
 .l26-mb.now{stroke:rgba(255,138,42,.6)}
-.l26-bk{opacity:.13}
+.l26-bk{opacity:.16}
 .l26-bk[data-b="0"]{fill:#ffb877}.l26-bk[data-b="1"]{fill:#b9a7ff}.l26-bk[data-b="2"]{fill:#7fe0c0}.l26-bk[data-b="3"]{fill:#8fc8ff}
-.l26-ep .fut[data-b="0"]{color:#ffc796}.l26-ep .fut[data-b="1"]{color:#c4b5ff}.l26-ep .fut[data-b="2"]{color:#93e6ca}.l26-ep .fut[data-b="3"]{color:#a3d2ff}
 .fb-stage{touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .fb-stage.scrub{cursor:grabbing}
 .fb-stage.scrub .fb-hint{opacity:0}

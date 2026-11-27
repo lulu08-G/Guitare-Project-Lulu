@@ -126,8 +126,8 @@ function fbPlay(i, e) {
   const capo = cur.capo || 0;
   const from = FB.pos[i] || 0, k0 = Math.max(0, Math.ceil(from - .02)) % Math.max(1, Math.round(tl.L));
   if (p.rec) fbPlayTake(p, tl, from);
-  else if (pWay(p) === 'arp') l26PlayRh(arpRh(), cur.bpm || 80, tl.chs, {cellFn: arpCellFn(p.arp, capo), capo, k0});
-  else l26PlayRh(p.rhythm, cur.bpm || 90, tl.chs, Object.assign({capo, k0}, FB.band ? {band: grBandOwn(p.rhythm)} : {}));
+  else if (pWay(p) === 'arp') l26PlayRh(arpRh(), cur.bpm || 80, tl.chs, {cellFn: arpCellFn(p.arp, capo), capo, k0, from: FB.pos[i] != null ? from : null});
+  else l26PlayRh(p.rhythm, cur.bpm || 90, tl.chs, Object.assign({capo, k0, from: FB.pos[i] != null ? from : null}, FB.band ? {band: grBandOwn(p.rhythm)} : {}));
   if (!p.rec) { L26.live = FB.D[i]; L26.onPos = pos => { fbChordNow(i, pos); fbTabBob(i); }; }   // après l26Stop (qui les remet à zéro) : l'accord de la mesure s'allume, la languette suit la corde
   fbSync();
 }
