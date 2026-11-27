@@ -535,7 +535,7 @@ async function fpCamOpen() {
   if (!await fpCamStream(R)) { fpCamClose(); fpCamFile(); }
 }
 async function fpCamStream(R) {
-  try { R.stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: FP.face}, audio: true}); }
+  try { R.stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: FP.face}, audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}})   /* le son brut de la guitare : les réglages « voix » du téléphone l'abîment */; }
   catch (e) { toast('Caméra refusée ou indisponible', true); return false; }
   if (FP.R !== R) { fpStreamStop(R); return false; }
   const v = document.querySelector('#fp-cam video'); if (v) { v.srcObject = R.stream; v.classList.toggle('mir', FP.face === 'user'); }

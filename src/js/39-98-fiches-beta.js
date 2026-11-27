@@ -45,48 +45,38 @@ function fsNext() {
     fsShow(nd, fsN.i + 1, 1);
   }, 6000);
 }
-// un vrai carrousel (Lucas, 27/11) : le message sort d'un côté, le suivant entre par l'autre (dir 1 = vers la gauche)
-function fsShow(nd, n, dir, dragged) {
+// le carrousel (Lucas, 27/11) : le message sort en fondu en glissant un peu (dir 1 = vers la gauche), le suivant arrive en fondu de l'autre côté
+function fsShow(nd, n, dir) {
   const sl = [...nd.querySelectorAll('.fs-sl')], old = sl[fsN.i];
   dir = dir || 1;
   fsN.i = (n + sl.length) % sl.length;
   const nw = sl[fsN.i]; if (nw === old) return fsNext();
   clearTimeout(nw._t); nw.classList.remove('out-l', 'out-r', 'drag');
-  if (!dragged) { nw.style.transition = 'none'; nw.style.transform = `translateX(${dir > 0 ? 110 : -110}%)`; nw.style.visibility = 'visible'; void nw.offsetWidth; nw.style.transition = ''; }
-  nw.style.transform = ''; nw.classList.add('on'); nw.removeAttribute('aria-hidden');
-  old.classList.remove('on', 'drag'); old.style.transform = ''; old.classList.add(dir > 0 ? 'out-l' : 'out-r'); old.setAttribute('aria-hidden', 'true');
-  clearTimeout(old._t); old._t = setTimeout(() => { old.classList.remove('out-l', 'out-r'); old.style.visibility = ''; }, 650);
-  setTimeout(() => { nw.style.visibility = ''; }, 650);
+  nw.style.transition = 'none'; nw.style.transform = `translateX(${dir > 0 ? 26 : -26}px)`; void nw.offsetWidth; nw.style.transition = ''; nw.style.transform = '';
+  nw.classList.add('on'); nw.removeAttribute('aria-hidden');
+  old.classList.remove('on', 'drag'); old.style.transform = ''; old.style.opacity = ''; old.classList.add(dir > 0 ? 'out-l' : 'out-r'); old.setAttribute('aria-hidden', 'true');
+  clearTimeout(old._t); old._t = setTimeout(() => old.classList.remove('out-l', 'out-r'), 500);
   const m = nd.querySelector('svg.medi');
   if (m) { m.classList.remove('nod'); void m.getBoundingClientRect(); m.classList.add('nod', 'look');
     setTimeout(() => m.classList.remove('nod'), 950); setTimeout(() => m.classList.remove('look'), 1300); }
   fsNext();
 }
+// au doigt : le message suit un peu le doigt en s'effaçant ; lâché assez loin, le suivant arrive
 function fsSwipe(nd) {
-  let x0 = null, dx = 0, moved = false, nb = null;
-  const vp = nd.querySelector('.fs-vp'), all = () => [...nd.querySelectorAll('.fs-sl')], cur = () => all()[fsN.i];
-  const neighbour = () => { const sl = all(), L = sl.length; return sl[(fsN.i + (dx < 0 ? 1 : -1) + L) % L]; };
-  nd.addEventListener('pointerdown', e => { x0 = e.clientX; dx = 0; moved = false; nb = null; });
+  let x0 = null, dx = 0, moved = false;
+  const cur = () => nd.querySelectorAll('.fs-sl')[fsN.i];
+  nd.addEventListener('pointerdown', e => { x0 = e.clientX; dx = 0; moved = false; });
   nd.addEventListener('pointermove', e => {
     if (x0 == null) return; dx = e.clientX - x0;
     if (!moved && Math.abs(dx) > 10) { moved = true; clearTimeout(fsN.t); cur().classList.add('drag'); try { nd.setPointerCapture(e.pointerId); } catch (_) {} }
     if (!moved) return;
-    const W = vp.clientWidth, c = cur(); c.style.transform = `translateX(${dx}px)`;
-    const n = neighbour(); if (n === c) return;
-    if (nb && nb !== n) { nb.classList.remove('drag'); nb.style.transform = ''; nb.style.visibility = ''; }
-    nb = n; clearTimeout(nb._t); nb.classList.remove('out-l', 'out-r'); nb.classList.add('drag'); nb.style.visibility = 'visible';
-    nb.style.transform = `translateX(${dx + (dx < 0 ? W : -W)}px)`;
+    const c = cur(); c.style.transform = `translateX(${(dx * .5).toFixed(1)}px)`; c.style.opacity = Math.max(0, 1 - Math.abs(dx) / 150).toFixed(2);
   });
   const end = () => {
     if (x0 == null) return; x0 = null; if (!moved) return;
-    const c = cur(); c.classList.remove('drag'); if (nb) nb.classList.remove('drag');
-    if (Math.abs(dx) > 40) { const d = dx < 0 ? 1 : -1; fsShow(nd, fsN.i + d, d, true); }
-    else {   // pas assez loin : tout revient en place
-      c.style.transform = '';
-      if (nb) { const b = nb; b.style.transform = `translateX(${dx < 0 ? 110 : -110}%)`; b._t = setTimeout(() => { b.style.transform = ''; b.style.visibility = ''; }, 600); }
-      fsNext();
-    }
-    nb = null;
+    const c = cur(); c.classList.remove('drag');
+    if (Math.abs(dx) > 40) fsShow(nd, fsN.i + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+    else { c.style.transform = ''; c.style.opacity = ''; fsNext(); }   // pas assez loin : il revient
     nd._noClick = true; setTimeout(() => nd._noClick = false, 0);
   };
   nd.addEventListener('pointerup', end); nd.addEventListener('pointercancel', end);

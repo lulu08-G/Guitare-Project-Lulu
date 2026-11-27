@@ -40,7 +40,7 @@ function labRoot(name) {   // fondamentale de l'accord, à l'octave de la basse 
 
 /* ── le moteur : Médi compte une mesure, puis la bande joue ; ta ligne défile ── */
 function labStop(keepMic) {
-  if (!keepMic) { rpStop(); if (typeof lvStop === 'function') lvStop(); if (typeof l26Stop === 'function') l26Stop(); }
+  if (!keepMic) { rpStop(); if (typeof lvStop === 'function') lvStop(); if (typeof l26Stop === 'function') l26Stop(); if (typeof lsnStop === 'function') lsnStop(); }
   clearTimeout(lab.timer); lab.timer = null; lab.s = null;
   mtStop('lab');
   if (!keepMic) labMicOff();
@@ -153,6 +153,7 @@ function labRender() {
   if (lab.view === 'home') { rpRender(); return; }   // S'entraîner v2 (39-9)
   if (lab.view === 'tests') { h.innerHTML = labHomeHTML(); return; }
   if (lab.view === 'tests26') { h.innerHTML = l26HomeHTML(); return; }
+  if (lab.view === 'l27-son') { h.innerHTML = lsnHTML(); lsnAfter(); return; }   // le son de tes prises (39-996)
   const G = labGroup(lab.view), T = G.list.find(x => x.id === lab.view);
   if (!T) { lab.view = 'home'; labRender(); return; }
   h.innerHTML = `<div class="lab-top"><button type="button" class="mt-back" onclick="labGo('${G.home}')" aria-label="Retour aux tests"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><div><small>Labo · test ${G.list.indexOf(T) + 1} sur ${G.list.length}</small><h1>${T.t}</h1></div></div>
@@ -161,7 +162,7 @@ function labRender() {
 }
 function labGo(v) { labStop(); lab.view = v; labRender(); window.scrollTo(0, 0); }
 // les deux séries de tests : celle du 19/11 et celle du 26/11 (39-95-labo-26-11.js)
-const labGroup = id => /^l26-/.test(id) ? {list: LAB_TESTS26, home: 'tests26'} : {list: LAB_TESTS, home: 'tests'};
+const labGroup = id => /^l27-/.test(id) ? {list: LAB_TESTS27, home: 'home'} : /^l26-/.test(id) ? {list: LAB_TESTS26, home: 'tests26'} : {list: LAB_TESTS, home: 'tests'};
 function labHomeHTML() {
   const A = labAns(), n = LAB_TESTS.filter(t => A[t.id]).length;
   return `<div class="rp-top"><button type="button" class="mt-back" onclick="labGo('home')" aria-label="Retour à S’entraîner">${RP_BACK}</button><div><small>Labo</small><h1>Les tests du 19/11</h1></div></div>
@@ -318,7 +319,7 @@ function labSave(id) {
 }
 async function labExport() {
   const A = labAns();
-  const txt = 'Guitar Memory, labo de tests\n' + (navigator.userAgent || '') + '\n\n' + LAB_TESTS26.concat(LAB_TESTS, RP_AVIS).filter(t => A[t.id]).map(t => {
+  const txt = 'Guitar Memory, labo de tests\n' + (navigator.userAgent || '') + '\n\n' + LAB_TESTS27.concat(LAB_TESTS26, LAB_TESTS, RP_AVIS).filter(t => A[t.id]).map(t => {
     const a = A[t.id];
     return `■ ${t.t}\n` + (a.choix ? `  Préféré : ${a.choix}\n` : '') + LAB_QS.map(([k, l]) => a[k] ? `  ${l} ${a[k]}\n` : '').join('')
       + (a.score != null ? `  Score : ${a.score}/3\n` : '') + (a.mesures ? `  Mesures : ${JSON.stringify(a.mesures)}\n` : '') + (a.note ? `  Remarque : ${a.note}\n` : '');

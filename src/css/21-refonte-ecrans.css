@@ -66,7 +66,7 @@
 @keyframes caOut{from{transform:translateY(60px) scale(.3,.15);opacity:0}to{transform:none;opacity:1}}
 .ca-box{position:relative;background:var(--card);border:0;border-radius:32px 32px 0 0;padding:12px 20px calc(30px + env(safe-area-inset-bottom));gap:16px;width:min(100%,480px)}
 .ca-grab{background:var(--card3);width:40px;margin-bottom:0}
-.ca-medi{position:absolute;right:26px;top:-62px;pointer-events:none}
+.ca-medi{position:absolute;right:26px;top:-62px;pointer-events:none}.ca-medi svg{pointer-events:auto;cursor:pointer}   /* Médi se touche aussi dans « Créer » (Lucas, 27/11) */
 .ca-hd{padding-right:100px;display:flex;flex-direction:column;gap:6px}
 .ca-box h3{font:800 28px/1.05 var(--display);letter-spacing:-.02em;margin:0}
 .ca-hd p{font-size:15px;color:var(--cream3);line-height:1.4}

@@ -1,0 +1,37 @@
+/* ═══════ LABO : LE SON DE TES PRISES (27/11, caché : ?beta) : 39-996-labo-son.js ═══════ */
+.lsn-card{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:0;border-radius:22px;background:var(--gold);color:var(--ink);text-align:left;cursor:pointer}
+.lsn-card.done{background:var(--card2);color:var(--cream)}
+.lsn-card:active{transform:scale(.98)}
+.lsn-ci{width:42px;height:42px;flex:none;border-radius:21px;background:rgba(18,16,20,.14);display:flex;align-items:center;justify-content:center}
+.lsn-card.done .lsn-ci{background:var(--card3)}
+.lsn-ci svg,.lsn-ti svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.lsn-cc{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
+.lsn-cc b{font:800 17px var(--display)}.lsn-cc small{font-size:12.5px;font-weight:600;opacity:.75}
+.lsn-card>i{font-style:normal;font-size:24px;opacity:.7;padding-right:2px}
+.lsn-pl{background:var(--card);border-radius:26px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.lsn-hd{display:flex;flex-direction:column;gap:2px}.lsn-hd b{font:800 18px var(--display);color:var(--cream)}.lsn-hd small{font-size:13px;color:var(--cream3)}
+.lsn-media{border-radius:18px;overflow:hidden;background:var(--bg);aspect-ratio:16/9;width:100%}
+.lsn-media video{width:100%;height:100%;display:block;object-fit:contain;cursor:pointer}
+.lsn-wave{position:relative;height:46px;touch-action:none;cursor:pointer}
+.lsn-wave svg{position:absolute;left:0;top:0;height:46px;width:100%;display:block}.lsn-wave .g rect{fill:var(--cream4)}
+.lsn-prog{position:absolute;left:0;top:0;bottom:0;width:0;overflow:hidden}.lsn-wave .o rect{fill:var(--gold)}
+.lsn-row{display:flex;align-items:center;gap:10px}
+.lsn-pp .fs-pm{width:46px;height:46px}
+.lsn-t{font:700 13px var(--display);color:var(--cream3);font-variant-numeric:tabular-nums;flex:1;min-width:0}
+.lsn-ab{display:flex;background:var(--card2);border-radius:16px;padding:3px;gap:2px}
+.lsn-ab button{border:0;background:none;color:var(--cream3);font:800 15px var(--display);padding:9px 14px;border-radius:13px;cursor:pointer;transition:background .15s,color .15s}
+.lsn-ab button.on{background:var(--cream);color:var(--bg)}
+.lsn-ab button[data-m=wet].on{background:var(--gold);color:var(--ink)}
+.lsn-dose{display:flex;gap:6px;flex-wrap:wrap}
+.lsn-dose button{border:1px solid var(--card3);background:none;color:var(--cream2);font-size:13px;font-weight:700;padding:7px 12px;border-radius:14px;cursor:pointer}
+.lsn-dose button.on{border-color:var(--gold);color:var(--gold)}
+.lsn-note{margin:0;font-size:12.5px;color:var(--cream3);min-height:16px}
+.lsn-h{margin:4px 0 0;font:800 18px var(--display);color:var(--cream);display:flex;align-items:baseline;gap:8px}.lsn-h small{font-size:13px;color:var(--cream3)}
+.lsn-list{display:flex;flex-direction:column;gap:6px}
+.lsn-tk{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:0;border-radius:18px;background:var(--card);color:var(--cream);text-align:left;cursor:pointer}
+.lsn-tk.on{box-shadow:inset 0 0 0 2px var(--gold)}
+.lsn-ti{width:36px;height:36px;flex:none;border-radius:12px;background:var(--card2);color:var(--cream2);display:flex;align-items:center;justify-content:center}
+.lsn-tk.on .lsn-ti{color:var(--gold)}
+.lsn-tc{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}.lsn-tc b,.lsn-tc small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lsn-tc b{font-size:15px;font-weight:700}.lsn-tc small{font-size:12.5px;color:var(--cream3)}
+.lsn-td{font:700 12.5px var(--display);color:var(--cream3);font-variant-numeric:tabular-nums}

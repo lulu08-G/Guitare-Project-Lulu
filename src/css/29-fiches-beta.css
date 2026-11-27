@@ -23,10 +23,11 @@ body.beta #filt-know,body.beta #filt-learn{display:none}
 /* l'encart de Médi qui défile (même format que « Le rejouer ») */
 .fs-nd{touch-action:pan-y;user-select:none;-webkit-user-select:none;overflow:hidden}
 .hm-nudge>.fs-vp{display:grid;align-self:stretch;overflow:hidden;margin-right:-6px;padding-right:6px}
-.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;visibility:hidden;transform:translateX(110%);transition:transform .55s cubic-bezier(.25,.8,.3,1)}
-.fs-sl.on{visibility:visible;transform:none}
-.fs-sl.out-l{visibility:visible;transform:translateX(-110%)}.fs-sl.out-r{visibility:visible;transform:translateX(110%)}
-.fs-sl.drag{transition:none}
+/* le message part en fondu en glissant un peu, le suivant arrive en fondu de l'autre côté (Lucas, 27/11 : « comme avant, en fondu ») */
+.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;opacity:0;visibility:hidden;transform:translateX(26px);transition:opacity .4s ease,transform .45s cubic-bezier(.25,.8,.3,1),visibility 0s linear .45s}
+.fs-sl.on{opacity:1;visibility:visible;transform:none;transition:opacity .45s ease .15s,transform .5s cubic-bezier(.25,.8,.3,1) .15s,visibility 0s}
+.fs-sl.out-l{transform:translateX(-26px)}.fs-sl.out-r{transform:translateX(26px)}
+.fs-sl.drag{transition:none;visibility:visible}
 .fs-sl .btn{align-self:flex-start}
 svg.medi.nod .mv{animation:fsNod .9s ease-in-out}
 svg.medi.look .mc{animation:none;transform:translateX(8px);transition:transform .5s ease}
