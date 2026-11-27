@@ -363,14 +363,6 @@ L26_DRAW.saute = {
     let s = '';   // épuré : les cordes seules, rien de dessiné à l'avance
     const bk = l26Blocks(D, hp);   // la fiche (27/11) : une bulle par accord (une teinte sur deux), un groupe de coups = une couleur
     if (bk) s += bk.bg;
-    if (bk) {   // la fiche (27/11, « remets les cordes en mode chrome ») : du métal avec un reflet, les graves filées plus épaisses
-      const id = 'l26chr' + (D.cid || (D.cid = Math.random().toString(36).slice(2, 7)));
-      s += `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d6a74"/><stop offset=".35" stop-color="#f3f1f7"/><stop offset=".55" stop-color="#b7b4bf"/><stop offset="1" stop-color="#4c4952"/></linearGradient>`
-        + `</defs>`;
-      for (let k = 0; k < 6; k++) { const th = 1.1 + k * .42, y = top + k * gap - th / 2;
-        s += `<rect x="${x0}" y="${l26f(y)}" width="${l26f(D.W - x0)}" height="${l26f(th)}" rx="${l26f(th / 2)}" class="l26-chr" fill="url(#${id})"/>`;
-        if (k >= 3) s += `<line x1="${x0}" x2="${D.W}" y1="${top + k * gap}" y2="${top + k * gap}" class="l26-wnd" style="stroke-width:${l26f(th)}px"/>`; }   // les 3 graves : la corde filée
-    } else
     for (let k = 0; k < 6; k++) s += `<line x1="${x0}" x2="${D.W}" y1="${top + k * gap}" y2="${top + k * gap}" class="l26-str" style="stroke-width:${(.8 + k * .3).toFixed(2)}px"/>`;
     for (let k = 0; k < 6; k++) s += `<path class="l26-vib on" data-k="${k}" d="" style="stroke-width:${(1.3 + k * .3).toFixed(2)}px"/>`;
     const mid = top + 2.5 * gap;

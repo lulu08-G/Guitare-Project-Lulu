@@ -150,6 +150,5 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fb-stage.scrub{cursor:grabbing}
 .fb-stage.scrub .fb-hint{opacity:0}
 #v-sheet .l26-ko,#v-sheet .l26-h .l26-ko{display:none}   /* « retire le fond noir des flèches » (Lucas, 27/11) */
-.l26-chr{opacity:.85}
-.l26-wnd{stroke:#000;stroke-opacity:.3;stroke-dasharray:.7 1.6}
 .l26-lc.nx{opacity:.7}   /* l'accord suivant, déjà affiché dans l'autre place */
+#v-sheet .l26-ep .l26-vib.on{stroke:var(--cream3)!important;opacity:.75}   /* les cordes vibrent sans couleur (Lucas, 27/11) */
