@@ -3746,18 +3746,12 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .fb-way.fb-live{position:relative;display:block;margin-top:14px}
 .fb-stage{position:relative;cursor:pointer;border-radius:14px;padding:22px 0 26px;outline:none;clip-path:inset(-80px 0 -10px 0)}
 .fb-stage:focus-visible{box-shadow:0 0 0 2px var(--cream3)}
-.fb-hint{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .35s}
-.fb-hint svg{width:26px;height:26px;fill:none;stroke:var(--cream);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round;overflow:visible}
+.fb-hint{position:absolute;left:50%;top:50%;width:60px;height:60px;margin:-30px 0 0 -30px;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .35s}
+.fb-hint i{display:flex;width:60px;height:60px}.fb-hint .fs-pm{width:60px;height:60px}
 .fb-hint .pa{display:none}
-.fb-stage:not(.playing) .fb-hint .pl{animation:fbInv 2.2s ease-in-out infinite}
-@keyframes fbInv{0%,100%{transform:scale(1);opacity:.55}45%{transform:scale(1.14);opacity:1}60%{transform:scale(1);opacity:.8}}
-.fb-hint::before,.fb-hint::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:1.5px;margin-top:-.75px;background:var(--cream);opacity:0;border-radius:1px}
-.fb-stage:not(.playing) .fb-hint::before{animation:fbTick 2.2s ease-out infinite;margin-left:-30px}
-.fb-stage:not(.playing) .fb-hint::after{animation:fbTick 2.2s ease-out infinite;margin-left:22px}
-@keyframes fbTick{0%,40%{opacity:0;transform:scaleX(.3)}55%{opacity:.7;transform:scaleX(1)}80%,100%{opacity:0;transform:scaleX(1.4)}}
 .fb-stage.playing .fb-hint{opacity:0}
-.fb-stage.playing .fb-hint .pl{display:none}.fb-stage.playing .fb-hint .pa{display:block}
-.fb-stage.playing.tap .fb-hint{opacity:.85;transition:none}
+.fb-stage.playing .fb-hint .pl{display:none}.fb-stage.playing .fb-hint .pa{display:flex}
+.fb-stage.playing.tap .fb-hint{opacity:.9;transition:none}
 .fb-stage:not(.playing) .fb-draw{opacity:.8;transition:opacity .3s}
 .fb-tab{position:absolute;top:0;display:flex;align-items:center;gap:5px;height:24px;min-height:0;padding:0 7px;border:1px solid var(--border2);border-bottom:0;border-radius:8px 8px 0 0;background:transparent;color:var(--cream3);cursor:pointer;z-index:2}
 .fb-bmini{right:0}
@@ -3773,15 +3767,19 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fs-stat.fs-rh{display:flex;align-items:flex-start;gap:12px;position:relative;overflow:visible}
 .fs-rh .fs-sc{flex:1}
 .fs-pl{flex:none;border:0;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
-#v-sheet .pv-pl.fs-pl,#v-sheet .pv-pl.fs-pl.on{width:52px;height:40px;border-radius:18px 18px 6px 18px;background:var(--bulle);order:0;box-shadow:none;transition:background .25s,transform .15s}
-#v-sheet .pv-pl.fs-pl.on{background:var(--gold)}
-#v-sheet .pv-pl.fs-pl:active{transform:scale(.93)}
+#v-sheet .pv-pl.fs-pl,#v-sheet .pv-pl.fs-pl.on{width:50px;height:46px;border-radius:12px;background:none;order:0;box-shadow:none;transition:transform .15s}
+#v-sheet .pv-pl.fs-pl:active{transform:scale(.92)}
 .fs-pl:focus-visible{outline:2px solid var(--cream3);outline-offset:2px}
-#v-sheet .pv-pl.fs-pl .fs-pm{width:30px;height:25px;overflow:visible}
-.fs-pm .mb{fill:var(--gold)}.fs-pm .me{fill:var(--bulle)}
-.fs-pm .mv{transform-box:fill-box;transform-origin:30% 50%;animation:fsGo 2.6s ease-in-out infinite}
-@keyframes fsGo{0%,55%,100%{transform:none}65%{transform:translateX(4px) scale(1.06,.94)}75%{transform:translateX(-1px)}85%{transform:none}}
-#v-sheet .pv-pl.fs-pl .fs-pp{width:22px;height:22px;fill:var(--ink)}
+#v-sheet .pv-pl.fs-pl .fs-pm{width:48px;height:48px}
+.fs-pm{overflow:visible}
+.fs-pm .mb{fill:#5a3010}
+.fs-pm .tri{fill:#ff9a33;stroke:#ff9a33;stroke-width:8;stroke-linejoin:round}
+.fs-pm .pk{transform-box:fill-box;transform-origin:50% 50%}
+.fs-pm path.tri{transform-box:fill-box;transform-origin:40% 50%}
+.fs-pl:not(.on) .fs-pm path.tri,.fb-stage:not(.playing) .fb-hint .fs-pm path.tri{animation:fsTri 2.4s ease-in-out infinite}
+.fs-pl:not(.on) .fs-pm .pk,.fb-stage:not(.playing) .fb-hint .fs-pm .pk{animation:fsPkB 2.4s ease-in-out infinite}
+@keyframes fsTri{0%,55%,100%{transform:none}65%{transform:translateX(7px) scale(1.08)}78%{transform:translateX(-2px)}88%{transform:none}}
+@keyframes fsPkB{0%,55%,100%{transform:none}65%{transform:scale(1.04,.96)}78%{transform:translateY(-4px)}88%{transform:none}}
 .fs-rh .fs-stat-n{margin:0;align-self:center}
 .fs-sc{min-width:0;overflow-x:auto;scrollbar-width:none}.fs-sc::-webkit-scrollbar{display:none}
 .fs-stat .pfa-lg{display:none}
@@ -13957,8 +13955,10 @@ const FB_ARW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M4.5
 const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'fleche' ? ' on' : ''}" onclick="fbArrows(event)" aria-pressed="${L26.coups === 'fleche'}" aria-label="Montrer le sens des coups (flèches haut / bas)" title="Flèches haut / bas">${FB_ARW}</button>`;
 // le ▶ de la fiche statique (Lucas, 27/11) : à droite du rythme, dans une bulle comme celle de Médi ; le triangle, c'est
 // Médi lui-même couché, la pointe vers la droite. Il joue ta prise si elle existe, sinon le rythme de l'app.
-const FB_PLAYO = `<svg class="fs-pm" viewBox="-14 18 228 186" aria-hidden="true"><g class="mv"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/><rect class="me" x="48" y="84" width="17" height="30" rx="8.5"/><rect class="me" x="82" y="84" width="17" height="30" rx="8.5"/></g></svg>`;
-const FB_PAUSEO = '<svg class="fs-pp" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5.5" width="3.6" height="13" rx="1.8"/><rect x="13.4" y="5.5" width="3.6" height="13" rx="1.8"/></svg>';
+// le logo ▶ choisi par Lucas (27/11, « Médi couché ») : le médiator orange foncé, pointe vers la droite, et le ▶ orange vif
+const fbMediLogo = inner => `<svg class="fs-pm" viewBox="-20 -10 240 250" aria-hidden="true"><g class="pk"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/></g>${inner}</svg>`;
+const FB_PLAYO = fbMediLogo('<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/>');
+const FB_PAUSEO = fbMediLogo('<rect class="tri" x="62" y="80" width="17" height="62" rx="6"/><rect class="tri" x="96" y="80" width="17" height="62" rx="6"/>');
 function fbStaticHTML(p, i) {
   const w = pWay(p);
   const pl = `<button type="button" class="pv-pl fs-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : w === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${FB_PLAYO}</button>`;
@@ -13974,7 +13974,7 @@ function fbWayHTML(p, i) {
   const lbl = p.rec ? 'ta prise' : arp ? 'l’arpège' : 'le rythme';
   return `<div class="fb-way fb-live" id="fbw-${i}">
     <div class="fb-stage" data-i="${i}" role="button" tabindex="0" aria-label="Jouer ${lbl}" onclick="fbPlay(${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fbPlay(${i},event)}">
-      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><svg class="pl" viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M8.5 5.5v13M15.5 5.5v13"/></svg></span></div>
+      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><i class="pl">${FB_PLAYO}</i><i class="pa">${FB_PAUSEO}</i></span></div>
     ${band ? `<button type="button" class="fb-tab fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}</button>` : ''}
   </div>`;
 }

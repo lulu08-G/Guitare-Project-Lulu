@@ -32,8 +32,10 @@ const FB_ARW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M4.5
 const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'fleche' ? ' on' : ''}" onclick="fbArrows(event)" aria-pressed="${L26.coups === 'fleche'}" aria-label="Montrer le sens des coups (flèches haut / bas)" title="Flèches haut / bas">${FB_ARW}</button>`;
 // le ▶ de la fiche statique (Lucas, 27/11) : à droite du rythme, dans une bulle comme celle de Médi ; le triangle, c'est
 // Médi lui-même couché, la pointe vers la droite. Il joue ta prise si elle existe, sinon le rythme de l'app.
-const FB_PLAYO = `<svg class="fs-pm" viewBox="-14 18 228 186" aria-hidden="true"><g class="mv"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/><rect class="me" x="48" y="84" width="17" height="30" rx="8.5"/><rect class="me" x="82" y="84" width="17" height="30" rx="8.5"/></g></svg>`;
-const FB_PAUSEO = '<svg class="fs-pp" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5.5" width="3.6" height="13" rx="1.8"/><rect x="13.4" y="5.5" width="3.6" height="13" rx="1.8"/></svg>';
+// le logo ▶ choisi par Lucas (27/11, « Médi couché ») : le médiator orange foncé, pointe vers la droite, et le ▶ orange vif
+const fbMediLogo = inner => `<svg class="fs-pm" viewBox="-20 -10 240 250" aria-hidden="true"><g class="pk"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/></g>${inner}</svg>`;
+const FB_PLAYO = fbMediLogo('<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/>');
+const FB_PAUSEO = fbMediLogo('<rect class="tri" x="62" y="80" width="17" height="62" rx="6"/><rect class="tri" x="96" y="80" width="17" height="62" rx="6"/>');
 function fbStaticHTML(p, i) {
   const w = pWay(p);
   const pl = `<button type="button" class="pv-pl fs-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : w === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${FB_PLAYO}</button>`;
@@ -49,7 +51,7 @@ function fbWayHTML(p, i) {
   const lbl = p.rec ? 'ta prise' : arp ? 'l’arpège' : 'le rythme';
   return `<div class="fb-way fb-live" id="fbw-${i}">
     <div class="fb-stage" data-i="${i}" role="button" tabindex="0" aria-label="Jouer ${lbl}" onclick="fbPlay(${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fbPlay(${i},event)}">
-      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><svg class="pl" viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M8.5 5.5v13M15.5 5.5v13"/></svg></span></div>
+      <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><i class="pl">${FB_PLAYO}</i><i class="pa">${FB_PAUSEO}</i></span></div>
     ${band ? `<button type="button" class="fb-tab fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}</button>` : ''}
   </div>`;
 }
