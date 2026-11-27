@@ -30,15 +30,16 @@ function grBandOwn(rh) {
    ni de cases repliées. La bande se règle aussi sur ta prise, même quand la partie est un arpège. */
 const FB_ARW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4v15M4.5 15.5 8 19l3.5-3.5M16 20V5M12.5 8.5 16 5l3.5 3.5"/></svg>';
 const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'fleche' ? ' on' : ''}" onclick="fbArrows(event)" aria-pressed="${L26.coups === 'fleche'}" aria-label="Montrer le sens des coups (flèches haut / bas)" title="Flèches haut / bas">${FB_ARW}</button>`;
-// le ▶ de la fiche statique : juste le triangle qui respire (pas de rond) ; ta prise si elle existe, sinon le rythme de l'app
-const FB_PLAYO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="tri" d="M7.5 4.8v14.4L19.5 12z"/></svg>';
-const FB_PAUSEO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.5v13M15.5 5.5v13"/></svg>';
+// le ▶ de la fiche statique (Lucas, 27/11) : à droite du rythme, dans une bulle comme celle de Médi ; le triangle, c'est
+// Médi lui-même couché, la pointe vers la droite. Il joue ta prise si elle existe, sinon le rythme de l'app.
+const FB_PLAYO = `<svg class="fs-pm" viewBox="-14 18 228 186" aria-hidden="true"><g class="mv"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/><rect class="me" x="48" y="84" width="17" height="30" rx="8.5"/><rect class="me" x="82" y="84" width="17" height="30" rx="8.5"/></g></svg>`;
+const FB_PAUSEO = '<svg class="fs-pp" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5.5" width="3.6" height="13" rx="1.8"/><rect x="13.4" y="5.5" width="3.6" height="13" rx="1.8"/></svg>';
 function fbStaticHTML(p, i) {
   const w = pWay(p);
   const pl = `<button type="button" class="pv-pl fs-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : w === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${FB_PLAYO}</button>`;
-  if (w === 'arp') return `<div class="fs-stat fs-rh">${pl}<div class="fs-sc">${pArpLines(p, false)}</div></div>`;
-  if (w === 'rh') return `<div class="fs-stat fs-rh">${pl}<div class="fs-sc">${pRhBlocks(p.rhythm, false, L26.coups === 'fleche')}</div>${fbArwBtn()}</div>`;
-  return p.rec ? `<div class="fs-stat fs-rh">${pl}<span class="fs-stat-n">Ma prise</span></div>` : '';
+  if (w === 'arp') return `<div class="fs-stat fs-rh"><div class="fs-sc">${pArpLines(p, false)}</div>${pl}</div>`;
+  if (w === 'rh') return `<div class="fs-stat fs-rh"><div class="fs-sc">${pRhBlocks(p.rhythm, false, L26.coups === 'fleche')}</div>${pl}</div>`;
+  return p.rec ? `<div class="fs-stat fs-rh"><span class="fs-stat-n">Ma prise</span>${pl}</div>` : '';
 }
 const FB_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.4"/><rect x="13.5" y="5" width="4" height="14" rx="1.4"/></svg>';
 const FB_PLAYI = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 001.5.9l10.4-6.5a1 1 0 000-1.8L9.5 4.6A1 1 0 008 5.5z"/></svg>';
@@ -50,7 +51,6 @@ function fbWayHTML(p, i) {
     <div class="fb-stage" data-i="${i}" role="button" tabindex="0" aria-label="Jouer ${lbl}" onclick="fbPlay(${i},event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fbPlay(${i},event)}">
       <div class="fb-draw" id="fbd-${i}"></div><span class="fb-hint" aria-hidden="true"><svg class="pl" viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z"/></svg><svg class="pa" viewBox="0 0 24 24"><path d="M8.5 5.5v13M15.5 5.5v13"/></svg></span></div>
     ${band ? `<button type="button" class="fb-tab fb-bmini${FB.band ? ' on' : ''}" onclick="fbBand(event)" aria-pressed="${FB.band}" aria-label="Avec la bande" title="Avec la bande">${BAND_MINI()}</button>` : ''}
-    ${arw ? fbArwBtn().replace('class="fb-arw', 'class="fb-tab fb-arw') : ''}
   </div>`;
 }
 // les deux languettes (la bande à droite, les flèches à gauche) posées sur la corde du haut
@@ -64,10 +64,13 @@ addEventListener('resize', () => { if (FB.live) Object.keys(FB.tls).forEach(i =>
 function fbArrows(e) {
   if (e) e.stopPropagation();
   const was = l26Playing(); L26.coups = L26.coups === 'fleche' ? 'coup' : 'fleche'; LS.set('gms_l26_coup', L26.coups);
-  if (!FB.live) { if (cur) viewSheet(cur.id, svAll ? null : svPart); return; }
+  if (typeof svMenuClose === 'function') svMenuClose();
+  if (!FB.live) { if (cur) viewSheet(cur.id, svAll ? null : svPart); fbArwLabel(); return; }
   fbDraw(0, FB.draw); if (was) l26Loop();
-  document.querySelectorAll('#sv-parts .fb-arw').forEach(b => { const on = L26.coups === 'fleche'; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
+  fbArwLabel();
 }
+// l'option est dans le menu ⋯ de la fiche (Lucas, 27/11 : plus de bouton flèches sur le rythme)
+function fbArwLabel() { const b = $('sv-arw-m'); if (b) b.textContent = L26.coups === 'fleche' ? 'Masquer les flèches' : 'Afficher les flèches'; }
 // « En rythme » : on passe de la fiche statique au dessin animé (retenu sur l'appareil)
 function fbLive(v) {
   FB.live = v == null ? !FB.live : !!v; LS.set('gms_fb_live', FB.live);
