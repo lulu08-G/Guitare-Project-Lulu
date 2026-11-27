@@ -3833,6 +3833,9 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .l26-bk{opacity:.13}
 .l26-bk[data-b="0"]{fill:#ffb877}.l26-bk[data-b="1"]{fill:#b9a7ff}.l26-bk[data-b="2"]{fill:#7fe0c0}.l26-bk[data-b="3"]{fill:#8fc8ff}
 .l26-ep .fut[data-b="0"]{color:#ffc796}.l26-ep .fut[data-b="1"]{color:#c4b5ff}.l26-ep .fut[data-b="2"]{color:#93e6ca}.l26-ep .fut[data-b="3"]{color:#a3d2ff}
+.fb-stage{touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.fb-stage.scrub{cursor:grabbing}
+.fb-stage.scrub .fb-hint{opacity:0}
 </style>
 </head>
 <body>
@@ -5289,8 +5292,8 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   recStopPlay();
   const g = grFromRhythm(rh, opt.chords && opt.chords.length ? opt.chords : null), per = g.per, spb = g.spb;
   const P = rhP = {key: opt.key || '', rh, grid: g, chords: g.chords.length ? g.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
-    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? (opt.band.boum ? opt.band : grBandAuto(grNew(rh.mes, rh.res, 1))) : null};   // opt.band : true (bande auto) ou une grille déjà jouée (grBandOwn)
-  P.T = mtPlay({owner: 'rh', key: P.key, start: .08,
+    k: opt.k0 || 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? (opt.band.boum ? opt.band : grBandAuto(grNew(rh.mes, rh.res, 1))) : null};   // opt.band : true (bande auto) ou une grille déjà jouée (grBandOwn)
+  P.T = mtPlay({owner: 'rh', key: P.key, start: .08, k: opt.k0 || 0,   // opt.k0 : repartir d'une case précise (la pause de la fiche)
     dur: () => rhCellDur(rh, P.bpm),
     off: (k, d) => rh.swing && spb === 2 && k % 2 === 1 ? rh.swing * d : 0,
     step: (k, t) => {
@@ -13960,7 +13963,7 @@ function l26HomeHTML() {
      sur 2 et 4 ou sur tes étouffés, la grosse caisse et Basile sur 1 et 3) ou ta prise (le charley sur les coups
      entendus, le tempo trouvé dans la prise) ;
    · les cases haut / bas restent dessous, repliées. Les dessins viennent du Labo (39-95-labo-26-11.js). */
-const FB = {i: -1, live: !!LS.get('gms_fb_live', false), simp: !!LS.get('gms_fb_simp', false), band: LS.get('gms_fb_band', true) !== false, draw: LS.get('gms_fb_draw', 'saute'), adraw: LS.get('gms_fb_adraw', 'accord'), D: {}, tls: {}, bandT: null};
+const FB = {i: -1, pos: {}, want: null, live: !!LS.get('gms_fb_live', false), simp: !!LS.get('gms_fb_simp', false), band: LS.get('gms_fb_band', true) !== false, draw: LS.get('gms_fb_draw', 'saute'), adraw: LS.get('gms_fb_adraw', 'accord'), D: {}, tls: {}, bandT: null};
 const fbKind = p => pWay(p) === 'arp' && !p.rec ? FB.adraw : FB.draw;   // le dessin choisi (rythme ou arpège)
 const fbOn = () => typeof IS_BETA !== 'undefined' && IS_BETA;
 
@@ -14058,33 +14061,43 @@ async function fbMount(i) {
   FB.tls[i] = tl;
   FB.D[i] = l26Mount(el, fbKind(p), tl);   // le dessin choisi (par défaut : rebond + cordes, et l'arpège sur les cordes)
   fbTabs(i);
+  const st = el.closest('.fb-stage'); if (st && !st._sc) { st._sc = 1; fbScrub(i, st); }
+  if (FB.want === i) { FB.want = null; fbPlay(i); }   // touché avant que la prise soit prête : on lance dès qu'elle l'est
 }
-function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; fsLiveSync(); if (!FB.live) return; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
+function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; FB.pos = {}; FB.want = null; fsLiveSync(); if (!FB.live) return; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
 
+// la vraie pause (Lucas, 27/11) : on garde l'endroit, le ▶ repart exactement de là ; on peut aussi glisser le rythme au doigt
+function fbHold(i, pos) {
+  FB.pos[i] = pos; const D = FB.D[i];
+  if (D && pos != null) { D.frame(pos); fbChordNow(i, pos); }
+}
 function fbPlay(i, e) {
-  if (e) e.stopPropagation();
-  const p = cur && cur.parts[i], tl = FB.tls[i]; if (!p || !tl) return;
-  if (FB.i === i && l26Playing()) { l26Stop(); return; }
+  if (e) { e.stopPropagation(); if (e.currentTarget && e.currentTarget._noClick) return; }
+  const p = cur && cur.parts[i], tl = FB.tls[i]; if (!p) return;
+  if (!tl) { FB.want = i; return; }   // la prise est encore en analyse : on jouera dès qu'elle est prête
+  if (FB.i === i && l26Playing()) { const pos = tl.now ? tl.now() : null; l26Stop(); fbHold(i, pos); fbSync(); return; }
   l26Stop();
   svPart = i; document.querySelectorAll('#sv-parts .pv-block').forEach(b => b.classList.toggle('on', +b.dataset.idx === i));
   L26.tl = tl; L26.live = FB.D[i]; FB.i = i;
   const capo = cur.capo || 0;
-  if (p.rec) fbPlayTake(p, tl);
-  else if (pWay(p) === 'arp') l26PlayRh(arpRh(), cur.bpm || 80, tl.chs, {cellFn: arpCellFn(p.arp, capo), capo});
-  else l26PlayRh(p.rhythm, cur.bpm || 90, tl.chs, Object.assign({capo}, FB.band ? {band: grBandOwn(p.rhythm)} : {}));
+  const from = FB.pos[i] || 0, k0 = Math.max(0, Math.ceil(from - .02)) % Math.max(1, Math.round(tl.L));
+  if (p.rec) fbPlayTake(p, tl, from);
+  else if (pWay(p) === 'arp') l26PlayRh(arpRh(), cur.bpm || 80, tl.chs, {cellFn: arpCellFn(p.arp, capo), capo, k0});
+  else l26PlayRh(p.rhythm, cur.bpm || 90, tl.chs, Object.assign({capo, k0}, FB.band ? {band: grBandOwn(p.rhythm)} : {}));
   if (!p.rec) { L26.live = FB.D[i]; L26.onPos = pos => { fbChordNow(i, pos); fbTabBob(i); }; }   // après l26Stop (qui les remet à zéro) : l'accord de la mesure s'allume, la languette suit la corde
   fbSync();
 }
 // ta prise en boucle, posée à un instant précis pour que la bande tombe avec tes coups
-async function fbPlayTake(p, tl) {
+async function fbPlayTake(p, tl, from) {
+  from = from || 0;
   l26Stop(); stopPlay();
   const buf = await recBuffer(p.rec.mediaId); if (!buf) { toast('Enregistrement introuvable', true); return; }
   const ac = audio(); if (ac.state === 'suspended') await ac.resume();
   const st = p.rec.start, en = Math.min(p.rec.end, buf.duration), Tb = ac.currentTime + .15, lat = (ac.outputLatency || 0) + (ac.baseLatency || 0);
-  const src = ac.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = st; src.loopEnd = en; src.connect(OUT(ac)); src.start(Tb, st);
+  const src = ac.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = st; src.loopEnd = en; src.connect(OUT(ac)); src.start(Tb, st + (from % Math.max(.01, en - st)));
   L26.tl = tl; L26.a = src; L26.onPos = pos => { fbChordNow(FB.i, pos); fbTabBob(FB.i); };
-  tl.now = () => { const x = ac.currentTime - lat - Tb; return x < 0 ? 0 : x % tl.L; };
-  if (FB.band) fbTakeBand(tl, Tb, p.chords || [], cur.capo || 0);
+  tl.now = () => { const x = ac.currentTime - lat - Tb; return ((x < 0 ? 0 : x) + from) % tl.L; };
+  if (FB.band) fbTakeBand(tl, Tb - from, p.chords || [], cur.capo || 0);
   l26Loop(); fbSync();
 }
 // la bande sur ta prise : grosse caisse + Basile sur 1 et 3, caisse claire sur 2 et 4 (tempo trouvé dans la prise,
@@ -14143,6 +14156,32 @@ function fbBand(e) {
   fbDraw(0, FB.draw);   // le dessin se refait : Boum et Basile à gauche quand la bande joue
   fbSync();
   if (was) { FB.i = -1; fbPlay(i); }
+}
+// glisser le rythme au doigt : vers la gauche, ça avance ; vers la droite, ça recule (la lecture reprend au lâcher)
+function fbScrub(i, st) {
+  let x0 = null, p0 = 0, moved = false, was = false;
+  st.addEventListener('pointerdown', e => { if (e.button) return; x0 = e.clientX; moved = false; });
+  st.addEventListener('pointermove', e => {
+    if (x0 == null) return;
+    const dx = e.clientX - x0, tl = FB.tls[i], D = FB.D[i];
+    if (!moved) {
+      if (Math.abs(dx) < 8 || !tl || !D) return;
+      moved = true; was = FB.i === i && l26Playing();
+      p0 = was ? (tl.now() || 0) : (FB.pos[i] || 0);
+      if (was) l26Stop();
+      try { st.setPointerCapture(e.pointerId); } catch (_) {}
+      st.classList.add('scrub');
+    }
+    const w0 = D.page * tl.win, span = (D.X(w0 + tl.win) - D.X(w0)) * st.getBoundingClientRect().width / D.W;
+    const pos = (((p0 - dx * tl.win / Math.max(1, span)) % tl.L) + tl.L) % tl.L;
+    fbHold(i, pos);
+  });
+  const end = () => {
+    if (x0 == null) return; x0 = null; if (!moved) return;
+    st.classList.remove('scrub'); st._noClick = true; setTimeout(() => { st._noClick = false; }, 0);
+    if (was) { FB.i = -1; fbPlay(i); } else fbSync();
+  };
+  st.addEventListener('pointerup', end); st.addEventListener('pointercancel', end);
 }
 // la languette de la bande bouge un peu quand la corde du haut vibre
 function fbTabBob(i) {

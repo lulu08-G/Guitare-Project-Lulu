@@ -249,8 +249,8 @@ function rhStart(rh, bpm, chord, capo, onStep, opt) {
   recStopPlay();
   const g = grFromRhythm(rh, opt.chords && opt.chords.length ? opt.chords : null), per = g.per, spb = g.spb;
   const P = rhP = {key: opt.key || '', rh, grid: g, chords: g.chords.length ? g.chords : null, bpm: bpm || 90, chord: chord || findChord('Em'), capo: capo || 0,
-    k: 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? (opt.band.boum ? opt.band : grBandAuto(grNew(rh.mes, rh.res, 1))) : null};   // opt.band : true (bande auto) ou une grille déjà jouée (grBandOwn)
-  P.T = mtPlay({owner: 'rh', key: P.key, start: .08,
+    k: opt.k0 || 0, onStep, onCell: opt.onCell, mute: !!opt.mute, band: opt.band ? (opt.band.boum ? opt.band : grBandAuto(grNew(rh.mes, rh.res, 1))) : null};   // opt.band : true (bande auto) ou une grille déjà jouée (grBandOwn)
+  P.T = mtPlay({owner: 'rh', key: P.key, start: .08, k: opt.k0 || 0,   // opt.k0 : repartir d'une case précise (la pause de la fiche)
     dur: () => rhCellDur(rh, P.bpm),
     off: (k, d) => rh.swing && spb === 2 && k % 2 === 1 ? rh.swing * d : 0,
     step: (k, t) => {
