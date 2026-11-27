@@ -34,9 +34,13 @@ const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'flec
 // Médi lui-même couché, la pointe vers la droite. Il joue ta prise si elle existe, sinon le rythme de l'app.
 // le logo ▶ choisi par Lucas (27/11, « Médi couché ») : le médiator orange foncé, pointe vers la droite, et le ▶ orange vif
 const fbMediLogo = inner => `<svg class="fs-pm" viewBox="-20 -10 240 250" aria-hidden="true"><g class="pk"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/></g>${inner}</svg>`;
-const FB_PLAYO = fbMediLogo('<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/>');
+// le ▶ « Médi couché » qui se relève (Lucas, 27/11) : au lancement le médiator se met debout, le ▶ orange vif devient
+// ses yeux, puis il danse sur le tempo ; à la pause il se recouche et ses yeux redeviennent le ▶ (classe .on sur le bouton)
+const FB_PLAYO = `<svg class="fs-pm fs-pm2" viewBox="-20 -10 240 250" aria-hidden="true"><g class="mv"><g class="rot"><path class="mb" d="${MEDI_BODY}"/>`
+  + `<g class="eyes"><rect class="me" x="72" y="64" width="20" height="42" rx="10"/><rect class="me" x="124" y="64" width="20" height="42" rx="10"/></g></g>`
+  + `<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/></g></svg>`;
 // en lecture, sur la fiche statique, le bouton devient Médi qui danse sur le tempo (Lucas, 27/11) ; le toucher met en pause
-const fbDanceHTML = () => `<span class="fs-dance" style="--beat:${(60 / ((cur && cur.bpm) || 90)).toFixed(3)}s">${mediSVG('contente', {size: 40, anim: 'dance', label: 'Médi danse : touche pour la pause'})}</span>`;
+const fbDanceHTML_old = () => `<span class="fs-dance" style="--beat:${(60 / ((cur && cur.bpm) || 90)).toFixed(3)}s">${mediSVG('contente', {size: 40, anim: 'dance', label: 'Médi danse : touche pour la pause'})}</span>`;
 const FB_PAUSEO = fbMediLogo('<rect class="tri" x="62" y="80" width="17" height="62" rx="6"/><rect class="tri" x="96" y="80" width="17" height="62" rx="6"/>');
 function fbStaticHTML(p, i) {
   const w = pWay(p);

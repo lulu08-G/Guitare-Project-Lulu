@@ -3840,6 +3840,24 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .l26-ep .l26-vib.on{stroke:var(--cream3)!important;opacity:.75}   /* les cordes vibrent sans couleur (Lucas, 27/11) */
 .fs-dance{display:flex;align-items:center;justify-content:center}
 .fs-dance .medi{width:40px;height:auto}
+/* le bouton ▶ Médi qui se relève et danse (fiche statique) */
+.fs-pm2 .rot{transform-box:view-box;transform-origin:100px 111px;transform:rotate(-90deg);transition:transform .55s cubic-bezier(.3,1.35,.5,1)}
+.fs-pm2 .mb{fill:#5a3010;transition:fill .45s}
+.fs-pm2 .tri{fill:#ff9a33;stroke:#ff9a33;stroke-width:8;stroke-linejoin:round;transform-box:view-box;transform-origin:96px 111px;transition:transform .3s,opacity .3s}
+.fs-pm2 .eyes{transform-box:fill-box;transform-origin:50% 50%;transform:scale(0);opacity:0;transition:transform .3s,opacity .2s}
+.fs-pm2 .me{fill:var(--ink)}
+.fs-pm2 .mv{transform-box:fill-box;transform-origin:50% 100%}
+.fs-pl.on .fs-pm2 .rot{transform:rotate(-14deg)}
+.fs-pl.on .fs-pm2 .mb{fill:var(--gold)}
+.fs-pl.on .fs-pm2 .tri{transform:scale(.15);opacity:0}
+.fs-pl.on .fs-pm2 .eyes{transform:none;opacity:1;transition-delay:.18s}
+.fs-pl.on .fs-pm2 .me{animation:fsEye .6s ease-out .18s both}
+@keyframes fsEye{from{fill:#ff9a33}to{fill:var(--ink)}}
+.fs-pl.on .fs-pm2 .mv{animation:mdDance calc(var(--beat,.69s)*2) linear .6s infinite}
+.fs-pl:not(.on) .fs-pm2 path.tri{animation:fsTri 2.4s ease-in-out .4s infinite}
+.fs-pl.on .fs-pm2 path.tri{animation:none}
+.fs-pl .fs-pm2 .pk{animation:none}
+@media(prefers-reduced-motion:reduce){.fs-pm2 *{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -10350,7 +10368,9 @@ function svSync() {
   $('sv-live').textContent = (pWay(p) === 'arp' ? 'Arpège en boucle' : 'Rythme en boucle') + (p && p.name ? ' · ' + p.name : '');
   document.querySelectorAll('#sv-parts .pv-pl').forEach(b => {   // ▶ de chaque carte
     const pn = (rhPlaying('v' + b.dataset.i) || (rp && +b.dataset.i === svPart)) && !recing; if (b.dataset.on === String(pn)) return;
-    b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = b.classList.contains('fs-pl') ? (pn ? fbDanceHTML() : FB_PLAYO) : pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
+    b.dataset.on = String(pn); b.classList.toggle('on', pn);
+    if (b.classList.contains('fs-pl')) { b.style.setProperty('--beat', (60 / ((cur && cur.bpm) || 90)).toFixed(3) + 's'); if (!b.querySelector('.fs-pm2')) b.innerHTML = FB_PLAYO; }   // Médi se relève / se recouche (CSS)
+    else b.innerHTML = pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
   });
   $('sv-rec').innerHTML = REC_DOT_SVG;
   const nTk = cur.parts.filter(x => x.rec).length, tk = $('sv-takes');
@@ -14017,9 +14037,13 @@ const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'flec
 // Médi lui-même couché, la pointe vers la droite. Il joue ta prise si elle existe, sinon le rythme de l'app.
 // le logo ▶ choisi par Lucas (27/11, « Médi couché ») : le médiator orange foncé, pointe vers la droite, et le ▶ orange vif
 const fbMediLogo = inner => `<svg class="fs-pm" viewBox="-20 -10 240 250" aria-hidden="true"><g class="pk"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/></g>${inner}</svg>`;
-const FB_PLAYO = fbMediLogo('<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/>');
+// le ▶ « Médi couché » qui se relève (Lucas, 27/11) : au lancement le médiator se met debout, le ▶ orange vif devient
+// ses yeux, puis il danse sur le tempo ; à la pause il se recouche et ses yeux redeviennent le ▶ (classe .on sur le bouton)
+const FB_PLAYO = `<svg class="fs-pm fs-pm2" viewBox="-20 -10 240 250" aria-hidden="true"><g class="mv"><g class="rot"><path class="mb" d="${MEDI_BODY}"/>`
+  + `<g class="eyes"><rect class="me" x="72" y="64" width="20" height="42" rx="10"/><rect class="me" x="124" y="64" width="20" height="42" rx="10"/></g></g>`
+  + `<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/></g></svg>`;
 // en lecture, sur la fiche statique, le bouton devient Médi qui danse sur le tempo (Lucas, 27/11) ; le toucher met en pause
-const fbDanceHTML = () => `<span class="fs-dance" style="--beat:${(60 / ((cur && cur.bpm) || 90)).toFixed(3)}s">${mediSVG('contente', {size: 40, anim: 'dance', label: 'Médi danse : touche pour la pause'})}</span>`;
+const fbDanceHTML_old = () => `<span class="fs-dance" style="--beat:${(60 / ((cur && cur.bpm) || 90)).toFixed(3)}s">${mediSVG('contente', {size: 40, anim: 'dance', label: 'Médi danse : touche pour la pause'})}</span>`;
 const FB_PAUSEO = fbMediLogo('<rect class="tri" x="62" y="80" width="17" height="62" rx="6"/><rect class="tri" x="96" y="80" width="17" height="62" rx="6"/>');
 function fbStaticHTML(p, i) {
   const w = pWay(p);

@@ -154,3 +154,21 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .l26-ep .l26-vib.on{stroke:var(--cream3)!important;opacity:.75}   /* les cordes vibrent sans couleur (Lucas, 27/11) */
 .fs-dance{display:flex;align-items:center;justify-content:center}
 .fs-dance .medi{width:40px;height:auto}
+/* le bouton ▶ Médi qui se relève et danse (fiche statique) */
+.fs-pm2 .rot{transform-box:view-box;transform-origin:100px 111px;transform:rotate(-90deg);transition:transform .55s cubic-bezier(.3,1.35,.5,1)}
+.fs-pm2 .mb{fill:#5a3010;transition:fill .45s}
+.fs-pm2 .tri{fill:#ff9a33;stroke:#ff9a33;stroke-width:8;stroke-linejoin:round;transform-box:view-box;transform-origin:96px 111px;transition:transform .3s,opacity .3s}
+.fs-pm2 .eyes{transform-box:fill-box;transform-origin:50% 50%;transform:scale(0);opacity:0;transition:transform .3s,opacity .2s}
+.fs-pm2 .me{fill:var(--ink)}
+.fs-pm2 .mv{transform-box:fill-box;transform-origin:50% 100%}
+.fs-pl.on .fs-pm2 .rot{transform:rotate(-14deg)}
+.fs-pl.on .fs-pm2 .mb{fill:var(--gold)}
+.fs-pl.on .fs-pm2 .tri{transform:scale(.15);opacity:0}
+.fs-pl.on .fs-pm2 .eyes{transform:none;opacity:1;transition-delay:.18s}
+.fs-pl.on .fs-pm2 .me{animation:fsEye .6s ease-out .18s both}
+@keyframes fsEye{from{fill:#ff9a33}to{fill:var(--ink)}}
+.fs-pl.on .fs-pm2 .mv{animation:mdDance calc(var(--beat,.69s)*2) linear .6s infinite}
+.fs-pl:not(.on) .fs-pm2 path.tri{animation:fsTri 2.4s ease-in-out .4s infinite}
+.fs-pl.on .fs-pm2 path.tri{animation:none}
+.fs-pl .fs-pm2 .pk{animation:none}
+@media(prefers-reduced-motion:reduce){.fs-pm2 *{transition:none!important;animation:none!important}}

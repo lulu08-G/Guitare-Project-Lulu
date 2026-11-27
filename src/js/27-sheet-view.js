@@ -143,7 +143,9 @@ function svSync() {
   $('sv-live').textContent = (pWay(p) === 'arp' ? 'Arpège en boucle' : 'Rythme en boucle') + (p && p.name ? ' · ' + p.name : '');
   document.querySelectorAll('#sv-parts .pv-pl').forEach(b => {   // ▶ de chaque carte
     const pn = (rhPlaying('v' + b.dataset.i) || (rp && +b.dataset.i === svPart)) && !recing; if (b.dataset.on === String(pn)) return;
-    b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = b.classList.contains('fs-pl') ? (pn ? fbDanceHTML() : FB_PLAYO) : pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
+    b.dataset.on = String(pn); b.classList.toggle('on', pn);
+    if (b.classList.contains('fs-pl')) { b.style.setProperty('--beat', (60 / ((cur && cur.bpm) || 90)).toFixed(3) + 's'); if (!b.querySelector('.fs-pm2')) b.innerHTML = FB_PLAYO; }   // Médi se relève / se recouche (CSS)
+    else b.innerHTML = pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
   });
   $('sv-rec').innerHTML = REC_DOT_SVG;
   const nTk = cur.parts.filter(x => x.rec).length, tk = $('sv-takes');
