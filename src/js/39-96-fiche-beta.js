@@ -203,5 +203,5 @@ function fbSync() {
   document.querySelectorAll('#sv-parts .fb-stage').forEach(b => { const me = on && +b.dataset.i === FB.i;
     if (me && !b.classList.contains('playing')) { b.classList.add('tap'); clearTimeout(b._tp); b._tp = setTimeout(() => b.classList.remove('tap'), 650); }   // le ❚❚ s'affiche un instant : on sait où toucher pour la pause
     b.classList.toggle('playing', me); b.setAttribute('aria-label', me ? 'Mettre en pause' : 'Jouer'); });
-  document.querySelectorAll('#sv-parts .fb-band').forEach(b => { b.classList.toggle('on', FB.band); b.setAttribute('aria-pressed', FB.band); });
+  document.querySelectorAll('#sv-parts .fb-band,#sv-parts .fb-bmini').forEach(b => { b.classList.toggle('on', FB.band); b.setAttribute('aria-pressed', FB.band); });
 }

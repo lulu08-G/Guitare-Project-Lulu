@@ -70,9 +70,9 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fb-tab{position:absolute;top:0;display:flex;align-items:center;gap:5px;height:24px;min-height:0;padding:0 7px;border:1px solid var(--border2);border-bottom:0;border-radius:8px 8px 0 0;background:transparent;color:var(--cream3);cursor:pointer;z-index:2}
 .fb-bmini{right:0}
 .fb-bmini .bd{height:16px}.fb-bmini .bd .medi,.fb-bmini .bd .mt-pal.bd-m{width:13px;height:14px}
-.fb-bmini:not(.on) .bd{filter:grayscale(1);opacity:.5}
+.fb-bmini:not(.on) .bd{filter:grayscale(1);opacity:.4}
+.fb-bmini:not(.on){border-color:var(--border)}
 .fb-bmini.on{border-color:rgba(255,138,42,.55)}
-.fb-bmini:not(.on)::after{content:"";position:absolute;left:6px;right:6px;top:50%;height:1.5px;background:var(--cream3);transform:rotate(-12deg);opacity:.8}
 .fb-arw{display:flex;align-items:center;justify-content:center;border:1px solid var(--border2);background:none;color:var(--cream3);cursor:pointer}
 .fb-arw svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fb-arw.on{color:var(--gold);border-color:rgba(255,138,42,.55)}

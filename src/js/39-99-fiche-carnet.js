@@ -53,7 +53,7 @@ function fsSimpToggle(e) {
 function fsLiveSync() {
   const b = $('fs-live'); if (!b) return;
   b.classList.toggle('on', FB.live); b.setAttribute('aria-pressed', FB.live);
-  b.querySelector('small').textContent = FB.live ? 'Touche le dessin pour jouer.' : 'Joue la fiche avec Médi.';
+  b.querySelector('small').textContent = FB.live ? 'Touche le rythme.' : 'Joue avec Médi.';
 }
 
 /* ── Les groupes ── */

@@ -3756,9 +3756,9 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 .fb-tab{position:absolute;top:0;display:flex;align-items:center;gap:5px;height:24px;min-height:0;padding:0 7px;border:1px solid var(--border2);border-bottom:0;border-radius:8px 8px 0 0;background:transparent;color:var(--cream3);cursor:pointer;z-index:2}
 .fb-bmini{right:0}
 .fb-bmini .bd{height:16px}.fb-bmini .bd .medi,.fb-bmini .bd .mt-pal.bd-m{width:13px;height:14px}
-.fb-bmini:not(.on) .bd{filter:grayscale(1);opacity:.5}
+.fb-bmini:not(.on) .bd{filter:grayscale(1);opacity:.4}
+.fb-bmini:not(.on){border-color:var(--border)}
 .fb-bmini.on{border-color:rgba(255,138,42,.55)}
-.fb-bmini:not(.on)::after{content:"";position:absolute;left:6px;right:6px;top:50%;height:1.5px;background:var(--cream3);transform:rotate(-12deg);opacity:.8}
 .fb-arw{display:flex;align-items:center;justify-content:center;border:1px solid var(--border2);background:none;color:var(--cream3);cursor:pointer}
 .fb-arw svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fb-arw.on{color:var(--gold);border-color:rgba(255,138,42,.55)}
@@ -13494,7 +13494,7 @@ function l26Mount(el, kind, tl, o) {
   D.X = t => 12 + (t - D.page * tl.win) / tl.win * (D.W - 24);
   D.draw = page => { D.page = page; D.cur = -2; el.innerHTML = L26_DRAW[kind].html(D); L26_DRAW[kind].bind && L26_DRAW[kind].bind(D); };
   D.frame = pos => {
-    const page = tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);
+    const page = pos < 0 || tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);   // à l'arrêt : la 1re page, comme au départ
     if (page !== D.page) D.draw(page);
     L26_DRAW[kind].frame(D, pos);
   };
@@ -14148,7 +14148,7 @@ function fbSync() {
   document.querySelectorAll('#sv-parts .fb-stage').forEach(b => { const me = on && +b.dataset.i === FB.i;
     if (me && !b.classList.contains('playing')) { b.classList.add('tap'); clearTimeout(b._tp); b._tp = setTimeout(() => b.classList.remove('tap'), 650); }   // le ❚❚ s'affiche un instant : on sait où toucher pour la pause
     b.classList.toggle('playing', me); b.setAttribute('aria-label', me ? 'Mettre en pause' : 'Jouer'); });
-  document.querySelectorAll('#sv-parts .fb-band').forEach(b => { b.classList.toggle('on', FB.band); b.setAttribute('aria-pressed', FB.band); });
+  document.querySelectorAll('#sv-parts .fb-band,#sv-parts .fb-bmini').forEach(b => { b.classList.toggle('on', FB.band); b.setAttribute('aria-pressed', FB.band); });
 }
 /* ═══════ LABO : LES VARIANTES (26/11, Lucas : « pour le rythme on est pas mal mais pas encore bon »,
    « pour l'arpège ajoute des variantes ») ═══════
@@ -14505,7 +14505,8 @@ L26_DRAW.saute = {
       const dt = h ? (pos - h.t) / (tl.beat * .45) : 9, y = dt < 1 ? -6 * Math.sin(Math.PI * dt) : 0;
       g.setAttribute('transform', `translate(0 ${l26f(y)})`); g.classList.toggle('on', dt < 1);
     });
-    const m = D.el.querySelector('.l26-medi'); if (!m || pos < 0) return;
+    const m = D.el.querySelector('.l26-medi'); if (!m) return;
+    if (pos < 0) { m.setAttribute('transform', 'translate(-60 0)'); return; }   // à l'arrêt : Médi attend hors du dessin, comme au départ
     for (const [a, b, cx, cy] of D.segs) if (x >= a[0] && x < b[0]) {
       const t = (x - a[0]) / (b[0] - a[0]), px = (1 - t) ** 2 * a[0] + 2 * (1 - t) * t * cx + t * t * b[0], py = (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * cy + t * t * b[1];
       const sq = Math.max(0, 1 - Math.min(t, 1 - t) / .14) * ((t < .5 ? a : b)[1] === D.top ? .16 : 0);   // l'écrasement en touchant les cordes
@@ -14684,7 +14685,7 @@ function fsSimpToggle(e) {
 function fsLiveSync() {
   const b = $('fs-live'); if (!b) return;
   b.classList.toggle('on', FB.live); b.setAttribute('aria-pressed', FB.live);
-  b.querySelector('small').textContent = FB.live ? 'Touche le dessin pour jouer.' : 'Joue la fiche avec Médi.';
+  b.querySelector('small').textContent = FB.live ? 'Touche le rythme.' : 'Joue avec Médi.';
 }
 
 /* ── Les groupes ── */

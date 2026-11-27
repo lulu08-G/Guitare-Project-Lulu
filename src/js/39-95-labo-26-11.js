@@ -94,7 +94,7 @@ function l26Mount(el, kind, tl, o) {
   D.X = t => 12 + (t - D.page * tl.win) / tl.win * (D.W - 24);
   D.draw = page => { D.page = page; D.cur = -2; el.innerHTML = L26_DRAW[kind].html(D); L26_DRAW[kind].bind && L26_DRAW[kind].bind(D); };
   D.frame = pos => {
-    const page = tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);
+    const page = pos < 0 || tl.win >= tl.L ? 0 : Math.floor(pos / tl.win);   // à l'arrêt : la 1re page, comme au départ
     if (page !== D.page) D.draw(page);
     L26_DRAW[kind].frame(D, pos);
   };

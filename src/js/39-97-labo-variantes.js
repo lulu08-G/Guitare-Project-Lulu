@@ -353,7 +353,8 @@ L26_DRAW.saute = {
       const dt = h ? (pos - h.t) / (tl.beat * .45) : 9, y = dt < 1 ? -6 * Math.sin(Math.PI * dt) : 0;
       g.setAttribute('transform', `translate(0 ${l26f(y)})`); g.classList.toggle('on', dt < 1);
     });
-    const m = D.el.querySelector('.l26-medi'); if (!m || pos < 0) return;
+    const m = D.el.querySelector('.l26-medi'); if (!m) return;
+    if (pos < 0) { m.setAttribute('transform', 'translate(-60 0)'); return; }   // à l'arrêt : Médi attend hors du dessin, comme au départ
     for (const [a, b, cx, cy] of D.segs) if (x >= a[0] && x < b[0]) {
       const t = (x - a[0]) / (b[0] - a[0]), px = (1 - t) ** 2 * a[0] + 2 * (1 - t) * t * cx + t * t * b[0], py = (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * cy + t * t * b[1];
       const sq = Math.max(0, 1 - Math.min(t, 1 - t) / .14) * ((t < .5 ? a : b)[1] === D.top ? .16 : 0);   // l'écrasement en touchant les cordes
