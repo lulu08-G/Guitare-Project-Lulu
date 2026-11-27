@@ -35,6 +35,8 @@ const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'flec
 // le logo ▶ choisi par Lucas (27/11, « Médi couché ») : le médiator orange foncé, pointe vers la droite, et le ▶ orange vif
 const fbMediLogo = inner => `<svg class="fs-pm" viewBox="-20 -10 240 250" aria-hidden="true"><g class="pk"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/></g>${inner}</svg>`;
 const FB_PLAYO = fbMediLogo('<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/>');
+// en lecture, sur la fiche statique, le bouton devient Médi qui danse sur le tempo (Lucas, 27/11) ; le toucher met en pause
+const fbDanceHTML = () => `<span class="fs-dance" style="--beat:${(60 / ((cur && cur.bpm) || 90)).toFixed(3)}s">${mediSVG('contente', {size: 40, anim: 'dance', label: 'Médi danse : touche pour la pause'})}</span>`;
 const FB_PAUSEO = fbMediLogo('<rect class="tri" x="62" y="80" width="17" height="62" rx="6"/><rect class="tri" x="96" y="80" width="17" height="62" rx="6"/>');
 function fbStaticHTML(p, i) {
   const w = pWay(p);
@@ -91,7 +93,15 @@ async function fbTl(p) {   // la ligne du temps d'une partie
   const chl = (p.chords || []).map(c => (FB.simp ? fsSimp(c) : c).name);   // le nom de l'accord sous chaque mesure
   if (p.rec) {
     const tl = await l26TakeTl({id: [p.rec.mediaId, p.rec.start, p.rec.end, cur.bpm].join(':'), s: cur, p});
-    if (tl) return Object.assign({}, tl, {now: null, chl, roll: !!tl.bar && tl.L > tl.bar * 1.5});
+    if (tl) {   // la boucle commence au 1er coup et compte des mesures entières : la ligne est toujours finie avant de repartir
+      const cut = tl.off || 0, n = tl.bar ? Math.floor((tl.L - cut) / tl.bar + .02) : 0;
+      if (n >= 1) {
+        const L = n * tl.bar;
+        return Object.assign({}, tl, {now: null, chl, cut, off: 0, L, env: null, win: Math.min(L, 2 * tl.bar), roll: n >= 2,
+          hits: tl.hits.filter(h => h.t - cut < L - 1e-3).map(h => Object.assign({}, h, {t: h.t - cut}))});
+      }
+      return Object.assign({}, tl, {now: null, chl, roll: false});
+    }
   }
   const chs = p.chords.length ? p.chords : [newChord('Em')];
   if (pWay(p) === 'arp') { const tl = l26ArpTl({a: p.arp, chords: chs.map(c => c.name)}); tl.chs = chs; return tl; }
@@ -137,7 +147,7 @@ async function fbPlayTake(p, tl, from) {
   l26Stop(); stopPlay();
   const buf = await recBuffer(p.rec.mediaId); if (!buf) { toast('Enregistrement introuvable', true); return; }
   const ac = audio(); if (ac.state === 'suspended') await ac.resume();
-  const st = p.rec.start, en = Math.min(p.rec.end, buf.duration), Tb = ac.currentTime + .15, lat = (ac.outputLatency || 0) + (ac.baseLatency || 0);
+  const st = p.rec.start + (tl.cut || 0), en = Math.min(p.rec.end, buf.duration, st + tl.L), Tb = ac.currentTime + .15, lat = (ac.outputLatency || 0) + (ac.baseLatency || 0);   // tl.cut : la boucle part du 1er coup
   const src = ac.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = st; src.loopEnd = en; src.connect(OUT(ac)); src.start(Tb, st + (from % Math.max(.01, en - st)));
   L26.tl = tl; L26.a = src; L26.onPos = pos => { fbChordNow(FB.i, pos); fbTabBob(FB.i); };
   tl.now = () => { const x = ac.currentTime - lat - Tb; return ((x < 0 ? 0 : x) + from) % tl.L; };

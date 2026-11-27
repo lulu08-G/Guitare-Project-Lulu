@@ -3838,6 +3838,8 @@ body.beta #v-sheet.fb.solo .pv-hdr:not(:has(.fs-simp,.pv-take)){display:none}
 #v-sheet .l26-ko,#v-sheet .l26-h .l26-ko{display:none}   /* « retire le fond noir des flèches » (Lucas, 27/11) */
 .l26-lc.nx{opacity:.7}   /* l'accord suivant, déjà affiché dans l'autre place */
 #v-sheet .l26-ep .l26-vib.on{stroke:var(--cream3)!important;opacity:.75}   /* les cordes vibrent sans couleur (Lucas, 27/11) */
+.fs-dance{display:flex;align-items:center;justify-content:center}
+.fs-dance .medi{width:40px;height:auto}
 </style>
 </head>
 <body>
@@ -10348,7 +10350,7 @@ function svSync() {
   $('sv-live').textContent = (pWay(p) === 'arp' ? 'Arpège en boucle' : 'Rythme en boucle') + (p && p.name ? ' · ' + p.name : '');
   document.querySelectorAll('#sv-parts .pv-pl').forEach(b => {   // ▶ de chaque carte
     const pn = (rhPlaying('v' + b.dataset.i) || (rp && +b.dataset.i === svPart)) && !recing; if (b.dataset.on === String(pn)) return;
-    b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = b.classList.contains('fs-pl') ? (pn ? FB_PAUSEO : FB_PLAYO) : pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
+    b.dataset.on = String(pn); b.classList.toggle('on', pn); b.innerHTML = b.classList.contains('fs-pl') ? (pn ? fbDanceHTML() : FB_PLAYO) : pn ? RH_PAUSE_SVG : RH_PLAY_SVG;
   });
   $('sv-rec').innerHTML = REC_DOT_SVG;
   const nTk = cur.parts.filter(x => x.rec).length, tk = $('sv-takes');
@@ -13481,7 +13483,7 @@ const l26Cur = (hits, pos) => { let j = -1; for (let i = 0; i < hits.length; i++
 function l26Labels(tl, page, X, y) {
   let s = ''; const w0 = page * tl.win, w1 = w0 + tl.win;
   if (tl.chl && tl.chl.length && tl.bar && tl.roll) {   // deux places : la mesure en cours, et la suivante dans l'autre place
-    const o = tl.off || 0, sh = tl.grid ? .5 : 0;
+    const o = tl.off || 0, sh = tl.grid ? .5 : tl.beat ? tl.beat / 4 : 0;
     [page, l26MNext(tl, page)].forEach((m, j) => {
       const t0 = o + m * tl.bar, cw = X(t0 + Math.min(1, tl.bar / 2)) - X(t0), u = cw / Math.min(1, tl.bar / 2), a = X(t0) - sh * u;
       if ((j === 0 ? page : page + 1) % 2 === 1) s += `<line x1="${l26f(a)}" x2="${l26f(a)}" y1="${y - 14}" y2="${y + 2}" class="l26-lm"/>`;
@@ -13492,7 +13494,7 @@ function l26Labels(tl, page, X, y) {
   if (tl.chl && tl.chl.length && tl.bar) {   // la fiche (27/11) : le nom de l'accord sous chaque mesure, à la place du compte
     const o = tl.off || 0;
     for (let m = Math.max(0, Math.floor((w0 - o) / tl.bar)); o + m * tl.bar < w1; m++) {
-      const a = o + m * tl.bar - (tl.grid ? .5 : 0), c = a + tl.bar / 2;
+      const a = o + m * tl.bar - (tl.grid ? .5 : tl.beat ? tl.beat / 4 : 0), c = a + tl.bar / 2;
       if (m > 0 && a > w0 + 1e-6) s += `<line x1="${l26f(X(a))}" x2="${l26f(X(a))}" y1="${y - 14}" y2="${y + 2}" class="l26-lm"/>`;
       if (c >= w0 && c < w1) s += `<text x="${l26f(X(c))}" y="${y}" class="l26-lc" data-m="${m}">${esc(tl.chl[m % tl.chl.length])}</text>`;
     }
@@ -14016,6 +14018,8 @@ const fbArwBtn = () => `<button type="button" class="fb-arw${L26.coups === 'flec
 // le logo ▶ choisi par Lucas (27/11, « Médi couché ») : le médiator orange foncé, pointe vers la droite, et le ▶ orange vif
 const fbMediLogo = inner => `<svg class="fs-pm" viewBox="-20 -10 240 250" aria-hidden="true"><g class="pk"><path class="mb" transform="rotate(-90 100 111)" d="${MEDI_BODY}"/></g>${inner}</svg>`;
 const FB_PLAYO = fbMediLogo('<path class="tri" d="M62.6 76L130.5 111L62.6 146Z"/>');
+// en lecture, sur la fiche statique, le bouton devient Médi qui danse sur le tempo (Lucas, 27/11) ; le toucher met en pause
+const fbDanceHTML = () => `<span class="fs-dance" style="--beat:${(60 / ((cur && cur.bpm) || 90)).toFixed(3)}s">${mediSVG('contente', {size: 40, anim: 'dance', label: 'Médi danse : touche pour la pause'})}</span>`;
 const FB_PAUSEO = fbMediLogo('<rect class="tri" x="62" y="80" width="17" height="62" rx="6"/><rect class="tri" x="96" y="80" width="17" height="62" rx="6"/>');
 function fbStaticHTML(p, i) {
   const w = pWay(p);
@@ -14072,7 +14076,15 @@ async function fbTl(p) {   // la ligne du temps d'une partie
   const chl = (p.chords || []).map(c => (FB.simp ? fsSimp(c) : c).name);   // le nom de l'accord sous chaque mesure
   if (p.rec) {
     const tl = await l26TakeTl({id: [p.rec.mediaId, p.rec.start, p.rec.end, cur.bpm].join(':'), s: cur, p});
-    if (tl) return Object.assign({}, tl, {now: null, chl, roll: !!tl.bar && tl.L > tl.bar * 1.5});
+    if (tl) {   // la boucle commence au 1er coup et compte des mesures entières : la ligne est toujours finie avant de repartir
+      const cut = tl.off || 0, n = tl.bar ? Math.floor((tl.L - cut) / tl.bar + .02) : 0;
+      if (n >= 1) {
+        const L = n * tl.bar;
+        return Object.assign({}, tl, {now: null, chl, cut, off: 0, L, env: null, win: Math.min(L, 2 * tl.bar), roll: n >= 2,
+          hits: tl.hits.filter(h => h.t - cut < L - 1e-3).map(h => Object.assign({}, h, {t: h.t - cut}))});
+      }
+      return Object.assign({}, tl, {now: null, chl, roll: false});
+    }
   }
   const chs = p.chords.length ? p.chords : [newChord('Em')];
   if (pWay(p) === 'arp') { const tl = l26ArpTl({a: p.arp, chords: chs.map(c => c.name)}); tl.chs = chs; return tl; }
@@ -14118,7 +14130,7 @@ async function fbPlayTake(p, tl, from) {
   l26Stop(); stopPlay();
   const buf = await recBuffer(p.rec.mediaId); if (!buf) { toast('Enregistrement introuvable', true); return; }
   const ac = audio(); if (ac.state === 'suspended') await ac.resume();
-  const st = p.rec.start, en = Math.min(p.rec.end, buf.duration), Tb = ac.currentTime + .15, lat = (ac.outputLatency || 0) + (ac.baseLatency || 0);
+  const st = p.rec.start + (tl.cut || 0), en = Math.min(p.rec.end, buf.duration, st + tl.L), Tb = ac.currentTime + .15, lat = (ac.outputLatency || 0) + (ac.baseLatency || 0);   // tl.cut : la boucle part du 1er coup
   const src = ac.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = st; src.loopEnd = en; src.connect(OUT(ac)); src.start(Tb, st + (from % Math.max(.01, en - st)));
   L26.tl = tl; L26.a = src; L26.onPos = pos => { fbChordNow(FB.i, pos); fbTabBob(FB.i); };
   tl.now = () => { const x = ac.currentTime - lat - Tb; return ((x < 0 ? 0 : x) + from) % tl.L; };
@@ -14548,8 +14560,8 @@ function l26Blocks(D, hp) {
   const tl = D.tl; if (!tl.chl || !tl.bar) return null;
   const o = tl.off || 0, w0 = D.page * tl.win, w1 = w0 + tl.win, y0 = D.top - 16, h = 5 * D.gap + 32, of = [];
   let bg = '';
-  const sh = tl.grid ? .5 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant
-  const uX = t => { const d = Math.min(1, tl.bar / 2); return (D.X(t + d) - D.X(t)) / d; };   // une unité de temps en x, dans la mesure de t
+  const sh = tl.grid ? .5 : tl.beat ? tl.beat / 4 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant (une prise : une demi-croche)
+  const uX = t => { const t0 = o + Math.floor((t - o) / tl.bar + 1e-6) * tl.bar, d = tl.bar / 2; return (D.X(t0 + d) - D.X(t0)) / d; };   // une unité de temps en x, mesurée dans la mesure de t
   if (tl.roll) [D.page, l26MNext(tl, D.page)].forEach((m, j) => {
     const t0 = o + m * tl.bar, u = uX(t0), xa = D.X(t0) - sh * u + 2, xb = xa + tl.bar * u - 4, sl = (j ? D.page + 1 : D.page) % 2;
     bg += `<rect class="l26-mb${sl ? ' odd' : ''}${j ? ' nx' : ''}" data-m="${m}" x="${l26f(xa)}" y="${y0}" width="${l26f(xb - xa)}" height="${h}" rx="12"/>`;

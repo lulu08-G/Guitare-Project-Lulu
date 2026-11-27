@@ -324,8 +324,8 @@ function l26Blocks(D, hp) {
   const tl = D.tl; if (!tl.chl || !tl.bar) return null;
   const o = tl.off || 0, w0 = D.page * tl.win, w1 = w0 + tl.win, y0 = D.top - 16, h = 5 * D.gap + 32, of = [];
   let bg = '';
-  const sh = tl.grid ? .5 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant
-  const uX = t => { const d = Math.min(1, tl.bar / 2); return (D.X(t + d) - D.X(t)) / d; };   // une unité de temps en x, dans la mesure de t
+  const sh = tl.grid ? .5 : tl.beat ? tl.beat / 4 : 0;   // les coups sont au milieu de leur case : la bulle commence une demi-case avant (une prise : une demi-croche)
+  const uX = t => { const t0 = o + Math.floor((t - o) / tl.bar + 1e-6) * tl.bar, d = tl.bar / 2; return (D.X(t0 + d) - D.X(t0)) / d; };   // une unité de temps en x, mesurée dans la mesure de t
   if (tl.roll) [D.page, l26MNext(tl, D.page)].forEach((m, j) => {
     const t0 = o + m * tl.bar, u = uX(t0), xa = D.X(t0) - sh * u + 2, xb = xa + tl.bar * u - 4, sl = (j ? D.page + 1 : D.page) % 2;
     bg += `<rect class="l26-mb${sl ? ' odd' : ''}${j ? ' nx' : ''}" data-m="${m}" x="${l26f(xa)}" y="${y0}" width="${l26f(xb - xa)}" height="${h}" rx="12"/>`;
