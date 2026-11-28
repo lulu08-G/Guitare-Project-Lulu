@@ -257,3 +257,7 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 /* l'enregistreur prêt (28/11) : on touche le médiator couché pour lancer */
 .fp-go{margin:-4px 0 0;text-align:center;font-size:13px;color:var(--cream3);transition:opacity .25s}.fp-recing.go .fp-go{opacity:0;height:0;margin:0;overflow:hidden}
 .fp-pop{overscroll-behavior:contain}#fp-dim{touch-action:none}
+/* la croix (28/11) : en haut à droite, la 1re rangée lui laisse la place */
+.fp-px{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:15px;border:0;background:var(--card3);color:var(--cream2);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;padding:0}
+.fp-px svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.fp-pop>:first-child{padding-right:34px}

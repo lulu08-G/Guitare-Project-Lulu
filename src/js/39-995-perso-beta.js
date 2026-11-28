@@ -176,8 +176,10 @@ async function fpTuto(k) {
 async function fpSave() { cur.updatedAt = Date.now(); await DB.put('sheets', clone(cur)); }
 
 /* ── l'infobulle (une prise, l'enregistreur) ── */
+// la petite croix en haut à droite de chaque infobulle (Lucas, 28/11 : toucher à côté n'est pas instinctif)
+const FP_X = `<button type="button" class="fp-px" onclick="fpPopClose()" aria-label="Fermer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></button>`;
 function fpPopOpen(anchor, html, cls) {
-  anchor = anchor || $('fp-perso') || document.body;
+  anchor = anchor || $('fp-perso') || document.body; html += FP_X;
   const old = $('fp-pop');
   if (old && FP.anchor === anchor && !FP.R) { fpPlStop(); old.className = 'fp-pop swap ' + (cls || ''); old.innerHTML = html; fpPlace(); return old; }
   fpPopClose(true);

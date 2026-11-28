@@ -46,16 +46,37 @@ function fbStaticHTML(p, i) {
   const w = pWay(p);
   const pl = `<button type="button" class="pv-pl fs-pl" data-i="${i}" onclick="svCardPlay(${i},event)" aria-label="${p.rec ? 'Écouter ma prise' : w === 'arp' ? 'Jouer l’arpège' : 'Jouer le rythme'}">${FB_PLAYO}</button>`;
   if (w === 'arp') return `<div class="fs-stat fs-rh"><div class="fs-sc">${pArpLines(p, false)}</div>${pl}</div>`;
-  if (w === 'rh') {   // choix C (Lucas, 27/11) : chaque boucle dans son cadre, les accords qui la jouent empilés sur le cadre ;
+  const tk = w !== 'rh' && w !== 'arp' && p.rec ? FB_TKRH[fbTkKey(p.rec)] : null;   // pas de rythme écrit : celui de ta prise (28/11)
+  if (w === 'rh' || tk) {   // choix C (Lucas, 27/11) : chaque boucle dans son cadre, les accords qui la jouent empilés sur le cadre ;
     // compact : un rythme pour toute la partie = un seul cadre (« Em · D · G · B7 ») ; des rythmes différents = un cadre chacun, 2 par rangée, le ▶ à côté
     const svg = rh => pRhBlocks(rh, false, L26.coups === 'fleche').replace(/<text[^>]*>[^<]*<\/text>/g, '').replace(/height="54" viewBox="0 0 ([\d.]+) 54"/, 'height="42" viewBox="0 0 $1 42"');
     const chs = p.chords.length ? p.chords : [null], gr = [];
-    chs.forEach(c => { const rh = (c && c.rhythm) || p.rhythm, k = JSON.stringify(rh), g = gr[gr.length - 1];
+    chs.forEach(c => { const rh = tk ? tk : (c && c.rhythm) || p.rhythm, k = JSON.stringify(rh), g = gr[gr.length - 1];
       if (g && g.k === k) g.n.push(c); else gr.push({k, rh, n: [c]}); });
     const nm = g => g.n.filter(Boolean).map(c => esc((FB.simp ? fsSimp(c) : c).name)).join('<i>·</i>');
     return `<div class="fs-stat fs-c"><div class="fs-gr">${gr.map(g => `<div class="fs-g${gr.length === 1 ? ' wide' : ''}">${nm(g) ? `<span class="fs-gc">${nm(g)}</span>` : ''}${svg(g.rh)}</div>`).join('')}</div>${pl}</div>`;
   }
-  return p.rec ? `<div class="fs-stat fs-rh"><span class="fs-stat-n">Ma prise</span>${pl}</div>` : '';
+  return p.rec ? `<div class="fs-stat fs-rh" data-tk="${i}"><span class="fs-stat-n">Ma prise</span>${pl}</div>` : '';
+}
+// le rythme d'une prise, retrouvé dans le fichier (coups repérés, haut sur les « et », bas sur les temps : rhFromTake), gardé en mémoire
+const FB_TKRH = {};
+const fbTkKey = t => t.mediaId + ':' + (t.start || 0).toFixed(2) + ':' + (t.end || 0).toFixed(2);
+async function fbTkFill(s) {
+  for (const [i, p] of (s.parts || []).entries()) {
+    if (!p.rec || pWay(p) === 'rh' || pWay(p) === 'arp') continue;
+    const k = fbTkKey(p.rec);
+    if (!(k in FB_TKRH)) {
+      FB_TKRH[k] = null;
+      try {
+        const buf = await recBuffer(p.rec.mediaId), sr = buf.sampleRate, d = buf.getChannelData(0);
+        const a = Math.max(0, Math.floor((p.rec.start || 0) * sr)), b = p.rec.end ? Math.min(d.length, Math.floor(p.rec.end * sr)) : d.length;
+        const r = rhFromTake({getChannelData: () => d.subarray(a, b), sampleRate: sr}, s.bpm);
+        FB_TKRH[k] = r && r.rhythm && r.rhythm.cells.some(Boolean) ? r.rhythm : false;
+      } catch (e) { FB_TKRH[k] = false; }
+    }
+    const el = document.querySelector(`#v-sheet .fs-stat[data-tk="${i}"]`);
+    if (FB_TKRH[k] && el && cur && cur.id === s.id) el.outerHTML = fbStaticHTML(p, i);
+  }
 }
 const FB_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.4"/><rect x="13.5" y="5" width="4" height="14" rx="1.4"/></svg>';
 const FB_PLAYI = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 001.5.9l10.4-6.5a1 1 0 000-1.8L9.5 4.6A1 1 0 008 5.5z"/></svg>';
@@ -122,7 +143,7 @@ async function fbMount(i) {
   const st = el.closest('.fb-stage'); if (st && !st._sc) { st._sc = 1; fbScrub(i, st); }
   if (FB.want === i) { FB.want = null; fbPlay(i); }   // touché avant que la prise soit prête : on lance dès qu'elle l'est
 }
-function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; FB.pos = {}; FB.want = null; fsLiveSync(); $('v-sheet').classList.toggle('fb-on', FB.live); if (!FB.live) return; (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
+function fbAfter(s) { FB.D = {}; FB.tls = {}; FB.i = -1; FB.pos = {}; FB.want = null; fsLiveSync(); $('v-sheet').classList.toggle('fb-on', FB.live); if (!FB.live) { fbTkFill(s); return; } (s.parts || []).forEach((p, i) => { if (pWay(p) !== 'none' || p.rec) fbMount(i); }); }
 
 // la vraie pause (Lucas, 27/11) : on garde l'endroit, le ▶ repart exactement de là ; on peut aussi glisser le rythme au doigt
 function fbHold(i, pos) {
