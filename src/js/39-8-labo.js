@@ -153,7 +153,8 @@ function labRender() {
   if (lab.view === 'home') { rpRender(); return; }   // S'entraîner v2 (39-9)
   if (lab.view === 'tests') { h.innerHTML = labHomeHTML(); return; }
   if (lab.view === 'tests26') { h.innerHTML = l26HomeHTML(); return; }
-  if (lab.view === 'l27-son') { h.innerHTML = lsnHTML(); lsnAfter(); return; }   // le son de tes prises (39-996)
+  if (lab.view === 'l27-son') { h.innerHTML = lsnHTML(); lsnAfter(); return; }
+  if (lab.view === 'l27-medi') { h.innerHTML = mnHTML(); return; }   // Médi chante (39-997)   // le son de tes prises (39-996)
   const G = labGroup(lab.view), T = G.list.find(x => x.id === lab.view);
   if (!T) { lab.view = 'home'; labRender(); return; }
   h.innerHTML = `<div class="lab-top"><button type="button" class="mt-back" onclick="labGo('${G.home}')" aria-label="Retour aux tests"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><div><small>Labo · test ${G.list.indexOf(T) + 1} sur ${G.list.length}</small><h1>${T.t}</h1></div></div>

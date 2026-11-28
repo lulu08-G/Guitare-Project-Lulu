@@ -4182,6 +4182,35 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .lsn-tc{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}.lsn-tc b,.lsn-tc small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lsn-tc b{font-size:15px;font-weight:700}.lsn-tc small{font-size:12.5px;color:var(--cream3)}
 .lsn-td{font:700 12.5px var(--display);color:var(--cream3);font-variant-numeric:tabular-nums}
+/* ═══════ LABO : MÉDI CHANTE (28/11, caché : ?beta) : 39-997-labo-medi-notes.js ═══════ */
+.mn-card .lsn-ci svg{fill:currentColor;stroke:currentColor;stroke-width:2.6;width:20px;height:24px}.mn-card .lsn-ci svg path{fill:none;stroke-width:3}
+.mn-pills{display:flex;gap:6px;flex-wrap:wrap}
+.mn-pills button{display:flex;align-items:center;gap:7px;border:1px solid var(--card3);background:none;color:var(--cream2);font-size:13px;font-weight:700;padding:7px 12px 7px 7px;border-radius:15px;cursor:pointer}
+.mn-pills button b{width:22px;height:22px;border-radius:11px;background:var(--card3);color:var(--cream);font:800 12px/22px var(--display);text-align:center}
+.mn-pills button.on{border-color:var(--gold);color:var(--gold)}.mn-pills button.on b{background:var(--gold);color:var(--ink)}
+.mn-stage{position:relative;height:400px;background:var(--card);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:22px;gap:14px}
+.mn-medi{display:block;line-height:0;cursor:pointer;touch-action:manipulation}
+.mn-hint{margin:0;font-size:13px;font-weight:600;color:var(--cream3)}
+.mn-n{position:absolute;pointer-events:none;transform:translate(-50%,-50%);z-index:2}
+.mn-n svg{display:block;fill:var(--c);stroke:var(--c);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;overflow:visible}.mn-n svg path{fill:none;stroke-width:3}
+/* 1 la bulle : elle monte en se balançant, puis éclate */
+.mn-n.v1 .bb{display:flex;flex-direction:column;align-items:center;justify-content:center;width:58px;height:58px;border-radius:50%;background:rgba(246,241,234,.1);box-shadow:inset 0 0 0 2px rgba(246,241,234,.55);animation:mnUp1 .95s cubic-bezier(.3,.6,.4,1) both}
+.mn-n.v1 .bb svg{width:20px;height:24px}.mn-n.v1 small{font:800 11px var(--display);color:var(--cream);margin-top:1px}
+@keyframes mnUp1{0%{transform:translate(0,10px) scale(.3);opacity:0}18%{opacity:1;transform:translate(0,-10px) scale(1)}55%{transform:translate(calc(var(--sx) * .3),-80px) scale(1)}85%{transform:translate(calc(var(--sx) * .1),-120px) scale(1.05)}100%{transform:translate(0,-135px) scale(1.3);opacity:.6}}
+/* 2 la note qui saute : elle part en arc en tournant */
+.mn-n.v2 .gl{display:block;animation:mnUp2 .8s cubic-bezier(.25,.7,.4,1) both}.mn-n.v2 svg{width:30px;height:36px}
+@keyframes mnUp2{0%{transform:translate(0,0) scale(.4) rotate(0);opacity:0}15%{opacity:1}60%{transform:translate(calc(var(--sx) * .7),-110px) scale(1.15) rotate(var(--rot))}100%{transform:translate(var(--sx),-120px) scale(1) rotate(calc(var(--rot) * 2))}}
+/* 3 la fusée : droit en haut avec une traînée, puis elle explose */
+.mn-n.v3 .gl{display:block;animation:mnUp3 .62s cubic-bezier(.2,.8,.3,1) both}.mn-n.v3 svg{width:24px;height:30px;filter:drop-shadow(0 0 6px var(--c))}
+.mn-n.v3 .gl:after{content:"";position:absolute;left:50%;top:100%;width:3px;height:44px;margin-left:-1.5px;border-radius:2px;background:linear-gradient(var(--c),transparent);opacity:.7}
+@keyframes mnUp3{0%{transform:translate(0,0) scale(.5);opacity:0}12%{opacity:1}100%{transform:translate(calc(var(--sx) * .25),-175px) scale(1)}}
+/* les éclats */
+.mn-sp{position:absolute;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--c);pointer-events:none;z-index:1;animation:mnSp .55s cubic-bezier(.2,.8,.4,1) forwards}
+.mn-sp.v2{width:3px;height:11px;margin:-5.5px 0 0 -1.5px;border-radius:2px;transform:rotate(calc(var(--a) + 90deg))}
+.mn-sp.v1{background:none;box-shadow:inset 0 0 0 1.6px var(--c)}
+.mn-sp.v3{animation-duration:.8s}
+@keyframes mnSp{0%{translate:0 0;scale:.4;opacity:1}70%{opacity:1}100%{translate:var(--dx) var(--dy);scale:1;opacity:0}}
+@media(prefers-reduced-motion:reduce){.mn-n *{animation-duration:.01s!important}}
 </style>
 </head>
 <body>
@@ -13142,7 +13171,8 @@ function labRender() {
   if (lab.view === 'home') { rpRender(); return; }   // S'entraîner v2 (39-9)
   if (lab.view === 'tests') { h.innerHTML = labHomeHTML(); return; }
   if (lab.view === 'tests26') { h.innerHTML = l26HomeHTML(); return; }
-  if (lab.view === 'l27-son') { h.innerHTML = lsnHTML(); lsnAfter(); return; }   // le son de tes prises (39-996)
+  if (lab.view === 'l27-son') { h.innerHTML = lsnHTML(); lsnAfter(); return; }
+  if (lab.view === 'l27-medi') { h.innerHTML = mnHTML(); return; }   // Médi chante (39-997)   // le son de tes prises (39-996)
   const G = labGroup(lab.view), T = G.list.find(x => x.id === lab.view);
   if (!T) { lab.view = 'home'; labRender(); return; }
   h.innerHTML = `<div class="lab-top"><button type="button" class="mt-back" onclick="labGo('${G.home}')" aria-label="Retour aux tests"><svg viewBox="0 0 10 16"><path d="M8 2 L2 8 L8 14"/></svg></button><div><small>Labo · test ${G.list.indexOf(T) + 1} sur ${G.list.length}</small><h1>${T.t}</h1></div></div>
@@ -13508,7 +13538,7 @@ function rpHomeHTML() {
   const tabs = `<div class="rp-tabs" role="tablist">${[['repet', 'Répét’'], ['jeux', 'Jeux']].map(([k, l]) => `<button type="button" role="tab" aria-selected="${rp.tab === k}" class="${rp.tab === k ? 'on' : ''}" onclick="rpTab('${k}')">${l}</button>`).join('')}</div>`;
   const head = `<div class="rp-head"><h1>S’entraîner</h1><span class="rp-beta">bêta</span></div>`;
   const foot = `<div class="rp-foot"><button type="button" class="rp-link" onclick="labGo('tests26')">Les tests du 26/11</button><button type="button" class="rp-link" onclick="labGo('tests')">Les tests du 19/11</button><button type="button" class="btn btn-primary" onclick="labExport()">Envoyer mes réponses</button></div>`;
-  return head + lsnCardHTML() + tabs + (rp.tab === 'jeux' ? rpJeuxHTML() : rpRepetHTML()) + foot;   // le nouveau test en 1re page (Lucas, 27/11)
+  return head + lsnCardHTML() + mnCardHTML() + tabs + (rp.tab === 'jeux' ? rpJeuxHTML() : rpRepetHTML()) + foot;   // le nouveau test en 1re page (Lucas, 27/11)
 }
 function rpRepetHTML() {
   const rh = rpRhythms(), list = rp.allRh ? rh : rh.slice(0, 6);
@@ -16369,6 +16399,57 @@ function lsnPick(mid) {
   LSN.sel = mid; lsnStop();
   const h = $('lab-body'); if (!h) return;
   h.innerHTML = lsnHTML(); lsnAfter(); window.scrollTo(0, 0);
+}
+/* ═══════ LABO : MÉDI CHANTE QUAND ON LE TOUCHE (28/11, caché : ?beta) ═══════
+   Lucas : quand on touche Médi, il rebondit (déjà partout) ; en plus, une petite note de musique, jamais la même,
+   qui s'envole et éclate comme un petit feu d'artifice. Trois façons de le montrer, à comparer :
+   1 la bulle (la note dans une bulle qui monte puis éclate), 2 la note qui saute (elle part en arc et éclate en étincelles),
+   3 la fusée (elle file droit en haut et explose en points de couleur). Chaque toucher joue une note de guitare
+   (gamme pentatonique de La mineur : toujours jolie, jamais deux fois la même d'affilée). */
+LAB_TESTS27.push({id: 'l27-medi', t: 'Médi chante', d: 'Touche Médi : une note s’envole. Trois façons, laquelle tu gardes ?', ask: ['1 La bulle', '2 La note qui saute', '3 La fusée'], askq: 'Laquelle tu gardes ?'});
+const MN = {v: 1, last: -1};
+const MN_NOTES = [['La', 220], ['Do', 261.63], ['Ré', 293.66], ['Mi', 329.63], ['Sol', 392], ['La', 440], ['Do', 523.25], ['Ré', 587.33], ['Mi', 659.25]];
+const MN_V = [[1, 'La bulle'], [2, 'La note qui saute'], [3, 'La fusée']];
+const MN_COL = ['#ff8a2a', '#ffb877', '#b9a7ff', '#7fe0c0', '#8fc8ff'];
+const mnGlyph = two => two
+  ? '<svg viewBox="0 0 30 32" aria-hidden="true"><path d="M9 6 L27 2 V22" /><ellipse cx="6" cy="25" rx="5.2" ry="4" transform="rotate(-20 6 25)"/><ellipse cx="23" cy="21" rx="5.2" ry="4" transform="rotate(-20 23 21)"/><path d="M9 6 V25 M27 2 V21" /></svg>'
+  : '<svg viewBox="0 0 24 32" aria-hidden="true"><ellipse cx="8" cy="25" rx="6" ry="4.6" transform="rotate(-20 8 25)"/><path d="M13 24 V3 Q15 9 22 12" /></svg>';
+function mnCardHTML() {
+  const done = !!labAns()['l27-medi'];
+  return `<button type="button" class="lsn-card mn-card${done ? ' done' : ''}" onclick="labGo('l27-medi')"><span class="lsn-ci">${mnGlyph(false)}</span><span class="lsn-cc"><small>${done ? 'Test fait · le refaire' : 'Nouveau test'}</small><b>Médi chante</b><small>Touche-le : une note s’envole</small></span><i aria-hidden="true">›</i></button>`;
+}
+function mnHTML() {
+  return `<div class="rp-top"><button type="button" class="mt-back" onclick="labGo('home')" aria-label="Retour à S’entraîner">${RP_BACK}</button><div><small>Labo · nouveau test</small><h1>Médi chante</h1></div></div>
+    <div class="mn-pills" role="group" aria-label="La façon">${MN_V.map(([k, l]) => `<button type="button" class="${MN.v === k ? 'on' : ''}" aria-pressed="${MN.v === k}" onclick="mnPick(${k})"><b>${k}</b>${l}</button>`).join('')}</div>
+    <section class="mn-stage" id="mn-stage"><span class="mn-medi" id="mn-medi" onpointerdown="mnTap(event)">${mediSVG('contente', {size: 150, anim: 'breathe', label: 'Médi : touche-le'})}</span><p class="mn-hint">Touche Médi, plusieurs fois</p></section>`
+    + labFormHTML(LAB_TESTS27.find(t => t.id === 'l27-medi'));
+}
+function mnPick(k) { MN.v = k; document.querySelectorAll('.mn-pills button').forEach((b, i) => { b.classList.toggle('on', i + 1 === k); b.setAttribute('aria-pressed', i + 1 === k); }); }
+function mnTap() {
+  const st = $('mn-stage'), md = $('mn-medi'); if (!st || !md) return;
+  let k; do k = Math.floor(Math.random() * MN_NOTES.length); while (k === MN.last && MN_NOTES.length > 1); MN.last = k;
+  try { const ac = audioReady(); pluck(MN_NOTES[k][1], ac.currentTime + .01, 1.3, .2); } catch (e) {}
+  const sr = st.getBoundingClientRect(), mr = md.getBoundingClientRect();
+  const x = mr.left - sr.left + mr.width * .55, y = mr.top - sr.top + mr.height * .12, two = Math.random() < .35;
+  const el = document.createElement('span'); el.className = 'mn-n v' + MN.v; el.style.left = x + 'px'; el.style.top = y + 'px';
+  const side = Math.random() < .5 ? -1 : 1; el.style.setProperty('--sx', side * (40 + Math.random() * 50) + 'px'); el.style.setProperty('--rot', side * (10 + Math.random() * 20) + 'deg');
+  el.style.setProperty('--c', MN_COL[k % MN_COL.length]);
+  el.innerHTML = MN.v === 1 ? `<i class="bb">${mnGlyph(two)}<small>${MN_NOTES[k][0]}</small></i>` : `<i class="gl">${mnGlyph(two)}</i>`;
+  st.appendChild(el);
+  const life = MN.v === 1 ? 950 : MN.v === 2 ? 800 : 620;
+  setTimeout(() => { const r = (el.firstChild || el).getBoundingClientRect();   // là où la note est arrivée
+    mnBurst(st, r.left - sr.left + r.width / 2, r.top - sr.top + r.height / 2, MN.v); el.remove(); }, life);
+}
+// le petit feu d'artifice : des éclats qui partent en étoile et s'éteignent
+function mnBurst(st, x, y, v) {
+  const n = v === 3 ? 14 : 9;
+  for (let i = 0; i < n; i++) {
+    const a = i / n * Math.PI * 2 + Math.random() * .3, d = (v === 3 ? 34 : 24) + Math.random() * 14, s = document.createElement('i');
+    s.className = 'mn-sp v' + v; s.style.left = x + 'px'; s.style.top = y + 'px';
+    s.style.setProperty('--dx', (Math.cos(a) * d).toFixed(1) + 'px'); s.style.setProperty('--dy', (Math.sin(a) * d + (v === 3 ? 10 : 0)).toFixed(1) + 'px');
+    s.style.setProperty('--a', (a * 180 / Math.PI).toFixed(0) + 'deg'); s.style.setProperty('--c', MN_COL[(i + (v === 3 ? 1 : 0)) % MN_COL.length]);
+    st.appendChild(s); s.addEventListener('animationend', () => s.remove());
+  }
 }
 /* ═══════ MODAL BACKDROP CLOSE ═══════ */
 ['m-chord','m-print','m-media'].forEach(id => {
