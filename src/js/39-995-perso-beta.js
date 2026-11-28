@@ -212,6 +212,9 @@ function fpScroller(el) {
   return document.scrollingElement || document.documentElement;
 }
 addEventListener('scroll', () => { if ($('fp-pop')) fpPlace(); }, true);
+// infobulle ouverte : l'écran ne défile plus (Lucas, 28/11 : sinon la bulle « bugge »)
+const fpNoScroll = e => { const p = $('fp-pop'); if (!p || $('fp-cam')) return; if (e.type === 'keydown' && (!/^(ArrowUp|ArrowDown|PageUp|PageDown|Home|End| )$/.test(e.key) || /INPUT|TEXTAREA/.test(e.target.tagName))) return; e.preventDefault(); };
+addEventListener('touchmove', fpNoScroll, {passive: false}); addEventListener('wheel', fpNoScroll, {passive: false}); addEventListener('keydown', fpNoScroll);
 addEventListener('resize', () => { if ($('fp-pop')) fpPlace(); });
 addEventListener('keydown', e => { if (e.key === 'Escape' && $('fp-pop')) fpPopClose(); });
 function fpPopClose(quiet) {
@@ -377,11 +380,7 @@ function fpRec(kind, el, i) {
       <button type="button" onclick="fpRecGo('video')">${FP_RECM}<b>${fpI('cam')}Vidéo</b><small>mes prises</small></button></div>`, 'fp-rp fp-pick');
     return;
   }
-  if (kind === 'video') { fpCamOpen(); return; }
-  // un rythme depuis la fiche : on attend qu'on touche le médiator
-  const pi = i != null ? i : svPart;
-  fpPopOpen(el, `<div class="fp-rr top">${fpMedi('fp-idle')}<p class="fp-said">Touche le médiator : je compte 4 temps, puis je t’écoute.</p></div>
-    <div class="fp-three one"><button type="button" onclick="fpRecGo('rh',${pi})">${FP_RECM}<b>${fpI('rh')}Rythme</b><small>il jouera sur la fiche</small></button></div>`, 'fp-rp fp-pick');
+  fpRecGo(kind, i);   // un rythme depuis la fiche : l'enregistreur s'ouvre prêt, on touche le médiator
 }
 function fpRecGo(kind, i) {
   if (kind === 'video') { fpCamOpen(); return; }
@@ -433,11 +432,15 @@ async function fpRecAudio(kind, el, part) {
   if (!window.MediaRecorder || !navigator.mediaDevices) { toast('Enregistrement non disponible ici', true); return; }
   const pn = kind === 'rh' && cur.parts.length > 1 ? ' · ' + esc(cur.parts[part].name || 'Partie ' + (part + 1)) : '';
   const pop = fpPopOpen(el, `<div class="fp-rr"><span class="fp-rk">${fpI(kind === 'rh' ? 'rh' : 'mic')}${kind === 'rh' ? 'Rythme' : 'Audio'}${pn}</span><span class="fp-time"><i></i><b>0:00</b></span></div>
-    ${fpCountHTML()}<div class="fp-live">${fpStrings()}</div><div class="fp-rr c"><button type="button" class="fp-stop" onclick="fpRecStop()" aria-label="Arrêter">${FP_RECM}</button></div>`, 'fp-rp fp-recing');
-  requestAnimationFrame(() => requestAnimationFrame(() => pop.classList.add('up')));
-  const R = FP.R = {kind, part, stage: 'count'};
-  try { R.stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}}); }
-  catch (e) { if (FP.R === R) { FP.R = null; fpPopClose(); } toast('Micro refusé ou indisponible', true); return; }
+    ${fpCountHTML()}<p class="fp-go">Touche le médiator : je compte 4 temps, puis je t’écoute.</p><div class="fp-live">${fpStrings()}</div><div class="fp-rr c"><button type="button" class="fp-stop" onclick="fpRecStop()" aria-label="Enregistrer">${FP_RECM}</button></div>`, 'fp-rp fp-recing');
+  // rien ne part tout seul (Lucas, 28/11) : on attend qu'on touche le médiator
+  const R = FP.R = {kind, part, stage: 'ready'};
+  R.go = new Promise(r => { R.start = r; });
+  R.mic = navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}}).then(s => { R.stream = s; if (R.dead) fpStreamStop(R); return s; }, () => null);
+  await R.go;
+  if (FP.R !== R) return;
+  R.stage = 'count'; pop.classList.add('go'); const b = pop.querySelector('.fp-stop'); if (b) b.setAttribute('aria-label', 'Arrêter');
+  if (!await R.mic) { if (FP.R === R) { FP.R = null; fpPopClose(); } toast('Micro refusé ou indisponible', true); return; }
   if (FP.R !== R) { fpStreamStop(R); return; }
   if (!await fpCount(pop.querySelector('.fp-cnt'), R)) { fpStreamStop(R); return; }
   fpRecBegin(R, pop);
@@ -454,6 +457,7 @@ function fpRecBegin(R, host) {
 }
 function fpRecStop() {
   const R = FP.R; if (!R) return;
+  if (R.stage === 'ready') { R.start(); return; }
   if (R.stage === 'count') { fpRecAbort(); if (R.cam) fpCamClose(); else fpPopClose(); return; }
   if (R.mr && R.mr.state === 'recording') { R.dur = (Date.now() - R.t0) / 1000; R.mr.stop(); }
 }

@@ -167,7 +167,7 @@ function doPrint() {
    L'arpège = les six cordes en lignes (1 = Mi aigu en haut … 6 = Mi grave en bas), un point par note, gros point = la basse. */
 function pPrintWay(p, h, mini) {
   const w = pWay(p);
-  return w === 'rh' ? pRhBlocks(p.rhythm, mini) : w === 'arp' ? pArpLines(p, mini) : '';
+  return w === 'rh' ? pRhBlocks(p.rhythm, mini, typeof fbOn === 'function' && fbOn() && typeof L26 !== 'undefined' && L26.coups === 'fleche') : w === 'arp' ? pArpLines(p, mini) : '';
 }
 const pF = v => Math.round(v * 10) / 10;
 // le compte sous une case : le chiffre sur le temps, « et » au milieu du temps, un point ailleurs (6/8 : 1 à 6)

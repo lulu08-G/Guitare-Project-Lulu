@@ -3690,11 +3690,12 @@ body.beta #filt-know,body.beta #filt-learn{display:none}
 #home-filters .filt svg{width:14px;height:14px;fill:currentColor;margin-right:6px;vertical-align:-2px}
 /* l'encart de Médi qui défile (même format que « Le rejouer ») */
 .fs-nd{touch-action:pan-y;user-select:none;-webkit-user-select:none;overflow:hidden}
-.hm-nudge>.fs-vp{display:grid;align-self:stretch;overflow:hidden;margin-right:-6px;padding-right:6px}
+/* pas de coupe nette sur le texte (Lucas, 28/11 : « le texte se scinde avec le bloc ») : il glisse peu (12 px, dans l'espace avant Médi) et s'efface */
+.hm-nudge>.fs-vp{display:grid;align-self:stretch;overflow:visible}
 /* le message part en fondu en glissant un peu, le suivant arrive en fondu de l'autre côté (Lucas, 27/11 : « comme avant, en fondu ») */
-.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;opacity:0;visibility:hidden;transform:translateX(26px);transition:opacity .4s ease,transform .45s cubic-bezier(.25,.8,.3,1),visibility 0s linear .45s}
+.fs-sl{grid-area:1/1;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;opacity:0;visibility:hidden;transform:translateX(12px);transition:opacity .35s ease,transform .45s cubic-bezier(.25,.8,.3,1),visibility 0s linear .45s}
 .fs-sl.on{opacity:1;visibility:visible;transform:none;transition:opacity .45s ease .15s,transform .5s cubic-bezier(.25,.8,.3,1) .15s,visibility 0s}
-.fs-sl.out-l{transform:translateX(-26px)}.fs-sl.out-r{transform:translateX(26px)}
+.fs-sl.out-l{transform:translateX(-12px)}.fs-sl.out-r{transform:translateX(12px)}
 .fs-sl.drag{transition:none;visibility:visible}
 .fs-sl .btn{align-self:flex-start}
 svg.medi.nod .mv{animation:fsNod .9s ease-in-out}
@@ -4075,7 +4076,7 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-recm{width:64px;height:64px;overflow:visible;display:block}
 .fp-recm .mb{fill:#5a3010}.fp-recm .rd{fill:#ff9a33;transform-box:fill-box;transform-origin:50% 50%;animation:fpPulse 1.6s ease-in-out infinite}
 .fp-recm .pk{transform-origin:100px 111px;transform:rotate(-90deg);transition:transform .55s cubic-bezier(.3,1.45,.5,1)}
-.fp-recing.up .fp-recm .pk,#fp-cam.counting .fp-recm .pk,#fp-cam.rec .fp-recm .pk{transform:none}
+.fp-recing.go .fp-recm .pk,#fp-cam.counting .fp-recm .pk,#fp-cam.rec .fp-recm .pk{transform:none}
 .fp-recing.on .fp-recm .rd,#fp-cam.rec .fp-recm .rd{animation:fpRecDot 1s ease-in-out infinite}
 @keyframes fpRecDot{50%{transform:scale(.78);opacity:.55}}
 .fp-three button:nth-of-type(2) .fp-recm .rd{animation-delay:.5s}.fp-three button:nth-of-type(3) .fp-recm .rd{animation-delay:1s}
@@ -4134,6 +4135,10 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-ttr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:2px 4px 0;font-size:12px;font-weight:600;color:var(--cream3);font-variant-numeric:tabular-nums}
 .fp-ttr b{font:800 13px var(--display);color:var(--gold)}.fp-ttr .ln{font-weight:700;color:var(--cream2)}
 .fp-tpl{display:flex;align-items:center;gap:10px}.fp-tpl span{font-size:14px;font-weight:600;color:var(--cream2)}
+
+/* l'enregistreur prêt (28/11) : on touche le médiator couché pour lancer */
+.fp-go{margin:-4px 0 0;text-align:center;font-size:13px;color:var(--cream3);transition:opacity .25s}.fp-recing.go .fp-go{opacity:0;height:0;margin:0;overflow:hidden}
+.fp-pop{overscroll-behavior:contain}#fp-dim{touch-action:none}
 /* ═══════ QUITTER L'ÉDITEUR SANS AVOIR ENREGISTRÉ (Lucas, 27/11) : 23-6-retour-actualiser.js ═══════ */
 .edl{position:fixed;inset:0;z-index:970;background:rgba(10,9,11,.6);display:flex;align-items:flex-end;justify-content:center;animation:edlFade .25s both}
 .edl-box{width:100%;max-width:480px;box-sizing:border-box;background:var(--card);border-radius:26px 26px 0 0;padding:20px 16px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px;animation:edlUp .35s cubic-bezier(.2,.9,.3,1) both}
@@ -12768,7 +12773,7 @@ function doPrint() {
    L'arpège = les six cordes en lignes (1 = Mi aigu en haut … 6 = Mi grave en bas), un point par note, gros point = la basse. */
 function pPrintWay(p, h, mini) {
   const w = pWay(p);
-  return w === 'rh' ? pRhBlocks(p.rhythm, mini) : w === 'arp' ? pArpLines(p, mini) : '';
+  return w === 'rh' ? pRhBlocks(p.rhythm, mini, typeof fbOn === 'function' && fbOn() && typeof L26 !== 'undefined' && L26.coups === 'fleche') : w === 'arp' ? pArpLines(p, mini) : '';
 }
 const pF = v => Math.round(v * 10) / 10;
 // le compte sous une case : le chiffre sur le temps, « et » au milieu du temps, un point ailleurs (6/8 : 1 à 6)
@@ -15229,7 +15234,7 @@ function fsShow(nd, n, dir) {
   fsN.i = (n + sl.length) % sl.length;
   const nw = sl[fsN.i]; if (nw === old) return fsNext();
   clearTimeout(nw._t); nw.classList.remove('out-l', 'out-r', 'drag');
-  nw.style.transition = 'none'; nw.style.transform = `translateX(${dir > 0 ? 26 : -26}px)`; void nw.offsetWidth; nw.style.transition = ''; nw.style.transform = '';
+  nw.style.transition = 'none'; nw.style.transform = `translateX(${dir > 0 ? 12 : -12}px)`; void nw.offsetWidth; nw.style.transition = ''; nw.style.transform = '';
   nw.classList.add('on'); nw.removeAttribute('aria-hidden');
   old.classList.remove('on', 'drag'); old.style.transform = ''; old.style.opacity = ''; old.classList.add(dir > 0 ? 'out-l' : 'out-r'); old.setAttribute('aria-hidden', 'true');
   clearTimeout(old._t); old._t = setTimeout(() => old.classList.remove('out-l', 'out-r'), 500);
@@ -15247,7 +15252,7 @@ function fsSwipe(nd) {
     if (x0 == null) return; dx = e.clientX - x0;
     if (!moved && Math.abs(dx) > 10) { moved = true; clearTimeout(fsN.t); cur().classList.add('drag'); try { nd.setPointerCapture(e.pointerId); } catch (_) {} }
     if (!moved) return;
-    const c = cur(); c.style.transform = `translateX(${(dx * .5).toFixed(1)}px)`; c.style.opacity = Math.max(0, 1 - Math.abs(dx) / 150).toFixed(2);
+    const c = cur(); c.style.transform = `translateX(${Math.max(-12, Math.min(12, dx * .25)).toFixed(1)}px)`; c.style.opacity = Math.max(0, 1 - Math.abs(dx) / 90).toFixed(2);
   });
   const end = () => {
     if (x0 == null) return; x0 = null; if (!moved) return;
@@ -15625,6 +15630,9 @@ function fpScroller(el) {
   return document.scrollingElement || document.documentElement;
 }
 addEventListener('scroll', () => { if ($('fp-pop')) fpPlace(); }, true);
+// infobulle ouverte : l'écran ne défile plus (Lucas, 28/11 : sinon la bulle « bugge »)
+const fpNoScroll = e => { const p = $('fp-pop'); if (!p || $('fp-cam')) return; if (e.type === 'keydown' && (!/^(ArrowUp|ArrowDown|PageUp|PageDown|Home|End| )$/.test(e.key) || /INPUT|TEXTAREA/.test(e.target.tagName))) return; e.preventDefault(); };
+addEventListener('touchmove', fpNoScroll, {passive: false}); addEventListener('wheel', fpNoScroll, {passive: false}); addEventListener('keydown', fpNoScroll);
 addEventListener('resize', () => { if ($('fp-pop')) fpPlace(); });
 addEventListener('keydown', e => { if (e.key === 'Escape' && $('fp-pop')) fpPopClose(); });
 function fpPopClose(quiet) {
@@ -15790,11 +15798,7 @@ function fpRec(kind, el, i) {
       <button type="button" onclick="fpRecGo('video')">${FP_RECM}<b>${fpI('cam')}Vidéo</b><small>mes prises</small></button></div>`, 'fp-rp fp-pick');
     return;
   }
-  if (kind === 'video') { fpCamOpen(); return; }
-  // un rythme depuis la fiche : on attend qu'on touche le médiator
-  const pi = i != null ? i : svPart;
-  fpPopOpen(el, `<div class="fp-rr top">${fpMedi('fp-idle')}<p class="fp-said">Touche le médiator : je compte 4 temps, puis je t’écoute.</p></div>
-    <div class="fp-three one"><button type="button" onclick="fpRecGo('rh',${pi})">${FP_RECM}<b>${fpI('rh')}Rythme</b><small>il jouera sur la fiche</small></button></div>`, 'fp-rp fp-pick');
+  fpRecGo(kind, i);   // un rythme depuis la fiche : l'enregistreur s'ouvre prêt, on touche le médiator
 }
 function fpRecGo(kind, i) {
   if (kind === 'video') { fpCamOpen(); return; }
@@ -15846,11 +15850,15 @@ async function fpRecAudio(kind, el, part) {
   if (!window.MediaRecorder || !navigator.mediaDevices) { toast('Enregistrement non disponible ici', true); return; }
   const pn = kind === 'rh' && cur.parts.length > 1 ? ' · ' + esc(cur.parts[part].name || 'Partie ' + (part + 1)) : '';
   const pop = fpPopOpen(el, `<div class="fp-rr"><span class="fp-rk">${fpI(kind === 'rh' ? 'rh' : 'mic')}${kind === 'rh' ? 'Rythme' : 'Audio'}${pn}</span><span class="fp-time"><i></i><b>0:00</b></span></div>
-    ${fpCountHTML()}<div class="fp-live">${fpStrings()}</div><div class="fp-rr c"><button type="button" class="fp-stop" onclick="fpRecStop()" aria-label="Arrêter">${FP_RECM}</button></div>`, 'fp-rp fp-recing');
-  requestAnimationFrame(() => requestAnimationFrame(() => pop.classList.add('up')));
-  const R = FP.R = {kind, part, stage: 'count'};
-  try { R.stream = await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}}); }
-  catch (e) { if (FP.R === R) { FP.R = null; fpPopClose(); } toast('Micro refusé ou indisponible', true); return; }
+    ${fpCountHTML()}<p class="fp-go">Touche le médiator : je compte 4 temps, puis je t’écoute.</p><div class="fp-live">${fpStrings()}</div><div class="fp-rr c"><button type="button" class="fp-stop" onclick="fpRecStop()" aria-label="Enregistrer">${FP_RECM}</button></div>`, 'fp-rp fp-recing');
+  // rien ne part tout seul (Lucas, 28/11) : on attend qu'on touche le médiator
+  const R = FP.R = {kind, part, stage: 'ready'};
+  R.go = new Promise(r => { R.start = r; });
+  R.mic = navigator.mediaDevices.getUserMedia({audio: {echoCancellation: false, noiseSuppression: false, autoGainControl: false}}).then(s => { R.stream = s; if (R.dead) fpStreamStop(R); return s; }, () => null);
+  await R.go;
+  if (FP.R !== R) return;
+  R.stage = 'count'; pop.classList.add('go'); const b = pop.querySelector('.fp-stop'); if (b) b.setAttribute('aria-label', 'Arrêter');
+  if (!await R.mic) { if (FP.R === R) { FP.R = null; fpPopClose(); } toast('Micro refusé ou indisponible', true); return; }
   if (FP.R !== R) { fpStreamStop(R); return; }
   if (!await fpCount(pop.querySelector('.fp-cnt'), R)) { fpStreamStop(R); return; }
   fpRecBegin(R, pop);
@@ -15867,6 +15875,7 @@ function fpRecBegin(R, host) {
 }
 function fpRecStop() {
   const R = FP.R; if (!R) return;
+  if (R.stage === 'ready') { R.start(); return; }
   if (R.stage === 'count') { fpRecAbort(); if (R.cam) fpCamClose(); else fpPopClose(); return; }
   if (R.mr && R.mr.state === 'recording') { R.dur = (Date.now() - R.t0) / 1000; R.mr.stop(); }
 }

@@ -194,7 +194,7 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-recm{width:64px;height:64px;overflow:visible;display:block}
 .fp-recm .mb{fill:#5a3010}.fp-recm .rd{fill:#ff9a33;transform-box:fill-box;transform-origin:50% 50%;animation:fpPulse 1.6s ease-in-out infinite}
 .fp-recm .pk{transform-origin:100px 111px;transform:rotate(-90deg);transition:transform .55s cubic-bezier(.3,1.45,.5,1)}
-.fp-recing.up .fp-recm .pk,#fp-cam.counting .fp-recm .pk,#fp-cam.rec .fp-recm .pk{transform:none}
+.fp-recing.go .fp-recm .pk,#fp-cam.counting .fp-recm .pk,#fp-cam.rec .fp-recm .pk{transform:none}
 .fp-recing.on .fp-recm .rd,#fp-cam.rec .fp-recm .rd{animation:fpRecDot 1s ease-in-out infinite}
 @keyframes fpRecDot{50%{transform:scale(.78);opacity:.55}}
 .fp-three button:nth-of-type(2) .fp-recm .rd{animation-delay:.5s}.fp-three button:nth-of-type(3) .fp-recm .rd{animation-delay:1s}
@@ -253,3 +253,7 @@ body.beta #sv-more,body.beta #v-sheet .pv-take{display:none}
 .fp-ttr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:2px 4px 0;font-size:12px;font-weight:600;color:var(--cream3);font-variant-numeric:tabular-nums}
 .fp-ttr b{font:800 13px var(--display);color:var(--gold)}.fp-ttr .ln{font-weight:700;color:var(--cream2)}
 .fp-tpl{display:flex;align-items:center;gap:10px}.fp-tpl span{font-size:14px;font-weight:600;color:var(--cream2)}
+
+/* l'enregistreur prêt (28/11) : on touche le médiator couché pour lancer */
+.fp-go{margin:-4px 0 0;text-align:center;font-size:13px;color:var(--cream3);transition:opacity .25s}.fp-recing.go .fp-go{opacity:0;height:0;margin:0;overflow:hidden}
+.fp-pop{overscroll-behavior:contain}#fp-dim{touch-action:none}

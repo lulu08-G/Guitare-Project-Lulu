@@ -52,7 +52,7 @@ function fsShow(nd, n, dir) {
   fsN.i = (n + sl.length) % sl.length;
   const nw = sl[fsN.i]; if (nw === old) return fsNext();
   clearTimeout(nw._t); nw.classList.remove('out-l', 'out-r', 'drag');
-  nw.style.transition = 'none'; nw.style.transform = `translateX(${dir > 0 ? 26 : -26}px)`; void nw.offsetWidth; nw.style.transition = ''; nw.style.transform = '';
+  nw.style.transition = 'none'; nw.style.transform = `translateX(${dir > 0 ? 12 : -12}px)`; void nw.offsetWidth; nw.style.transition = ''; nw.style.transform = '';
   nw.classList.add('on'); nw.removeAttribute('aria-hidden');
   old.classList.remove('on', 'drag'); old.style.transform = ''; old.style.opacity = ''; old.classList.add(dir > 0 ? 'out-l' : 'out-r'); old.setAttribute('aria-hidden', 'true');
   clearTimeout(old._t); old._t = setTimeout(() => old.classList.remove('out-l', 'out-r'), 500);
@@ -70,7 +70,7 @@ function fsSwipe(nd) {
     if (x0 == null) return; dx = e.clientX - x0;
     if (!moved && Math.abs(dx) > 10) { moved = true; clearTimeout(fsN.t); cur().classList.add('drag'); try { nd.setPointerCapture(e.pointerId); } catch (_) {} }
     if (!moved) return;
-    const c = cur(); c.style.transform = `translateX(${(dx * .5).toFixed(1)}px)`; c.style.opacity = Math.max(0, 1 - Math.abs(dx) / 150).toFixed(2);
+    const c = cur(); c.style.transform = `translateX(${Math.max(-12, Math.min(12, dx * .25)).toFixed(1)}px)`; c.style.opacity = Math.max(0, 1 - Math.abs(dx) / 90).toFixed(2);
   });
   const end = () => {
     if (x0 == null) return; x0 = null; if (!moved) return;
